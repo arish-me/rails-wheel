@@ -1,12 +1,8 @@
-<div>
-  <div class="flex flex-col items-center justify-center py-40">
-  <p class="text-gray-500 mb-2"><%= t(".title") %></p>
-  <p class="text-gray-400 max-w-xs text-center"><%= t(".description") %></p>
-</div>
-
-  <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-    Button
-  </button>
-  <h1 class="font-bold text-4xl">Pages#index</h1>
-  <p>Find me in app/views/pages/index.html.erb</p>
-</div>
+<% if user_signed_in? %>
+  <div class="flex items-center space-x-4">
+    <span class="text-gray-700">Welcome, <%= current_user.email %></span>
+    <%= link_to "Sign Out", destroy_user_session_path, data: { turbo_method: :delete }, class: "px-4 py-2 bg-red" %>
+  </div>
+<% else %>
+  <%= link_to "Sign In", new_user_session_path, class: "px-4 py-2 bg-blue-600 text-black text-sm font-medium rounded-md" %>
+<% end %>
