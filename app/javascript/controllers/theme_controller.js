@@ -28,13 +28,11 @@ export default class extends Controller {
       localStorage.setItem("theme", "dark");
       darkIcon.classList.remove("hidden");
       lightIcon.classList.add("hidden");
-      themeLabel.textContent = "Dark";
     } else {
       document.documentElement.classList.remove("dark");
       localStorage.setItem("theme", "light");
       lightIcon.classList.remove("hidden");
       darkIcon.classList.add("hidden");
-      themeLabel.textContent = "Light";
     }
   }
 }
