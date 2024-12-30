@@ -1,16 +1,6 @@
 <%= form_with(model: profile, url: settings_profile_path, method: :patch, class: "contents") do |form| %>
-  <div id="avatar-upload">
-  <label for="avatar" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Avatar</label>
-  <%= form.file_field :avatar, id: "avatar", data: { direct_upload: true }, class: "block w-full text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" %>
-</div>
 
-<div id="avatar-preview" class="mt-4">
-  <% if current_user.profile.avatar.attached? %>
-    <%= image_tag current_user.profile.avatar.variant(resize_to_limit: [100, 100]), alt: "Avatar Preview", class: "rounded-full w-24 h-24 object-cover" %>
-  <% else %>
-    <p>No avatar uploaded</p>
-  <% end %>
-</div>
+  <%= render "settings/user_avatar_field", form: form, profile: profile %>
 
   <div class="grid gap-4 sm:grid-cols-2 sm:gap-6">
     <div class="w-full mb-2">
