@@ -1,0 +1,9 @@
+<div class="flex items-center px-3" data-controller="theme">
+  <button
+    id="theme-toggle-button"
+    data-action="click->theme#toggleTheme"
+    class="flex items-center px-3 py-2 text-gray-900 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-100 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 focus:ring-blue-500 focus:border-blue-500">
+    <%= lucide_icon 'sun', size: '20', class: 'hidden', id: 'light-icon' %>
+    <%= lucide_icon 'moon', size: '20', class: 'hidden', id: 'dark-icon' %>
+  </button>
+</div>
