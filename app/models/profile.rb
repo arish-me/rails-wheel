@@ -10,6 +10,10 @@ class Profile < ApplicationRecord
     other: "Other"
   }.freeze
 
+  validates :first_name, presence: true, length: { in: 3..50 }
+  validates :last_name, presence: true, length: { in: 3..50 }
+  validates :gender, presence: true, inclusion: { in: genders.keys }
+
   def gender_display
     GENDER_DISPLAY[gender.to_sym]
   end

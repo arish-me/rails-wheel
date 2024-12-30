@@ -24,10 +24,10 @@
             <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600" id="dropdown-user">
               <div class="px-4 py-3" role="none">
                 <p class="text-sm text-gray-900 dark:text-white" role="none">
-                  Neil Sims
+                  <%= display_user_name(current_user) %>
                 </p>
                 <p class="text-sm font-medium text-gray-900 truncate dark:text-gray-300" role="none">
-                  neil.sims@flowbite.com
+                  <%= current_user.email %>
                 </p>
               </div>
               <ul class="py-1" role="none">
@@ -35,7 +35,7 @@
                   <%= link_to "Dashboard", dashboard_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" %>
                 </li>
                 <li>
-                  <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Settings</a>
+                  <%= link_to "Settings", edit_settings_profile_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" %>
                 </li>
 
                 <li>
@@ -118,7 +118,6 @@
 </aside>
 
 <div class="p-4 sm:ml-64">
-
    <div class="p-4 border-2 bg-white shadow-md rounded-lg dark:border-gray-700 dark:bg-gray-900 mt-14">
       <% if content_for?(:settings_tab) %>
         <%= yield :settings_tab %>
