@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  namespace :settings do
+    resource :profile, only: [:edit, :update] # Singular resource for profile
+    get 'account', to: 'settings#edit_account', as: 'edit_account'
+  end
 
   devise_for :users
   get "dashboard", to: "dashboard#index"

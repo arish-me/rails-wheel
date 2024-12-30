@@ -1,0 +1,24 @@
+<div class="w-full">
+  <% content_for :settings_tab do %>
+    <%= render 'settings/settings_tab' %>
+  <% end %>
+  <% if notice.present? %>
+    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
+  <% end %>
+
+  <% content_for :title, "Profiles" %>
+
+  <div class="flex justify-between items-center">
+    <h1 class="font-bold text-4xl">Profiles</h1>
+    <%= link_to "New profile", new_settings_profile_path, class: "rounded-lg py-3 px-5 bg-blue-600 text-white block font-medium" %>
+  </div>
+
+  <div id="profiles" class="min-w-full">
+    <% @profiles.each do |profile| %>
+      <%= render profile %>
+      <p>
+        <%= link_to "Show this profile", profile, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
+      </p>
+    <% end %>
+  </div>
+</div>
