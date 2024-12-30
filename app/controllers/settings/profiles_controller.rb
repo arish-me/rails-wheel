@@ -29,7 +29,7 @@ module Settings
 
       # Only allow a list of trusted parameters through.
       def profile_params
-        params.require(:profile).permit(:first_name, :middle_name, :last_name, :gender, :bio)
+        params.require(:profile).permit(:first_name, :middle_name, :last_name, :gender, :bio, :avatar)
       end
   end
 end

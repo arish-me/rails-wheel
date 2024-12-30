@@ -1,6 +1,6 @@
 class Profile < ApplicationRecord
   belongs_to :user
-
+  has_one_attached :avatar
   enum :gender, [:he_she, :him_her, :they_them, :other]
 
   GENDER_DISPLAY = {
