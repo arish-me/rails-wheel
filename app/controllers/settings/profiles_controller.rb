@@ -10,7 +10,8 @@ module Settings
     # PATCH/PUT /profiles/1
     def update
       respond_to do |format|
-        if @profile.update(profile_params)
+        if @profile.update!(profile_params.except(:delete_avatar))
+          @profile.avatar.purge if should_purge_profile_image?
           format.html { redirect_to edit_settings_profile_path, notice: "Profile was successfully updated." }
           format.json { render :edit, status: :ok, location: @profile }
         else
@@ -27,9 +28,13 @@ module Settings
         @profile = Profile.find_or_initialize_by(user_id: current_user.id)
       end
 
+      def should_purge_profile_image?
+        profile_params[:delete_avatar] == "1" &&
+          profile_params[:avatar].blank?
+      end
       # Only allow a list of trusted parameters through.
       def profile_params
-        params.require(:profile).permit(:first_name, :middle_name, :last_name, :gender, :bio)
+        params.require(:profile).permit(:first_name, :middle_name, :last_name, :gender, :bio, :avatar, :delete_avatar)
       end
   end
 end

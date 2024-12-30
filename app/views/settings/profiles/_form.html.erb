@@ -1,4 +1,7 @@
 <%= form_with(model: profile, url: settings_profile_path, method: :patch, class: "contents") do |form| %>
+
+  <%= render "settings/user_avatar_field", form: form, profile: profile %>
+
   <div class="grid gap-4 sm:grid-cols-2 sm:gap-6">
     <div class="w-full mb-2">
       <%= form.label :first_name, class: 'block mb-2 text-sm font-medium text-gray-900 dark:text-white' %>
