@@ -15,7 +15,7 @@ A starter template for building modern web applications with Ruby on Rails. This
 
 1. Clone the repository:
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/arish-me/rails-wheel.git
    cd rails-wheel
    ```
 
