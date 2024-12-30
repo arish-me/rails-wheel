@@ -1,0 +1,25 @@
+<!-- app/views/settings/_settings_tab.html.erb -->
+<div class="mb-4 border-b border-gray-200 dark:border-gray-700">
+  <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-styled-tab" data-tabs-toggle="#default-styled-tab-content" role="tablist">
+    <li class="me-2" role="presentation">
+      <%= link_to "Profile",
+                        edit_settings_profile_path,
+                        class: "inline-block p-4 border-b-2 rounded-t-lg #{current_page?(edit_settings_profile_path) ? 'text-purple-600 border-purple-600 dark:text-white dark:border-gray-600' : 'hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300'}",
+                        id: "profile-tab",
+                        data: { tabs_target: "#profile-content" },
+                        role: "tab",
+                        "aria-controls": "profile",
+                        "aria-selected": current_page?(edit_settings_profile_path) %>
+    </li>
+    <li class="me-2" role="presentation">
+      <%= link_to "Account",
+                        settings_edit_account_path,
+                        class: "inline-block p-4 border-b-2 rounded-t-lg #{current_page?(settings_edit_account_path) ? 'text-purple-600 border-purple-600 dark:text-white dark:border-gray-600' : 'hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300'}",
+                        id: "settings-tab",
+                        data: { tabs_target: "#settings-content" },
+                        role: "tab",
+                        "aria-controls": "settings",
+                        "aria-selected": current_page?(settings_edit_account_path) %>
+    </li>
+  </ul>
+</div>
