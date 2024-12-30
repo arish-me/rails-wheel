@@ -1,0 +1,8 @@
+<% if user_signed_in? %>
+  <%= render partial: 'layouts/navs/private_nav' %>
+<% elsif !devise_controller? %>
+  <%= render partial: 'layouts/navs/public_nav' %>
+  <%= yield %>
+<% else %>
+  <%= yield %>
+<% end %>
