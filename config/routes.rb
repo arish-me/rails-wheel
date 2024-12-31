@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+  resources :categories
+  resources :role_permissions
+  resources :permissions
+  resources :user_roles
+  resources :roles
   namespace :settings do
     resource :profile, only: [:edit, :update] # Singular resource for profile
     get 'account', to: 'settings#edit_account', as: 'edit_account'
