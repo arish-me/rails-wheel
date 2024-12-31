@@ -124,6 +124,10 @@
     <% if content_for?(:settings_tab) %>
       <%= yield :settings_tab %>
     <% end %>
+    <% if content_for?(:user_management_tab) %>
+      <%= yield :user_management_tab %>
+    <% end %>
+
     <%= yield %>
     <%= turbo_frame_tag "modal" %>
     <%= render "shared/confirm_modal" %>

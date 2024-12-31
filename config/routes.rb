@@ -9,8 +9,14 @@ Rails.application.routes.draw do
   get "settings", to: "settings#index"
   resources :categories
   resources :role_permissions
-  resources :permissions
   resources :user_roles
+
+  resources :permissions do
+    collection do
+      post :bulk_destroy
+    end
+  end
+
   resources :roles do
     collection do
       post :bulk_destroy
