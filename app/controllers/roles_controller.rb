@@ -3,8 +3,11 @@ class RolesController < ApplicationController
 
   # GET /roles or /roles.json
   def index
-    #@roles = Role.all
-    @pagy, @roles = pagy(Role.all, limit: params[:per_page] || "10")
+    if params[:query].present?
+      @pagy, @roles = pagy(Role.search_by_name(params[:query]), limit: params[:per_page] || "10")
+    else
+      @pagy, @roles = pagy(Role.all, limit: params[:per_page] || "10")
+    end
   end
 
   # GET /roles/1 or /roles/1.json

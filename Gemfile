@@ -19,6 +19,7 @@ gem "kamal", require: false
 gem "thruster", require: false
 gem "lucide-rails"
 gem "pagy"
+gem 'pg_search'
 gem "tailwindcss-rails", "~> 3.1"
 
 group :development, :test do

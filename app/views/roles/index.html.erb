@@ -4,21 +4,23 @@
      data-bulk-select-plural-label-value="resources"
      class="flex flex-col bg-white rounded-xl border border-alpha-black-25 shadow-xs p-4">
 
+
   <div id="entry-selection-bar" data-bulk-select-target="selectionBar" class="flex justify-center hidden">
     <%= render "roles/selection_bar" %>
   </div>
 
   <div class="space-y-4">
-    <header class="flex justify-between items-center text-gray-900 font-medium">
-      <h1 class="text-xl">Roles</h1>
-      <div class="flex items-center gap-5">
-        <div class="flex items-center gap-2">
+    <h1 class="text-xl">Roles</h1>
+    <header class="flex justify-between items-center items-center text-gray-900 font-medium">
+      <div class="flex">
+        <%= render "search" %>
+      </div>
+      <div class="flex">
           <%= link_to new_role_path, class: "rounded-lg bg-blue-700 text-white flex items-center gap-1 justify-center hover:bg-blue-600 px-3 py-2", data: { turbo_frame: :modal } do %>
             <%= lucide_icon("plus", class: "w-5 h-5") %>
             <p class="text-sm font-medium">New Role</p>
           <% end %>
         </div>
-      </div>
     </header>
 
     <div class="flex flex-col">
