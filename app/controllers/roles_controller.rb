@@ -34,6 +34,22 @@ class RolesController < ApplicationController
     end
   end
 
+  def bulk_destroy
+    entry_ids = bulk_delete_params[:entry_ids] # Extract entry_ids from params
+    respond_to do |format|
+      if entry_ids.present?
+        # Destroy roles matching the provided entry_ids
+        Role.where(id: entry_ids).destroy_all
+        format.html { redirect_to roles_path, notice: "Role was successfully destroyed." }
+        format.turbo_stream { render turbo_stream: turbo_stream.refresh(request_id: nil) }
+      else
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @role.errors, status: :unprocessable_entity }
+      end
+    end
+
+  end
+
   # PATCH/PUT /roles/1 or /roles/1.json
   def update
     respond_to do |format|
@@ -62,6 +78,10 @@ class RolesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_role
       @role = Role.find(params.expect(:id))
+    end
+
+    def bulk_delete_params
+      params.require(:bulk_delete).permit(entry_ids: [])
     end
 
     # Only allow a list of trusted parameters through.

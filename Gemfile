@@ -28,5 +28,6 @@ group :development, :test do
 end
 
 group :development do
+  gem "hotwire-livereload"
   gem "web-console"
 end

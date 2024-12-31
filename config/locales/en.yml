@@ -30,3 +30,8 @@
 en:
   hello: "Hello world"
   new_role: New Role
+  confirm_modal:
+      accept: Confirm
+      body_html: "<p>You will not be able to undo this decision</p>"
+      cancel: Cancel
+      title: Are you sure?
