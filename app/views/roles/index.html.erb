@@ -1,90 +1,26 @@
 <% content_for :user_management_tab do %>
   <%= render 'layouts/user_management_tab' %>
 <% end %>
-<div id="resources"
-     data-controller="bulk-select"
-     data-bulk-select-singular-label-value='resource'
-     data-bulk-select-plural-label-value="resources"
-     class="flex flex-col bg-white dark:bg-gray-800 dark:border-gray-600 rounded-xl border border-alpha-black-25 shadow-xs p-4">
-  <div id="entry-selection-bar" data-bulk-select-target="selectionBar" class="flex justify-center hidden">
-    <%= render "roles/selection_bar" %>
-  </div>
-  <div class="space-y-4">
-    <h1 class="text-xl dark:text-white">Roles</h1>
-    <header class="flex justify-between items-center items-center text-gray-900 font-medium">
-      <div class="flex">
-        <%= render "search" %>
-      </div>
-      <div class="flex">
-        <%= link_to new_role_path, class: "rounded-lg btn btn--primary text-white flex items-center gap-1 justify-center px-3 py-2", data: { turbo_frame: :modal } do %>
-          <%= lucide_icon("plus", class: "w-5 h-5") %>
-          <p class="text-sm font-medium">New Role</p>
-        <% end %>
-      </div>
-    </header>
-    <div class="flex flex-col">
-      <div class="shadow-md sm:rounded-lg">
-        <div class="inline-block min-w-full align-middle">
-          <!-- Add height constraints and scrolling -->
-          <div class="overflow-y-auto max-h-96"> <!-- Adjust max-h-96 as needed -->
-            <table class="min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-700">
-              <thead class="bg-gray-100 dark:bg-gray-800 sticky top-0 z-10"> <!-- Sticky headers -->
-                <tr>
-                  <th scope="col" class="p-4">
-                    <div class="flex items-center">
-                      <%= check_box_tag "selection_entry",
-                                          class: "w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600",
-                                              data: { action: "bulk-select#togglePageSelection" } %>
-                    </div>
-                  </th>
-                  <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
-                    Name
-                  </th>
-                  <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
-                    Created At
-                  </th>
-                  <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
-                    Updated At
-                  </th>
-                  <th scope="col" class="p-4">
-                    <span class="sr-only">Edit</span>
-                  </th>
-                </tr>
-              </thead>
-              <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
-                <% @roles.each do |role| %>
-                  <tr class="hover:bg-gray-100 dark:hover:bg-gray-700">
-                    <td class="p-4 w-4">
-                      <div class="flex items-center">
-                        <%= check_box_tag dom_id(role, "selection"),
-                                              class: "maybe-checkbox maybe-checkbox--light",
-                                              data: { id: role.id, "bulk-select-target": "row", action: "bulk-select#toggleRowSelection" } %>
-                      </div>
-                    </td>
-                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                      <%= role.name %>
-                    </td>
-                    <td class="py-4 px-6 text-sm font-medium text-gray-500 whitespace-nowrap dark:text-white">
-                      <%= role.created_at %>
-                    </td>
-                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                      <%= role.updated_at %>
-                    </td>
-                    <td class="py-4 px-6 text-sm font-medium text-right whitespace-nowrap">
-                      <%= link_to edit_role_path(role), data: { turbo_frame: :modal }, class: "dark:text-white hover:underline" do %>
-                        <%= lucide_icon("square-pen", class: "w-5 h-5") %>
-                      <% end %>
-                    </td>
-                  </tr>
-                <% end %>
-              </tbody>
-            </table>
-          </div>
-          <div class="p-4">
-            <%= render "shared/pagination", pagy: @pagy %>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+<%= render partial: "shared/common/container", locals: {
+      destroy_path: bulk_destroy_roles_path,
+      resource_path: roles_path,
+      resource_id: 'roles-search',
+      search_placeholder: 'Search roles by name',
+      title: 'Roles',
+      resource: @roles,
+      new_resource_path: new_role_path,
+      columns: [
+                  { header: "Name", attribute: :name },
+                  { header: "Created At", attribute: :created_at },
+                  { header: "Updated At", attribute: :updated_at }
+                ],
+      actions: [
+                  {
+                    url: ->(record) { edit_role_path(record) },
+                    icon: "square-pen",
+                    turbo_frame: :modal
+                  }
+                ],
+
+    }
+  %>

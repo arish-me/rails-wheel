@@ -1,5 +1,5 @@
-<%= form_with url: permissions_path,
-              id: "permissions-search",
+<%= form_with url: resource_path,
+              id: resource_id,
               method: :get,
               data: { controller: "auto-submit-form" } do |form| %>
  <div class="bg-white dark:bg-gray-900">
@@ -9,7 +9,7 @@
           <%= lucide_icon("search", class: "w-4 h-4 text-gray-500") %>
         </div>
         <%= form.text_field :query, # Match the expected param name in `index`
-                            placeholder: "Search permission by name",
+                            placeholder: placeholder,
                             value: params[:query], # Populate the input with the current search query
                             class: "block pt-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500",
                             "data-auto-submit-form-target": "auto" %>

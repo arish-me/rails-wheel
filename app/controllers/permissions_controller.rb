@@ -49,7 +49,6 @@ class PermissionsController < ApplicationController
         format.turbo_stream { render turbo_stream: turbo_stream.refresh(request_id: nil) }
       else
         format.html { render :new, status: :unprocessable_entity }
-
       end
     end
   end
