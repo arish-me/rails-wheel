@@ -3,7 +3,8 @@ class RolesController < ApplicationController
 
   # GET /roles or /roles.json
   def index
-    @roles = Role.all
+    #@roles = Role.all
+    @pagy, @roles = pagy(Role.all, limit: params[:per_page] || "10")
   end
 
   # GET /roles/1 or /roles/1.json
@@ -35,11 +36,11 @@ class RolesController < ApplicationController
   end
 
   def bulk_destroy
-    entry_ids = bulk_delete_params[:entry_ids] # Extract entry_ids from params
+    resource_ids = bulk_delete_params[:resource_ids] # Extract entry_ids from params
     respond_to do |format|
-      if entry_ids.present?
+      if resource_ids.present?
         # Destroy roles matching the provided entry_ids
-        Role.where(id: entry_ids).destroy_all
+        Role.where(id: resource_ids).destroy_all
         format.html { redirect_to roles_path, notice: "Role was successfully destroyed." }
         format.turbo_stream { render turbo_stream: turbo_stream.refresh(request_id: nil) }
       else
@@ -81,7 +82,7 @@ class RolesController < ApplicationController
     end
 
     def bulk_delete_params
-      params.require(:bulk_delete).permit(entry_ids: [])
+      params.require(:bulk_delete).permit(resource_ids: [])
     end
 
     # Only allow a list of trusted parameters through.

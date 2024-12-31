@@ -36,7 +36,7 @@ export default class extends Controller {
     const scope = e.params.scope;
     this._addHiddenFormInputsForSelectedIds(
       form,
-      `${scope}[entry_ids][]`,
+      `${scope}[resource_ids][]`,
       this.selectedIdsValue,
     );
     form.requestSubmit();
@@ -80,9 +80,9 @@ export default class extends Controller {
     this._updateView();
   }
 
-  _addHiddenFormInputsForSelectedIds(form, paramName, transactionIds) {
+  _addHiddenFormInputsForSelectedIds(form, paramName, resourceIds) {
     this._resetFormInputs(form, paramName);
-    transactionIds.forEach((id) => {
+    resourceIds.forEach((id) => {
       const input = document.createElement("input");
       input.type = "hidden";
       input.name = paramName;
