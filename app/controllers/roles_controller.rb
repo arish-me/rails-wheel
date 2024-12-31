@@ -3,7 +3,11 @@ class RolesController < ApplicationController
 
   # GET /roles or /roles.json
   def index
-    @roles = Role.all
+    if params[:query].present?
+      @pagy, @roles = pagy(Role.search_by_name(params[:query]), limit: params[:per_page] || "10")
+    else
+      @pagy, @roles = pagy(Role.all, limit: params[:per_page] || "10")
+    end
   end
 
   # GET /roles/1 or /roles/1.json
@@ -22,11 +26,11 @@ class RolesController < ApplicationController
   # POST /roles or /roles.json
   def create
     @role = Role.new(role_params)
-
     respond_to do |format|
       if @role.save
-        format.html { redirect_to @role, notice: "Role was successfully created." }
+        flash[:notice] = "Role was successfully created."
         format.turbo_stream { render turbo_stream: turbo_stream.refresh(request_id: nil) }
+        format.html { redirect_to @role, notice: "Role was successfully created." }
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @role.errors, status: :unprocessable_entity }
@@ -34,10 +38,27 @@ class RolesController < ApplicationController
     end
   end
 
+  def bulk_destroy
+    resource_ids = bulk_delete_params[:resource_ids] # Extract entry_ids from params
+    respond_to do |format|
+      if resource_ids.present?
+        # Destroy roles matching the provided entry_ids
+        Role.where(id: resource_ids).destroy_all
+        format.html { redirect_to roles_path, notice: "Role was successfully destroyed." }
+        format.turbo_stream { render turbo_stream: turbo_stream.refresh(request_id: nil) }
+      else
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @role.errors, status: :unprocessable_entity }
+      end
+    end
+
+  end
+
   # PATCH/PUT /roles/1 or /roles/1.json
   def update
     respond_to do |format|
       if @role.update(role_params)
+        flash[:notice] = 'Role was successfully updated.'
         format.html { redirect_to @role, notice: "Role was successfully updated." }
         format.turbo_stream { render turbo_stream: turbo_stream.refresh(request_id: nil) }
         format.json { render :show, status: :ok, location: @role }
@@ -62,6 +83,10 @@ class RolesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_role
       @role = Role.find(params.expect(:id))
+    end
+
+    def bulk_delete_params
+      params.require(:bulk_delete).permit(resource_ids: [])
     end
 
     # Only allow a list of trusted parameters through.

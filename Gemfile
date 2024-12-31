@@ -18,6 +18,8 @@ gem "bootsnap", require: false
 gem "kamal", require: false
 gem "thruster", require: false
 gem "lucide-rails"
+gem "pagy"
+gem 'pg_search'
 gem "tailwindcss-rails", "~> 3.1"
 
 group :development, :test do
@@ -28,5 +30,6 @@ group :development, :test do
 end
 
 group :development do
+  gem "hotwire-livereload"
   gem "web-console"
 end
