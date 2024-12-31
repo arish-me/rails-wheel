@@ -26,7 +26,7 @@ class RolesController < ApplicationController
     respond_to do |format|
       if @role.save
         format.html { redirect_to @role, notice: "Role was successfully created." }
-        format.json { render :show, status: :created, location: @role }
+        format.turbo_stream { render turbo_stream: turbo_stream.refresh(request_id: nil) }
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @role.errors, status: :unprocessable_entity }
@@ -39,6 +39,7 @@ class RolesController < ApplicationController
     respond_to do |format|
       if @role.update(role_params)
         format.html { redirect_to @role, notice: "Role was successfully updated." }
+        format.turbo_stream { render turbo_stream: turbo_stream.refresh(request_id: nil) }
         format.json { render :show, status: :ok, location: @role }
       else
         format.html { render :edit, status: :unprocessable_entity }
