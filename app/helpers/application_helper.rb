@@ -1,6 +1,16 @@
 module ApplicationHelper
   include Pagy::Frontend
 
+  def render_flash_notifications
+    notifications = flash.flat_map do |type, message_or_messages|
+      Array(message_or_messages).map do |message|
+        render partial: "shared/notification", locals: { type: type, message: message }
+      end
+    end
+
+    safe_join(notifications)
+  end
+
   def modal(options = {}, &block)
     content = capture &block
     render partial: "shared/modal", locals: { content:, classes: options[:classes] }
