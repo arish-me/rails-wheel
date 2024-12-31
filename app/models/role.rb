@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class Role < ApplicationRecord
-  include PgSearch::Model
-
   default_scope { order(id: :desc) }
 
   pg_search_scope :search_by_name,
