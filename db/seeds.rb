@@ -16,7 +16,6 @@ puts "Roles created: #{roles.join(', ')}"
 Role.where.not(name: default_role_name).update_all(is_default: false)
 puts "Default role set to: #{default_role_name}"
 
-
 # Permissions
 puts "Creating Permissions..."
 permissions = [
@@ -32,7 +31,7 @@ permissions.each do |perm|
 end
 puts "Permissions created: #{permissions.map { |p| p[:name] }.join(', ')}"
 
-# SuperAdmin Role and Assign Permissions
+# Assign All Permissions to SuperAdmin Role
 puts "Assigning All Permissions to SuperAdmin Role..."
 super_admin_role = Role.find_by(name: 'SuperAdmin')
 
@@ -46,32 +45,47 @@ permissions.each do |perm|
 end
 puts "SuperAdmin now has all permissions with edit access."
 
+# Assign All Permissions to Admin Role
+puts "Assigning All Permissions to Admin Role..."
+admin_role = Role.find_by(name: 'Admin')
+
+permissions.each do |perm|
+  permission = Permission.find_by(name: perm[:name], resource: perm[:resource])
+  RolePermission.find_or_create_by!(
+    role: admin_role,
+    permission: permission,
+    action: RolePermission.actions[:edit]
+  )
+end
+puts "Admin now has all permissions with edit access."
+
 # Create Users and Assign Roles
 puts "Creating Users and Assigning Roles..."
-super_admin_user = User.find_or_create_by!(email: 'superadmin@wheel.com') do |user|
-  user.password = 'superadmin@example.com'
-  user.password_confirmation = 'superadmin@example.com'
+users = [
+  { email: 'superadmin@wheel.com', role: 'SuperAdmin', first_name: 'Super', last_name: 'Admin', gender: 1 },
+  { email: 'admin@wheel.com', role: 'Admin', first_name: 'Admin', last_name: 'User', gender: 1 },
+  { email: 'user@wheel.com', role: 'User', first_name: 'Regular', last_name: 'User', gender: 1 },
+  { email: 'recruiter@wheel.com', role: 'Recruiter', first_name: 'Recruiter', last_name: 'User', gender: 1 },
+  { email: 'guest@wheel.com', role: 'Guest', first_name: 'Guest', last_name: 'User', gender: 1 }
+]
+
+users.each do |user_data|
+  user = User.find_or_create_by!(email: user_data[:email]) do |u|
+    u.password = "#{user_data[:email]}"
+    u.password_confirmation = "#{user_data[:email]}"
+  end
+
+  role = Role.find_by(name: user_data[:role])
+  UserRole.find_or_create_by!(user: user, role: role)
+
+  profile = user.profile || user.build_profile
+  profile.assign_attributes(
+    first_name: user_data[:first_name],
+    last_name: user_data[:last_name],
+    gender: user_data[:gender]
+  )
+  profile.save!
 end
 
-admin_user = User.find_or_create_by!(email: 'thermic.arish@gmail.com') do |user|
-  user.password = 'thermic.arish@gmail.com'
-  user.password_confirmation = 'thermic.arish@gmail.com'
-end
-
-# Assign Roles
-UserRole.find_or_create_by!(user: super_admin_user, role: super_admin_role)
-admin_role = Role.find_by(name: 'Admin')
-UserRole.find_or_create_by!(user: admin_user, role: admin_role)
-
-# Create Profiles for Users
-puts "Creating Profiles for Users..."
-super_admin_profile = super_admin_user.profile || super_admin_user.build_profile
-super_admin_profile.assign_attributes(first_name: 'Super', last_name: 'Admin', gender: 1)
-
-super_admin_profile.save!
-
-admin_profile = admin_user.profile || admin_user.build_profile
-admin_profile.assign_attributes(first_name: 'Arish', last_name: 'Thermic', gender: 1)
-admin_profile.save!
-
+puts "Users created and assigned roles."
 puts "Seeding completed successfully!"

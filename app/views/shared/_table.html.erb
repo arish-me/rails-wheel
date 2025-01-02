@@ -46,9 +46,11 @@
           <td class="py-4 px-6 text-sm font-medium text-right whitespace-nowrap">
             <% actions.each do |action| %>
               <%= link_to action[:url].call(record),
-                  data: { turbo_frame: action[:turbo_frame] || nil },
+                  data: { turbo_frame: action[:turbo_frame] || nil, turbo_method: action[:turbo_method] || nil, turbo: action[:turbo] || true },
                   class: "dark:text-white hover:underline" do %>
-                <%= lucide_icon(action[:icon], class: "w-5 h-5") %>
+                <% if action[:icon] %>
+                  <%= lucide_icon(action[:icon], class: "w-5 h-5") %>
+                <% end %>
               <% end %>
             <% end %>
           </td>

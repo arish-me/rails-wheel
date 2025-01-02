@@ -213,6 +213,8 @@ GEM
     pg_search (2.3.7)
       activerecord (>= 6.1)
       activesupport (>= 6.1)
+    pretender (0.5.0)
+      actionpack (>= 6.1)
     propshaft (1.1.0)
       actionpack (>= 7.0.0)
       activesupport (>= 7.0.0)
@@ -398,6 +400,7 @@ DEPENDENCIES
   pagy
   pg (~> 1.1)
   pg_search
+  pretender
   propshaft
   puma (>= 5.0)
   pundit

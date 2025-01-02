@@ -89,6 +89,7 @@
 <div class="p-4 sm:ml-64">
   <!-- border-2 bg-white shadow-md rounded-lg dark:border-gray-700 dark:bg-gray-900 -->
   <div class="p-4 mt-14">
+    <%= render partial: 'shared/impersonation_session' if impersonating? %>
     <% if content_for?(:settings_tab) %>
       <%= yield :settings_tab %>
     <% end %>

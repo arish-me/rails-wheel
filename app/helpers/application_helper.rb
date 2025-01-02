@@ -11,6 +11,10 @@ module ApplicationHelper
     safe_join(notifications)
   end
 
+  def impersonating?
+    current_user != true_user
+  end
+
 
   def modal(options = {}, &block)
     content = capture &block
