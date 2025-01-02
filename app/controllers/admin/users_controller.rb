@@ -3,7 +3,7 @@ class Admin::UsersController < ApplicationController
 
   def index
     if params[:query].present?
-      @pagy, @users = pagy(User.search_by_name(params[:query]), limit: params[:per_page] || "10")
+      @pagy, @users = pagy(User.search_by_email(params[:query]), limit: params[:per_page] || "10")
     else
       @pagy, @users = pagy(User.all, limit: params[:per_page] || "10")
     end
@@ -54,6 +54,7 @@ class Admin::UsersController < ApplicationController
   def update
     respond_to do |format|
       @user.skip_password_validation = true
+      lock_user
       # update_roles(@user)
       if @user.update(user_params)
         flash[:notice] = 'User was successfully updated.'
@@ -92,9 +93,18 @@ class Admin::UsersController < ApplicationController
       params.require(:bulk_delete).permit(resource_ids: [])
     end
 
+    def lock_user
+      if params[:locked] == "1"
+        @user.lock_access! unless @user.access_locked?
+      else
+        @user.unlock_access! if @user.access_locked?
+      end
+    end
+
     def user_params
       params.require(:user).permit(
         :email,
+        :locked,
         profile_attributes: [:id, :first_name, :last_name, :gender],
         role_ids: [] # This allows multiple role IDs to be assigned
       )

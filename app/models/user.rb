@@ -2,7 +2,7 @@ class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable
+         :recoverable, :rememberable, :validatable, :lockable
   has_one :profile, dependent: :destroy
   has_many :user_roles, dependent: :destroy
   has_many :roles, through: :user_roles
@@ -11,6 +11,16 @@ class User < ApplicationRecord
   attr_accessor :skip_password_validation
   accepts_nested_attributes_for :profile, update_only: true
   accepts_nested_attributes_for :user_roles, allow_destroy: true
+
+  pg_search_scope :search_by_email,
+              against: :email,
+              using: {
+                tsearch: { prefix: true } # Enables partial matches (e.g., "Admin" matches "Administrator")
+              }
+
+  def lock_access!
+    update_columns(locked_at: Time.current, failed_attempts: 0)
+  end
 
   def has_role?(role_name)
     roles.exists?(name: role_name)

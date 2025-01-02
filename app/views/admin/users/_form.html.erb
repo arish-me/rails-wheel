@@ -27,7 +27,27 @@
                       label: "Select Roles (Use shift to select multiple)",
                     }
                    %>
-    </section>
+  </section>
+
+  <!-- Actions Section -->
+  <section class="space-y-4 overflow-hidden">
+    <h2 class="text-lg font-bold text-gray-700">Actions</h2>
+
+    <div class="flex items-center gap-4">
+  <%= label_tag :locked, "Lock" %>
+  <%= check_box_tag :locked,
+                    "1", # The value for the checkbox when checked
+                    @user.access_locked?, # Checked if the user is locked
+                    class: ["maybe-checkbox maybe-checkbox--light"],
+                    data: { action: "bulk-select#toggleGroupSelection" } %>
+</div>
+
+
+
+
+
+  </section>
+
   <section>
     <%= f.submit 'Submit' %>
   </section>
