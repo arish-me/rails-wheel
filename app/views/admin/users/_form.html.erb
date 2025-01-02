@@ -3,8 +3,31 @@
     <%= render "shared/form_errors" , model: user %>
   <% end %>
   <section class="space-y-2 overflow-hidden">
+    <h2 class="text-lg font-bold text-gray-700">User Details</h2>
     <%= f.text_field :email, label: 'Email' , placeholder: 'Enter Email' %>
   </section>
+    <section class="space-y-2 overflow-hidden">
+      <h2 class="text-lg font-bold text-gray-700">Profile Details</h2>
+      <%= f.fields_for :profile do |p| %>
+        <%= p.text_field :first_name, label: 'First Name', placeholder: 'Enter First Name' %>
+        <%= p.text_field :last_name, label: 'Last Name', placeholder: 'Enter Last Name' %>
+        <%= p.select :gender,
+                    Profile.genders.map { |key, _| [Profile::GENDER_DISPLAY[key.to_sym], key] },
+                    { label: 'Gender' }
+        %>
+      <% end %>
+    </section>
+  <section class="space-y-2 overflow-hidden mt-2">
+    <h2 class="text-lg font-bold text-gray-700">Roles</h2>
+      <%= f.select :role_ids,
+                    Role.pluck(:name, :id),
+                    {
+                      include_blank: false,
+                      multiple: true,
+                      label: "Select Roles (Use shift to select multiple)",
+                    }
+                   %>
+    </section>
   <section>
     <%= f.submit 'Submit' %>
   </section>

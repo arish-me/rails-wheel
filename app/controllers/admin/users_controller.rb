@@ -15,9 +15,11 @@ class Admin::UsersController < ApplicationController
 
   def new
     @user = User.new
+    @user.build_profile
   end
 
   def edit
+    @user.build_profile unless @user.profile
   end
 
   def create
@@ -52,6 +54,7 @@ class Admin::UsersController < ApplicationController
   def update
     respond_to do |format|
       @user.skip_password_validation = true
+      # update_roles(@user)
       if @user.update(user_params)
         flash[:notice] = 'User was successfully updated.'
         format.html { redirect_to @user, notice: "User was successfully updated." }
@@ -74,6 +77,11 @@ class Admin::UsersController < ApplicationController
     end
   end
 
+
+  def update_roles(user)
+    user.roles = Role.where(id: params[:user][:role_ids].reject(&:blank?))
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
@@ -84,8 +92,11 @@ class Admin::UsersController < ApplicationController
       params.require(:bulk_delete).permit(resource_ids: [])
     end
 
-    # Only allow a list of trusted parameters through.
     def user_params
-      params.expect(user: [ :email ])
+      params.require(:user).permit(
+        :email,
+        profile_attributes: [:id, :first_name, :last_name, :gender],
+        role_ids: [] # This allows multiple role IDs to be assigned
+      )
     end
 end

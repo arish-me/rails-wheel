@@ -9,6 +9,8 @@ class User < ApplicationRecord
   has_many :categories, dependent: :destroy
 
   attr_accessor :skip_password_validation
+  accepts_nested_attributes_for :profile, update_only: true
+  accepts_nested_attributes_for :user_roles, allow_destroy: true
 
   def has_role?(role_name)
     roles.exists?(name: role_name)
