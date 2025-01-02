@@ -1,9 +1,14 @@
 class CategoriesController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_category, only: %i[ show edit update destroy ]
 
   # GET /categories or /categories.json
   def index
-    @categories = Category.all
+    if params[:query].present?
+      @pagy, @categories = pagy(current_user.categories.search_by_name(params[:query]), limit: params[:per_page] || "10")
+    else
+      @pagy, @categories = pagy(current_user.categories, limit: params[:per_page] || "10")
+    end
   end
 
   # GET /categories/1 or /categories/1.json
@@ -12,7 +17,7 @@ class CategoriesController < ApplicationController
 
   # GET /categories/new
   def new
-    @category = Category.new
+    @category = current_user.categories.new
   end
 
   # GET /categories/1/edit
@@ -21,10 +26,12 @@ class CategoriesController < ApplicationController
 
   # POST /categories or /categories.json
   def create
-    @category = Category.new(category_params)
+    @category = current_user.categories.new(category_params)
 
     respond_to do |format|
       if @category.save
+        flash[:notice] =  "Category was successfully created."
+        format.turbo_stream { render turbo_stream: turbo_stream.refresh(request_id: nil) }
         format.html { redirect_to @category, notice: "Category was successfully created." }
         format.json { render :show, status: :created, location: @category }
       else
@@ -38,6 +45,8 @@ class CategoriesController < ApplicationController
   def update
     respond_to do |format|
       if @category.update(category_params)
+        flash[:notice] =  "Category was successfully updated."
+        format.turbo_stream { render turbo_stream: turbo_stream.refresh(request_id: nil) }
         format.html { redirect_to @category, notice: "Category was successfully updated." }
         format.json { render :show, status: :ok, location: @category }
       else
@@ -57,7 +66,25 @@ class CategoriesController < ApplicationController
     end
   end
 
+  def bulk_destroy
+    resource_ids = bulk_delete_params[:resource_ids] # Extract entry_ids from params
+    respond_to do |format|
+      if resource_ids.present?
+        # Destroy roles matching the provided entry_ids
+        Permission.where(id: resource_ids).destroy_all
+        format.html { redirect_to roles_path, notice: "Permission was successfully destroyed." }
+        format.turbo_stream { render turbo_stream: turbo_stream.refresh(request_id: nil) }
+      else
+        format.html { render :new, status: :unprocessable_entity }
+      end
+    end
+  end
+
+
   private
+    def bulk_delete_params
+      params.require(:bulk_delete).permit(resource_ids: [])
+    end
     # Use callbacks to share common setup or constraints between actions.
     def set_category
       @category = Category.find(params.expect(:id))
@@ -65,6 +92,6 @@ class CategoriesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def category_params
-      params.expect(category: [ :name, :description, :user_id ])
+      params.expect(category: [ :name, :description])
     end
 end

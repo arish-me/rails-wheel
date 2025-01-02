@@ -1,0 +1,26 @@
+<% content_for :user_management_tab do %>
+  <%= render 'layouts/user_management_tab' %>
+<% end %>
+<%= render partial: "shared/common/container", locals: {
+      destroy_path: bulk_destroy_admin_users_path,
+      resource_path: admin_users_path,
+      resource_id: 'users-search',
+      search_placeholder: 'Search users by email',
+      title: 'Users',
+      resource: @users,
+      new_resource_path: new_admin_user_path,
+      columns: [
+                  { header: "Email", attribute: :email },
+                  { header: "Created At", attribute: :created_at },
+                  { header: "Updated At", attribute: :updated_at }
+                ],
+      actions: [
+                  {
+                    url: ->(record) { edit_admin_user_path(record) },
+                    icon: "square-pen",
+                    turbo_frame: :modal
+                  }
+                ],
+
+    }
+  %>

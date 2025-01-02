@@ -1,21 +1,22 @@
-<div class="w-full">
-  <% if notice.present? %>
-    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
+<% content_for :user_management_tab do %>
+  <%= render 'layouts/user_management_tab' %>
+<% end %>
+
+<div class="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-1">
+  <% @roles.each do |role| %>
+    <div class="card shadow rounded-md p-4 border border-gray-200 bg-white">
+      <h2 class="text-lg font-semibold mb-2"><%= role.name %></h2>
+      <p class="text-sm text-gray-500">Role ID: <%= role.id %></p>
+
+      <div class="mt-4">
+        <%= link_to edit_role_permission_path(role),
+            data: { turbo_frame: :modal },
+            class: "dark:text-white hover:underline" do %>
+            Manage Permissions
+        <% end %>
+
+      </div>
+    </div>
   <% end %>
-
-  <% content_for :title, "Role permissions" %>
-
-  <div class="flex justify-between items-center">
-    <h1 class="font-bold text-4xl">Role permissions</h1>
-    <%= link_to "New role permission", new_role_permission_path, class: "rounded-lg py-3 px-5 bg-blue-600 text-white block font-medium" %>
-  </div>
-
-  <div id="role_permissions" class="min-w-full">
-    <% @role_permissions.each do |role_permission| %>
-      <%= render role_permission %>
-      <p>
-        <%= link_to "Show this role permission", role_permission, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-      </p>
-    <% end %>
-  </div>
 </div>
+

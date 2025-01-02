@@ -3,6 +3,7 @@ class CreateRolePermissions < ActiveRecord::Migration[8.0]
     create_table :role_permissions do |t|
       t.references :role, null: false, foreign_key: true
       t.references :permission, null: false, foreign_key: true
+      t.integer :action, null: false
 
       t.timestamps
     end

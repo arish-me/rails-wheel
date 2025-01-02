@@ -1,8 +1,3 @@
-<div class="mx-auto md:w-2/3 w-full">
-  <h1 class="font-bold text-4xl">Editing role permission</h1>
-
+<%= modal_form_wrapper title: t(".edit_role_permission") do %>
   <%= render "form", role_permission: @role_permission %>
-
-  <%= link_to "Show this role permission", @role_permission, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-  <%= link_to "Back to role permissions", role_permissions_path, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-</div>
+<% end %>
