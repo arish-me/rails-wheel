@@ -19,6 +19,7 @@ gem "bootsnap", require: false
 gem "kamal", require: false
 gem "thruster", require: false
 gem "lucide-rails"
+gem "letter_opener"
 gem "pagy"
 gem 'pg_search'
 gem 'pundit'

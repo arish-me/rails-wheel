@@ -1,25 +1,37 @@
-<h2>Change your password</h2>
-
-<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
-  <%= f.hidden_field :reset_password_token %>
-
-  <div class="field">
-    <%= f.label :password, "New password" %><br />
-    <% if @minimum_password_length %>
-      <em>(<%= @minimum_password_length %> characters minimum)</em><br />
-    <% end %>
-    <%= f.password_field :password, autofocus: true, autocomplete: "new-password" %>
+<section class="bg-gray-50 dark:bg-gray-900">
+  <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+    <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
+      <img class="w-8 h-8 mr-2" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg" alt="logo">
+      Wheel
+    </a>
+    <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+      <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+        <div class="sm:mx-auto sm:w-full sm:max-w-md">
+          <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+            Forgot Password?
+          </h2>
+        </div>
+        <%= styled_form_with(model: resource, url: password_path(resource_name), method: :put, local: true, class: "space-y-4") do |f| %>
+          <% if resource.errors.any? %>
+            <%= render "shared/form_errors" , model: resource %>
+          <% end %>
+          <%= f.hidden_field :reset_password_token %>
+          <section class="space-y-2 overflow-hidden">
+            <%= f.password_field :password, label: 'Enter Password' , placeholder: 'Enter Password' %>
+            <% if @minimum_password_length %>
+              <em>(<%= @minimum_password_length %> characters minimum)</em><br />
+            <% end %>
+          </section>
+          <section class="space-y-2 overflow-hidden">
+            <%= f.password_field :password_confirmation, label: 'Confirm Password' , placeholder: 'Confirm Password' %>
+          </section>
+          <section>
+            <%= f.submit 'Change my password' %>
+          </section>
+        <% end %>
+        <%= render "devise/shared/links" %>
+      </div>
+    </div>
   </div>
+</section>
 
-  <div class="field">
-    <%= f.label :password_confirmation, "Confirm new password" %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit "Change my password" %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
