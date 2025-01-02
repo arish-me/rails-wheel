@@ -20,6 +20,7 @@ gem "thruster", require: false
 gem "lucide-rails"
 gem "pagy"
 gem 'pg_search'
+gem 'pundit'
 gem "tailwindcss-rails", "~> 3.1"
 
 group :development, :test do

@@ -5,12 +5,14 @@
       destroy_path: bulk_destroy_permissions_path,
       resource_path: permissions_path,
       resource_id: 'permission-search',
+      record: Permission,
       search_placeholder: 'Search permissions by name',
       title: 'Permissions',
       resource: @permissions,
       new_resource_path: new_permission_path,
       columns: [
                   { header: "Name", attribute: :name },
+                  { header: "Resource", attribute: :resource },
                   { header: "Created At", attribute: :created_at },
                   { header: "Updated At", attribute: :updated_at }
                 ],

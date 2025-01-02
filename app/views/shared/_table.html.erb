@@ -1,7 +1,7 @@
 <table class="min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-700">
   <thead class="bg-gray-100 dark:bg-gray-800 sticky top-0 z-10">
     <tr>
-      <% if bulk_select %>
+      <% if bulk_select && can?(:create, record) %>
         <th scope="col" class="p-4">
           <div class="flex items-center">
             <%= check_box_tag "selection_entry",
@@ -25,13 +25,16 @@
   <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
     <% records.each do |record| %>
       <tr class="hover:bg-gray-100 dark:hover:bg-gray-700">
-        <% if bulk_select %>
+        <% if bulk_select && can?(:create, record) %>
           <td class="p-4 w-4">
-            <div class="flex items-center">
-              <%= check_box_tag dom_id(record, "selection"),
-                  class: "maybe-checkbox maybe-checkbox--light",
-                  data: { id: record.id, "bulk-select-target": "row", action: "bulk-select#toggleRowSelection" } %>
-            </div>
+            <% if can?(:create, record) %>
+              <div class="flex items-center">
+                <%= check_box_tag dom_id(record, "selection"),
+                    class: "maybe-checkbox maybe-checkbox--light",
+                    data: { id: record.id, "bulk-select-target": "row", action: "bulk-select#toggleRowSelection" } %>
+              </div>
+            <% end %>
+
           </td>
         <% end %>
         <% columns.each do |column| %>
@@ -39,7 +42,7 @@
             <%= record.public_send(column[:attribute]) %>
           </td>
         <% end %>
-        <% if actions.present? %>
+        <% if actions.present? && can?(:create, record) %>
           <td class="py-4 px-6 text-sm font-medium text-right whitespace-nowrap">
             <% actions.each do |action| %>
               <%= link_to action[:url].call(record),

@@ -223,6 +223,8 @@ GEM
       stringio
     puma (6.5.0)
       nio4r (~> 2.0)
+    pundit (2.4.0)
+      activesupport (>= 3.0.0)
     raabro (1.4.0)
     racc (1.8.1)
     rack (3.1.8)
@@ -398,6 +400,7 @@ DEPENDENCIES
   pg_search
   propshaft
   puma (>= 5.0)
+  pundit
   rails (~> 8.0.1)
   rubocop-rails-omakase
   solid_cable
