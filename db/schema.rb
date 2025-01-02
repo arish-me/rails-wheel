@@ -73,6 +73,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_30_160649) do
   create_table "role_permissions", force: :cascade do |t|
     t.bigint "role_id", null: false
     t.bigint "permission_id", null: false
+    t.integer "action", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["permission_id"], name: "index_role_permissions_on_permission_id"

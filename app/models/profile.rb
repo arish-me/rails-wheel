@@ -21,9 +21,6 @@ class Profile < ApplicationRecord
     [ first_name, last_name ].compact.join(" ").presence || email
   end
 
-  def initial
-    (display_name&.first || email.first).upcase
-  end
 
   def gender_display
     GENDER_DISPLAY[gender.to_sym]

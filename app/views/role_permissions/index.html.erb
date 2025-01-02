@@ -1,26 +1,22 @@
 <% content_for :user_management_tab do %>
   <%= render 'layouts/user_management_tab' %>
 <% end %>
-<%= render partial: "shared/common/container", locals: {
-      destroy_path: bulk_destroy_role_permissions_path,
-      resource_path: role_permissions_path,
-      resource_id: 'permission-search',
-      search_placeholder: 'Search permissions by name',
-      title: 'Role permissions',
-      resource: @role_permissions,
-      new_resource_path: new_role_permission_path,
-      columns: [
-                  { header: "Name", attribute: :name },
-                  { header: "Created At", attribute: :created_at },
-                  { header: "Updated At", attribute: :updated_at }
-                ],
-      actions: [
-                  {
-                    url: ->(record) { edit_role_permission_path(record) },
-                    icon: "square-pen",
-                    turbo_frame: :modal
-                  }
-                ]
-    }
-  %>
+
+<div class="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-1">
+  <% @roles.each do |role| %>
+    <div class="card shadow rounded-md p-4 border border-gray-200 bg-white">
+      <h2 class="text-lg font-semibold mb-2"><%= role.name %></h2>
+      <p class="text-sm text-gray-500">Role ID: <%= role.id %></p>
+
+      <div class="mt-4">
+        <%= link_to edit_role_permission_path(role),
+            data: { turbo_frame: :modal },
+            class: "dark:text-white hover:underline" do %>
+            Manage Permissions
+        <% end %>
+
+      </div>
+    </div>
+  <% end %>
+</div>
 

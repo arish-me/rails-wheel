@@ -19,4 +19,8 @@ class User < ApplicationRecord
          .where('permissions.name = ? AND permissions.resource = ?', action, resource)
          .exists?
   end
+
+  def initial
+    (profile&.display_name&.first || email.first).upcase
+  end
 end
