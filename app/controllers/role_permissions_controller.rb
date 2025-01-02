@@ -3,7 +3,11 @@ class RolePermissionsController < ApplicationController
 
   # GET /role_permissions or /role_permissions.json
   def index
-    @role_permissions = RolePermission.all
+    if params[:query].present?
+      @pagy, @role_permissions = pagy(RolePermission.search_by_name(params[:query]), limit: params[:per_page] || "10")
+    else
+      @pagy, @role_permissions = pagy(RolePermission.all, limit: params[:per_page] || "10")
+    end
   end
 
   # GET /role_permissions/1 or /role_permissions/1.json
@@ -25,6 +29,8 @@ class RolePermissionsController < ApplicationController
 
     respond_to do |format|
       if @role_permission.save
+        flash[:notice] =  "Role permission was successfully created."
+        format.turbo_stream { render turbo_stream: turbo_stream.refresh(request_id: nil) }
         format.html { redirect_to @role_permission, notice: "Role permission was successfully created." }
         format.json { render :show, status: :created, location: @role_permission }
       else
@@ -38,6 +44,8 @@ class RolePermissionsController < ApplicationController
   def update
     respond_to do |format|
       if @role_permission.update(role_permission_params)
+        flash[:notice] =  "Role permission was successfully created."
+        format.turbo_stream { render turbo_stream: turbo_stream.refresh(request_id: nil) }
         format.html { redirect_to @role_permission, notice: "Role permission was successfully updated." }
         format.json { render :show, status: :ok, location: @role_permission }
       else
@@ -57,7 +65,25 @@ class RolePermissionsController < ApplicationController
     end
   end
 
+  def bulk_destroy
+    resource_ids = bulk_delete_params[:resource_ids] # Extract entry_ids from params
+    respond_to do |format|
+      if resource_ids.present?
+        # Destroy roles matching the provided entry_ids
+        Permission.where(id: resource_ids).destroy_all
+        format.html { redirect_to roles_path, notice: "Permission was successfully destroyed." }
+        format.turbo_stream { render turbo_stream: turbo_stream.refresh(request_id: nil) }
+      else
+        format.html { render :new, status: :unprocessable_entity }
+      end
+    end
+  end
+
   private
+
+    def bulk_delete_params
+      params.require(:bulk_delete).permit(resource_ids: [])
+    end
     # Use callbacks to share common setup or constraints between actions.
     def set_role_permission
       @role_permission = RolePermission.find(params.expect(:id))

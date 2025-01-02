@@ -7,9 +7,15 @@ Rails.application.routes.draw do
   devise_for :users
   get "dashboard", to: "dashboard#index"
   get "settings", to: "settings#index"
-  resources :categories
-  resources :role_permissions
+
   resources :user_roles
+
+
+  resources :role_permissions do
+    collection do
+      post :bulk_destroy
+    end
+  end
 
   resources :permissions do
     collection do
@@ -23,6 +29,11 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :categories do
+    collection do
+      post :bulk_destroy
+    end
+  end
 
   get "up" => "rails/health#show", as: :rails_health_check
   root "pages#index"

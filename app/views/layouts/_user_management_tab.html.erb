@@ -21,5 +21,16 @@
                         "aria-controls": "settings",
                         "aria-selected": current_page?(permissions_path) %>
     </li>
+
+    <li class="me-2" role="presentation">
+      <%= link_to "Manage Permissions",
+                        role_permissions_path,
+                        class: "inline-block p-4 border-b-2 rounded-t-lg #{current_page?(role_permissions_path) ? 'text-purple-600 border-purple-600 dark:text-white dark:border-gray-600' : 'hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300'}",
+                        id: "permission-tab",
+                        data: { tabs_target: "#role-permission-content" },
+                        role: "tab",
+                        "aria-controls": "settings",
+                        "aria-selected": current_page?(role_permissions_path) %>
+    </li>
   </ul>
 </div>
