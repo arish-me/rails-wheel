@@ -1,7 +1,7 @@
 module Settings
   class ProfilesController < ApplicationController
     before_action :set_or_initialize_profile, only: [:edit, :update]
-
+    before_action :authenticate_user!
     # GET /profiles/1/edit
     def edit
       # The `@profile` will either be an existing profile or a new instance

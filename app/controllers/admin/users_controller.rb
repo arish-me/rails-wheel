@@ -1,5 +1,6 @@
 class Admin::UsersController < ApplicationController
    before_action :set_user, only: %i[ show edit update destroy ]
+   before_action :authorize_resource, only: %i[show edit update destroy]
 
   def index
     if params[:query].present?
@@ -7,6 +8,7 @@ class Admin::UsersController < ApplicationController
     else
       @pagy, @users = pagy(User.all, limit: params[:per_page] || "10")
     end
+    authorize @users
   end
 
 
@@ -78,9 +80,17 @@ class Admin::UsersController < ApplicationController
     end
   end
 
+  def impersonate
+    authorize current_user
 
-  def update_roles(user)
-    user.roles = Role.where(id: params[:user][:role_ids].reject(&:blank?))
+    user = User.find(params[:id])
+    impersonate_user(user)
+    redirect_to root_path
+  end
+
+  def stop_impersonating
+    stop_impersonating_user
+    redirect_to root_path
   end
 
   private
@@ -91,6 +101,14 @@ class Admin::UsersController < ApplicationController
 
     def bulk_delete_params
       params.require(:bulk_delete).permit(resource_ids: [])
+    end
+
+    def authorize_resource
+      authorize @user
+    end
+
+    def update_roles(user)
+      user.roles = Role.where(id: params[:user][:role_ids].reject(&:blank?))
     end
 
     def lock_user

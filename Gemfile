@@ -5,6 +5,7 @@ gem "propshaft"
 gem "pg", "~> 1.1"
 gem "puma", ">= 5.0"
 gem "importmap-rails"
+gem "pretender"
 gem "turbo-rails"
 gem "stimulus-rails"
 gem "jbuilder"
@@ -20,6 +21,7 @@ gem "thruster", require: false
 gem "lucide-rails"
 gem "pagy"
 gem 'pg_search'
+gem 'pundit'
 gem "tailwindcss-rails", "~> 3.1"
 
 group :development, :test do

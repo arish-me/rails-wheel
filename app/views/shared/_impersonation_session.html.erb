@@ -1,0 +1,17 @@
+<div id="impersonation-alert" class="p-4 mb-4 text-red-800 border border-red-300 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 dark:border-red-800" role="alert">
+  <div class="flex items-center">
+    <%= lucide_icon "alert-triangle", class: "flex-shrink-0 w-5 h-5 me-2 text-red-800 dark:text-red-400" %>
+    <h3 class="text-lg font-medium">
+      Impersonation Active
+    </h3>
+  </div>
+  <div class="mt-2 mb-4 text-sm">
+    You (<strong><%= true_user.email %></strong>) are impersonating <strong><%= current_user.email %></strong>.
+    Perform actions as this user or stop impersonation.
+  </div>
+  <div class="flex">
+    <%= button_to "Stop Impersonation", stop_impersonating_admin_users_path,
+                  method: :post,
+                  class: "text-red-800 bg-transparent border border-red-800 hover:bg-red-900 hover:text-white focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-xs px-3 py-1.5 text-center dark:hover:bg-red-600 dark:border-red-600 dark:text-red-500 dark:hover:text-white dark:focus:ring-red-800" %>
+  </div>
+</div>

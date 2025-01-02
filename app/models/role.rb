@@ -3,6 +3,8 @@
 class Role < ApplicationRecord
   default_scope { order(id: :desc) }
 
+  scope :fetch_default_role, -> { find_by(is_default: true) }
+
   pg_search_scope :search_by_name,
                 against: :name,
                 using: {
@@ -19,7 +21,9 @@ class Role < ApplicationRecord
 
   scope :excluding_super_admin, -> { where.not(name: 'SuperAdmin') }
 
-  # def self.search_by_name(query)
-  #   query.present? ? super(query) : all
-  # end
+  before_save :ensure_single_default, if: -> { is_default_changed? && is_default }
+
+  def ensure_single_default
+    Role.where.not(id: id).update_all(is_default: false)
+  end
 end

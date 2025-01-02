@@ -1,6 +1,7 @@
 class CategoriesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_category, only: %i[ show edit update destroy ]
+  before_action :authorize_resource, only: %i[show edit update destroy]
 
   # GET /categories or /categories.json
   def index
@@ -9,6 +10,7 @@ class CategoriesController < ApplicationController
     else
       @pagy, @categories = pagy(current_user.categories, limit: params[:per_page] || "10")
     end
+    authorize @categories
   end
 
   # GET /categories/1 or /categories/1.json
@@ -88,6 +90,10 @@ class CategoriesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_category
       @category = Category.find(params.expect(:id))
+    end
+
+    def authorize_resource
+      authorize @category
     end
 
     # Only allow a list of trusted parameters through.

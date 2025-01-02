@@ -8,7 +8,10 @@ class User < ApplicationRecord
   has_many :roles, through: :user_roles
   has_many :categories, dependent: :destroy
 
+  after_create :assign_default_role
+
   attr_accessor :skip_password_validation
+
   accepts_nested_attributes_for :profile, update_only: true
   accepts_nested_attributes_for :user_roles, allow_destroy: true
 
@@ -20,6 +23,11 @@ class User < ApplicationRecord
 
   def lock_access!
     update_columns(locked_at: Time.current, failed_attempts: 0)
+  end
+
+  def assign_default_role
+    default_role = Role.fetch_default_role
+    UserRole.create!(user: self, role: default_role) if default_role
   end
 
   def has_role?(role_name)

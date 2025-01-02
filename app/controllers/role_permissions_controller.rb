@@ -1,5 +1,7 @@
 class RolePermissionsController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_role_permission, only: %i[ show update destroy ]
+  #before_action :authorize_resource, only: %i[show edit update destroy]
 
   # GET /role_permissions or /role_permissions.json
   def index
@@ -9,6 +11,7 @@ class RolePermissionsController < ApplicationController
       @roles = Role.all
       @pagy, @role_permissions = pagy(RolePermission.all, limit: params[:per_page] || "10")
     end
+    authorize @role_permissions
   end
 
   # GET /role_permissions/1 or /role_permissions/1.json
@@ -25,6 +28,8 @@ class RolePermissionsController < ApplicationController
     @role = Role.find(params[:id])
     @permissions = Permission.all
     @role_permission = RolePermission.new
+
+    authorize @role_permission
   end
 
   def create
@@ -56,44 +61,6 @@ class RolePermissionsController < ApplicationController
       end
     end
   end
-
-  # # POST /role_permissions or /role_permissions.json
-  # def create
-  #   debugger
-  #   @role_permission = RolePermission.new(role_permission_params)
-
-  #   respond_to do |format|
-  #     if @role_permission.save
-  #       flash[:notice] =  "Role permission was successfully created."
-  #       format.turbo_stream { render turbo_stream: turbo_stream.refresh(request_id: nil) }
-  #       format.html { redirect_to @role_permission, notice: "Role permission was successfully created." }
-  #       format.json { render :show, status: :created, location: @role_permission }
-  #     else
-  #       format.html { render :new, status: :unprocessable_entity }
-  #       format.json { render json: @role_permission.errors, status: :unprocessable_entity }
-  #     end
-  #   end
-  # end
-
-  # def create
-  #   role_id = params[:role_id]
-  #   permissions = params[:permissions] || {}
-
-  #   ActiveRecord::Base.transaction do
-  #     permissions.each do |permission_id, action|
-  #       next if action.blank?
-
-  #       role_permission = RolePermission.find_or_initialize_by(role_id: role_id, permission_id: permission_id)
-  #       role_permission.action = action
-  #       role_permission.save!
-  #     end
-  #   end
-
-  #   redirect_to roles_path, notice: "Permissions updated successfully."
-  # rescue StandardError => e
-  #   flash[:alert] = "Failed to update permissions: #{e.message}"
-  #   redirect_back fallback_location: roles_path
-  # end
 
   # PATCH/PUT /role_permissions/1 or /role_permissions/1.json
   def update
@@ -142,6 +109,10 @@ class RolePermissionsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_role_permission
       @role_permission = RolePermission.find(params.expect(:id))
+    end
+
+    def authorize_resource
+      authorize @role_permission
     end
 
     # Only allow a list of trusted parameters through.

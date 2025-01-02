@@ -11,6 +11,11 @@ module ApplicationHelper
     safe_join(notifications)
   end
 
+  def impersonating?
+    current_user != true_user
+  end
+
+
   def modal(options = {}, &block)
     content = capture &block
     render partial: "shared/modal", locals: { content:, classes: options[:classes] }
@@ -34,5 +39,9 @@ module ApplicationHelper
         "#{uri.path}?#{URI.encode_www_form(params)}"
       end
     end
+  end
+
+  def can?(action, resource)
+    policy(resource).public_send("#{action}?")
   end
 end

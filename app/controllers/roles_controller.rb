@@ -1,6 +1,7 @@
 class RolesController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_role, only: %i[ show edit update destroy ]
-
+  before_action :authorize_resource, only: %i[show edit update destroy]
   # GET /roles or /roles.json
   def index
     if params[:query].present?
@@ -8,6 +9,7 @@ class RolesController < ApplicationController
     else
       @pagy, @roles = pagy(Role.all, limit: params[:per_page] || "10")
     end
+    authorize @roles
   end
 
   # GET /roles/1 or /roles/1.json
@@ -84,12 +86,16 @@ class RolesController < ApplicationController
       @role = Role.find(params.expect(:id))
     end
 
+    def authorize_resource
+      authorize @role
+    end
+
     def bulk_delete_params
       params.require(:bulk_delete).permit(resource_ids: [])
     end
 
     # Only allow a list of trusted parameters through.
     def role_params
-      params.expect(role: [ :name ])
+      params.expect(role: [ :name, :is_default ])
     end
 end

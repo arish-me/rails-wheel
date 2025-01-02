@@ -1,6 +1,7 @@
 class PermissionsController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_permission, only: %i[ show edit update destroy ]
-
+  before_action :authorize_resource, only: %i[show edit update destroy]
   # GET /permissions or /permissions.json
   def index
     if params[:query].present?
@@ -8,6 +9,7 @@ class PermissionsController < ApplicationController
     else
       @pagy, @permissions = pagy(Permission.all, limit: params[:per_page] || "10")
     end
+    authorize @permissions
   end
 
   # GET /permissions/1 or /permissions/1.json
@@ -31,6 +33,7 @@ class PermissionsController < ApplicationController
       if @permission.save
         flash[:notice] =  "Permission was successfully created."
         format.turbo_stream { render turbo_stream: turbo_stream.refresh(request_id: nil) }
+        format.html { redirect_to @permission, notice: "Permission was successfully created." }
         format.json { render :show, status: :created, location: @permission }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -57,6 +60,8 @@ class PermissionsController < ApplicationController
   def update
     respond_to do |format|
       if @permission.update(permission_params)
+        flash[:notice] =  "Permission was successfully updated."
+        format.turbo_stream { render turbo_stream: turbo_stream.refresh(request_id: nil) }
         format.html { redirect_to @permission, notice: "Permission was successfully updated." }
         format.json { render :show, status: :ok, location: @permission }
       else
@@ -83,6 +88,10 @@ class PermissionsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_permission
       @permission = Permission.find(params.expect(:id))
+    end
+
+    def authorize_resource
+      authorize @permission
     end
 
     # Only allow a list of trusted parameters through.
