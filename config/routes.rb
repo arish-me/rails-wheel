@@ -10,7 +10,6 @@ Rails.application.routes.draw do
 
   resources :user_roles
 
-
   resources :role_permissions do
     collection do
       post :bulk_destroy
@@ -32,6 +31,14 @@ Rails.application.routes.draw do
   resources :categories do
     collection do
       post :bulk_destroy
+    end
+  end
+
+  namespace :admin do
+    resources :users do
+      collection do
+        post :bulk_destroy
+      end
     end
   end
 

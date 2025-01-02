@@ -6,8 +6,9 @@ class User < ApplicationRecord
   has_one :profile, dependent: :destroy
   has_many :user_roles, dependent: :destroy
   has_many :roles, through: :user_roles
-
   has_many :categories, dependent: :destroy
+
+  attr_accessor :skip_password_validation
 
   def has_role?(role_name)
     roles.exists?(name: role_name)
@@ -22,5 +23,12 @@ class User < ApplicationRecord
 
   def initial
     (profile&.display_name&.first || email.first).upcase
+  end
+
+  protected
+
+  def password_required?
+    return false if skip_password_validation
+    super
   end
 end

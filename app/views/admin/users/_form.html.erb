@@ -1,0 +1,11 @@
+<%= styled_form_with model: @user, url: @user.new_record? ? admin_users_path : admin_user_path(@user), method: @user.new_record? ? :post : :patch, class: "space-y-4" do |f| %>
+  <% if user.errors.any? %>
+    <%= render "shared/form_errors" , model: user %>
+  <% end %>
+  <section class="space-y-2 overflow-hidden">
+    <%= f.text_field :email, label: 'Email' , placeholder: 'Enter Email' %>
+  </section>
+  <section>
+    <%= f.submit 'Submit' %>
+  </section>
+<% end %>
