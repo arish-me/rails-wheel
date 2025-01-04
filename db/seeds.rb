@@ -12,6 +12,9 @@ roles.each do |role_name|
 end
 puts "Roles created: #{roles.join(', ')}"
 
+account = Account.create(name: 'Rails Wheel', subdomain: 'wheel')
+account2 = Account.create(name: 'Galaxy', subdomain: 'galaxy')
+
 # Ensure only one role is marked as default
 Role.where.not(name: default_role_name).update_all(is_default: false)
 puts "Default role set to: #{default_role_name}"
@@ -73,6 +76,7 @@ users.each do |user_data|
   user = User.find_or_create_by!(email: user_data[:email]) do |u|
     u.password = "#{user_data[:email]}"
     u.password_confirmation = "#{user_data[:email]}"
+    u.account_id = account.id
   end
 
   role = Role.find_by(name: user_data[:role])

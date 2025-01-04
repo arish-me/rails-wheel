@@ -4,7 +4,9 @@ Rails.application.routes.draw do
     get 'account', to: 'settings#edit_account', as: 'edit_account'
   end
 
-  devise_for :users
+  devise_for :users, controllers: {
+    sessions: 'users/sessions',        # Custom sessions controller
+  }
   get "dashboard", to: "dashboard#index"
   get "settings", to: "settings#index"
 
