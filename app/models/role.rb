@@ -26,4 +26,8 @@ class Role < ApplicationRecord
   def ensure_single_default
     Role.where.not(id: id).update_all(is_default: false)
   end
+
+  def service_user?
+    find_by_name('Service')
+  end
 end

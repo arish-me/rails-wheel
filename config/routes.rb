@@ -36,6 +36,14 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :accounts do
+    post :impersonate, to: 'impersonations#create'
+    delete :stop_impersonating, to: 'impersonations#destroy'
+    collection do
+      post :bulk_destroy
+    end
+  end
+
   namespace :admin do
     resources :users do
       member do
