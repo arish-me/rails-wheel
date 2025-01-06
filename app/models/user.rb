@@ -30,7 +30,7 @@ class User < ApplicationRecord
 
   def assign_default_role
     default_role = Role.fetch_default_role
-    UserRole.create!(user: self, role: default_role) if default_role
+    UserRole.create!(user: self, role: default_role, account_id: account_id) if default_role
   end
 
   def has_role?(role_name)

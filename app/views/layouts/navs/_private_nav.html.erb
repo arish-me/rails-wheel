@@ -18,7 +18,7 @@
             <div>
               <button type="button" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" aria-expanded="false" data-dropdown-toggle="dropdown-user">
                 <span class="sr-only">Open user menu</span>
-                <%= render "settings/user_avatar", profile: current_user.profile %>
+                <%= render "settings/user_avatar", nav: true, profile: current_user.profile %>
               </button>
             </div>
             <%= render partial: 'layouts/navs/theme_selector' %>
@@ -83,6 +83,9 @@
            </li>
          <% end %>
 
+
+
+         <ul class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700">
          <% if can?(:index, Account) %>
            <li>
               <%= link_to accounts_path, class: "flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group" do %>

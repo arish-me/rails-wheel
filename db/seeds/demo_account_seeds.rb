@@ -4,10 +4,9 @@ ActsAsTenant.current_tenant = account
 
 puts "Creating Roles..."
 roles = %w[SuperAdmin Admin User Recruiter Guest]
-default_role_name = 'User' # Specify which role should be the default
+default_role_name = 'User'
 roles.each do |role_name|
-  role = Role.find_or_create_by!(name: role_name)
-  # role.id = account.id
+  role = Role.find_or_create_by!(name: role_name, account_id: account.id)
   if role_name == default_role_name
     role.update!(is_default: true)
   end
@@ -29,7 +28,7 @@ permissions = [
 ]
 
 permissions.each do |perm|
-  Permission.find_or_create_by!(name: perm[:name], resource: perm[:resource])
+  Permission.find_or_create_by!(name: perm[:name], resource: perm[:resource], account_id: account.id)
 end
 puts "Permissions created: #{permissions.map { |p| p[:name] }.join(', ')}"
 
@@ -38,10 +37,11 @@ puts "Assigning All Permissions to Admin Role..."
 admin_role = Role.find_by(name: 'Admin')
 
 permissions.each do |perm|
-  permission = Permission.find_by(name: perm[:name], resource: perm[:resource])
+  permission = Permission.find_by(name: perm[:name], resource: perm[:resource], account_id: account.id)
   RolePermission.find_or_create_by!(
     role: admin_role,
     permission: permission,
+    account_id: account.id,
     action: RolePermission.actions[:edit]
   )
 end
@@ -55,6 +55,7 @@ permissions.each do |perm|
   RolePermission.find_or_create_by!(
     role: role,
     permission: permission,
+    account_id: account.id,
     action: RolePermission.actions[:edit]
   )
 end
@@ -76,8 +77,11 @@ users.each do |user_data|
     u.account_id = account.id
   end
 
+
   role = Role.find_by(name: user_data[:role])
-  UserRole.find_or_create_by!(user: user, role: role)
+  puts "Creating User Roles..."
+
+  UserRole.find_or_create_by!(user: user, role: role, account_id: account.id)
 
   profile = user.profile || user.build_profile
   profile.assign_attributes(

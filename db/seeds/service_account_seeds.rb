@@ -11,7 +11,7 @@ roles = %w[Service User]
 default_role_name = 'User'
 
 roles.each do |role_name|
-  role = Role.find_or_create_by!(name: role_name)
+  role = Role.find_or_create_by!(name: role_name, account_id: account.id)
   # Set the default role
   if role_name == default_role_name
     role.update!(is_default: true)
@@ -31,7 +31,7 @@ users.each do |user_data|
   end
 
   role = Role.find_by(name: user_data[:role])
-  UserRole.find_or_create_by!(user: user, role: role)
+  UserRole.find_or_create_by!(user: user, role: role, account: account)
 
   profile = user.profile || user.build_profile
   profile.assign_attributes(

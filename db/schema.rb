@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_03_055816) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_05_172529) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -56,6 +56,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_03_055816) do
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "account_id", null: false
+    t.index ["account_id"], name: "index_categories_on_account_id"
     t.index ["user_id"], name: "index_categories_on_user_id"
   end
 
@@ -64,6 +66,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_03_055816) do
     t.string "resource"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "account_id", null: false
+    t.index ["account_id"], name: "index_permissions_on_account_id"
   end
 
   create_table "profiles", force: :cascade do |t|
@@ -84,6 +88,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_03_055816) do
     t.integer "action", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "account_id", null: false
+    t.index ["account_id"], name: "index_role_permissions_on_account_id"
     t.index ["permission_id"], name: "index_role_permissions_on_permission_id"
     t.index ["role_id"], name: "index_role_permissions_on_role_id"
   end
@@ -93,6 +99,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_03_055816) do
     t.boolean "is_default", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "account_id", null: false
+    t.index ["account_id"], name: "index_roles_on_account_id"
   end
 
   create_table "user_roles", force: :cascade do |t|
@@ -100,6 +108,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_03_055816) do
     t.bigint "role_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "account_id", null: false
+    t.index ["account_id"], name: "index_user_roles_on_account_id"
     t.index ["role_id"], name: "index_user_roles_on_role_id"
     t.index ["user_id"], name: "index_user_roles_on_user_id"
   end
@@ -115,7 +125,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_03_055816) do
     t.datetime "locked_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "account_id"
+    t.bigint "account_id", null: false
     t.index ["account_id"], name: "index_users_on_account_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -123,10 +133,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_03_055816) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "categories", "accounts"
   add_foreign_key "categories", "users"
+  add_foreign_key "permissions", "accounts"
   add_foreign_key "profiles", "users"
+  add_foreign_key "role_permissions", "accounts"
   add_foreign_key "role_permissions", "permissions"
   add_foreign_key "role_permissions", "roles"
+  add_foreign_key "roles", "accounts"
+  add_foreign_key "user_roles", "accounts"
   add_foreign_key "user_roles", "roles"
   add_foreign_key "user_roles", "users"
+  add_foreign_key "users", "accounts"
 end

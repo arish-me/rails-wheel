@@ -5,5 +5,4 @@ class Account < ApplicationRecord
                 using: {
                   tsearch: { prefix: true } # Enables partial matches (e.g., "Admin" matches "Administrator")
                 }
-
 end

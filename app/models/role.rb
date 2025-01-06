@@ -2,7 +2,7 @@
 
 class Role < ApplicationRecord
   default_scope { order(id: :desc) }
-
+  acts_as_tenant(:account)
   scope :fetch_default_role, -> { find_by(is_default: true) }
 
   pg_search_scope :search_by_name,
@@ -11,8 +11,9 @@ class Role < ApplicationRecord
                   tsearch: { prefix: true } # Enables partial matches (e.g., "Admin" matches "Administrator")
                 }
 
-  validates :name, presence: true, uniqueness: { case_sensitive: false }
+  validates :name, presence: true, uniqueness: { scope: :account_id, case_sensitive: false }
 
+  belongs_to :account
   has_many :user_roles, dependent: :destroy
   has_many :users, through: :user_roles
 

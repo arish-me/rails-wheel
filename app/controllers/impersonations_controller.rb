@@ -10,7 +10,7 @@ class ImpersonationsController < ApplicationController
     ActsAsTenant.current_tenant = account
 
     # Redirect to the subdomain
-    redirect_to root_url(subdomain: account.subdomain), notice: "Now impersonating: #{account.name}", allow_other_host: true
+    redirect_to root_url, notice: "Now impersonating: #{account.name}"
   end
 
   def destroy
@@ -18,7 +18,7 @@ class ImpersonationsController < ApplicationController
     ActsAsTenant.current_tenant = nil
 
     # Redirect back to the original subdomain
-    redirect_to root_url(subdomain: 'service'), notice: 'Stopped impersonating.', allow_other_host: true
+    redirect_to root_url(subdomain: 'services'), notice: 'Stopped impersonating.'
   end
 
   private
