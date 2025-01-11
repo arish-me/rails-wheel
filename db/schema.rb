@@ -10,9 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_12_30_160649) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_06_145813) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "accounts", force: :cascade do |t|
+    t.string "name"
+    t.string "subdomain"
+    t.string "contact_email"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -48,7 +56,19 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_30_160649) do
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "account_id", null: false
+    t.index ["account_id"], name: "index_categories_on_account_id"
     t.index ["user_id"], name: "index_categories_on_user_id"
+  end
+
+  create_table "pages", force: :cascade do |t|
+    t.string "title"
+    t.string "slug"
+    t.text "content"
+    t.bigint "site_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["site_id"], name: "index_pages_on_site_id"
   end
 
   create_table "permissions", force: :cascade do |t|
@@ -56,6 +76,8 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_30_160649) do
     t.string "resource"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "account_id", null: false
+    t.index ["account_id"], name: "index_permissions_on_account_id"
   end
 
   create_table "profiles", force: :cascade do |t|
@@ -76,6 +98,8 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_30_160649) do
     t.integer "action", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "account_id", null: false
+    t.index ["account_id"], name: "index_role_permissions_on_account_id"
     t.index ["permission_id"], name: "index_role_permissions_on_permission_id"
     t.index ["role_id"], name: "index_role_permissions_on_role_id"
   end
@@ -85,6 +109,26 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_30_160649) do
     t.boolean "is_default", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "account_id", null: false
+    t.index ["account_id"], name: "index_roles_on_account_id"
+  end
+
+  create_table "sites", force: :cascade do |t|
+    t.string "name"
+    t.string "subdomain"
+    t.bigint "account_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_sites_on_account_id"
+  end
+
+  create_table "themes", force: :cascade do |t|
+    t.string "name"
+    t.json "settings"
+    t.bigint "site_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["site_id"], name: "index_themes_on_site_id"
   end
 
   create_table "user_roles", force: :cascade do |t|
@@ -92,6 +136,8 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_30_160649) do
     t.bigint "role_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "account_id", null: false
+    t.index ["account_id"], name: "index_user_roles_on_account_id"
     t.index ["role_id"], name: "index_user_roles_on_role_id"
     t.index ["user_id"], name: "index_user_roles_on_user_id"
   end
@@ -107,16 +153,27 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_30_160649) do
     t.datetime "locked_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "account_id", null: false
+    t.index ["account_id"], name: "index_users_on_account_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "categories", "accounts"
   add_foreign_key "categories", "users"
+  add_foreign_key "pages", "sites"
+  add_foreign_key "permissions", "accounts"
   add_foreign_key "profiles", "users"
+  add_foreign_key "role_permissions", "accounts"
   add_foreign_key "role_permissions", "permissions"
   add_foreign_key "role_permissions", "roles"
+  add_foreign_key "roles", "accounts"
+  add_foreign_key "sites", "accounts"
+  add_foreign_key "themes", "sites"
+  add_foreign_key "user_roles", "accounts"
   add_foreign_key "user_roles", "roles"
   add_foreign_key "user_roles", "users"
+  add_foreign_key "users", "accounts"
 end

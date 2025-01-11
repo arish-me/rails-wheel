@@ -1,0 +1,13 @@
+<%= styled_form_with model: account, class: "space-y-4" do |f| %>
+  <% if account.errors.any? %>
+    <%= render "shared/form_errors" , model: account %>
+  <% end %>
+  <section class="space-y-2 overflow-hidden">
+    <%= f.text_field :name, label: 'Name' , placeholder: 'Enter Name' %>
+    <%= f.text_field :subdomain, label: 'SubDomain' , placeholder: 'Enter Subdomain' %>
+  </section>
+  <section>
+    <%= f.submit 'Submit' %>
+  </section>
+<% end %>
+

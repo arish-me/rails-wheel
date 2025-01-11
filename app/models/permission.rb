@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Permission < ApplicationRecord
+  acts_as_tenant(:account)
   default_scope { order(id: :desc) }
   pg_search_scope :search_by_name,
                 against: :name,

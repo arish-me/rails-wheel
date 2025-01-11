@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= @site.name %></title>
+    <style>
+      body {
+        background: url('<%= @site.themes.last&.settings&.dig("background_image") || "default_background.jpg" %>');
+        color: <%= @site.themes.last&.settings&.dig("color") || "#000000" %>;
+      }
+    </style>
+  </head>
+  <body>
+    <%= yield %>
+  </body>
+</html>

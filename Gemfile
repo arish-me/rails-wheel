@@ -1,5 +1,6 @@
 source "https://rubygems.org"
 
+gem "acts_as_tenant"
 gem "rails", "~> 8.0.1"
 gem "propshaft"
 gem "pg", "~> 1.1"

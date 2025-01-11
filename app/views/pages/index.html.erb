@@ -1,1 +1,25 @@
+<div class="w-full">
+  <% if notice.present? %>
+    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
+  <% end %>
 
+  <% content_for :title, "Pages" %>
+
+  <div class="flex justify-between items-center">
+    <h1 class="font-bold text-4xl">Pages</h1>
+    <%= link_to "New page", new_site_page_path(@site), class: "rounded-lg py-3 px-5 bg-blue-600 text-white block font-medium" %>
+  </div>
+
+<div id="pages" class="min-w-full">
+  <% @pages.each do |page| %>
+    <div class="py-2">
+      <%= link_to page.title, site_page_path(@site, page), class: "rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
+      <p>
+        <%= link_to "Edit", edit_site_page_path(@site, page), class: "ml-2 rounded-lg py-3 px-5 bg-blue-100 inline-block font-medium" %>
+        <%= link_to "Delete", site_page_path(@site, page), method: :delete, data: { confirm: "Are you sure?" }, class: "ml-2 rounded-lg py-3 px-5 bg-red-100 inline-block font-medium text-red-500" %>
+      </p>
+    </div>
+  <% end %>
+</div>
+
+</div>

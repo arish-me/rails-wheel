@@ -21,6 +21,8 @@ class ApplicationPolicy
   def has_permission?(action)
     return false unless user
 
+    return true if service_account?
+
     resource_name = resolve_resource_name
 
     user.roles.joins(role_permissions: :permission).exists?(
@@ -31,6 +33,10 @@ class ApplicationPolicy
         resource: resource_name
       }
     )
+  end
+
+  def service_account?
+    @user.account.subdomain == 'services'
   end
 
   def resolve_resource_name
