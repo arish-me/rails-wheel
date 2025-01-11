@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_05_172529) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_06_145813) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -61,6 +61,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_05_172529) do
     t.index ["user_id"], name: "index_categories_on_user_id"
   end
 
+  create_table "pages", force: :cascade do |t|
+    t.string "title"
+    t.string "slug"
+    t.text "content"
+    t.bigint "site_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["site_id"], name: "index_pages_on_site_id"
+  end
+
   create_table "permissions", force: :cascade do |t|
     t.string "name"
     t.string "resource"
@@ -103,6 +113,24 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_05_172529) do
     t.index ["account_id"], name: "index_roles_on_account_id"
   end
 
+  create_table "sites", force: :cascade do |t|
+    t.string "name"
+    t.string "subdomain"
+    t.bigint "account_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_sites_on_account_id"
+  end
+
+  create_table "themes", force: :cascade do |t|
+    t.string "name"
+    t.json "settings"
+    t.bigint "site_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["site_id"], name: "index_themes_on_site_id"
+  end
+
   create_table "user_roles", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "role_id", null: false
@@ -135,12 +163,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_05_172529) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "categories", "accounts"
   add_foreign_key "categories", "users"
+  add_foreign_key "pages", "sites"
   add_foreign_key "permissions", "accounts"
   add_foreign_key "profiles", "users"
   add_foreign_key "role_permissions", "accounts"
   add_foreign_key "role_permissions", "permissions"
   add_foreign_key "role_permissions", "roles"
   add_foreign_key "roles", "accounts"
+  add_foreign_key "sites", "accounts"
+  add_foreign_key "themes", "sites"
   add_foreign_key "user_roles", "accounts"
   add_foreign_key "user_roles", "roles"
   add_foreign_key "user_roles", "users"

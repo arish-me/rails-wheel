@@ -1,4 +1,10 @@
 Rails.application.routes.draw do
+  resources :themes
+
+  resources :sites do
+    resources :pages
+  end
+
   namespace :settings do
     resource :profile, only: [:edit, :update] # Singular resource for profile
     get 'account', to: 'settings#edit_account', as: 'edit_account'
@@ -11,6 +17,11 @@ Rails.application.routes.draw do
   get "settings", to: "settings#index"
 
   resources :user_roles
+
+  constraints ->(req) { Site.exists?(subdomain: req.subdomain) } do
+    root to: "public_sites#show", as: :public_site
+    get '/:slug', to: 'public_sites#page', as: :dynamic_page
+  end
 
   resources :role_permissions do
     collection do
