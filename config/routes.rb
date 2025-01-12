@@ -4,7 +4,10 @@ Rails.application.routes.draw do
     get 'account', to: 'settings#edit_account', as: 'edit_account'
   end
 
-  devise_for :users
+  devise_for :users, controllers: { omniauth_callbacks: 'users/omniauth_callbacks' }
+  get '/auth/:provider/callback', to: 'sessions#google_auth'
+  get '/auth/failure', to: redirect('/')
+
   get "dashboard", to: "dashboard#index"
   get "settings", to: "settings#index"
 

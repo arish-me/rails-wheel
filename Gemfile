@@ -24,6 +24,8 @@ gem "pagy"
 gem 'pg_search'
 gem 'pundit'
 gem "tailwindcss-rails", "~> 3.1"
+gem 'omniauth-google-oauth2'
+gem 'omniauth-rails_csrf_protection'
 
 group :development, :test do
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
