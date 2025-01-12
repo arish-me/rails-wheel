@@ -1,4 +1,27 @@
-<div>
-  <h1 class="font-bold text-4xl">Dashboard#index</h1>
-  <p>Find me in app/views/dashboard/index.html.erb</p>
+<h1>Dashboard</h1>
+
+<div class="grid grid-cols-2 gap-6">
+  <!-- Total Users -->
+  <div class="bg-white shadow rounded-lg p-6">
+    <h2 class="text-gray-500 text-sm font-medium">Total Users</h2>
+    <p class="text-3xl font-semibold"><%= @total_users %></p>
+  </div>
+
+  <!-- Total Categories -->
+  <div class="bg-white shadow rounded-lg p-6">
+    <h2 class="text-gray-500 text-sm font-medium">Total Categories</h2>
+    <p class="text-3xl font-semibold"><%= @total_categories %></p>
+  </div>
 </div>
+
+<div class="mt-6">
+  <h2 class="text-lg font-medium">Users Over Time</h2>
+  <%= line_chart @users_by_day %>
+</div>
+
+<div class="mt-6">
+  <h2 class="text-lg font-medium">Categories Over Time</h2>
+  <%= line_chart @categories_by_day %>
+</div>
+
+

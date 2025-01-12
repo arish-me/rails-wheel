@@ -1,5 +1,7 @@
 source "https://rubygems.org"
 
+gem "chartkick"
+gem 'groupdate'
 gem "rails", "~> 8.0.1"
 gem "propshaft"
 gem "pg", "~> 1.1"
@@ -27,6 +29,9 @@ gem "tailwindcss-rails", "~> 3.1"
 gem 'omniauth-google-oauth2'
 gem 'omniauth-rails_csrf_protection'
 gem 'omniauth-github'
+
+# Background Jobs
+gem "good_job"
 
 group :development, :test do
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
