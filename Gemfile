@@ -26,12 +26,14 @@ gem 'pundit'
 gem "tailwindcss-rails", "~> 3.1"
 gem 'omniauth-google-oauth2'
 gem 'omniauth-rails_csrf_protection'
+gem 'omniauth-github'
 
 group :development, :test do
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
   gem "brakeman", require: false
   gem "rubocop-rails-omakase", require: false
   gem "htmlbeautifier"
+  gem 'dotenv'
 end
 
 group :development do
