@@ -1,9 +1,9 @@
 <section class="bg-gray-50 dark:bg-gray-900">
   <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-    <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
+    <%= link_to root_path, class: "flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white" do %>
       <img class="w-8 h-8 mr-2" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg" alt="logo">
       Wheel
-    </a>
+    <% end %>
     <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
       <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
         <div class="sm:mx-auto sm:w-full sm:max-w-md">
@@ -58,26 +58,8 @@
               </a>
             </div>
             <% end %>
-           <% if devise_mapping.omniauthable? %>
-            <% resource_class.omniauth_providers.each do |provider| %>
-
-                <div>
-                  <%= button_to omniauth_authorize_path(resource_name, provider), class: "w-full flex items-center justify-center px-8 py-3 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50", data: { turbo: false } do %>
-                    <% if provider == :google_oauth2 %>
-                      <img class="h-6 w-6" src="https://www.svgrepo.com/show/506498/google.svg" alt="">
-                    <% elsif provider == :github %>
-                      <img class="h-6 w-6" src="https://www.svgrepo.com/show/349375/github.svg" alt="">
-                    <% end %>
-                  <% end %>
-                </div>
-
-
-
-            <% end %>
-          <% end %>
+            <%= render "devise/shared/social_links" %>
           </div>
-        </div>
-        <div class="mt-6 text-sm text-center text-gray-600">
           <%= render "devise/shared/links" %>
         </div>
       </div>
