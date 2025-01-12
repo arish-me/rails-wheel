@@ -1,0 +1,98 @@
+<div id="resources"
+     data-controller="bulk-select"
+     data-bulk-select-singular-label-value='resource'
+     data-bulk-select-plural-label-value="resources"
+     class="flex flex-col bg-white dark:bg-gray-800 dark:border-gray-600 rounded-xl border border-alpha-black-25 shadow-xs p-4">
+  <div id="entry-selection-bar" data-bulk-select-target="selectionBar" class="flex justify-center hidden">
+    <%= render partial: "shared/common/selection_bar", locals: { destroy_path: bulk_destroy_technologies_path } %>
+  </div>
+  <div class="space-y-4">
+    <h1 class="text-xl dark:text-white">Technologies</h1>
+    <header class="flex justify-between items-center items-center text-gray-900 font-medium">
+      <div class="flex">
+        <%= render partial: "shared/common/search_bar", locals: { resource_path: technologies_path, resource_id: 'users-search', placeholder: 'Search users by email' } %>
+      </div>
+      <div class="flex">
+        <% if can?(:create, User) %>
+          <%= link_to new_technology_path, class: "rounded-lg btn btn--primary text-white flex items-center gap-1 justify-center px-3 py-2", data: { turbo_frame: :modal } do %>
+            <%= lucide_icon("plus", class: "w-5 h-5") %>
+            <p class="text-sm font-medium">New Technology</p>
+          <% end %>
+        <% end %>
+      </div>
+    </header>
+    <div class="flex flex-col">
+      <div class="shadow-md sm:rounded-lg">
+        <div class="inline-block min-w-full align-middle">
+          <div class="overflow-y-auto max-h-96">
+            <table class="min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-700">
+              <thead class="bg-gray-100 dark:bg-gray-800 sticky top-0 z-10">
+                <tr>
+                  <% if  can?(:create, Technology) %>
+                    <th scope="col" class="p-4">
+                      <div class="flex items-center">
+                        <%= check_box_tag "selection_entry",
+                class: "w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600",
+                data: { action: "bulk-select#togglePageSelection" } %>
+                      </div>
+                    </th>
+                  <% end %>
+                  <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
+                    Name
+                  </th>
+                  <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
+                    Created At
+                  </th>
+                  <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
+                    Updates At
+                  </th>
+                  <th scope="col" class="p-4">
+                    <span class="sr-only">Actions</span>
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
+                <% @technologies.each do |record| %>
+                  <tr class="hover:bg-gray-100 dark:hover:bg-gray-700">
+                    <% if can?(:create, Technology) %>
+                      <td class="p-4 w-4">
+                        <% if can?(:create, Technology) %>
+                          <div class="flex items-center">
+                            <%= check_box_tag dom_id(record, "selection"),
+                    class: "maybe-checkbox maybe-checkbox--light",
+                    data: { id: record.id, "bulk-select-target": "row", action: "bulk-select#toggleRowSelection" } %>
+                          </div>
+                        <% end %>
+                      </td>
+                    <% end %>
+                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                      <%= record.name %>
+                    </td>
+                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                      <%= record.created_at %>
+                    </td>
+                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                      <%= record.updated_at %>
+                    </td>
+                    <% if can?(:create, User) %>
+                      <td class="py-4 px-6 text-sm font-medium text-right whitespace-nowrap flex items-center space-x-4">
+                        <%= link_to edit_technology_path(record),
+                              data: { turbo_frame: :modal },
+                              class: "dark:text-white hover:underline" do %>
+                          <%= lucide_icon('square-pen', class: "w-5 h-5") %>
+                        <% end %>
+                      </td>
+                    <% end %>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+          <div class="p-4">
+            <%= render "shared/pagination", pagy: @pagy %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

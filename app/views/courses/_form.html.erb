@@ -1,0 +1,13 @@
+<%= styled_form_with model: course, class: "space-y-4" do |f| %>
+  <% if course.errors.any? %>
+    <%= render "shared/form_errors" , model: course %>
+  <% end %>
+  <section class="space-y-2 overflow-hidden">
+    <%= f.text_field :name, label: 'Name' , placeholder: 'Enter Name' %>
+    <%= f.text_field :subtitle, label: 'Subtitle' , placeholder: 'Enter Subtitle' %>
+    <%= f.textarea :description, label: 'Description' , placeholder: 'Enter Course Description' %>
+  </section>
+  <section>
+    <%= f.submit 'Submit' %>
+  </section>
+<% end %>

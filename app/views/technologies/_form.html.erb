@@ -1,0 +1,16 @@
+<%= styled_form_with model: technology, class: "space-y-4" do |f| %>
+  <% if technology.errors.any? %>
+    <%= render "shared/form_errors" , model: technology %>
+  <% end %>
+  <section class="space-y-2 overflow-hidden">
+    <%= f.collection_select :course_id, Course.all, :id, :name,
+        { prompt: 'Select a Course' },
+        { required: true } %>
+    <%= f.text_field :name, label: 'Name' , placeholder: 'Enter Name' %>
+    <%= f.text_field :subtitle, label: 'Subtitle' , placeholder: 'Enter Subtitle' %>
+    <%= f.textarea :description, label: 'Description' , placeholder: 'Enter Course Description' %>
+  </section>
+  <section>
+    <%= f.submit 'Submit' %>
+  </section>
+<% end %>

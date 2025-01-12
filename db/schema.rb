@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_12_052713) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_12_055404) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -49,6 +49,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_12_052713) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_categories_on_user_id"
+  end
+
+  create_table "courses", force: :cascade do |t|
+    t.string "name"
+    t.string "subtitle"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "good_job_batches", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -176,6 +184,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_12_052713) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "technologies", force: :cascade do |t|
+    t.string "name"
+    t.string "subtitle"
+    t.text "description"
+    t.bigint "course_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["course_id"], name: "index_technologies_on_course_id"
+  end
+
   create_table "user_roles", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "role_id", null: false
@@ -208,6 +226,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_12_052713) do
   add_foreign_key "profiles", "users"
   add_foreign_key "role_permissions", "permissions"
   add_foreign_key "role_permissions", "roles"
+  add_foreign_key "technologies", "courses"
   add_foreign_key "user_roles", "roles"
   add_foreign_key "user_roles", "users"
 end
