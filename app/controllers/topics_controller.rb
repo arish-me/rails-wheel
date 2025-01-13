@@ -1,15 +1,21 @@
 class TopicsController < ApplicationController
   before_action :set_technology
   before_action :set_topic, only: %i[ show edit update destroy ]
+  before_action :set_selected_topic, only: %i[ show edit update destroy ]
 
   # GET /topics or /topics.json
   def index
     @topics = @technology.topics.all
+    @selected_topic = @topics.first
+    render :layout
   end
 
   # GET /topics/1 or /topics/1.json
   def show
+    @topics = @technology.topics
+    render :layout
   end
+
 
   # GET /topics/new
   def new
@@ -66,6 +72,10 @@ class TopicsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_topic
       @topic = @technology.topics.find(params.expect(:id))
+    end
+
+    def set_selected_topic
+      @selected_topic = @technology.topics.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.
