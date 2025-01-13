@@ -76,6 +76,8 @@
                     </td>
                     <% if can?(:create, User) %>
                       <td class="py-4 px-6 text-sm font-medium text-right whitespace-nowrap flex items-center space-x-4">
+                        <%= link_to "Manage Technologies", technology_topics_path(record),
+                              class: "dark:text-white hover:underline" %>
                         <%= link_to edit_technology_path(record),
                               data: { turbo_frame: :modal },
                               class: "dark:text-white hover:underline" do %>

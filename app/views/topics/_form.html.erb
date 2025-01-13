@@ -1,0 +1,14 @@
+<%= styled_form_with model: [@technology, @topic], class: "space-y-4" do |f| %>
+  <% if @topic.errors.any? %>
+    <%= render "shared/form_errors", model: @topic %>
+  <% end %>
+
+  <section class="space-y-2">
+    <%= f.text_field :heading, label: "Topic Heading", placeholder: "Enter topic heading" %>
+    <%= f.rich_text_area :content, label: "Topic Content", class: "rich-text-editor" %>
+  </section>
+
+  <section>
+    <%= f.submit "Save Topic", class: "btn btn-primary" %>
+  </section>
+<% end %>

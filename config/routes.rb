@@ -3,6 +3,7 @@ Rails.application.routes.draw do
     collection do
       post :bulk_destroy
     end
+    resources :topics
   end
   resources :courses do
     collection do

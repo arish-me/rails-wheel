@@ -1,0 +1,14 @@
+<div id="<%= dom_id topic %>">
+  <p class="my-5">
+    <strong class="block font-medium mb-1">Heading:</strong>
+    <%= topic.heading %>
+  </p>
+
+  <p class="my-5">
+    <strong class="block font-medium mb-1">Technology:</strong>
+    <div>
+    <%= truncate(topic.content.to_plain_text, length: 150) %>
+  </div>
+  </p>
+
+</div>

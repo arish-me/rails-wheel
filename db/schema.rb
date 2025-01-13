@@ -10,9 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_12_055404) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_12_064319) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "action_text_rich_texts", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "body"
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["record_type", "record_id", "name"], name: "index_action_text_rich_texts_uniqueness", unique: true
+  end
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -194,6 +204,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_12_055404) do
     t.index ["course_id"], name: "index_technologies_on_course_id"
   end
 
+  create_table "topics", force: :cascade do |t|
+    t.string "heading"
+    t.bigint "technology_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["technology_id"], name: "index_topics_on_technology_id"
+  end
+
   create_table "user_roles", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "role_id", null: false
@@ -227,6 +245,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_12_055404) do
   add_foreign_key "role_permissions", "permissions"
   add_foreign_key "role_permissions", "roles"
   add_foreign_key "technologies", "courses"
+  add_foreign_key "topics", "technologies"
   add_foreign_key "user_roles", "roles"
   add_foreign_key "user_roles", "users"
 end
