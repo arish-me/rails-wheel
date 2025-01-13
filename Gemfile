@@ -10,6 +10,7 @@ gem "importmap-rails"
 gem "pretender"
 gem "turbo-rails"
 gem "stimulus-rails"
+gem 'friendly_id', '~> 5.5.0'
 gem "jbuilder"
 gem 'devise'
 gem "image_processing", ">= 1.2"
