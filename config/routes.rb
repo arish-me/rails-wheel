@@ -1,13 +1,19 @@
 Rails.application.routes.draw do
+
   resources :technologies do
     collection do
       post :bulk_destroy
     end
-    resources :topics
+    resources :topics do
+
+    end
   end
   resources :courses do
     collection do
       post :bulk_destroy
+    end
+    resources :topics do
+      resources :chapters
     end
   end
   namespace :settings do

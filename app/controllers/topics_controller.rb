@@ -1,25 +1,25 @@
 class TopicsController < ApplicationController
-  before_action :set_technology
+  before_action :set_course
   before_action :set_topic, only: %i[ show edit update destroy ]
   before_action :set_selected_topic, only: %i[ show edit update destroy ]
 
   # GET /topics or /topics.json
   def index
-    @topics = @technology.topics.all
+    @topics = @course.topics.all
     @selected_topic = @topics.first
-    render :layout
+    # render :layout
   end
 
   # GET /topics/1 or /topics/1.json
   def show
-    @topics = @technology.topics
-    render :layout
+    @topics = @course.topics
+    # render :layout
   end
 
 
   # GET /topics/new
   def new
-    @topic = @technology.topics.new
+    @topic = @course.topics.new
   end
 
   # GET /topics/1/edit
@@ -28,11 +28,11 @@ class TopicsController < ApplicationController
 
   # POST /topics or /topics.json
   def create
-    @topic = @technology.topics.new(topic_params)
+    @topic = @course.topics.new(topic_params)
 
     respond_to do |format|
       if @topic.save
-        format.html { redirect_to technology_topic_path(@technology, @topic), notice: "Topic was successfully created." }
+        format.html { redirect_to course_topic_path(@course, @topic), notice: "Topic was successfully created." }
         format.json { render :show, status: :created, location: @topic }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -66,8 +66,8 @@ class TopicsController < ApplicationController
 
   private
 
-    def set_technology
-      @technology = Technology.find(params[:technology_id])
+    def set_course
+      @course = Course.find(params[:course_id])
     end
     # Use callbacks to share common setup or constraints between actions.
     def set_topic

@@ -2,13 +2,13 @@
   <!-- Sidebar for Topics -->
   <div class="w-1/4 bg-gray-100 p-4 overflow-y-auto">
     <h1 class="text-xl font-bold mb-4">Topics for <%= @technology.name %></h1>
-    <%= link_to "New Topic", new_technology_topic_path(@technology), class: "block bg-blue-600 text-white rounded-lg py-2 px-4 mb-4 text-center font-medium" %>
+    <%= link_to "New Topic", new_course_topic_path(@course), class: "block bg-blue-600 text-white rounded-lg py-2 px-4 mb-4 text-center font-medium" %>
 
     <ul>
       <% @topics.each do |topic| %>
         <li class="mb-2">
           <%= link_to topic.heading,
-                      technology_topic_path(@technology, topic),
+                      course_topic_path(@course, topic),
                       class: "block py-2 px-3 rounded-lg hover:bg-blue-100 #{'bg-blue-200' if @selected_topic == topic}" %>
         </li>
       <% end %>
@@ -22,7 +22,7 @@
       <div class="prose">
         <%= @selected_topic.content %>
       </div>
-      <%= link_to "Edit Topic", edit_technology_topic_path(@technology, @selected_topic), class: "mt-4 block bg-yellow-500 text-white rounded-lg py-2 px-4 font-medium" %>
+      <%= link_to "Edit Topic", edit_course_topic_path(@course, @selected_topic), class: "mt-4 block bg-yellow-500 text-white rounded-lg py-2 px-4 font-medium" %>
     <% else %>
       <p class="text-gray-500">Select a topic to view its details.</p>
     <% end %>

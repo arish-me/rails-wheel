@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_12_064319) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_13_102410) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -59,6 +59,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_12_064319) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_categories_on_user_id"
+  end
+
+  create_table "chapters", force: :cascade do |t|
+    t.string "name"
+    t.text "content"
+    t.bigint "topic_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["topic_id"], name: "index_chapters_on_topic_id"
   end
 
   create_table "courses", force: :cascade do |t|
@@ -206,10 +215,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_12_064319) do
 
   create_table "topics", force: :cascade do |t|
     t.string "heading"
-    t.bigint "technology_id", null: false
+    t.bigint "course_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["technology_id"], name: "index_topics_on_technology_id"
+    t.index ["course_id"], name: "index_topics_on_course_id"
   end
 
   create_table "user_roles", force: :cascade do |t|
@@ -241,11 +250,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_12_064319) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "categories", "users"
+  add_foreign_key "chapters", "topics"
   add_foreign_key "profiles", "users"
   add_foreign_key "role_permissions", "permissions"
   add_foreign_key "role_permissions", "roles"
   add_foreign_key "technologies", "courses"
-  add_foreign_key "topics", "technologies"
+  add_foreign_key "topics", "courses"
   add_foreign_key "user_roles", "roles"
   add_foreign_key "user_roles", "users"
 end
