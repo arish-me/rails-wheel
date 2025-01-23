@@ -31,38 +31,41 @@
     </div>
   </div>
   <!-- Course Statistics Section -->
-  <div class="mt-10 bg-gray-50 shadow-md rounded-lg p-6 grid grid-cols-1 md:grid-cols-4 gap-6">
+  <div class="mt-10 mb-5 bg-white border rounded-lg p-6 flex justify-between items-center gap-2">
+    <!-- Chapters -->
     <div class="flex flex-col items-center">
       <%= lucide_icon("book-open", class: "w-8 h-8 text-gray-700 mb-2") %>
       <p class="text-sm text-gray-500">Chapters</p>
+      <p class="text-xl font-bold"><%= @course.chapters.count %></p>
+    </div>
+    <!-- Topics -->
+    <div class="flex flex-col items-center">
+      <%= lucide_icon("list", class: "w-8 h-8 text-gray-700 mb-2") %>
+      <p class="text-sm text-gray-500">Topics</p>
       <p class="text-xl font-bold"><%= @course.topics.count %></p>
+    </div>
+    <!-- Duration -->
+    <div class="flex flex-col items-center">
+      <%= lucide_icon("clock", class: "w-8 h-8 text-gray-700 mb-2") %>
+      <p class="text-sm text-gray-500">Duration</p>
+      <p class="text-xl font-bold">5  hrs</p>
+    </div>
+    <!-- Projects -->
+    <div class="flex flex-col items-center">
+      <%= lucide_icon("briefcase", class: "w-8 h-8 text-gray-700 mb-2") %>
+      <p class="text-sm text-gray-500">Projects</p>
+      <p class="text-xl font-bold">2</p>
     </div>
   </div>
   <div id="accordion-collapse" data-accordion="collapse">
     <% @course.topics.each_with_index do |topic, index| %>
       <h2 id="accordion-collapse-heading-<%= index %>">
-        <!-- Topics -->
         <button type="button"
               class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-gray-200 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-800 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 gap-3"
               data-accordion-target="#accordion-collapse-body-<%= index %>"
               aria-expanded="false"
               aria-controls="accordion-collapse-body-<%= index %>">
-          <span class="flex items-center gap-2">
-            <span class="text-gray-400"><%= topic.position %>.</span>
-            <span class="font-semibold"><%= topic.heading %></span>
-          </span>
-          <span class="flex items-end gap-2">
-            <%= link_to new_course_topic_chapter_path(@course, topic),
-                            class: "dark:text-white hover:underline " do %>
-              <%= lucide_icon('plus', class: "w-5 h-5") %>
-            <% end %>
-            <%= link_to edit_course_topic_path(@course, topic),
-                            data: { turbo_frame: :modal },
-                            class: "dark:text-white hover:underline " do %>
-              <%= lucide_icon('square-pen', class: "w-5 h-5") %>
-            <% end %>
-            <%= lucide_icon('chevron-up', class: "w-3 h-3 rotate-180 shrink-0") %>
-          </span>
+          <%= render partial: 'topics', locals: {topic: topic }%>
         </button>
       </h2>
       <div id="accordion-collapse-body-<%= index %>"
@@ -70,19 +73,12 @@
          aria-labelledby="accordion-collapse-heading-<%= index %>">
         <div class="p-5 border border-t-0 border-gray-200 dark:border-gray-700">
           <ul class="list-disc ps-5 text-gray-500 dark:text-gray-400">
-            <% topic.chapters.each do |chapter| %>
-              <li class="flex items-center justify-between">
-                <span class="flex items-start gap-2">
-                  <span><%= chapter.display_number %></span>
-                  <span>  <%= chapter.name %> </span>
-                </span>
-                <span class="flex items-end gap-2">
-                  <%= link_to edit_course_topic_chapter_path(@course, topic, chapter),
-                      class: "dark:text-white hover:underline" do %>
-                    <%= lucide_icon('square-pen', class: "w-5 h-5") %>
-                  <% end %>
-                </span>
-              </li>
+            <% if topic.chapters.length > 0 %>
+              <% topic.chapters.each do |chapter| %>
+                <%= render partial: 'chapters', locals: {chapter: chapter, topic: topic, course: @course }%>
+              <% end %>
+            <% else %>
+              <p>No Chapters Found</p>
             <% end %>
           </ul>
         </div>

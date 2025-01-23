@@ -23,7 +23,6 @@ class ChaptersController < ApplicationController
 
   # POST /chapters or /chapters.json
   def create
-    debugger
     @chapter = @topic.chapters.new(chapter_params)
 
     respond_to do |format|

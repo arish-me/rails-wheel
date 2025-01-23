@@ -1,0 +1,12 @@
+<li class="flex items-center justify-between">
+  <span class="flex items-start gap-2">
+    <span><%= chapter.display_number %></span>
+    <span>  <%= chapter.name %> </span>
+  </span>
+  <span class="flex items-end gap-2">
+    <%= link_to edit_course_topic_chapter_path(course, topic, chapter),
+        class: "dark:text-white hover:underline" do %>
+      <%= lucide_icon('square-pen', class: "w-5 h-5") %>
+    <% end %>
+  </span>
+</li>
