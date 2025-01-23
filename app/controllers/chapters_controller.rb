@@ -1,7 +1,7 @@
 class ChaptersController < ApplicationController
   before_action :set_chapter, only: %i[ show edit update destroy ]
-  before_action :set_topic, only: %i[ show edit update destroy ]
-  before_action :set_course, only: %i[ show edit update destroy ]
+  before_action :set_topic, only: %i[ create update new show edit update destroy ]
+  before_action :set_course, only: %i[ create update new show edit update destroy ]
 
   # GET /chapters or /chapters.json
   def index
@@ -23,12 +23,13 @@ class ChaptersController < ApplicationController
 
   # POST /chapters or /chapters.json
   def create
-    @chapter = Chapter.new(chapter_params)
+    debugger
+    @chapter = @topic.chapters.new(chapter_params)
 
     respond_to do |format|
       if @chapter.save
         format.html { redirect_to @course, notice: "Chapter was successfully created." }
-        format.json { render :show, status: :created, location: @chapter }
+        format.json { render :show, status: :created, location: @course }
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @chapter.errors, status: :unprocessable_entity }
