@@ -4,7 +4,7 @@
   <% end %>
   <section class="space-y-2 overflow-hidden">
     <%= f.text_field :name, label: 'Name' , placeholder: 'Enter Name' %>
-    <%= f.textarea :content, rows: 4, class: "block shadow rounded-md border border-gray-400 outline-none focus:outline-blue-600 px-3 py-2 mt-2 w-full" %>
+    <%= f.rich_text_area :content, label: "Chapter Content", class: "rich-text-editor" %>
   </section>
   <section>
     <%= f.submit 'Submit' %>

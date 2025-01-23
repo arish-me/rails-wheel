@@ -4,4 +4,5 @@ class Topic < ApplicationRecord
   has_rich_text :content
 
   validates :heading, presence: true
+  acts_as_list
 end
