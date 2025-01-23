@@ -1,15 +1,29 @@
 <div class="mx-auto md:w-2/3 w-full flex">
   <div class="mx-auto">
     <% if notice.present? %>
-      <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
+      <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice">
+        <%= notice %>
+      </p>
     <% end %>
 
-    <%= render @chapter %>
+    <!-- Display Chapter -->
+    <h1 class="text-xl font-bold">Lesson <%= @chapter.display_number %>: <%= @chapter.name %></h1>
+    <p class="mt-4 text-gray-700"><%= simple_format(@chapter.content) %></p>
 
-    <%= link_to "Edit this chapter", edit_chapter_path(@chapter), class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-    <%= link_to "Back to chapters", chapters_path, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-    <div class="inline-block ml-2">
-      <%= button_to "Destroy this chapter", @chapter, method: :delete, class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 font-medium" %>
+    <!-- Navigation Buttons -->
+    <div class="flex justify-between mt-6">
+      <% if @chapter.previous_chapter_or_last_of_previous_topic %>
+        <%= link_to "Previous", course_topic_chapter_path(@course, @chapter.previous_chapter_or_last_of_previous_topic.topic, @chapter.previous_chapter_or_last_of_previous_topic),
+                     class: "rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
+      <% end %>
+
+      <% if @chapter.next_chapter_or_first_of_next_topic %>
+        <%= link_to "Next", course_topic_chapter_path(@course, @chapter.next_chapter_or_first_of_next_topic.topic, @chapter.next_chapter_or_first_of_next_topic),
+                     class: "rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
+      <% end %>
     </div>
+
+    <%= link_to "Edit this chapter", edit_course_topic_chapter_path(@course, @topic, @chapter),
+                 class: "mt-6 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
   </div>
 </div>
