@@ -27,6 +27,7 @@ class ChaptersController < ApplicationController
 
     respond_to do |format|
       if @chapter.save
+        format.turbo_stream { render turbo_stream: turbo_stream.refresh(request_id: nil) }
         format.html { redirect_to @course, notice: "Chapter was successfully created." }
         format.json { render :show, status: :created, location: @course }
       else
@@ -40,6 +41,7 @@ class ChaptersController < ApplicationController
   def update
     respond_to do |format|
       if @chapter.update(chapter_params)
+        format.turbo_stream { render turbo_stream: turbo_stream.refresh(request_id: nil) }
         format.html { redirect_to @course, notice: "Chapter was successfully updated." }
         format.json { render :show, status: :ok, location: @chapter }
       else

@@ -4,6 +4,9 @@ class CoursesController < ApplicationController
   before_action :authorize_resource, only: %i[show edit update destroy]
   # GET /courses or /courses.json
   def index
+    respond_to do |format|
+      format.turbo_stream { render turbo_stream: turbo_stream.refresh(request_id: nil) }
+    end
     if params[:query].present?
       @pagy, @courses = pagy(Course.search_by_name(params[:query]), limit: params[:per_page] || "10")
     else
