@@ -1,4 +1,4 @@
-<%= styled_form_with model: [@technology, @topic], class: "space-y-4" do |f| %>
+<%= styled_form_with model: [@course, @topic], class: "space-y-4" do |f| %>
   <% if @topic.errors.any? %>
     <%= render "shared/form_errors", model: @topic %>
   <% end %>

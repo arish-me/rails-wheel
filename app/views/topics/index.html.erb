@@ -15,16 +15,3 @@
     </ul>
   </div>
 
-  <!-- Main Content for Selected Topic -->
-  <div class="flex-1 p-4 overflow-y-auto">
-    <% if @selected_topic %>
-      <h2 class="text-3xl font-bold mb-4"><%= @selected_topic.heading %></h2>
-      <div class="prose">
-        <%= @selected_topic.content %>
-      </div>
-      <%= link_to "Edit Topic", edit_course_topic_path(@course, @selected_topic), class: "mt-4 block bg-yellow-500 text-white rounded-lg py-2 px-4 font-medium" %>
-    <% else %>
-      <p class="text-gray-500">Select a topic to view its details.</p>
-    <% end %>
-  </div>
-</div>

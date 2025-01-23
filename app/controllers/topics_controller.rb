@@ -1,12 +1,10 @@
 class TopicsController < ApplicationController
   before_action :set_course
   before_action :set_topic, only: %i[ show edit update destroy ]
-  before_action :set_selected_topic, only: %i[ show edit update destroy ]
 
   # GET /topics or /topics.json
   def index
     @topics = @course.topics.all
-    @selected_topic = @topics.first
     # render :layout
   end
 
@@ -32,6 +30,8 @@ class TopicsController < ApplicationController
 
     respond_to do |format|
       if @topic.save
+        format.turbo_stream { render turbo_stream: turbo_stream.refresh(request_id: nil) }
+        flash[:notice] =  "Topic was successfully created."
         format.html { redirect_to course_topic_path(@course, @topic), notice: "Topic was successfully created." }
         format.json { render :show, status: :created, location: @topic }
       else
@@ -45,7 +45,9 @@ class TopicsController < ApplicationController
   def update
     respond_to do |format|
       if @topic.update(topic_params)
-        format.html { redirect_to technology_topic_path(@technology, @topic), notice: "Topic was successfully updated." }
+        flash[:notice] =  "Topic was successfully updated."
+        format.turbo_stream { render turbo_stream: turbo_stream.refresh(request_id: nil) }
+        format.html { redirect_to course_topic_path(@course, @topic), notice: "Topic was successfully updated." }
         format.json { render :show, status: :ok, location: @topic }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -71,7 +73,7 @@ class TopicsController < ApplicationController
     end
     # Use callbacks to share common setup or constraints between actions.
     def set_topic
-      @topic = @technology.topics.find(params.expect(:id))
+      @topic = @course.topics.find(params.expect(:id))
     end
 
     def set_selected_topic
