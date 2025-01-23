@@ -62,15 +62,15 @@ class ChaptersController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_course
-      @course = Course.find(params[:course_id])
+      @course = Course.friendly.find(params[:course_id])
     end
 
     def set_topic
-      @topic = Topic.find(params[:topic_id])
+      @topic = Topic.friendly.find(params[:topic_id])
     end
 
     def set_chapter
-      @chapter = Chapter.find(params.expect(:id))
+      @chapter = Chapter.friendly.find(params.expect(:id))
     end
 
     # Only allow a list of trusted parameters through.

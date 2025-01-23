@@ -69,11 +69,11 @@ class TopicsController < ApplicationController
   private
 
     def set_course
-      @course = Course.find(params[:course_id])
+      @course = Course.friendly.find(params[:course_id])
     end
     # Use callbacks to share common setup or constraints between actions.
     def set_topic
-      @topic = @course.topics.find(params.expect(:id))
+      @topic = @course.topics.friendly.find(params.expect(:id))
     end
 
     def set_selected_topic

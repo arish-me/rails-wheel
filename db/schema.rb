@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_23_141414) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_23_153646) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -65,9 +65,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_23_141414) do
     t.string "name"
     t.text "content"
     t.bigint "topic_id", null: false
+    t.string "slug"
+    t.string "duration"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "position"
+    t.index ["slug"], name: "index_chapters_on_slug", unique: true
     t.index ["topic_id"], name: "index_chapters_on_topic_id"
   end
 
@@ -75,8 +78,23 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_23_141414) do
     t.string "name"
     t.string "subtitle"
     t.text "description"
+    t.string "slug"
+    t.string "custom_slug"
+    t.string "duration"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["slug"], name: "index_courses_on_slug", unique: true
+  end
+
+  create_table "friendly_id_slugs", force: :cascade do |t|
+    t.string "slug", null: false
+    t.integer "sluggable_id", null: false
+    t.string "sluggable_type", limit: 50
+    t.string "scope"
+    t.datetime "created_at"
+    t.index ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true
+    t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
+    t.index ["sluggable_type", "sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_type_and_sluggable_id"
   end
 
   create_table "good_job_batches", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -209,18 +227,23 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_23_141414) do
     t.string "subtitle"
     t.text "description"
     t.bigint "course_id", null: false
+    t.string "slug"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["course_id"], name: "index_technologies_on_course_id"
+    t.index ["slug"], name: "index_technologies_on_slug", unique: true
   end
 
   create_table "topics", force: :cascade do |t|
     t.string "heading"
     t.bigint "course_id", null: false
+    t.string "slug"
+    t.string "duration"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "position"
     t.index ["course_id"], name: "index_topics_on_course_id"
+    t.index ["slug"], name: "index_topics_on_slug", unique: true
   end
 
   create_table "user_roles", force: :cascade do |t|

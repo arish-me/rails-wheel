@@ -5,8 +5,9 @@ class CreateTechnologies < ActiveRecord::Migration[8.0]
       t.string :subtitle
       t.text :description
       t.references :course, null: false, foreign_key: true
-
+      t.string :slug
       t.timestamps
     end
+    add_index :technologies, :slug, unique: true
   end
 end
