@@ -1,20 +1,11 @@
 Rails.application.routes.draw do
-  resources :clients do
-    collection do
-      post :bulk_destroy
-    end
-    resources :public_site_templates, only: [:index, :new, :create, :edit, :update, :destroy], module: 'public_site'
-    resources :public_site_layouts, only: [:index, :new, :create, :edit, :update, :destroy], module: 'public_site'
-  end
   mount PublicSite::Engine, at: '/public_site', as: 'public_site'
 
   resources :technologies do
     collection do
       post :bulk_destroy
     end
-    resources :topics do
-
-    end
+    resources :topics
   end
   resources :courses do
     collection do
@@ -71,6 +62,17 @@ Rails.application.routes.draw do
         post :bulk_destroy
         post :stop_impersonating
       end
+    end
+  end
+
+  resources :clients do
+    scope module: "public_sites" do
+      resources :templates
+    end
+    #  resources :layouts
+
+    collection do
+      post :bulk_destroy
     end
   end
 
