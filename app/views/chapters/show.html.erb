@@ -1,29 +1,42 @@
-<div class="mx-auto md:w-2/3 w-full flex">
-  <div class="mx-auto">
-    <% if notice.present? %>
-      <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice">
-        <%= notice %>
-      </p>
-    <% end %>
+<div class="mx-auto md:w-2/3 w-full flex justify-center">
+  <div class="shadow-lg p-8 rounded-lg bg-white w-full">
+    <!-- Breadcrumb Navigation -->
+    <nav class="text-sm text-gray-500 mb-6">
+      <ol class="list-reset flex">
+        <li>
+          <%= link_to @course.name, course_path(@course), class: "hover:underline text-blue-600" %>
+        </li>
+        <li><span class="mx-2">/</span></li>
+        <li>
+          <%= link_to @topic.heading, course_topic_path(@course, @topic), class: "hover:underline text-blue-600" %>
+        </li>
+        <li><span class="mx-2">/</span></li>
+        <li class="text-gray-900 font-semibold"><%= @chapter.name %></li>
+      </ol>
+    </nav>
 
-    <!-- Display Chapter -->
-    <h1 class="text-xl font-bold">Lesson <%= @chapter.display_number %>: <%= @chapter.name %></h1>
-    <p class="mt-4 text-gray-700"><%= simple_format(@chapter.content) %></p>
+    <!-- Chapter Heading -->
+    <h1 class="text-sm font-semibold uppercase text-gray-500 mb-1">Lesson</h1>
+    <h2 class="text-3xl font-bold text-gray-900 mb-4">
+      <%= @chapter.display_number %>: <%= @chapter.name %>
+    </h2>
+
+    <!-- Chapter Content -->
+    <div class="text-gray-700 leading-relaxed mb-6">
+      <%= simple_format(@chapter.content) %>
+    </div>
 
     <!-- Navigation Buttons -->
-    <div class="flex justify-between mt-6">
+    <div class="flex justify-end">
       <% if @chapter.previous_chapter_or_last_of_previous_topic %>
         <%= link_to "Previous", course_topic_chapter_path(@course, @chapter.previous_chapter_or_last_of_previous_topic.topic, @chapter.previous_chapter_or_last_of_previous_topic),
-                     class: "rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
+                     class: "mr-4 px-6 py-3 border border-gray-300 rounded-lg font-medium text-gray-500 hover:bg-gray-100" %>
       <% end %>
 
       <% if @chapter.next_chapter_or_first_of_next_topic %>
         <%= link_to "Next", course_topic_chapter_path(@course, @chapter.next_chapter_or_first_of_next_topic.topic, @chapter.next_chapter_or_first_of_next_topic),
-                     class: "rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-      <% end %>
+                     class: "px-6 py-3 bg-blue-500 text-white rounded-lg font-medium hover:bg-blue-600 flex items-center btn--primary" %>
+        <% end %>
     </div>
-
-    <%= link_to "Edit this chapter", edit_course_topic_chapter_path(@course, @topic, @chapter),
-                 class: "mt-6 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
   </div>
 </div>
