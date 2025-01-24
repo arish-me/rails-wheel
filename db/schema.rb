@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_23_153646) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_24_092845) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -72,6 +72,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_23_153646) do
     t.integer "position"
     t.index ["slug"], name: "index_chapters_on_slug", unique: true
     t.index ["topic_id"], name: "index_chapters_on_topic_id"
+  end
+
+  create_table "clients", force: :cascade do |t|
+    t.string "name"
+    t.string "subdomain"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["subdomain"], name: "index_clients_on_subdomain", unique: true
   end
 
   create_table "courses", force: :cascade do |t|
@@ -205,6 +213,26 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_23_153646) do
     t.index ["user_id"], name: "index_profiles_on_user_id"
   end
 
+  create_table "public_site_layouts", force: :cascade do |t|
+    t.string "name"
+    t.text "content"
+    t.bigint "client_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["client_id"], name: "index_public_site_layouts_on_client_id"
+  end
+
+  create_table "public_site_templates", force: :cascade do |t|
+    t.string "name"
+    t.text "content"
+    t.bigint "client_id", null: false
+    t.bigint "public_site_layout_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["client_id"], name: "index_public_site_templates_on_client_id"
+    t.index ["public_site_layout_id"], name: "index_public_site_templates_on_public_site_layout_id"
+  end
+
   create_table "role_permissions", force: :cascade do |t|
     t.bigint "role_id", null: false
     t.bigint "permission_id", null: false
@@ -277,6 +305,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_23_153646) do
   add_foreign_key "categories", "users"
   add_foreign_key "chapters", "topics"
   add_foreign_key "profiles", "users"
+  add_foreign_key "public_site_layouts", "clients"
+  add_foreign_key "public_site_templates", "clients"
+  add_foreign_key "public_site_templates", "public_site_layouts"
   add_foreign_key "role_permissions", "permissions"
   add_foreign_key "role_permissions", "roles"
   add_foreign_key "technologies", "courses"

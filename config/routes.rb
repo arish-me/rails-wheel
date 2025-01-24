@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  mount PublicSite::Engine, at: '/public_site', as: 'public_site'
+
   resources :technologies do
     collection do
       post :bulk_destroy

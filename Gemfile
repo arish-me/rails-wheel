@@ -48,3 +48,4 @@ group :development do
   gem "hotwire-livereload"
   gem "web-console"
 end
+gem "public_site", path: "vendor/public_site"
