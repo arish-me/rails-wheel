@@ -1,0 +1,2 @@
+module PublicSite::LayoutsHelper
+end

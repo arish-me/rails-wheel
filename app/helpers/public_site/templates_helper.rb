@@ -1,0 +1,2 @@
+module PublicSite::TemplatesHelper
+end

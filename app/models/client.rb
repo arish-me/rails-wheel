@@ -1,4 +1,9 @@
 class Client < ApplicationRecord
+  pg_search_scope :search_by_name,
+            against: :name,
+            using: {
+              tsearch: { prefix: true } # Enables partial matches (e.g., "Admin" matches "Administrator")
+            }
   validates :name, presence: true
   validates :subdomain, presence: true, uniqueness: true, format: { with: /\A[a-z0-9\-]+\z/, message: "must be lowercase and contain only letters, numbers, and hyphens" }
 
