@@ -1,0 +1,148 @@
+<div class="container mx-auto px-6 py-10">
+<div class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white py-10 px-6 rounded-lg flex flex-col md:flex-row transition-all duration-500">
+  <!-- Image Section -->
+  <div class="md:w-1/3 w-full flex justify-center">
+    <%= image_tag @course.avatar.variant(:thumbnail), class: "rounded-lg w-full md:w-3/4 h-auto object-cover shadow-lg" %>
+  </div>
+
+  <!-- Course Details Section -->
+  <div class="md:w-2/3 w-full md:pl-10 mt-6 md:mt-0">
+    <!-- Title and Description -->
+    <h1 class="text-4xl font-bold mb-4"><%= @course.name %></h1>
+    <p class="text-lg text-gray-300 mb-6 leading-relaxed">
+      <%= @course.description %>
+    </p>
+
+    <!-- Creator Information -->
+    <p class="text-sm mb-6">
+      Created by
+      <%= link_to "Julian Melanson", "#", class: "hover:underline text-indigo-400" %>,
+      <%= link_to "Benza Maman", "#", class: "hover:underline text-indigo-400" %>,
+      <%= link_to "Leap Year Learning", "#", class: "hover:underline text-indigo-400" %>
+    </p>
+
+    <!-- Additional Details -->
+    <div class="flex items-center space-x-6 text-sm text-gray-300 mb-8">
+      <div class="flex items-center space-x-2">
+        <%= lucide_icon("calendar", class: "w-4 h-4") %>
+        <p>Last updated <%= @course.updated_at.strftime("%m/%Y") %></p>
+      </div>
+      <div class="flex items-center space-x-2">
+        <%= lucide_icon("globe", class: "w-4 h-4") %>
+        <p>English</p>
+      </div>
+      <div class="flex items-center space-x-2">
+        <%= lucide_icon("file-text", class: "w-4 h-4") %>
+        <p>15 more languages</p>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+<div class="mt-8 flex flex-wrap space-x-4">
+  <%= link_to "Continue Learning", course_path(@course), class: "btn btn-sm bg-green-500 hover:bg-green-600 text-white font-medium rounded-lg" %>
+  <%= link_to "Back to courses", courses_path, class: "bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium btn btn-sm rounded-lg" %>
+  <%= link_to edit_course_path(@course), class: "rounded-lg btn btn btn-sm btn--primary text-white flex items-center gap-1 justify-center px-3", data: { turbo_frame: :modal } do %>
+    <%= lucide_icon("edit", class: "w-5 h-5") %>
+    <p class="text-sm font-medium">Edit Course</p>
+  <% end %>
+  <%= link_to new_course_topic_path(@course), class: "rounded-lg btn btn--primary text-white flex items-center gap-1 justify-center px-3 py-2", data: { turbo_frame: :modal } do %>
+    <%= lucide_icon("plus", class: "w-5 h-5") %>
+    <p class="text-sm font-medium">New Topic</p>
+  <% end %>
+  <%= button_to "Destroy this course", @course, method: :delete, data: { confirm: "Are you sure?" }, class: "bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded-lg" %>
+</div>
+  </div>
+</div>
+
+
+ <%if false %>
+
+  <div class="bg-white shadow-lg rounded-lg p-6 flex flex-col md:flex-row items-center">
+    <!-- Course Icon Section -->
+    <div class="rounded-lg flex justify-center  items-center md:w-1/3 w-full">
+      <%= image_tag @course.avatar.variant(:thumbnail), class: "rounded-lg w-full object-cover #{defined?(nav) ? 'h-8 w-8' : 'h-20'}" %>
+    </div>
+    <!-- Course Content Section -->
+    <div class="md:w-2/3 w-full md:pl-10 mt-6 md:mt-0">
+      <p class="text-sm font-semibold text-gray-500 uppercase mb-2">Course</p>
+      <h1 class="text-3xl font-bold text-gray-900 mb-4"><%= @course.name %></h1>
+      <p class="text-gray-600 mb-6 leading-relaxed"><%= @course.description %></p>
+      <!-- Progress Section -->
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-full bg-gray-200 rounded-full h-2.5">
+        </div>
+      </div>
+      <!-- Action Buttons -->
+      <div class="flex items-center space-x-4">
+        <%= link_to "Continue Learning", course_path(@course), class: "bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-lg" %>
+        <%= link_to "Back to courses", courses_path, class: "bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2 px-4 rounded-lg" %>
+        <%= link_to edit_course_path(@course), class: "rounded-lg btn btn--primary text-white flex items-center gap-1 justify-center px-3 py-2", data: { turbo_frame: :modal } do %>
+          <%= lucide_icon("plus", class: "w-5 h-5") %>
+          <p class="text-sm font-medium">Edit Course </p>
+        <% end %>
+        <%= link_to new_course_topic_path(@course), class: "rounded-lg btn btn--primary text-white flex items-center gap-1 justify-center px-3 py-2", data: { turbo_frame: :modal } do %>
+          <%= lucide_icon("plus", class: "w-5 h-5") %>
+          <p class="text-sm font-medium">New Topic</p>
+        <% end %>
+        <%= button_to "Destroy this course", @course, method: :delete, data: { confirm: "Are you sure?" }, class: "bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded-lg" %>
+      </div>
+    </div>
+  </div>
+  <% end %>
+
+  <!-- Course Statistics Section -->
+  <div class="mt-10 mb-5 bg-white border rounded-lg p-6 flex justify-between items-center gap-2">
+    <!-- Chapters -->
+    <div class="flex flex-col items-center">
+      <%= lucide_icon("book-open", class: "w-8 h-8 text-gray-700 mb-2") %>
+      <p class="text-sm text-gray-500">Chapters</p>
+      <p class="text-xl font-bold"><%= @course.chapters.count %></p>
+    </div>
+    <!-- Topics -->
+    <div class="flex flex-col items-center">
+      <%= lucide_icon("list", class: "w-8 h-8 text-gray-700 mb-2") %>
+      <p class="text-sm text-gray-500">Topics</p>
+      <p class="text-xl font-bold"><%= @course.topics.count %></p>
+    </div>
+    <!-- Duration -->
+    <div class="flex flex-col items-center">
+      <%= lucide_icon("clock", class: "w-8 h-8 text-gray-700 mb-2") %>
+      <p class="text-sm text-gray-500">Duration</p>
+      <p class="text-xl font-bold">5  hrs</p>
+    </div>
+    <!-- Projects -->
+    <div class="flex flex-col items-center">
+      <%= lucide_icon("briefcase", class: "w-8 h-8 text-gray-700 mb-2") %>
+      <p class="text-sm text-gray-500">Projects</p>
+      <p class="text-xl font-bold">2</p>
+    </div>
+  </div>
+  <div id="accordion-collapse" data-accordion="collapse">
+    <% @course.topics.each_with_index do |topic, index| %>
+      <h2 id="accordion-collapse-heading-<%= index %>">
+        <button type="button"
+              class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-gray-200 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-800 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 gap-3"
+              data-accordion-target="#accordion-collapse-body-<%= index %>"
+              aria-expanded="false"
+              aria-controls="accordion-collapse-body-<%= index %>">
+          <%= render partial: 'topics', locals: {topic: topic }%>
+        </button>
+      </h2>
+      <div id="accordion-collapse-body-<%= index %>"
+         class="hidden"
+         aria-labelledby="accordion-collapse-heading-<%= index %>">
+        <div class="p-5 border border-t-0 border-gray-200 dark:border-gray-700">
+          <ul class="list-disc ps-5 text-gray-500 dark:text-gray-400">
+            <% if topic.chapters.length > 0 %>
+              <% topic.chapters.each do |chapter| %>
+                <%= render partial: 'chapters', locals: {chapter: chapter, topic: topic, course: @course }%>
+              <% end %>
+            <% else %>
+              <p>No Chapters Found</p>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

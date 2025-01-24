@@ -23,7 +23,10 @@ permissions = [
   { name: 'Roles', resource: 'Role' },
   { name: 'RolePermissions', resource: 'RolePermission' },
   { name: 'Permissions', resource: 'Permission' },
-  { name: 'Categories', resource: 'Category' }
+  { name: 'Categories', resource: 'Category' },
+  { name: 'Courses', resource: 'Course' },
+  { name: 'Technologies', resource: 'Technology' },
+  { name: 'Topics', resource: 'Topic' },
 ]
 
 permissions.each do |perm|

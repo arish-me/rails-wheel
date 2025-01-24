@@ -10,9 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_12_052713) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_23_153646) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "action_text_rich_texts", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "body"
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["record_type", "record_id", "name"], name: "index_action_text_rich_texts_uniqueness", unique: true
+  end
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -49,6 +59,42 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_12_052713) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_categories_on_user_id"
+  end
+
+  create_table "chapters", force: :cascade do |t|
+    t.string "name"
+    t.text "content"
+    t.bigint "topic_id", null: false
+    t.string "slug"
+    t.string "duration"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "position"
+    t.index ["slug"], name: "index_chapters_on_slug", unique: true
+    t.index ["topic_id"], name: "index_chapters_on_topic_id"
+  end
+
+  create_table "courses", force: :cascade do |t|
+    t.string "name"
+    t.string "subtitle"
+    t.text "description"
+    t.string "slug"
+    t.string "custom_slug"
+    t.string "duration"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["slug"], name: "index_courses_on_slug", unique: true
+  end
+
+  create_table "friendly_id_slugs", force: :cascade do |t|
+    t.string "slug", null: false
+    t.integer "sluggable_id", null: false
+    t.string "sluggable_type", limit: 50
+    t.string "scope"
+    t.datetime "created_at"
+    t.index ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true
+    t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
+    t.index ["sluggable_type", "sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_type_and_sluggable_id"
   end
 
   create_table "good_job_batches", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -176,6 +222,30 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_12_052713) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "technologies", force: :cascade do |t|
+    t.string "name"
+    t.string "subtitle"
+    t.text "description"
+    t.bigint "course_id", null: false
+    t.string "slug"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["course_id"], name: "index_technologies_on_course_id"
+    t.index ["slug"], name: "index_technologies_on_slug", unique: true
+  end
+
+  create_table "topics", force: :cascade do |t|
+    t.string "heading"
+    t.bigint "course_id", null: false
+    t.string "slug"
+    t.string "duration"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "position"
+    t.index ["course_id"], name: "index_topics_on_course_id"
+    t.index ["slug"], name: "index_topics_on_slug", unique: true
+  end
+
   create_table "user_roles", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "role_id", null: false
@@ -205,9 +275,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_12_052713) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "categories", "users"
+  add_foreign_key "chapters", "topics"
   add_foreign_key "profiles", "users"
   add_foreign_key "role_permissions", "permissions"
   add_foreign_key "role_permissions", "roles"
+  add_foreign_key "technologies", "courses"
+  add_foreign_key "topics", "courses"
   add_foreign_key "user_roles", "roles"
   add_foreign_key "user_roles", "users"
 end

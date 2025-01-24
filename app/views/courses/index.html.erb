@@ -1,0 +1,64 @@
+<div class="space-y-4">
+  <h1 class="text-xl dark:text-white">Courses</h1>
+  <header class="flex justify-between items-center items-center text-gray-900 font-medium">
+    <div class="flex">
+      <%= render partial: "shared/common/search_bar", locals: { resource_path: courses_path, resource_id: 'courses-search', placeholder: 'Search courses by name' } %>
+    </div>
+    <div class="flex">
+        <%= link_to new_course_path, class: "rounded-lg btn btn--primary text-white flex items-center gap-1 justify-center px-3 py-2", data: { turbo_frame: :modal } do %>
+          <%= lucide_icon("plus", class: "w-5 h-5") %>
+          <p class="text-sm font-medium">New Course</p>
+        <% end %>
+
+    </div>
+  </header>
+</div>
+
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-6">
+  <% @courses.each do |course| %>
+    <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 flex flex-col">
+      <!-- Image Section -->
+      <div>
+        <%= image_tag course.avatar.variant(:thumbnail), class: "w-full object-cover #{defined?(nav) ? 'h-8 w-8' : 'h-40'}" %>
+      </div>
+
+      <!-- Content Section -->
+      <div class="p-4 flex-grow flex flex-col">
+        <h2 class="text-sm font-bold text-gray-900 mb-1">
+          <%= course.name %>
+        </h2>
+        <p class="text-sm text-gray-500 mb-4"><%= truncate(course.description, length: 100) %></p>
+
+        <!-- Rating Section -->
+        <div class="flex items-center text-sm mb-4 mt-auto">
+          <span class="text-yellow-500 flex items-center">
+            <%= (1..4).map { lucide_icon('star', class: 'w-4 h-4') }.join.html_safe %>
+            <%= lucide_icon('star-half', class: 'w-4 h-4') %>
+          </span>
+          <span class="ml-2 text-gray-500">(43,405)</span>
+        </div>
+
+        <!-- Pricing Section -->
+        <div class="flex items-center text-sm font-bold text-gray-900">
+          ₹499
+          <span class="text-gray-500 line-through ml-2">₹2,699</span>
+        </div>
+      </div>
+
+      <!-- Badge Section -->
+      <div class="p-4 flex justify-between items-center">
+        <div>
+          <span class="bg-purple-100 text-purple-600 text-xs font-semibold px-2 py-1 rounded">Premium</span>
+          <span class="bg-green-100 text-green-600 text-xs font-semibold px-2 py-1 rounded">Bestseller</span>
+        </div>
+
+        <div class="space-y-2 flex items-center">
+          <%= link_to course_path(course), class: "rounded-lg btn btn-sm btn--primary text-white flex items-center gap-1 justify-center px-3 py-2" do %>
+            <%= lucide_icon("plus", class: "w-5 h-5") %>
+            <p class="text-sm font-medium">Start Learning</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

@@ -73,8 +73,8 @@ class CategoriesController < ApplicationController
     respond_to do |format|
       if resource_ids.present?
         # Destroy roles matching the provided entry_ids
-        Permission.where(id: resource_ids).destroy_all
-        format.html { redirect_to roles_path, notice: "Permission was successfully destroyed." }
+        Category.where(id: resource_ids).destroy_all
+        format.html { redirect_to roles_path, notice: "Categories was successfully destroyed." }
         format.turbo_stream { render turbo_stream: turbo_stream.refresh(request_id: nil) }
       else
         format.html { render :new, status: :unprocessable_entity }

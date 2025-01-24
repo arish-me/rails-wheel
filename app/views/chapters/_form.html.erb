@@ -1,0 +1,12 @@
+<%= styled_form_with model: [@course, @topic, chapter], class: "space-y-4" do |f| %>
+  <% if chapter.errors.any? %>
+    <%= render "shared/form_errors" , model: chapter %>
+  <% end %>
+  <section class="space-y-2 overflow-hidden">
+    <%= f.text_field :name, label: 'Name' , placeholder: 'Enter Name' %>
+    <%= f.rich_text_area :content, label: "Chapter Content", class: "rich-text-editor" %>
+  </section>
+  <section>
+    <%= f.submit 'Submit' %>
+  </section>
+<% end %>

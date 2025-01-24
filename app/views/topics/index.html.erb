@@ -1,0 +1,17 @@
+<div class="flex h-screen">
+  <!-- Sidebar for Topics -->
+  <div class="w-1/4 bg-gray-100 p-4 overflow-y-auto">
+    <h1 class="text-xl font-bold mb-4">Topics for <%= @technology.name %></h1>
+    <%= link_to "New Topic", new_course_topic_path(@course), class: "block bg-blue-600 text-white rounded-lg py-2 px-4 mb-4 text-center font-medium" %>
+
+    <ul>
+      <% @topics.each do |topic| %>
+        <li class="mb-2">
+          <%= link_to topic.heading,
+                      course_topic_path(@course, topic),
+                      class: "block py-2 px-3 rounded-lg hover:bg-blue-100 #{'bg-blue-200' if @selected_topic == topic}" %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+

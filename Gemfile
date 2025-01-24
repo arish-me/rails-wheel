@@ -10,6 +10,7 @@ gem "importmap-rails"
 gem "pretender"
 gem "turbo-rails"
 gem "stimulus-rails"
+gem 'friendly_id', '~> 5.5.0'
 gem "jbuilder"
 gem 'devise'
 gem "image_processing", ">= 1.2"
@@ -29,6 +30,7 @@ gem "tailwindcss-rails", "~> 3.1"
 gem 'omniauth-google-oauth2'
 gem 'omniauth-rails_csrf_protection'
 gem 'omniauth-github'
+gem 'acts_as_list'
 
 # Background Jobs
 gem "good_job"
@@ -39,6 +41,7 @@ group :development, :test do
   gem "rubocop-rails-omakase", require: false
   gem "htmlbeautifier"
   gem 'dotenv'
+  gem 'faker'
 end
 
 group :development do
