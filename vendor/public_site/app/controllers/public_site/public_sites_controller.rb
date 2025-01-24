@@ -4,7 +4,7 @@ module PublicSite
 
     def show
       # Fetch the requested template and its layout
-      @template = @client.templates.find_by(name: params[:template] || "Homepage")
+      @template = @client.templates.find_by(name: params[:template] || "Homepage Template")
       @layout = @template&.layout
 
       # Render the content

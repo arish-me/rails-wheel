@@ -3,7 +3,7 @@ module PublicSites
     before_action :set_client
     before_action :set_template, only: [:edit, :update, :destroy]
 
-    def index
+  def index
     if params[:query].present?
       @pagy, @templates = pagy(@client.templates.search_by_name(params[:query]), limit: params[:per_page] || "10")
     else
@@ -20,7 +20,7 @@ module PublicSites
       @template = @client.templates.new(template_params)
       @template.client = @client
       if @template.save
-        redirect_to client_public_site_templates_path(@client), notice: 'Template created successfully.'
+        redirect_to client_templates_path(@client), notice: 'Template created successfully.'
       else
         render :new
       end
@@ -30,7 +30,7 @@ module PublicSites
 
     def update
       if @template.update(template_params)
-        redirect_to client_public_site_templates_path(@client), notice: 'Template updated successfully.'
+        redirect_to client_templates_path(@client), notice: 'Template updated successfully.'
       else
         render :edit
       end
@@ -38,7 +38,7 @@ module PublicSites
 
     def destroy
       @template.destroy
-      redirect_to client_public_site_templates_path(@client), notice: 'Template deleted successfully.'
+      redirect_to client_templates_path(@client), notice: 'Template deleted successfully.'
     end
 
     private

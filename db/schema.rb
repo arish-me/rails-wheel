@@ -226,11 +226,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_24_092845) do
     t.string "name"
     t.text "content"
     t.bigint "client_id", null: false
-    t.bigint "public_site_layout_id", null: false
+    t.bigint "layout_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["client_id"], name: "index_public_site_templates_on_client_id"
-    t.index ["public_site_layout_id"], name: "index_public_site_templates_on_public_site_layout_id"
+    t.index ["layout_id"], name: "index_public_site_templates_on_layout_id"
   end
 
   create_table "role_permissions", force: :cascade do |t|
@@ -307,7 +307,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_24_092845) do
   add_foreign_key "profiles", "users"
   add_foreign_key "public_site_layouts", "clients"
   add_foreign_key "public_site_templates", "clients"
-  add_foreign_key "public_site_templates", "public_site_layouts"
+  add_foreign_key "public_site_templates", "public_site_layouts", column: "layout_id"
   add_foreign_key "role_permissions", "permissions"
   add_foreign_key "role_permissions", "roles"
   add_foreign_key "technologies", "courses"

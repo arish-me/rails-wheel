@@ -67,10 +67,17 @@ Rails.application.routes.draw do
 
   resources :clients do
     scope module: "public_sites" do
-      resources :templates
+      resources :templates do
+        collection do
+          post :bulk_destroy
+        end
+      end
+      resources :layouts do
+        collection do
+          post :bulk_destroy
+        end
+      end
     end
-    #  resources :layouts
-
     collection do
       post :bulk_destroy
     end

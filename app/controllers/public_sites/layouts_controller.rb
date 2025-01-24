@@ -1,11 +1,16 @@
-module PublicSite
+module PublicSites
   class LayoutsController < ApplicationController
     before_action :set_client
     before_action :set_layout, only: [:edit, :update, :destroy]
 
     def index
-      @layouts = @client.layouts
+      if params[:query].present?
+        @pagy, @layouts = pagy(@client.layouts.search_by_name(params[:query]), limit: params[:per_page] || "10")
+      else
+        @pagy, @layouts = pagy(@client.layouts, limit: params[:per_page] || "10")
+      end
     end
+
 
     def new
       @layout = @client.layouts.new
@@ -15,7 +20,7 @@ module PublicSite
       @layout = @client.layouts.new(layout_params)
       @layout.client = @client
       if @layout.save
-        redirect_to client_public_site_layouts_path(@client), notice: 'Layout created successfully.'
+        redirect_to client_layouts_path(@client), notice: 'Layout created successfully.'
       else
         render :new
       end
@@ -25,7 +30,7 @@ module PublicSite
 
     def update
       if @layout.update(layout_params)
-        redirect_to client_public_site_layouts_path(@client), notice: 'Layout updated successfully.'
+        redirect_to client_layouts_path(@client), notice: 'Layout updated successfully.'
       else
         render :edit
       end
@@ -33,7 +38,7 @@ module PublicSite
 
     def destroy
       @layout.destroy
-      redirect_to client_public_site_layouts_path(@client), notice: 'Layout deleted successfully.'
+      redirect_to client_layouts_path(@client), notice: 'Layout deleted successfully.'
     end
 
     private

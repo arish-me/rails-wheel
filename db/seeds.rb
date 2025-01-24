@@ -91,4 +91,11 @@ users.each do |user_data|
 end
 
 puts "Users created and assigned roles."
+
+puts "Start creating Clients and Layouts"
+
+
+client = Client.create!(name: 'Client1', subdomain: 'client1')
+ClientSetupService.new(client).setup_defaults
+puts "Finish creating Clients and Layouts"
 puts "Seeding completed successfully!"
