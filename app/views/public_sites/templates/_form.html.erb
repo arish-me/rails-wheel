@@ -1,11 +1,24 @@
-<%= styled_form_with model: [@client, template], class: "space-y-4" do |f| %>
+<%= styled_form_with model: [@client, template], class: "space-y-4", id: "template-form", data: { client_id: @client.id } do |f| %>
   <% if template.errors.any? %>
-    <%= render "shared/form_errors" , model: template %>
+    <%= render "shared/form_errors", model: template %>
   <% end %>
   <section class="space-y-2 overflow-hidden">
-    <%= f.text_field :name, label: 'Name' , placeholder: 'Enter Name' %>
-    <%= f.rich_text_area :content %>
+    <%= f.text_field :name, label: 'Name', placeholder: 'Enter Name' %>
+
+    <!-- CodeMirror for Liquid -->
+    <div class="codemirror-container">
+      <%= f.text_area :content, data: { codemirror: true }, placeholder: "Enter your Liquid code here" %>
+    </div>
   </section>
+
+  <!-- Live Preview -->
+  <section>
+    <h3 class="text-lg font-bold">Preview</h3>
+    <div id="live-preview" class="p-4 border rounded bg-gray-50">
+      Enter your Liquid code to see the preview.
+    </div>
+  </section>
+
   <section>
     <%= f.submit 'Submit' %>
   </section>

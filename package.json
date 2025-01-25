@@ -1,0 +1,17 @@
+{
+  "devDependencies": {
+    "esbuild": "^0.24.2"
+  },
+  "name": "rails-wheel",
+  "version": "1.0.0",
+  "description": "The OS for your own coacing webapp",
+  "scripts": {
+    "build": "esbuild app/javascript/*.* --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets --external:@hotwired/turbo-rails --external:flowbite --external:controllers --external:@rails/actiontext --external:trix --external:chartkick --external:Chart.bundle"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@codemirror/lang-liquid": "^6.2.2",
+    "codemirror": "^6.0.1"
+  }
+}

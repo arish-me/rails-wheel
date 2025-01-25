@@ -17,6 +17,7 @@
     <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+    <%= javascript_include_tag "application", type: "module", defer: true %>
   </head>
   <body class="h-full dark:bg-gray-800">
       <div class="fixed z-50 bottom-6 left-6">

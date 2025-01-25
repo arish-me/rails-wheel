@@ -11,35 +11,44 @@ module PublicSites
     end
   end
 
-    def new
+  def new
+    @template = @client.templates.new
+  end
 
-      @template = @client.templates.new
+  def create
+    @template = @client.templates.new(template_params)
+    @template.client = @client
+    if @template.save
+      redirect_to client_templates_path(@client), notice: 'Template created successfully.'
+    else
+      render :new
     end
+  end
 
-    def create
-      @template = @client.templates.new(template_params)
-      @template.client = @client
-      if @template.save
-        redirect_to client_templates_path(@client), notice: 'Template created successfully.'
-      else
-        render :new
-      end
+  def edit; end
+
+  def update
+    if @template.update(template_params)
+      redirect_to client_templates_path(@client), notice: 'Template updated successfully.'
+    else
+      render :edit
     end
+  end
 
-    def edit; end
+  def destroy
+    @template.destroy
+    redirect_to client_templates_path(@client), notice: 'Template deleted successfully.'
+  end
 
-    def update
-      if @template.update(template_params)
-        redirect_to client_templates_path(@client), notice: 'Template updated successfully.'
-      else
-        render :edit
-      end
-    end
+  def preview
+    liquid_template = params[:content] || ""
+    context = {} # Add any necessary context variables for rendering
+    rendered_html = Liquid::Template.parse(liquid_template).render(context)
 
-    def destroy
-      @template.destroy
-      redirect_to client_templates_path(@client), notice: 'Template deleted successfully.'
-    end
+    render html: rendered_html.html_safe
+  rescue Liquid::Error => e
+    render html: "<p class='text-red-500'>Error in Liquid template: #{e.message}</p>".html_safe
+  end
 
     private
 

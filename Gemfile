@@ -49,3 +49,4 @@ group :development do
   gem "web-console"
 end
 gem "public_site", path: "vendor/public_site"
+gem "jsbundling-rails", "~> 1.3"

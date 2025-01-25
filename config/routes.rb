@@ -69,6 +69,7 @@ Rails.application.routes.draw do
     scope module: "public_sites" do
       resources :templates do
         collection do
+          post :preview
           post :bulk_destroy
         end
       end
