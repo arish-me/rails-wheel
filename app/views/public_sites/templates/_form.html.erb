@@ -1,25 +1,79 @@
-<%= styled_form_with model: [@client, template], class: "space-y-4", id: "template-form", data: { client_id: @client.id } do |f| %>
+<%= styled_form_with model: [@client, template], 
+    class: "space-y-6", 
+    id: "template-form", 
+    data: { 
+      client_id: @client.id, 
+      controller: 'editor',
+      editor_target: "form"
+    } do |f| %>
+
   <% if template.errors.any? %>
     <%= render "shared/form_errors", model: template %>
   <% end %>
-  <section class="space-y-2 overflow-hidden">
-    <%= f.text_field :name, label: 'Name', placeholder: 'Enter Name' %>
 
-    <!-- CodeMirror for Liquid -->
-    <div class="codemirror-container">
-      <%= f.text_area :content, data: { codemirror: true }, placeholder: "Enter your Liquid code here" %>
-    </div>
-  </section>
-
-  <!-- Live Preview -->
+  <!-- Name Field -->
   <section>
-    <h3 class="text-lg font-bold">Preview</h3>
-    <div id="live-preview" class="p-4 border rounded bg-gray-50">
-      Enter your Liquid code to see the preview.
-    </div>
+    <%= f.text_field :name, label: 'Template Name', class: "w-full border p-2 rounded-md" %>
   </section>
 
+  <!-- Framework Selector -->
   <section>
-    <%= f.submit 'Submit' %>
+    <label for="framework" class="block font-medium text-gray-700">Choose Framework:</label>
+    <select id="framework" data-editor-target="framework" data-action="change->editor#changeFramework"
+      class="w-full border p-2 rounded-md">
+      <option value="tailwind">Tailwind</option>
+      <option value="bootstrap">Bootstrap</option>
+    </select>
   </section>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Right Side: Editors -->
+    <div class="border p-4 rounded-md bg-gray-100">
+      <!-- Run Button -->
+      <div class="flex justify-between mb-3">
+        <button type="button" class="px-4 py-2 bg-blue-500 text-white rounded-md" data-action="click->editor#runCode">
+          Run Code
+        </button>
+        <div class="flex space-x-2">
+          <button type="button" data-action="click->editor#showHtmlTab" class="px-3 py-1 bg-gray-300 rounded-md">
+            HTML
+          </button>
+          <button type="button" data-action="click->editor#showCssTab" class="px-3 py-1 bg-gray-300 rounded-md">
+            CSS
+          </button>
+        </div>
+      </div>
+
+      <!-- HTML Editor -->
+ <div id="html-editor-container" data-editor-target="htmlEditorContainer" class="editor-container border p-2 bg-white rounded-md">
+  <label class="font-bold">HTML:</label>
+  <div id="html-editor" 
+       data-editor-target="htmlEditor" 
+       data-html-content="<%= template.content.to_s.gsub('"', '&quot;') %>" 
+       class="h-64 w-full"></div>
+  <%= f.hidden_field :content, id: "html-hidden-field" %>
+</div>
+
+      <!-- CSS Editor -->
+      <div id="css-editor-container" data-editor-target="cssEditorContainer" class="editor-container hidden border p-2 bg-white rounded-md">
+        <label class="font-bold">CSS:</label>
+        <div id="css-editor" data-editor-target="cssEditor" class="h-64 w-full"></div>
+        <%= f.hidden_field :css_content, id: "css-hidden-field" %>
+      </div>
+    </div>
+
+    <!-- Left Side: Live Preview -->
+    <div class="border p-4 rounded-md bg-gray-100">
+      <h3 class="text-lg font-bold mb-2">Preview</h3>
+      <div class="border rounded-md h-96 overflow-hidden bg-white">
+        <iframe data-editor-target="preview" class="w-full h-full"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- Submit Button -->
+  <div class="mt-4">
+    <%= f.submit 'Submit', class: 'w-full px-4 py-2 bg-green-500 text-white rounded-md' %>
+  </div>
+
 <% end %>

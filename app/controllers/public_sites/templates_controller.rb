@@ -28,6 +28,7 @@ module PublicSites
   def edit; end
 
   def update
+    debugger
     if @template.update(template_params)
       redirect_to client_templates_path(@client), notice: 'Template updated successfully.'
     else
@@ -61,7 +62,7 @@ module PublicSites
     end
 
     def template_params
-      params.require(:template).permit(:name, :content, :layout_id)
+      params.require(:template).permit(:name,:content, :html_content, :css_content, :layout_id)
     end
   end
 end

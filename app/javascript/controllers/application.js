@@ -55,4 +55,9 @@ Turbo.config.forms.confirm = (message) => {
   });
 };
 
+
+import EditorController from "./editor_controller.js"
+application.register("editor", EditorController)
+
+
 export { application }

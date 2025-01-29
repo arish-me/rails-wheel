@@ -6,12 +6,19 @@
   "version": "1.0.0",
   "description": "The OS for your own coacing webapp",
   "scripts": {
-    "build": "esbuild app/javascript/*.* --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets --external:@hotwired/turbo-rails --external:flowbite --external:controllers --external:@rails/actiontext --external:trix --external:chartkick --external:Chart.bundle"
+    "build": "esbuild app/javascript/application.js --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets --external:flowbite --external:trix --external:chartkick --external:Chart.bundle"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@hotwired/stimulus": "^3.2.2",
+    "@hotwired/turbo-rails": "^8.0.3",
+    "@rails/actiontext": "^7.1.3-2",
+    "@rails/activestorage": "^7.0.0",
+    "@codemirror/lang-html": "^6.4.9",
     "@codemirror/lang-liquid": "^6.2.2",
+    "@codemirror/state": "^6.5.1",
+    "@codemirror/view": "^6.36.2",
     "codemirror": "^6.0.1"
   }
 }

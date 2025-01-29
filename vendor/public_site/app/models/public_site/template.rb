@@ -11,6 +11,8 @@ module PublicSite
     belongs_to :layout, optional: true # Templates may or may not use a layout
 
     validates :name, presence: true
-    validates :content, presence: true
+    #validates :content, presence: true
+    # has_rich_text :html_content
+    has_rich_text :css_content
   end
 end
