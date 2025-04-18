@@ -5,4 +5,4 @@
 faker_count = ENV['FAKER_COUNT'] ? ENV['FAKER_COUNT'].to_i : nil
 # faker_count = 100
 # Call the main seeder service with the faker count
-SeedData::MainSeeder.new(faker_count, true).call
+SeedData::MainSeeder.new(faker_count, faker_count).call

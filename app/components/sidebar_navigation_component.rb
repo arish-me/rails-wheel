@@ -4,7 +4,6 @@ class SidebarNavigationComponent < ViewComponent::Base
   attr_reader :current_user, :current_path
 
   def initialize(current_user:, current_path:)
-    puts "I am calling ----"
     @current_user = current_user
     @current_path = current_path
   end
