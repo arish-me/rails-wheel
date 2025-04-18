@@ -42,6 +42,9 @@ group :development, :test do
   gem "dotenv"
   gem "faker"                                            # Added for fake data generation
   gem "database_cleaner-active_record"                   # For cleaning the database in seed script
+  gem "rspec-rails"                                      # RSpec testing framework
+  gem "factory_bot_rails"                                # Factory pattern for test data
+  gem "shoulda-matchers"                                 # Simplifies test validation
 end
 
 group :development do
@@ -51,4 +54,11 @@ group :development do
   gem "rack-mini-profiler"                               # For performance profiling
   gem "memory_profiler"                                  # For memory profiling
   gem "stackprof"                                        # For CPU profiling
+end
+
+group :test do
+  gem "capybara"                                         # Acceptance test framework
+  gem "selenium-webdriver"                               # Browser automation for JS tests
+  gem "webdrivers"                                       # Easy installation of browser drivers
+  gem "rails-controller-testing"                         # Controller test helpers
 end

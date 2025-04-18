@@ -4,7 +4,7 @@ module SeedData
   class MainSeeder < BaseService
     attr_reader :faker_count
 
-    def initialize(faker_count = nil, fake_data= false)
+    def initialize(faker_count = nil, fake_data = false)
       @faker_count = faker_count || 100
       @fake_data = fake_data
     end

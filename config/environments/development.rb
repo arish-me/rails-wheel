@@ -82,5 +82,5 @@ Rails.application.configure do
   end
 
   # Configure Rack Mini Profiler
-  #config.middleware.insert_after ActionDispatch::Static, Rack::MiniProfiler
+  # config.middleware.insert_after ActionDispatch::Static, Rack::MiniProfiler
 end

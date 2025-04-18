@@ -33,6 +33,10 @@ A starter template for building modern web applications with Ruby on Rails. This
    ```bash
    bin/dev
    ```
+5. Run Capybara Specs:
+   ```bash
+   bundle exec rspec spec/features
+   ```
 
 ## Usage
 
