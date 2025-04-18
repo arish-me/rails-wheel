@@ -48,6 +48,7 @@ module ApplicationHelper
   end
 
   def can?(action, resource)
+    puts "I am calling"
     policy(resource).public_send("#{action}?")
   end
 end

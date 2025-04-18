@@ -41,13 +41,14 @@
 
       <!-- Submit Button -->
       <%= f.submit "Update", class: "inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white mb-4 rounded-lg btn btn--primary w-full" %>
+
     <% end %>
 
     <!-- Cancel Account -->
     <div class="inline-flex space-x-2">
     <p class="items-center px-5 py-2.5 text-sm text-gray-500 dark:text-gray-400 mb-4">Unhappy?</p>
 
-      <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete, class: "items-center px-5 py-2.5  text-sm font-medium text-center text-white bg-red-600 rounded-lg focus:ring-4 focus:ring-red-200 dark:focus:ring-red-900 hover:bg-red-700" %>
+    <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete, class: "items-center px-5 py-2.5  text-sm font-medium text-center text-white bg-red-600 rounded-lg focus:ring-4 focus:ring-red-200 dark:focus:ring-red-900 hover:bg-red-700" %>
     </div>
   </div>
 </section>

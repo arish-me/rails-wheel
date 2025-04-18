@@ -24,10 +24,13 @@
       </div>
       <div>
         <% if can?(:create, record) %>
-          <%= link_to new_resource_path, class: "btn rounded-lg bg-blue-600 text-white hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium text-sm px-4 py-2 flex items-center gap-1.5 transition-colors", data: { turbo_frame: :modal } do %>
-            <%= lucide_icon("plus", class: "w-4 h-4") %>
-            <span>Add <%= title.singularize %></span>
-          <% end %>
+         <%= render(ButtonComponent.new(
+            label: "Add #{title.singularize}",
+            href: new_resource_path,
+            icon: "plus",
+            variant: :default,
+            turbo_frame: :modal
+          )) %>
         <% end %>
       </div>
     </div>

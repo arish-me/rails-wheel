@@ -1,0 +1,16 @@
+<div class="mb-4 border-b border-gray-200 dark:border-gray-700">
+  <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-styled-tab" data-tabs-toggle="#default-styled-tab-content" role="tablist">
+    <% tabs.each do |tab| %>
+      <li class="me-2" role="presentation">
+        <%= link_to tab[:label],
+                    tab[:path],
+                    class: tab_class(tab[:path]),
+                    id: "#{tab[:id]}-tab",
+                    data: { tabs_target: "##{tab[:id]}-content" },
+                    role: "tab",
+                    "aria-controls": tab[:id],
+                    "aria-selected": is_current?(tab[:path]) %>
+      </li>
+    <% end %>
+  </ul>
+</div> 

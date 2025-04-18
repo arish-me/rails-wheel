@@ -1,6 +1,10 @@
 <%= form_with(model: profile, url: settings_profile_path, method: :patch, class: "contents") do |form| %>
   <div class="flex justify-end mb-4">
-    <%= form.submit "Save Profile", class: "btn btn--primary" %>
+    <%= render(ButtonComponent.new(
+      label: "Save Profile",
+      variant: :default,
+      type: "submit"
+    )) %>
   </div>
   <div class="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
     <%= render "settings/user_avatar_field", form: form, profile: profile %>

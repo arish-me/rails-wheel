@@ -1,0 +1,19 @@
+<aside id="sidebar" data-sidebar-target="sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700 shadow-md">
+  <div class="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
+    <ul class="space-y-2 font-medium">
+      <% menu_items.each do |item| %>
+        <li>
+          <%= link_to item[:path], class: active_link_class(item[:path]) do %>
+            <% if active_path?(item[:path]) %>
+              <%= lucide_icon item[:icon], class: "w-5 h-5 text-white transition duration-75" %>
+              <span class="ms-3 font-medium text-white"><%= item[:name] %></span>
+            <% else %>
+              <%= lucide_icon item[:icon], class: "w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" %>
+              <span class="ms-3 font-medium"><%= item[:name] %></span>
+            <% end %>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</aside>

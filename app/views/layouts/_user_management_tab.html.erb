@@ -1,46 +1,25 @@
-<!-- app/views/settings/_settings_tab.html.erb -->
-<div class="mb-4 border-b border-gray-200 dark:border-gray-700">
-  <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-styled-tab" data-tabs-toggle="#default-styled-tab-content" role="tablist">
-    <li class="me-2" role="presentation">
-    <li class="me-2" role="presentation">
-      <%= link_to "Users",
-                        admin_users_path,
-                        class: "inline-block p-4 border-b-2 rounded-t-lg #{current_page?(admin_users_path) ? 'text-purple-600 border-purple-600 dark:text-white dark:border-gray-600' : 'hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300'}",
-                        id: "users-tab",
-                        data: { tabs_target: "#users-content" },
-                        role: "tab",
-                        "aria-controls": "users",
-                          "aria-selected": current_page?(admin_users_path) %>
-    </li>
-      <%= link_to "Roles",
-                        roles_path,
-                        class: "inline-block p-4 border-b-2 rounded-t-lg #{current_page?(roles_path) ? 'text-purple-600 border-purple-600 dark:text-white dark:border-gray-600' : 'hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300'}",
-                        id: "roles-tab",
-                        data: { tabs_target: "#roles-content" },
-                        role: "tab",
-                        "aria-controls": "roles",
-                        "aria-selected": current_page?(roles_path) %>
-    </li>
-    <li class="me-2" role="presentation">
-      <%= link_to "Permissions",
-                        permissions_path,
-                        class: "inline-block p-4 border-b-2 rounded-t-lg #{current_page?(permissions_path) ? 'text-purple-600 border-purple-600 dark:text-white dark:border-gray-600' : 'hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300'}",
-                        id: "permission-tab",
-                        data: { tabs_target: "#permission-content" },
-                        role: "tab",
-                        "aria-controls": "permissions",
-                        "aria-selected": current_page?(permissions_path) %>
-    </li>
-
-    <li class="me-2" role="presentation">
-      <%= link_to "Manage Permissions",
-                        role_permissions_path,
-                        class: "inline-block p-4 border-b-2 rounded-t-lg #{current_page?(role_permissions_path) ? 'text-purple-600 border-purple-600 dark:text-white dark:border-gray-600' : 'hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300'}",
-                        id: "role-permission-tab",
-                        data: { tabs_target: "#role-permission-content" },
-                        role: "tab",
-                        "aria-controls": "rolepermissions",
-                          "aria-selected": request.path == role_permissions_path %>
-    </li>
-  </ul>
-</div>
+<%= render(TabComponent.new(
+  tabs: [
+    {
+      label: "Users",
+      path: admin_users_path,
+      id: "users-tab"
+    },
+    {
+      label: "Roles",
+      path: roles_path,
+      id: "roles-tab"
+    },
+    {
+      label: "Permissions",
+      path: permissions_path,
+      id: "permission-tab"
+    },
+    {
+      label: "Manage Permissions",
+      path: role_permissions_path,
+      id: "roles-tab"
+    },
+  ],
+  current_path: request.path
+)) %>

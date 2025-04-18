@@ -1,0 +1,56 @@
+<nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 shadow-sm">
+  <div class="px-3 py-3 lg:px-5 lg:pl-3">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center justify-start rtl:justify-end">
+        <button data-controller="sidebar" data-action="click->sidebar#toggle" class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+          <span class="sr-only">Open sidebar</span>
+          <%= lucide_icon 'menu', class: "w-6 h-6" %>
+        </button>
+        <a href="/" class="flex ms-2 md:me-24">
+          <span class="self-center text-xl font-bold text-blue-600 sm:text-2xl whitespace-nowrap dark:text-blue-500">Wheel</span>
+        </a>
+      </div>
+      <div class="flex items-center">
+        <div class="flex items-center ms-3">
+          <div data-controller="dropdown">
+            <button type="button" data-action="dropdown#toggle" class="flex text-sm bg-gray-200 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600 dark:bg-gray-700 border-2 border-white dark:border-gray-600">
+              <span class="sr-only">Open user menu</span>
+              <div id="navbar_avatar">
+                <%= render partial: "settings/user_avatar", locals: { profile: current_user.profile, nav: true } %>
+              </div>
+            </button>
+            <div data-dropdown-target="menu" class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow-lg absolute right-0 top-10 w-48 dark:bg-gray-700 dark:divide-gray-600">
+              <div class="px-4 py-3" role="none">
+                <p class="text-sm font-medium text-gray-900 dark:text-white" role="none">
+                  <%= display_user_name %>
+                </p>
+                <p class="text-sm text-gray-500 truncate dark:text-gray-300" role="none">
+                  <%= current_user.email %>
+                </p>
+              </div>
+              <ul class="py-1" role="none">
+                <% dropdown_menu_items.each do |item| %>
+                  <li>
+                    <%= link_to item[:path], class: active_dropdown_item_class(item[:path]), data: item[:data] do %>
+                      <div class="flex items-center">
+                        <% if active_path?(item[:path]) %>
+                          <%= lucide_icon item[:icon], class: "w-4 h-4 mr-2 text-blue-500 dark:text-blue-400" %>
+                        <% else %>
+                          <%= lucide_icon item[:icon], class: "w-4 h-4 mr-2 text-gray-500 dark:text-gray-400" %>
+                        <% end %>
+                        <%= item[:name] %>
+                      </div>
+                    <% end %>
+                  </li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+          <div class="ml-2">
+            <%= render partial: 'layouts/navs/theme_selector' %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
