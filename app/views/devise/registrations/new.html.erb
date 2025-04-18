@@ -1,66 +1,75 @@
-<section class="bg-gray-50 dark:bg-gray-900">
-  <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-    <%= link_to root_path, class: "flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white" do %>
-      Wheel
-    <% end %>
+<section class="flex h-screen">
+  <%= render partial: 'devise/shared/side_view' %>
 
-    <div class="w-full bg-white rounded-lg shadow-lg dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-      <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
-        <div class="sm:mx-auto sm:w-full sm:max-w-md">
-          <h2 class="mt-6 text-center text-2xl font-bold text-gray-900 dark:text-white">
-            Get Started
-          </h2>
-          <p class="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
-            Or existing user
-            <%= link_to "Login", new_session_path(resource_name), class: "font-medium text-blue-600 hover:text-blue-500 dark:text-blue-500 dark:hover:text-blue-400 transition-colors duration-200" %>
-          </p>
+  <!-- Right side - Form area -->
+  <div class="w-full md:w-1/2 flex flex-col justify-center items-center p-8 bg-white">
+    <div class="w-full max-w-md">
+      <!-- Mobile logo (visible only on mobile) -->
+      <div class="md:hidden flex items-center justify-between mb-8">
+        <%= link_to root_path, class: "flex items-center text-2xl font-semibold text-gray-900" do %>
+          Wheel
+        <% end %>
+        <%= link_to "Back", root_path, class: "text-sm font-medium text-gray-600" %>
+      </div>
+
+      <h2 class="text-2xl font-bold text-gray-900 mb-2">
+        Create an account
+      </h2>
+      <p class="text-sm text-gray-600 mb-8">
+        Or existing user
+        <%= link_to "Login", new_session_path(resource_name), class: "font-medium text-blue-600 hover:text-blue-500 transition-colors duration-200" %>
+      </p>
+
+      <% if resource.errors.present? %>
+        <div class="text-red-600 flex items-center gap-2 mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+          </svg>
+          <p class="text-sm"><%= resource.errors.full_messages.to_sentence %></p>
         </div>
-        <% if resource.errors.present? %>
-          <div class="text-red-600 flex items-center gap-2">
-            <%= lucide_icon "circle-alert", class: "w-5 h-5" %>
-            <p class="text-sm"><%= resource.errors.full_messages.to_sentence %></p>
-          </div>
-        <% end %>
+      <% end %>
 
-        <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: "space-y-4 md:space-y-6 mt-8" }) do |f| %>
-          <div>
-            <%= f.label :email, class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
-            <%= f.email_field :email, autofocus: true, autocomplete: "email", required: true, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 transition-colors duration-200", placeholder: "name@company.com" %>
+      <%= styled_form_with(model: resource, url:  registration_path(resource_name), method: :post, local: true, class: "space-y-4") do |f| %>
+        <section class="space-y-2 overflow-hidden">
+          <%= f.email_field :email, label: 'Email', placeholder: 'Enter Email', autofocus: true, autocomplete: "email",  required: true %>
+        </section>
+
+        <section class="space-y-2 overflow-hidden">
+          <%= f.password_field :password, label: 'Password', placeholder: 'Enter Password', autocomplete: "new-password",  required: true %>
+        </section>
+
+        <section class="space-y-2 overflow-hidden">
+          <%= f.password_field :password_confirmation, label: 'Confirm Password', placeholder: 'Enter Password', autocomplete: "new-password",  required: true %>
+        </section>
+
+        <div class="flex items-start">
+          <div class="flex items-center h-5">
+            <input id="terms" aria-describedby="terms" type="checkbox" class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-2 focus:ring-blue-500" required="">
           </div>
-          <div>
-            <%= f.label :password, class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
-            <%= f.password_field :password, autocomplete: "new-password", required: true, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 transition-colors duration-200", placeholder: "Enter Password" %>
-          </div>
-          <div>
-            <%= f.label :password_confirmation, class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
-            <%= f.password_field :password_confirmation, autocomplete: "new-password", required: true, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 transition-colors duration-200", placeholder: "Confirm Password" %>
-          </div>
-          <div class="flex items-start">
-            <div class="flex items-center h-5">
-              <input id="terms" aria-describedby="terms" type="checkbox" class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800" required="">
-            </div>
-            <div class="ml-3 text-sm">
-              <label for="terms" class="text-gray-500 dark:text-gray-400">I accept the <a class="font-medium text-blue-600 hover:text-blue-500 dark:text-blue-500 dark:hover:text-blue-400 transition-colors duration-200" href="#">Terms and Conditions</a></label>
-            </div>
-          </div>
-          <%= f.submit "Create Account", class: "w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-700 transition-colors duration-200" %>
-        <% end %>
-        <div class="mt-6">
-          <div class="relative">
-            <div class="absolute inset-0 flex items-center">
-              <div class="w-full border-t border-gray-300 dark:border-gray-600"></div>
-            </div>
-            <div class="relative flex justify-center text-sm">
-              <span class="px-2 bg-white text-gray-500 dark:bg-gray-800 dark:text-gray-400">
-                Or continue with
-              </span>
-            </div>
-          </div>
-          <div class="mt-6 grid grid-cols-3 gap-3">
-            <%= render "devise/shared/social_links" %>
+          <div class="ml-3 text-sm">
+            <label for="terms" class="text-gray-500">I accept the <a class="font-medium text-blue-600 hover:text-blue-500 transition-colors duration-200" href="#">Terms and Conditions</a></label>
           </div>
         </div>
-        <div class="mt-4 text-center text-sm text-gray-600 dark:text-gray-400">
+        <%= f.submit "Create Account" %>
+      <% end %>
+
+      <div class="mt-6">
+        <div class="relative">
+          <div class="absolute inset-0 flex items-center">
+            <div class="w-full border-t border-gray-300"></div>
+          </div>
+          <div class="relative flex justify-center text-sm">
+            <span class="px-2 bg-white text-gray-500">
+              OR CONTINUE WITH
+            </span>
+          </div>
+        </div>
+
+        <div class="mt-6 grid grid-cols-3 gap-3">
+          <%= render "devise/shared/social_links" %>
+        </div>
+
+        <div class="mt-4 text-center text-sm text-gray-600">
           <%= render "devise/shared/links" %>
         </div>
       </div>
