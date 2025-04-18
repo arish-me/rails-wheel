@@ -31,9 +31,13 @@
               <ul class="py-1" role="none">
                 <% dropdown_menu_items.each do |item| %>
                   <li>
-                    <%= link_to item[:path], class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white", data: item[:data] do %>
+                    <%= link_to item[:path], class: active_dropdown_item_class(item[:path]), data: item[:data] do %>
                       <div class="flex items-center">
-                        <%= lucide_icon item[:icon], class: "w-4 h-4 mr-2 text-gray-500 dark:text-gray-400" %>
+                        <% if active_path?(item[:path]) %>
+                          <%= lucide_icon item[:icon], class: "w-4 h-4 mr-2 text-blue-500 dark:text-blue-400" %>
+                        <% else %>
+                          <%= lucide_icon item[:icon], class: "w-4 h-4 mr-2 text-gray-500 dark:text-gray-400" %>
+                        <% end %>
                         <%= item[:name] %>
                       </div>
                     <% end %>

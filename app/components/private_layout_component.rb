@@ -3,15 +3,16 @@
 class PrivateLayoutComponent < ViewComponent::Base
   attr_reader :current_user
 
-  def initialize(current_user:)
+  def initialize(current_user:, current_path:)
     @current_user = current_user
+    @current_path = current_path
   end
 
   def call
     content_tag :div, class: "private-layout" do
       safe_join([
-        render(TopNavigationComponent.new(current_user: current_user)),
-        render(SidebarNavigationComponent.new(current_user: current_user)),
+        render(TopNavigationComponent.new(current_user: current_user, current_path: @current_path)),
+        render(SidebarNavigationComponent.new(current_user: current_user, current_path: @current_path)),
         content_wrapper
       ])
     end
