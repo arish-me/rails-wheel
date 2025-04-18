@@ -21,6 +21,12 @@ module ApplicationHelper
     render partial: "shared/modal", locals: { content:, classes: options[:classes] }
   end
 
+  def drawer(reload_on_close: false, &block)
+    content = capture &block
+    render partial: "shared/drawer", locals: { content:, reload_on_close: }
+  end
+
+
   def custom_pagy_url_for(pagy, page, current_path: nil)
     if current_path.blank?
       pagy_url_for(pagy, page)
