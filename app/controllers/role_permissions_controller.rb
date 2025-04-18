@@ -50,13 +50,14 @@ class RolePermissionsController < ApplicationController
     end
 
     respond_to do |format|
+      flash[:notice] = "Permissions assigned successfully."
       format.turbo_stream { render turbo_stream: turbo_stream.refresh(request_id: nil) }
       format.html { redirect_to roles_path, notice: "Permissions updated successfully." }
     end
     rescue StandardError => e
       respond_to do |format|
         format.turbo_stream do
-          flash.now[:alert] = "Failed to update permissions: #{e.message}"
+          flash.now[:alert] = "Failed to assigned permissions: #{e.message}"
           format.html { render :new, status: :unprocessable_entity }
       end
     end
