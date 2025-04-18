@@ -48,6 +48,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_18_073510) do
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_categories_on_name"
     t.index ["user_id"], name: "index_categories_on_user_id"
   end
 

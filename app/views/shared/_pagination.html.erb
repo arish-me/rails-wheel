@@ -6,7 +6,7 @@
         Showing <span class="font-semibold text-gray-900 dark:text-white"><%= pagy.from %></span> to <span class="font-semibold text-gray-900 dark:text-white"><%= pagy.to %></span> of <span class="font-semibold text-gray-900 dark:text-white"><%= pagy.count %></span> results
       </span>
     </div>
-    
+
     <div class="flex items-center gap-2">
       <% if pagy.prev %>
         <%= link_to custom_pagy_url_for(pagy, pagy.prev, current_path: current_path),
@@ -20,7 +20,7 @@
           <%= lucide_icon("chevron-left", class: "w-4 h-4") %>
         </button>
       <% end %>
-    
+
       <div class="hidden sm:flex sm:items-center">
         <% pagy.series.each do |series_item| %>
           <% if series_item.is_a?(Integer) %>
@@ -38,11 +38,11 @@
           <% end %>
         <% end %>
       </div>
-      
+
       <span class="sm:hidden text-sm font-medium text-gray-700 dark:text-gray-300">
         Page <%= pagy.page %> of <%= pagy.pages %>
       </span>
-    
+
       <% if pagy.next %>
         <%= link_to custom_pagy_url_for(pagy, pagy.next, current_path: current_path),
               class: "flex items-center justify-center h-8 w-8 text-gray-600 bg-white rounded-md border border-gray-300 hover:bg-gray-50 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-blue-400 transition-colors",
@@ -55,17 +55,18 @@
           <%= lucide_icon("chevron-right", class: "w-4 h-4") %>
         </button>
       <% end %>
-      
+
       <%= form_with url: custom_pagy_url_for(pagy, pagy.page, current_path: current_path),
                   method: :get,
                   class: "hidden md:flex items-center ml-4",
                   data: { controller: "auto-submit-form" } do |f| %>
         <%= f.label :per_page, t(".rows_per_page", default: "Rows per page"), class: "text-sm text-gray-600 dark:text-gray-300 mr-2" %>
+
         <%= f.select :per_page,
-                  options_for_select(["10", "20", "30", "50"], pagy.items),
-                  {},
-                  class: "bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 text-sm rounded-md py-1 px-2 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 cursor-pointer",
-                  data: { "auto-submit-form-target": "auto" } %>
+             options_for_select(["10", "20", "30", "50"], pagy.limit.to_s),
+             {},
+             class: "bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 text-sm rounded-md py-1 px-2 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 cursor-pointer",
+             data: { "auto-submit-form-target": "auto" } %>
       <% end %>
     </div>
   </nav>

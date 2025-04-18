@@ -40,9 +40,15 @@ group :development, :test do
   gem "rubocop-rails-omakase", require: false
   gem "htmlbeautifier"
   gem "dotenv"
+  gem "faker"                                            # Added for fake data generation
+  gem "database_cleaner-active_record"                   # For cleaning the database in seed script
 end
 
 group :development do
   gem "hotwire-livereload"
   gem "web-console"
+  gem "bullet"                                           # For N+1 query detection
+  gem "rack-mini-profiler"                               # For performance profiling
+  gem "memory_profiler"                                  # For memory profiling
+  gem "stackprof"                                        # For CPU profiling
 end
