@@ -4,6 +4,7 @@ class SidebarNavigationComponent < ViewComponent::Base
   attr_reader :current_user, :current_path
 
   def initialize(current_user:, current_path:)
+    puts "I am calling ----"
     @current_user = current_user
     @current_path = current_path
   end
@@ -35,7 +36,7 @@ class SidebarNavigationComponent < ViewComponent::Base
 
   def active_link_class(path)
     if active_path?(path)
-      "flex items-center p-2 text-white bg-blue-600 rounded-lg dark:bg-blue-500 group transition-colors duration-200"
+      "flex items-center p-2 text-white bg-gray-900 text-white hover:bg-gray-700 rounded-lg dark:bg-blue-500 group transition-colors duration-200"
     else
       "flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group transition-colors duration-200"
     end

@@ -35,7 +35,7 @@ class TopNavigationComponent < ViewComponent::Base
 
   def active_dropdown_item_class(path)
     if active_path?(path)
-      "block px-4 py-2 text-sm bg-gray-100 text-blue-600 dark:bg-gray-600 dark:text-blue-400"
+      "block px-4 py-2 text-sm bg-gray-100 text-alpha-black-600 dark:bg-gray-600 dark:text-blue-400"
     else
       "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
     end
