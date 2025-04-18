@@ -10,14 +10,14 @@
     <%= render partial: "shared/common/selection_bar", locals: { destroy_path: bulk_destroy_admin_users_path } %>
   </div>
   <div class="space-y-4">
-    <h1 class="text-xl dark:text-white">Users</h1>
-    <header class="flex justify-between items-center items-center text-gray-900 font-medium">
+    <h1 class="text-xl font-semibold text-gray-900 dark:text-white">Users</h1>
+    <header class="flex justify-between items-center items-center">
       <div class="flex">
         <%= render partial: "shared/common/search_bar", locals: { resource_path: admin_users_path, resource_id: 'users-search', placeholder: 'Search users by email' } %>
       </div>
       <div class="flex">
         <% if can?(:create, User) %>
-          <%= link_to new_admin_user_path, class: "rounded-lg btn btn--primary text-white flex items-center gap-1 justify-center px-3 py-2", data: { turbo_frame: :modal } do %>
+          <%= link_to new_admin_user_path, class: "rounded-lg btn btn--primary bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-1 justify-center px-3 py-2 transition-colors", data: { turbo_frame: :modal } do %>
             <%= lucide_icon("plus", class: "w-5 h-5") %>
             <p class="text-sm font-medium">New User</p>
           <% end %>
@@ -31,7 +31,7 @@
             <table class="min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-700">
               <thead class="bg-gray-100 dark:bg-gray-800 sticky top-0 z-10">
                 <tr>
-                  <% if  can?(:create, User) %>
+                  <% if can?(:create, User) %>
                     <th scope="col" class="p-4">
                       <div class="flex items-center">
                         <%= check_box_tag "selection_entry",
@@ -47,7 +47,7 @@
                     Created At
                   </th>
                   <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
-                    Updates At
+                    Updated At
                   </th>
                   <th scope="col" class="p-4">
                     <span class="sr-only">Actions</span>
@@ -56,7 +56,7 @@
               </thead>
               <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
                 <% @users.each do |record| %>
-                  <tr class="hover:bg-gray-100 dark:hover:bg-gray-700">
+                  <tr class="hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                     <% if can?(:create, User) %>
                       <td class="p-4 w-4">
                         <% if can?(:create, User) %>
@@ -81,13 +81,12 @@
                       <td class="py-4 px-6 text-sm font-medium text-right whitespace-nowrap flex items-center space-x-4">
                         <%= link_to edit_admin_user_path(record),
                               data: { turbo_frame: :modal },
-                              class: "dark:text-white hover:underline" do %>
+                              class: "text-gray-700 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors" do %>
                           <%= lucide_icon('square-pen', class: "w-5 h-5") %>
                         <% end %>
                         <%= link_to 'Impersonate', impersonate_admin_user_path(record),
                               data: { turbo_method: :post },
-                              class: "btn bg-red-800 text-white ml-3" %>
-
+                              class: "text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 transition-colors" %>
                       </td>
                     <% end %>
                   </tr>

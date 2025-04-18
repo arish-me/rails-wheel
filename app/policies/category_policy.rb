@@ -7,6 +7,10 @@ class CategoryPolicy < ApplicationPolicy
     can_view? || can_edit?
   end
 
+  def edit?
+    can_edit?
+  end
+
   def create?
     can_edit?
   end
