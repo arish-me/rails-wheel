@@ -1,60 +1,79 @@
-<table class="min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-700">
-  <thead class="bg-gray-100 dark:bg-gray-800 sticky top-0 z-10">
-    <tr>
+<table class="min-w-full table-fixed divide-y divide-gray-200 dark:divide-gray-700">
+  <thead>
+    <tr class="bg-gray-50 dark:bg-gray-700 sticky top-0 z-10">
       <% if bulk_select && can?(:create, record) %>
-        <th scope="col" class="p-4">
-          <div class="flex items-center">
+        <th scope="col" class="p-4 w-4">
+          <div class="flex items-center justify-center">
             <%= check_box_tag "selection_entry",
-                class: "w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600",
+                class: "w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600",
                 data: { action: "bulk-select#togglePageSelection" } %>
           </div>
         </th>
       <% end %>
       <% columns.each do |column| %>
-        <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
+        <th scope="col" class="py-3.5 px-6 text-xs font-semibold tracking-wider text-left text-gray-500 uppercase dark:text-gray-300">
           <%= column[:header] %>
         </th>
       <% end %>
       <% if actions.present? %>
-        <th scope="col" class="p-4">
+        <th scope="col" class="p-4 w-20">
           <span class="sr-only">Actions</span>
         </th>
       <% end %>
     </tr>
   </thead>
   <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
-    <% records.each do |record| %>
-      <tr class="hover:bg-gray-100 dark:hover:bg-gray-700">
-        <% if bulk_select && can?(:create, record) %>
-          <td class="p-4 w-4">
-            <% if can?(:create, record) %>
-              <div class="flex items-center">
-                <%= check_box_tag dom_id(record, "selection"),
-                    class: "maybe-checkbox maybe-checkbox--light",
-                    data: { id: record.id, "bulk-select-target": "row", action: "bulk-select#toggleRowSelection" } %>
-              </div>
-            <% end %>
-
-          </td>
-        <% end %>
-        <% columns.each do |column| %>
-          <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
-            <%= record.public_send(column[:attribute]) %>
-          </td>
-        <% end %>
-        <% if actions.present? && can?(:create, record) %>
-          <td class="py-4 px-6 text-sm font-medium text-right whitespace-nowrap">
-            <% actions.each do |action| %>
-              <%= link_to action[:url].call(record),
-                  data: { turbo_frame: action[:turbo_frame] || nil, turbo_method: action[:turbo_method] || nil, turbo: action[:turbo] || true },
-                  class: "dark:text-white hover:underline" do %>
-                <% if action[:icon] %>
-                  <%= lucide_icon(action[:icon], class: "w-5 h-5") %>
-                <% end %>
+    <% if records.any? %>
+      <% records.each do |record| %>
+        <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-150">
+          <% if bulk_select && can?(:create, record) %>
+            <td class="p-4 w-4">
+              <% if can?(:create, record) %>
+                <div class="flex items-center justify-center">
+                  <%= check_box_tag dom_id(record, "selection"),
+                      class: "w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600",
+                      data: { id: record.id, "bulk-select-target": "row", action: "bulk-select#toggleRowSelection" } %>
+                </div>
               <% end %>
-            <% end %>
-          </td>
-        <% end %>
+            </td>
+          <% end %>
+          <% columns.each_with_index do |column, index| %>
+            <td class="<%= index == 0 ? 'font-medium' : '' %> py-4 px-6 text-sm text-gray-700 <%= column[:nowrap] != false ? 'whitespace-nowrap' : '' %> dark:text-gray-200">
+              <% if column[:format] %>
+                <%= column[:format].call(record.public_send(column[:attribute])) %>
+              <% elsif column[:attribute] == :created_at || column[:attribute] == :updated_at %>
+                <%= record.public_send(column[:attribute]).strftime("%b %d, %Y %H:%M") if record.public_send(column[:attribute]).present? %>
+              <% else %>
+                <%= record.public_send(column[:attribute]) %>
+              <% end %>
+            </td>
+          <% end %>
+          <% if actions.present? && can?(:create, record) %>
+            <td class="py-3 px-6 text-sm font-medium text-right whitespace-nowrap">
+              <div class="flex justify-end items-center space-x-3">
+                <% actions.each do |action| %>
+                  <%= link_to action[:url].call(record),
+                      data: { turbo_frame: action[:turbo_frame] || nil, turbo_method: action[:turbo_method] || nil, turbo: action[:turbo] || true },
+                      class: "text-gray-500 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors" do %>
+                    <% if action[:icon] %>
+                      <%= lucide_icon(action[:icon], class: "w-5 h-5") %>
+                    <% end %>
+                  <% end %>
+                <% end %>
+              </div>
+            </td>
+          <% end %>
+        </tr>
+      <% end %>
+    <% else %>
+      <tr>
+        <td colspan="<%= columns.size + (bulk_select ? 1 : 0) + (actions.present? ? 1 : 0) %>" class="py-8 px-6 text-center text-gray-500 dark:text-gray-400">
+          <div class="flex flex-col items-center justify-center">
+            <%= lucide_icon("database", class: "w-10 h-10 mb-2 text-gray-300 dark:text-gray-600") %>
+            <p class="text-base font-medium">No records found</p>
+            <p class="text-sm mt-1">Try adjusting your search or filters</p>
+          </div>
+        </td>
       </tr>
     <% end %>
   </tbody>
