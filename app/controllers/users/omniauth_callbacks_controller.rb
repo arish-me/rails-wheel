@@ -10,6 +10,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       user.provider = user_info["provider"]
       user.uid = user_info["uid"]
       user.password = SecureRandom.hex(15) if user.encrypted_password.blank?
+      user.skip_confirmation!
     end
 
     if user.persisted?
@@ -39,6 +40,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       user.provider = user_info["provider"]
       user.uid = user_info["uid"]
       user.password = SecureRandom.hex(15) if user.encrypted_password.blank?
+      user.skip_confirmation!
     end
 
     if user.persisted?

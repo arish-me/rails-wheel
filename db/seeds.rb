@@ -70,11 +70,13 @@ users = [
 ]
 
 users.each do |user_data|
-  user = User.find_or_create_by!(email: user_data[:email]) do |u|
+  user = User.find_or_initialize_by(email: user_data[:email]) do |u|
     u.password = "#{user_data[:email]}"
     u.password_confirmation = "#{user_data[:email]}"
+    u.confirmed_at = Time.now.utc
   end
-
+  user.save(validate: false)
+  user.skip_confirmation!
   role = Role.find_by(name: user_data[:role])
   UserRole.find_or_create_by!(user: user, role: role)
 
