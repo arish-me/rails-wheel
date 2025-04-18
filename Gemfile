@@ -29,6 +29,7 @@ gem "tailwindcss-rails", "~> 3.1"
 gem "omniauth-google-oauth2"
 gem "omniauth-rails_csrf_protection"
 gem "omniauth-github"
+gem "view_component"
 
 # Background Jobs
 gem "good_job"
