@@ -1,16 +1,39 @@
-<h2>Resend confirmation instructions</h2>
+<section class="flex h-screen">
+  <%= render partial: 'devise/shared/side_view' %>
 
-<%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
+  <!-- Right side - Form area -->
+  <div class="w-full md:w-1/2 flex flex-col justify-center items-center p-8 bg-white">
+    <div class="w-full max-w-md">
+      <!-- Mobile logo (visible only on mobile) -->
+      <div class="md:hidden flex items-center justify-between mb-8">
+        <%= link_to root_path, class: "flex items-center text-2xl font-semibold text-gray-900" do %>
+          Wheel
+        <% end %>
+        <%= link_to "Back", root_path, class: "text-sm font-medium text-gray-600" %>
+      </div>
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email", value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email) %>
+      <h2 class="text-2xl font-bold text-gray-900 mb-2">
+        Resend confirmation instructions
+      </h2>
+      <p class="text-sm text-gray-600 mb-8">
+        Enter your email to get confirmation instructions
+      </p>
+
+      <%= styled_form_with(model: resource, url: confirmation_path(resource_name), method: :post, local: true, class: "space-y-4") do |f| %>
+        <% if resource.errors.any? %>
+          <%= render "shared/form_errors", model: resource %>
+        <% end %>
+        <section class="space-y-2 overflow-hidden">
+          <%= f.email_field :email, label: 'Email', placeholder: 'Enter Email', autofocus: true, autocomplete: "email", value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email) %>
+        </section>
+        <section>
+          <%= f.submit 'Reset Password' %>
+        </section>
+      <% end %>
+
+      <div class="mt-6 text-center text-sm text-gray-600">
+        <%= render "devise/shared/links" %>
+      </div>
+    </div>
   </div>
-
-  <div class="actions">
-    <%= f.submit "Resend confirmation instructions" %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+</section>

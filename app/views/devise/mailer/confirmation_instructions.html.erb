@@ -1,5 +1,19 @@
+<h1 style="font-size: 24px; color: #111827; margin-bottom: 20px;">Confirm Your Account</h1>
+
 <p>Welcome <%= @email %>!</p>
 
-<p>You can confirm your account email through the link below:</p>
+<p>Thank you for signing up with Wheel. To complete your registration, please confirm your email address by clicking the button below:</p>
 
-<p><%= link_to 'Confirm my account', confirmation_url(@resource, confirmation_token: @token) %></p>
+<div style="text-align: center; margin: 30px 0;">
+  <%= link_to 'Confirm My Account', confirmation_url(@resource, confirmation_token: @token), class: 'button', style: 'display: inline-block; background-color: #3b82f6; color: #ffffff !important; text-decoration: none; font-weight: 500; padding: 12px 24px; border-radius: 6px; margin: 20px 0; text-align: center;' %>
+</div>
+
+<p>If the button above doesn't work, you can copy and paste the following URL into your browser:</p>
+
+<p style="margin: 15px 0; word-break: break-all; background-color: #f3f4f6; padding: 10px; border-radius: 4px; font-size: 14px;">
+  <%= confirmation_url(@resource, confirmation_token: @token) %>
+</p>
+
+<p>If you didn't create an account, please ignore this email.</p>
+
+<p>Thanks,<br>The Wheel Team</p>
