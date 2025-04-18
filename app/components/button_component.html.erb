@@ -1,0 +1,33 @@
+<% if @href.present? %>
+  <%= link_to @href, class: button_classes, method: @method, data: button_data, disabled: @disabled do %>
+    <% if @icon && @icon_position == :left %>
+      <%= render_icon %>
+    <% end %>
+    
+    <% if @label.present? %>
+      <span><%= @label %></span>
+    <% end %>
+    
+    <% if @icon && @icon_position == :right %>
+      <%= render_icon %>
+    <% end %>
+    
+    <%= content %>
+  <% end %>
+<% else %>
+  <button type="<%= @type || 'button' %>" class="<%= button_classes %>" data="<%= button_data %>" <%= "disabled" if @disabled %>>
+    <% if @icon && @icon_position == :left %>
+      <%= render_icon %>
+    <% end %>
+    
+    <% if @label.present? %>
+      <span><%= @label %></span>
+    <% end %>
+    
+    <% if @icon && @icon_position == :right %>
+      <%= render_icon %>
+    <% end %>
+    
+    <%= content %>
+  </button>
+<% end %> 
