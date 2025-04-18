@@ -49,10 +49,41 @@ class SidebarNavigationComponent < ViewComponent::Base
       "w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
     end
   end
+def active_path?(path)
+  # Clean and normalize paths
+  clean_current = normalize_path(current_path)
+  clean_path = normalize_path(path)
 
-  private
+  # Case 1: Exact match
+  return true if clean_current == clean_path
 
-  def active_path?(path)
-    current_path == path || current_path.start_with?("#{path}/")
-  end
+  # Case 2: Current path is a sub-path
+  return true if clean_path.present? &&
+                 clean_path != "/" &&
+                 clean_current.start_with?("#{clean_path}/")
+
+  # Case 3: Resource identification (e.g., /users and /users/123 should match)
+  current_resource = resource_from_path(clean_current)
+  path_resource = resource_from_path(clean_path)
+
+  current_resource.present? &&
+         path_resource.present? &&
+         current_resource == path_resource
+end
+
+private
+
+def normalize_path(path)
+  # Remove trailing slashes and query params
+  path.split("?").first.chomp("/")
+end
+
+def resource_from_path(path)
+  segments = path.split("/").reject(&:empty?)
+  return nil if segments.empty?
+
+  # Extract the resource name from the path (typically the first segment)
+  # This works for standard RESTful routes like /users, /users/new, /users/123, etc.
+  segments.first
+end
 end
