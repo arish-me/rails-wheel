@@ -1,6 +1,13 @@
 Rails.application.routes.draw do
+  # ActiveStorage direct uploads
+  #post '/rails/active_storage/direct_uploads', to: 'active_storage/direct_uploads#create', as: :rails_direct_uploads
+
   namespace :settings do
-    resource :profile, only: [:edit, :update] # Singular resource for profile
+    resource :profile, only: [:edit, :update] do # Singular resource for profile
+      patch :update_avatar
+      delete :delete_avatar
+      patch :update_theme
+    end
     get 'account', to: 'settings#edit_account', as: 'edit_account'
   end
 

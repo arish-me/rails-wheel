@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_12_052713) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_18_073510) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -156,6 +156,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_12_052713) do
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "phone_number"
+    t.date "date_of_birth"
+    t.string "location"
+    t.string "website"
+    t.jsonb "social_links", default: {}
+    t.integer "theme_preference", default: 0
+    t.index ["theme_preference"], name: "index_profiles_on_theme_preference"
     t.index ["user_id"], name: "index_profiles_on_user_id"
   end
 

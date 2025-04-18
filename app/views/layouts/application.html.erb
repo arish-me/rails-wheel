@@ -8,6 +8,10 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= yield :head %>
+    <% if user_signed_in? %>
+      <meta name="user-signed-in" content="true">
+      <meta name="direct-upload-url" content="<%= rails_direct_uploads_path %>">
+    <% end %>
     <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
     <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
     <link rel="icon" href="/icon.png" type="image/png">
@@ -18,7 +22,8 @@
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
-  <body class="h-full dark:bg-gray-800">
+  <body class="h-full dark:bg-gray-800" 
+        <% if session[:theme].present? %>data-session-theme="<%= session[:theme] %>"<% end %>>
       <div class="fixed z-50 bottom-6 left-6">
       <div id="notification-tray" class="space-y-1">
         <%= render_flash_notifications %>
