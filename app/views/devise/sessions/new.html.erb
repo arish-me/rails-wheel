@@ -14,6 +14,7 @@
             <%= link_to "create an account", new_registration_path(resource_name), class: "font-medium text-blue-600 hover:text-blue-500 dark:text-blue-500 dark:hover:text-blue-400 transition-colors duration-200" %>
           </p>
         </div>
+
         <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "space-y-4 md:space-y-6 mt-8" }) do |f| %>
           <div>
             <%= f.label :email, class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
