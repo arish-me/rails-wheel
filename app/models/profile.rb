@@ -1,12 +1,12 @@
 class Profile < ApplicationRecord
   belongs_to :user
   has_one_attached :avatar do |attachable|
-    attachable.variant :thumbnail, resize_to_fill: [150, 150]
-    attachable.variant :small, resize_to_fill: [100, 100]
-    attachable.variant :icon, resize_to_fill: [50, 50]
+    attachable.variant :thumbnail, resize_to_fill: [ 150, 150 ]
+    attachable.variant :small, resize_to_fill: [ 100, 100 ]
+    attachable.variant :icon, resize_to_fill: [ 50, 50 ]
   end
 
-  enum :gender, [:he_she, :him_her, :they_them, :other]
+  enum :gender, [ :he_she, :him_her, :they_them, :other ]
   enum :theme_preference, { system: 0, light: 1, dark: 2 }, default: :system
 
   GENDER_DISPLAY = {
@@ -27,15 +27,15 @@ class Profile < ApplicationRecord
   validates :social_links, length: { maximum: 1000 }, allow_blank: true
 
   def display_name
-    [first_name, last_name].compact.join(" ").presence || user&.email
+    [ first_name, last_name ].compact.join(" ").presence || user&.email
   end
 
   def full_name
-    [first_name, middle_name, last_name].compact.join(" ").presence || user&.email
+    [ first_name, middle_name, last_name ].compact.join(" ").presence || user&.email
   end
 
   def initials
-    [first_name&.first, last_name&.first].compact.join("").upcase
+    [ first_name&.first, last_name&.first ].compact.join("").upcase
   end
 
   def gender_display
@@ -54,7 +54,7 @@ class Profile < ApplicationRecord
     begin
       uri = URI.parse(image_url)
       avatar_file = uri.open
-      avatar.attach(io: avatar_file, filename: 'avatar.jpg', content_type: avatar_file.content_type)
+      avatar.attach(io: avatar_file, filename: "avatar.jpg", content_type: avatar_file.content_type)
     rescue StandardError => e
       Rails.logger.error "Failed to attach avatar: #{e.message}"
     end

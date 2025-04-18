@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 
 gem "chartkick"
-gem 'groupdate'
+gem "groupdate"
 gem "rails", "~> 8.0.1"
 gem "propshaft"
 gem "pg", "~> 1.1"
@@ -11,7 +11,7 @@ gem "pretender"
 gem "turbo-rails"
 gem "stimulus-rails"
 gem "jbuilder"
-gem 'devise'
+gem "devise"
 gem "image_processing", ">= 1.2"
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 gem "solid_cache"
@@ -23,12 +23,12 @@ gem "thruster", require: false
 gem "lucide-rails"
 gem "letter_opener"
 gem "pagy"
-gem 'pg_search'
-gem 'pundit'
+gem "pg_search"
+gem "pundit"
 gem "tailwindcss-rails", "~> 3.1"
-gem 'omniauth-google-oauth2'
-gem 'omniauth-rails_csrf_protection'
-gem 'omniauth-github'
+gem "omniauth-google-oauth2"
+gem "omniauth-rails_csrf_protection"
+gem "omniauth-github"
 
 # Background Jobs
 gem "good_job"
@@ -38,7 +38,7 @@ group :development, :test do
   gem "brakeman", require: false
   gem "rubocop-rails-omakase", require: false
   gem "htmlbeautifier"
-  gem 'dotenv'
+  gem "dotenv"
 end
 
 group :development do

@@ -2,7 +2,7 @@ class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable, :lockable,
+         :recoverable, :rememberable, :validatable, :lockable, :trackable, :confirmable, :lockable, :timeoutable,
          :omniauthable, omniauth_providers: %i[google_oauth2 github]
   has_one :profile, dependent: :destroy
   has_many :user_roles, dependent: :destroy
@@ -37,8 +37,8 @@ class User < ApplicationRecord
 
   def can?(action, resource)
     roles.joins(:role_permissions)
-         .joins('INNER JOIN permissions ON permissions.id = role_permissions.permission_id')
-         .where('permissions.name = ? AND permissions.resource = ?', action, resource)
+         .joins("INNER JOIN permissions ON permissions.id = role_permissions.permission_id")
+         .where("permissions.name = ? AND permissions.resource = ?", action, resource)
          .exists?
   end
 

@@ -59,7 +59,7 @@ class RolesController < ApplicationController
   def update
     respond_to do |format|
       if @role.update(role_params)
-        flash[:notice] = 'Role was successfully updated.'
+        flash[:notice] = "Role was successfully updated."
         format.html { redirect_to @role, notice: "Role was successfully updated." }
         format.turbo_stream { render turbo_stream: turbo_stream.refresh(request_id: nil) }
         format.json { render :show, status: :ok, location: @role }

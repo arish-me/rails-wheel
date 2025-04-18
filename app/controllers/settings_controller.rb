@@ -1,6 +1,6 @@
 class SettingsController < ApplicationController
   before_action :authenticate_user!
-  #layout 'settings'
+  # layout 'settings'
   def index
   end
 end

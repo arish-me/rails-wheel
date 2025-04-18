@@ -1,7 +1,7 @@
 class RolePermissionsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_role_permission, only: %i[ show update destroy ]
-  #before_action :authorize_resource, only: %i[show edit update destroy]
+  # before_action :authorize_resource, only: %i[show edit update destroy]
 
   # GET /role_permissions or /role_permissions.json
   def index

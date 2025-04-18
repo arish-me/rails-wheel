@@ -1,8 +1,8 @@
 module Settings
   class ProfilesController < ApplicationController
-    before_action :set_or_initialize_profile, only: [:edit, :update, :update_avatar, :delete_avatar, :update_theme]
+    before_action :set_or_initialize_profile, only: [ :edit, :update, :update_avatar, :delete_avatar, :update_theme ]
     before_action :authenticate_user!
-    skip_before_action :verify_authenticity_token, only: [:update_avatar, :delete_avatar, :update_theme]
+    skip_before_action :verify_authenticity_token, only: [ :update_avatar, :delete_avatar, :update_theme ]
 
     # GET /profiles/1/edit
     def edit

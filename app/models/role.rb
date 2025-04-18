@@ -19,7 +19,7 @@ class Role < ApplicationRecord
   has_many :role_permissions, dependent: :destroy
   has_many :permissions, through: :role_permissions
 
-  scope :excluding_super_admin, -> { where.not(name: 'SuperAdmin') }
+  scope :excluding_super_admin, -> { where.not(name: "SuperAdmin") }
 
   before_save :ensure_single_default, if: -> { is_default_changed? && is_default }
 

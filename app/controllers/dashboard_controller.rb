@@ -11,6 +11,6 @@ class DashboardController < ApplicationController
     @categories_by_day = Category.group_by_day(:created_at).count
 
     # Role Distribution
-    #@roles_distribution = Role.joins(:user_roles).group(:name).count
+    # @roles_distribution = Role.joins(:user_roles).group(:name).count
   end
 end

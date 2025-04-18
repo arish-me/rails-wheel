@@ -59,7 +59,7 @@ class Admin::UsersController < ApplicationController
       lock_user
       # update_roles(@user)
       if @user.update(user_params)
-        flash[:notice] = 'User was successfully updated.'
+        flash[:notice] = "User was successfully updated."
         format.html { redirect_to @user, notice: "User was successfully updated." }
         format.turbo_stream { render turbo_stream: turbo_stream.refresh(request_id: nil) }
         format.json { render :show, status: :ok, location: @user }
@@ -123,7 +123,7 @@ class Admin::UsersController < ApplicationController
       params.require(:user).permit(
         :email,
         :locked,
-        profile_attributes: [:id, :first_name, :last_name, :gender],
+        profile_attributes: [ :id, :first_name, :last_name, :gender ],
         role_ids: [] # This allows multiple role IDs to be assigned
       )
     end
