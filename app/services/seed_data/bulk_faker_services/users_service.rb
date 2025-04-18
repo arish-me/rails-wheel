@@ -89,7 +89,7 @@ module SeedData
 
       def unique_email
         # Generate unique email using a combination of values to minimize duplicates
-        domain = ['example.com', 'test.org', 'faker.net', 'dummy.io', 'sample.dev'].sample
+        domain = [ "example.com", "test.org", "faker.net", "dummy.io", "sample.dev" ].sample
         prefix = [
           Faker::Internet.username(specifier: 5..12),
           Faker::Internet.user_name(specifier: 5..12),

@@ -13,7 +13,7 @@
       <div class="flex items-center">
         <div class="flex items-center ms-3">
           <div data-controller="dropdown">
-            <button type="button" data-action="dropdown#toggle" class="flex text-sm bg-gray-200 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600 dark:bg-gray-700 border-2 border-white dark:border-gray-600">
+            <button type="button" test-id="user-dropdown" data-action="dropdown#toggle" class="flex text-sm bg-gray-200 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600 dark:bg-gray-700 border-2 border-white dark:border-gray-600">
               <span class="sr-only">Open user menu</span>
               <div id="navbar_avatar">
                 <%= render partial: "settings/user_avatar", locals: { profile: current_user.profile, nav: true } %>
