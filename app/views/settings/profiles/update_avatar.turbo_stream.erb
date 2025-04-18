@@ -1,0 +1,8 @@
+<%# This template will update all avatar instances on the page %>
+<%= turbo_stream.replace "navbar_avatar" do %>
+  <%= render partial: "settings/user_avatar", locals: { profile: @profile, nav: true } %>
+<% end %>
+
+<%= turbo_stream.replace "profile_avatar" do %>
+  <%= render partial: "settings/user_avatar", locals: { profile: @profile, nav: false } %>
+<% end %> 

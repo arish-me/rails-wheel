@@ -3,6 +3,12 @@ import "@hotwired/turbo-rails"
 import "controllers"
 import "chartkick"
 import "Chart.bundle"
+import { DirectUpload } from "@rails/activestorage"
+import * as ActiveStorage from "@rails/activestorage"
+
+// Initialize ActiveStorage
+ActiveStorage.start()
+
 Turbo.StreamActions.redirect = function () {
   Turbo.visit(this.target);
 };
