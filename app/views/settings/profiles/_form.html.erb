@@ -66,6 +66,30 @@
           <%= form.text_field :location, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500", placeholder: "City, Country" %>
         </div>
 
+        <div class="grid gap-4 sm:grid-cols-2 sm:gap-6">
+          <div class="w-full">
+            <%= form.label :country_code, "Country", class: 'block mb-2 text-sm font-medium text-gray-900 dark:text-white' %>
+            <%= form.select :country_code, 
+                      country_options,
+                      { include_blank: "Select a country" },
+                      class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
+          </div>
+
+          <div class="w-full">
+            <%= form.label :postal_code, "Postal/ZIP Code", class: 'block mb-2 text-sm font-medium text-gray-900 dark:text-white' %>
+            <%= form.text_field :postal_code, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500", placeholder: "Enter postal code" %>
+          </div>
+        </div>
+
+        <div class="w-full">
+          <%= form.label :timezone, class: 'block mb-2 text-sm font-medium text-gray-900 dark:text-white' %>
+          <%= form.select :timezone, 
+                    timezone_options,
+                    {},
+                    class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
+          <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Your local timezone is used for displaying dates and times</p>
+        </div>
+
         <div class="w-full">
           <%= form.label :website, class: 'block mb-2 text-sm font-medium text-gray-900 dark:text-white' %>
           <%= form.url_field :website, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500", placeholder: "https://yourwebsite.com" %>

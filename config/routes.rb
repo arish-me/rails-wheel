@@ -14,7 +14,10 @@ Rails.application.routes.draw do
     get "account", to: "settings#edit_account", as: "edit_account"
   end
 
-  devise_for :users, controllers: { omniauth_callbacks: "users/omniauth_callbacks" }
+  devise_for :users, controllers: { 
+    omniauth_callbacks: "users/omniauth_callbacks",
+    registrations: "users/registrations"
+  }
   get "/auth/:provider/callback", to: "sessions#google_auth"
   get "/auth/failure", to: redirect("/")
 

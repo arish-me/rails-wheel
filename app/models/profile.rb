@@ -6,6 +6,9 @@ class Profile < ApplicationRecord
     attachable.variant :icon, resize_to_fill: [ 50, 50 ]
   end
 
+  # Default timezone if none is set
+  before_validation :set_default_timezone, if: -> { timezone.blank? }
+
   enum :gender, [ :he_she, :him_her, :they_them, :other ]
   enum :theme_preference, { system: 0, light: 1, dark: 2 }, default: :system
 
@@ -16,8 +19,8 @@ class Profile < ApplicationRecord
     other: "Other"
   }.freeze
 
-  validates :first_name, presence: true, length: { in: 3..50 }
-  validates :last_name, presence: true, length: { in: 3..50 }
+  validates :first_name, presence: true, length: { in: 3..50 }, on: :create
+  validates :last_name, presence: true, length: { in: 3..50 }, on: :create
   validates :gender, inclusion: { in: genders.keys }, allow_nil: true
   validates :bio, length: { maximum: 500 }, allow_blank: true
   validates :phone_number, format: { with: /\A\+?[\d\s\-\(\)]{7,20}\z/ }, allow_blank: true
@@ -25,6 +28,8 @@ class Profile < ApplicationRecord
   validates :location, length: { maximum: 100 }, allow_blank: true
   validates :website, format: { with: URI::DEFAULT_PARSER.make_regexp(%w[http https]) }, allow_blank: true
   validates :social_links, length: { maximum: 1000 }, allow_blank: true
+  validates :country_code, length: { is: 2 }, allow_blank: true
+  validates :timezone, presence: true
 
   def display_name
     [ first_name, last_name ].compact.join(" ").presence || user&.email
@@ -58,5 +63,45 @@ class Profile < ApplicationRecord
     rescue StandardError => e
       Rails.logger.error "Failed to attach avatar: #{e.message}"
     end
+  end
+
+  # Sets the country and timezone based on IP address
+  def set_location_from_ip(ip_address)
+    return if ip_address.blank?
+
+    begin
+      result = Geocoder.search(ip_address).first
+      return unless result
+
+      # Set country code if not already set
+      if country_code.blank? && result.country_code.present?
+        self.country_code = result.country_code.upcase
+      end
+
+      # Set timezone if not already set
+      if timezone.blank? && result.data['timezone'].present?
+        self.timezone = result.data['timezone']
+      end
+
+      # Set location if not already set
+      if location.blank? && result.city.present? && result.country.present?
+        self.location = "#{result.city}, #{result.country}"
+      end
+
+      # Set postal code if not already set
+      if postal_code.blank? && result.postal_code.present?
+        self.postal_code = result.postal_code
+      end
+
+      save
+    rescue => e
+      Rails.logger.error "Error setting location from IP: #{e.message}"
+    end
+  end
+
+  private
+
+  def set_default_timezone
+    self.timezone = 'UTC'
   end
 end
