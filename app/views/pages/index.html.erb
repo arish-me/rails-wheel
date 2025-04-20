@@ -1,1 +1,378 @@
+<!-- Hero Section -->
+<section class="hero-section bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-20 mt-14">
+  <div class="container mx-auto px-4 md:px-8">
+    <div class="flex flex-col items-center justify-center text-center">
+      <div class="max-w-3xl mb-10">
+        <h1 class="text-5xl md:text-6xl font-bold mb-4"><%= t('common.app_name') %></h1>
+        <p class="text-xl md:text-2xl mb-8"><%= t('pages.home.title') %></p>
+        <p class="text-lg mb-8"><%= t('pages.home.subtitle') %></p>
 
+        <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+          <%= link_to t('common.get_started'), new_user_session_path, class: "bg-white text-indigo-600 py-3 px-6 rounded-lg font-semibold hover:bg-indigo-50 transition", role: "button" %>
+          <a href="#features" class="border border-white text-white py-3 px-6 rounded-lg font-semibold hover:bg-white hover:bg-opacity-10 transition"><%= t('common.learn_more') %></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Features Section -->
+<section id="features" class="features-section py-20 bg-white">
+  <div class="container mx-auto px-4 md:px-8">
+    <div class="text-center mb-16">
+      <h2 class="text-4xl font-bold mb-4"><%= t('pages.home.features_heading') %></h2>
+      <p class="text-xl text-gray-600 max-w-3xl mx-auto"><%= t('pages.home.features_subheading') %></p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- Authentication -->
+      <div class="bg-white p-8 rounded-lg shadow-md hover:shadow-lg transition">
+        <div class="text-indigo-600 mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">Authentication</h3>
+        <p class="text-gray-600 mb-4">Built-in secure authentication with Devise</p>
+        <ul class="text-gray-600 space-y-2">
+          <li class="flex items-start">
+            <svg class="h-6 w-6 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            OAuth integration with Google & GitHub
+          </li>
+          <li class="flex items-start">
+            <svg class="h-6 w-6 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            Email confirmation workflow
+          </li>
+          <li class="flex items-start">
+            <svg class="h-6 w-6 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            Password reset process
+          </li>
+        </ul>
+      </div>
+
+      <!-- User Management -->
+      <div class="bg-white p-8 rounded-lg shadow-md hover:shadow-lg transition">
+        <div class="text-indigo-600 mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">User Management</h3>
+        <p class="text-gray-600 mb-4">Role-based access control</p>
+        <ul class="text-gray-600 space-y-2">
+          <li class="flex items-start">
+            <svg class="h-6 w-6 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            Permission management
+          </li>
+          <li class="flex items-start">
+            <svg class="h-6 w-6 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            User profiles with avatars
+          </li>
+          <li class="flex items-start">
+            <svg class="h-6 w-6 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            Admin dashboard
+          </li>
+        </ul>
+      </div>
+
+      <!-- Modern UI -->
+      <div class="bg-white p-8 rounded-lg shadow-md hover:shadow-lg transition">
+        <div class="text-indigo-600 mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">Modern UI</h3>
+        <p class="text-gray-600 mb-4">Tailwind CSS integration</p>
+        <ul class="text-gray-600 space-y-2">
+          <li class="flex items-start">
+            <svg class="h-6 w-6 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            Responsive design
+          </li>
+          <li class="flex items-start">
+            <svg class="h-6 w-6 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            Dark mode support
+          </li>
+          <li class="flex items-start">
+            <svg class="h-6 w-6 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            Modern components
+          </li>
+        </ul>
+      </div>
+
+      <!-- Hotwire Integration -->
+      <div class="bg-white p-8 rounded-lg shadow-md hover:shadow-lg transition">
+        <div class="text-indigo-600 mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">Hotwire</h3>
+        <p class="text-gray-600 mb-4">Modern SPA-like experience</p>
+        <ul class="text-gray-600 space-y-2">
+          <li class="flex items-start">
+            <svg class="h-6 w-6 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            Turbo for page navigation
+          </li>
+          <li class="flex items-start">
+            <svg class="h-6 w-6 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            Stimulus for JavaScript behaviors
+          </li>
+          <li class="flex items-start">
+            <svg class="h-6 w-6 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            Real-time updates with Turbo Streams
+          </li>
+        </ul>
+      </div>
+
+      <!-- Background Jobs -->
+      <div class="bg-white p-8 rounded-lg shadow-md hover:shadow-lg transition">
+        <div class="text-indigo-600 mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">Background Jobs</h3>
+        <p class="text-gray-600 mb-4">Efficient asynchronous processing</p>
+        <ul class="text-gray-600 space-y-2">
+          <li class="flex items-start">
+            <svg class="h-6 w-6 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            GoodJob for database-backed processing
+          </li>
+          <li class="flex items-start">
+            <svg class="h-6 w-6 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            Job scheduling and monitoring
+          </li>
+          <li class="flex items-start">
+            <svg class="h-6 w-6 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            Error handling and retries
+          </li>
+        </ul>
+      </div>
+
+      <!-- Solid Stack -->
+      <div class="bg-white p-8 rounded-lg shadow-md hover:shadow-lg transition">
+        <div class="text-indigo-600 mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">Solid Stack</h3>
+        <p class="text-gray-600 mb-4">Integrated performance components</p>
+        <ul class="text-gray-600 space-y-2">
+          <li class="flex items-start">
+            <svg class="h-6 w-6 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            SolidCache for caching
+          </li>
+          <li class="flex items-start">
+            <svg class="h-6 w-6 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            SolidQueue for background jobs
+          </li>
+          <li class="flex items-start">
+            <svg class="h-6 w-6 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            SolidCable for WebSockets
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="testimonials-section py-20 bg-gray-50">
+  <div class="container mx-auto px-4 md:px-8">
+    <div class="text-center mb-16">
+      <h2 class="text-4xl font-bold mb-4">Testimonials</h2>
+      <p class="text-xl text-gray-600 max-w-3xl mx-auto">Hear what developers are saying about Wheel.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div class="testimonial-card bg-white p-8 rounded-lg shadow-md">
+        <div class="flex items-center mb-4">
+          <div class="h-12 w-12 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-xl">
+            JP
+          </div>
+          <div class="ml-4">
+            <div class="font-bold">John Paxton</div>
+            <div class="text-sm text-gray-600">Senior Developer</div>
+          </div>
+        </div>
+        <p class="text-gray-600">"Wheel has dramatically reduced the time it takes to set up a new project. All the essentials are baked in, and I can focus on building the unique parts of my application."</p>
+      </div>
+
+      <div class="testimonial-card bg-white p-8 rounded-lg shadow-md">
+        <div class="flex items-center mb-4">
+          <div class="h-12 w-12 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-xl">
+            SK
+          </div>
+          <div class="ml-4">
+            <div class="font-bold">Sarah Kim</div>
+            <div class="text-sm text-gray-600">Full Stack Engineer</div>
+          </div>
+        </div>
+        <p class="text-gray-600">"The authentication and user management system in Wheel is incredibly comprehensive. I no longer need to piece together different gems and worry about security."</p>
+      </div>
+
+      <div class="testimonial-card bg-white p-8 rounded-lg shadow-md">
+        <div class="flex items-center mb-4">
+          <div class="h-12 w-12 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-xl">
+            MR
+          </div>
+          <div class="ml-4">
+            <div class="font-bold">Miguel Rodriguez</div>
+            <div class="text-sm text-gray-600">Tech Lead</div>
+          </div>
+        </div>
+        <p class="text-gray-600">"The Hotwire integration is fantastic. My team can build dynamic, responsive applications without writing a ton of JavaScript. It's modern Rails at its best."</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Getting Started Section -->
+<section class="getting-started-section py-20 bg-white">
+  <div class="container mx-auto px-4 md:px-8">
+    <div class="text-center mb-16">
+      <h2 class="text-4xl font-bold mb-4">Getting Started</h2>
+      <p class="text-xl text-gray-600 max-w-3xl mx-auto">Start building your application in minutes.</p>
+    </div>
+
+    <div class="max-w-4xl mx-auto bg-gray-50 p-8 rounded-lg shadow-md">
+      <h3 class="text-2xl font-bold mb-4">Installation</h3>
+      <div class="bg-gray-800 text-white p-4 rounded-md font-mono mb-6 overflow-x-auto">
+        <code>$ git clone https://github.com/your-organization/rails-wheel.git</code><br>
+        <code>$ cd rails-wheel</code><br>
+        <code>$ bundle install</code><br>
+        <code>$ rails db:create db:migrate db:seed</code><br>
+        <code>$ rails server</code>
+      </div>
+
+      <h3 class="text-2xl font-bold mb-4">Documentation</h3>
+      <p class="text-gray-600 mb-4">Check out our comprehensive documentation to learn about all the features and how to customize them for your needs.</p>
+      
+      <%= link_to "Documentation", "https://github.com/arish-me/rails-wheel/blob/main/README.md", class: "inline-block bg-indigo-600 text-white py-2 px-6 rounded-lg font-semibold hover:bg-indigo-700 transition" %>
+
+    </div>
+  </div>
+</section>
+
+<!-- Call to Action -->
+<section class="cta-section bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-16">
+  <div class="container mx-auto px-4 md:px-8 text-center">
+    <h2 class="text-3xl md:text-4xl font-bold mb-6">Ready to Build Your Next Application?</h2>
+    <p class="text-xl mb-8 max-w-3xl mx-auto">Start with a solid foundation and focus on what makes your application unique.</p>
+    <%= link_to "Get Started Now", new_user_session_path, class: "bg-white text-indigo-600 py-3 px-8 rounded-lg font-semibold hover:bg-indigo-50 transition text-lg", role: "button" %>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-gray-800 text-white py-12">
+  <div class="container mx-auto px-4 md:px-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+      <div>
+        <h3 class="text-xl font-bold mb-4">Wheel</h3>
+        <p class="text-gray-400">The Ultimate Rails Framework for Modern Applications</p>
+      </div>
+
+      <div>
+        <h3 class="text-xl font-bold mb-4">Resources</h3>
+        <ul class="space-y-2">
+          <li><a href="/docs" class="text-gray-400 hover:text-white transition">Documentation</a></li>
+          <li><a href="/tutorials" class="text-gray-400 hover:text-white transition">Tutorials</a></li>
+          <li><a href="/blog" class="text-gray-400 hover:text-white transition">Blog</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="text-xl font-bold mb-4">Connect</h3>
+        <ul class="space-y-2">
+          <li><a href="https://github.com/arish-me/rails-wheel" class="text-gray-400 hover:text-white transition">GitHub</a></li>
+          <li><a href="https://twitter.com/railswheel" class="text-gray-400 hover:text-white transition">Twitter</a></li>
+          <li><a href="/discord" class="text-gray-400 hover:text-white transition">Discord</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="text-xl font-bold mb-4">Legal</h3>
+        <ul class="space-y-2">
+          <li><a href="/terms" class="text-gray-400 hover:text-white transition">Terms</a></li>
+          <li><a href="/privacy" class="text-gray-400 hover:text-white transition">Privacy</a></li>
+          <li><a href="/licenses" class="text-gray-400 hover:text-white transition">Licenses</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="pt-8 border-t border-gray-700 text-center sm:text-left sm:flex items-center justify-between">
+      <p class="text-gray-400">© <%= Date.current.year %> Wheel. All rights reserved.</p>
+      <div class="mt-4 sm:mt-0">
+        <div class="flex justify-center sm:justify-end space-x-4">
+          <a href="https://github.com/arish-me/rails-wheel" class="text-gray-400 hover:text-white transition">
+            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z" clip-rule="evenodd"></path></svg>
+          </a>
+          <a href="https://twitter.com/railswheel" class="text-gray-400 hover:text-white transition">
+            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84"></path></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- JavaScript for Learn More scroll behavior -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const learnMoreLink = document.querySelector('a[href="#features"]');
+
+    if (learnMoreLink) {
+      learnMoreLink.addEventListener('click', function(e) {
+        e.preventDefault();
+
+        const featuresSection = document.querySelector('#features');
+        if (featuresSection) {
+          featuresSection.scrollIntoView({ behavior: 'smooth' });
+
+          // Add active class after scrolling
+          setTimeout(function() {
+            featuresSection.classList.add('active');
+          }, 500);
+        }
+      });
+    }
+  });
+</script>
