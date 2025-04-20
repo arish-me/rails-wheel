@@ -1,6 +1,20 @@
 module ApplicationHelper
   include Pagy::Frontend
 
+  # Return a human-readable name for the given locale
+  def locale_name(locale)
+    case locale.to_sym
+    when :en
+      "English"
+    when :es
+      "Español"
+    when :fr
+      "Français"
+    else
+      locale.to_s.upcase
+    end
+  end
+
   def render_flash_notifications
     notifications = flash.flat_map do |type, message_or_messages|
       Array(message_or_messages).map do |message|

@@ -30,7 +30,7 @@ gem "omniauth-google-oauth2"
 gem "omniauth-rails_csrf_protection"
 gem "omniauth-github"
 gem "view_component"
-
+gem 'i18n'
 # Background Jobs
 gem "good_job"
 

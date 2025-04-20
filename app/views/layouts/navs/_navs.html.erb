@@ -2,7 +2,7 @@
   <%= render partial: 'layouts/navs/private_nav' %>
 <% elsif !devise_controller? %>
   <%= render partial: 'layouts/navs/public_nav' %>
-  <%= yield %>
+  <%= render partial: 'shared/content' %>
 <% else %>
-  <%= yield %>
+  <%= render partial: 'shared/content' %>
 <% end %>

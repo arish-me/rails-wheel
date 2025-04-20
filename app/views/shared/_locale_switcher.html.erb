@@ -1,0 +1,23 @@
+<div class="locale-switcher relative" data-controller="dropdown">
+  <button type="button"
+          class="flex items-center justify-center p-2 text-gray-500 bg-gray-100 border border-gray-200 rounded-full w-9 h-9 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600 transition-colors duration-200"
+          data-action="dropdown#toggle"
+          title="<%= t('common.change_language') %>">
+    <span class="font-medium"><%= I18n.locale.to_s.upcase %></span>
+  </button>
+
+  <div class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10 hidden dark:bg-gray-800"
+       data-dropdown-target="menu">
+    <div class="py-1">
+      <% I18n.available_locales.each do |locale| %>
+        <%= form_with url: set_locale_path, method: :post,data: {turbo: true}, lass: "block" do |f| %>
+          <%= f.hidden_field :locale, value: locale %>
+          <button type="submit"
+                  class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-700 <%= 'bg-blue-50 text-blue-700 dark:bg-blue-900 dark:text-blue-300' if I18n.locale == locale %>">
+            <%= locale_name(locale) %>
+          </button>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>

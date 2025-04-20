@@ -538,6 +538,7 @@ DEPENDENCIES
   groupdate
   hotwire-livereload
   htmlbeautifier
+  i18n
   image_processing (>= 1.2)
   importmap-rails
   jbuilder

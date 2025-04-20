@@ -28,10 +28,68 @@
 #       enabled: "ON"
 
 en:
-  hello: "Hello world"
-  new_role: New Role
-  confirm_modal:
-      accept: Confirm
-      body_html: "<p>You will not be able to undo this decision</p>"
-      cancel: Cancel
-      title: Are you sure?
+  common:
+    app_name: "Rails Wheel"
+    change_language: "Change language"
+    toggle_theme: "Toggle between light and dark theme"
+    get_started: "Get Started"
+    learn_more: "Learn More"
+    home: "Home"
+    about: "About"
+    services: "Services" 
+    contact: "Contact"
+    sign_in: "Sign in"
+    sign_up: "Sign up"
+    sign_out: "Sign out"
+    documentation: "Documentation"
+    github: "GitHub"
+    terms: "Terms"
+    privacy: "Privacy"
+    licenses: "Licenses"
+    search: "Search"
+    dashboard: "Dashboard"
+    settings: "Settings"
+    profile: "Profile"
+    account: "Account"
+    preferences: "Preferences"
+  
+  pages:
+    home:
+      title: "The Ultimate Rails Framework for Modern Applications"
+      subtitle: "Build powerful, production-ready applications with a comprehensive feature set right out of the box."
+      features_heading: "Features"
+      features_subheading: "Everything you need to build modern web applications, bundled together and ready to use."
+      authentication: "Authentication"
+      user_management: "User Management"
+      modern_ui: "Modern UI"
+      hotwire: "Hotwire"
+      background_jobs: "Background Jobs"
+      solid_stack: "Solid Stack"
+      testimonials: "Testimonials"
+      testimonials_subtitle: "Hear what developers are saying about Wheel."
+      getting_started: "Getting Started"
+      getting_started_subtitle: "Start building your application in minutes."
+      installation: "Installation"
+      cta_heading: "Ready to Build Your Next Application?"
+      cta_subheading: "Start with a solid foundation and focus on what makes your application unique."
+      get_started_now: "Get Started Now"
+      
+  auth:
+    sign_in_to_account: "Sign in to your account"
+    email: "Email"
+    password: "Password"
+    remember_me: "Remember me"
+    forgot_password: "Forgot your password?"
+    unlock_instructions: "Didn't receive unlock instructions?"
+    
+  settings:
+    profile: "Profile"
+    account: "Account"
+    appearance: "Appearance"
+    notifications: "Notifications"
+    save_changes: "Save Changes"
+    
+  errors:
+    not_authorized: "You are not authorized to perform this action."
+    page_not_found: "Page not found."
+    internal_server_error: "Something went wrong."
