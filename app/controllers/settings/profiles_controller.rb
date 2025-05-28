@@ -1,7 +1,7 @@
 module Settings
   class ProfilesController < ApplicationController
-    before_action :set_or_initialize_profile, only: [ :edit, :update, :update_avatar, :delete_avatar, :update_theme ]
     before_action :authenticate_user!
+    before_action :set_or_initialize_profile, only: [ :edit, :update, :update_avatar, :delete_avatar, :update_theme ]
     skip_before_action :verify_authenticity_token, only: [ :update_avatar, :delete_avatar, :update_theme ]
 
     # GET /profiles/1/edit
@@ -19,9 +19,10 @@ module Settings
           format.json { render :edit, status: :ok, location: @profile }
           format.turbo_stream { render turbo_stream: turbo_stream.refresh(request_id: nil) }
         else
+          flash[:alert] = @profile.errors.full_messages
           format.html { render :edit, status: :unprocessable_entity }
           format.json { render json: @profile.errors, status: :unprocessable_entity }
-          format.turbo_stream { render :edit, status: :unprocessable_entity }
+          format.turbo_stream { render turbo_stream: turbo_stream.refresh(request_id: nil) }
         end
       end
     end
@@ -137,7 +138,10 @@ module Settings
           :location,
           :website,
           :social_links,
-          :theme_preference
+          :theme_preference,
+          :timezone,
+          :country_code,
+          :postal_code
         )
       end
   end

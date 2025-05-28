@@ -11,8 +11,11 @@ class User < ApplicationRecord
   has_many :categories, dependent: :destroy
 
   after_create :assign_default_role
+  after_create :ensure_profile_exists
+  after_create :set_profile_location
 
   attr_accessor :skip_password_validation
+  attr_accessor :current_sign_in_ip_address
 
   accepts_nested_attributes_for :profile, update_only: true
   accepts_nested_attributes_for :user_roles, allow_destroy: true
@@ -45,6 +48,15 @@ class User < ApplicationRecord
 
   def initial
     (profile&.display_name&.first || email.first).upcase
+  end
+
+  def set_profile_location
+    return unless profile && current_sign_in_ip_address.present?
+    profile.set_location_from_ip(current_sign_in_ip_address)
+  end
+
+  def ensure_profile_exists
+    create_profile if profile.nil?
   end
 
   protected

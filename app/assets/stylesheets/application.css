@@ -8,3 +8,163 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+
+/* Custom styles for Tom Select */
+
+/* Custom Tom Select Styles */
+.ts-wrapper {
+  width: 100%;
+}
+
+.ts-control {
+  background-color: #f9fafb !important;
+  border: 1px solid #d1d5db !important;
+  border-radius: 0.5rem !important;
+  padding: 0.625rem !important;
+  color: #111827 !important;
+  font-size: 0.875rem !important;
+  line-height: 1.25rem !important;
+}
+
+.ts-dropdown {
+  border-radius: 0.5rem !important;
+  border: 1px solid #d1d5db !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+  padding: 0.5rem 0 !important;
+  margin-top: 5px !important;
+  z-index: 100 !important;
+}
+
+.ts-dropdown .option {
+  padding: 0.625rem 1rem !important;
+  cursor: pointer !important;
+}
+
+.ts-dropdown .option.selected {
+  background-color: #dbeafe !important;
+  color: #1e40af !important;
+  font-weight: 500 !important;
+}
+
+.ts-dropdown .option:hover,
+.ts-dropdown .option.active {
+  background-color: #eff6ff !important;
+  color: #1e40af !important;
+}
+
+.ts-dropdown .optgroup-header {
+  font-weight: 600 !important;
+  color: #4b5563 !important;
+  padding: 0.625rem 1rem !important;
+  background-color: #f9fafb !important;
+}
+
+.ts-control:focus {
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2) !important;
+}
+
+.ts-dropdown-content {
+  max-height: 250px !important;
+}
+
+.ts-wrapper.single .ts-control:after {
+  border-color: #6b7280 transparent transparent !important;
+}
+
+.ts-wrapper.focus .ts-control {
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2) !important;
+}
+
+/* Dark mode styles */
+.dark .ts-control {
+  background-color: #1f2937 !important;
+  border-color: #4b5563 !important;
+  color: #f9fafb !important;
+}
+
+.dark .ts-dropdown {
+  background-color: #1f2937 !important;
+  border-color: #4b5563 !important;
+  color: #f9fafb !important;
+}
+
+.dark .ts-dropdown .option {
+  color: #f9fafb !important;
+}
+
+.dark .ts-dropdown .option.selected {
+  background-color: #374151 !important;
+  color: #93c5fd !important;
+}
+
+.dark .ts-dropdown .option:hover,
+.dark .ts-dropdown .option.active {
+  background-color: #374151 !important;
+  color: #93c5fd !important;
+}
+
+.dark .ts-dropdown .optgroup-header {
+  background-color: #1f2937 !important;
+  color: #9ca3af !important;
+}
+
+.dark .ts-control:focus {
+  border-color: #60a5fa !important;
+}
+
+.dark .ts-wrapper.single .ts-control:after {
+  border-color: #9ca3af transparent transparent !important;
+}
+
+/* Custom styling */
+.country-flag {
+  margin-right: 0.5rem;
+  font-size: 1.2em;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.timezone-offset {
+  font-weight: 500;
+  display: inline-block;
+  min-width: 3.5rem;
+  color: #4b5563;
+}
+
+.dark .timezone-offset {
+  color: #9ca3af;
+}
+
+.timezone-name {
+  margin-left: 0.25rem;
+}
+
+.option-item,
+.selected-item {
+  display: flex;
+  align-items: center;
+}
+
+/* Clear button styling */
+.ts-wrapper .clear-button {
+  opacity: 0.5;
+  right: 2.5rem;
+}
+
+.ts-wrapper .clear-button:hover {
+  opacity: 1;
+}
+
+/* Selected option highlight */
+.ts-dropdown .option-item.is-selected {
+  background-color: #dbeafe !important;
+  color: #1e40af !important;
+  font-weight: 500 !important;
+}
+
+.dark .ts-dropdown .option-item.is-selected {
+  background-color: #374151 !important;
+  color: #93c5fd !important;
+}
+
