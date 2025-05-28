@@ -26,18 +26,19 @@ module ProfilesHelper
     # Common timezone options with their standard names
     timezones = ActiveSupport::TimeZone.all.map do |tz|
       offset_display = tz.now.strftime("%:z")
-      ["(#{offset_display}) #{tz.name.gsub('_', ' ')}", tz.name]
+      formatted_name = "<span class='timezone-offset'>#{offset_display}</span> <span class='timezone-name'>#{tz.name.gsub('_', ' ')}</span>".html_safe
+      [formatted_name, tz.name]
     end
-
+    
     # Sort by offset
-    timezones.sort_by { |name, _| ActiveSupport::TimeZone[name] }
+    timezones.sort_by { |_, name| ActiveSupport::TimeZone[name].now.utc_offset }
   end
 
   def country_options
     # List of countries with flag emojis
     ISO3166::Country.all.map do |country|
       flag = flag_emoji_for(country.alpha2)
-      name_with_flag = "#{flag} #{country.iso_short_name}"
+      name_with_flag = "<span class='country-flag'>#{flag}</span> <span>#{country.iso_short_name}</span>".html_safe
       [name_with_flag, country.alpha2]
     end.sort_by { |name, _| name.downcase }
   end

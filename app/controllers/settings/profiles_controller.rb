@@ -19,9 +19,10 @@ module Settings
           format.json { render :edit, status: :ok, location: @profile }
           format.turbo_stream { render turbo_stream: turbo_stream.refresh(request_id: nil) }
         else
+          flash[:alert] = @profile.errors.full_messages
           format.html { render :edit, status: :unprocessable_entity }
           format.json { render json: @profile.errors, status: :unprocessable_entity }
-          format.turbo_stream { render :edit, status: :unprocessable_entity }
+          format.turbo_stream { render turbo_stream: turbo_stream.refresh(request_id: nil) }
         end
       end
     end
