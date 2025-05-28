@@ -24,12 +24,11 @@
       </div>
       <div>
         <% if can?(:create, record) %>
-         <%= render(ButtonComponent.new(
-            label: "Add #{title.singularize}",
+         <%= render(LinkComponent.new(
+            text: "Add #{title.singularize}",
             href: new_resource_path,
-            icon: "plus",
-            variant: :default,
-            turbo_frame: :modal
+            variant: :primary,
+            frame: :modal,
           )) %>
         <% end %>
       </div>

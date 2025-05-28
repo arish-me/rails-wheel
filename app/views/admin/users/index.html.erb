@@ -17,13 +17,13 @@
       </div>
       <div class="flex">
         <% if can?(:create, User) %>
-          <%= render(ButtonComponent.new(
-            label: "Add User",
-            href: new_admin_user_path,
-            icon: "plus",
-            variant: :default,
-            turbo_frame: :modal
-          )) %>
+          <%= render LinkComponent.new(
+              text: "Add User",
+              variant: "outline",
+              icon: "plus",
+              href: new_admin_user_path,
+              frame: :modal,
+            ) %>
         <% end %>
       </div>
     </header>
@@ -87,12 +87,12 @@
                               class: "text-gray-700 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors" do %>
                           <%= lucide_icon('square-pen', class: "w-5 h-5") %>
                         <% end %>
-                        <%= render(ButtonComponent.new(
-                          label: "Impersonate",
-                          href: impersonate_admin_user_path(record),
-                          variant: :danger,
-                          method: :post,
-                          data: { turbo_method: :post }
+                        <%= render(LinkComponent.new(
+                            text: "Impersonate",
+                            href: impersonate_admin_user_path(record),
+                            variant: :destructive,
+                            method: :post,
+                            data: { turbo_method: :post }
                         )) %>
                       </td>
                     <% end %>

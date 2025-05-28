@@ -15,6 +15,28 @@ module ApplicationHelper
     end
   end
 
+  def icon(key, size: "md", color: "default", custom: false, as_button: false, **opts)
+    extra_classes = opts.delete(:class)
+    sizes = { xs: "w-3 h-3", sm: "w-4 h-4", md: "w-5 h-5", lg: "w-6 h-6", xl: "w-7 h-7", "2xl": "w-8 h-8" }
+    colors = { default: "fg-gray", white: "fg-inverse", success: "text-success", warning: "text-warning", destructive: "text-destructive", current: "text-current" }
+
+    icon_classes = class_names(
+      "shrink-0",
+      sizes[size.to_sym],
+      colors[color.to_sym],
+      extra_classes
+    )
+
+    if custom
+      inline_svg_tag("#{key}.svg", class: icon_classes, **opts)
+    elsif as_button
+      render ButtonComponent.new(variant: "icon", class: extra_classes, icon: key, size: size, type: "button", **opts)
+    else
+      lucide_icon(key, class: icon_classes, **opts)
+    end
+  end
+
+
   def render_flash_notifications
     notifications = flash.flat_map do |type, message_or_messages|
       Array(message_or_messages).map do |message|
