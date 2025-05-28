@@ -51,6 +51,9 @@ module ApplicationHelper
     current_user != true_user
   end
 
+  def page_active?(path)
+    current_page?(path) || (request.path.start_with?(path) && path != "/")
+  end
 
   def modal(options = {}, &block)
     content = capture &block

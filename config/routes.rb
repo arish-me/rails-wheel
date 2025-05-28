@@ -14,7 +14,7 @@ Rails.application.routes.draw do
     get "account", to: "settings#edit_account", as: "edit_account"
   end
 
-  devise_for :users, controllers: { 
+  devise_for :users, controllers: {
     omniauth_callbacks: "users/omniauth_callbacks",
     registrations: "users/registrations"
   }
@@ -63,5 +63,6 @@ Rails.application.routes.draw do
   end
 
   get "up" => "rails/health#show", as: :rails_health_check
+  get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
   root "pages#index"
 end

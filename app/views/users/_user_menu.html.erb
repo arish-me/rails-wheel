@@ -1,0 +1,24 @@
+<%# locals: (user:, placement: "right-start", offset: 16) %>
+
+<div data-testid="user-menu">
+  <%= render MenuComponent.new(variant: "avatar",  avatar_url: user.profile.avatar&.variant(:small)&.url, initials: user.profile.initials, placement: placement, offset: offset) do |menu| %>
+    <%= menu.with_header do %>
+      <div class="px-4 py-3 flex items-center gap-3">
+        <div class="w-9 h-9 shrink-0">
+          <%= render "settings/user_avatar", avatar_url: user.profile.avatar&.variant(:small)&.url, initials: user.profile.initials, lazy: true %>
+        </div>
+
+        <div class="overflow-hidden text-ellipsis text-sm">
+          <p class="font-medium"><%= user.profile.display_name %></p>
+          <% if user.profile.display_name != user.email %>
+            <p class="text-secondary"><%= user.email %></p>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+    <% menu.with_item(variant: "link", text: "Settings", icon: "settings", href: edit_settings_profile_path) %>
+    <% menu.with_item(variant: "divider") %>
+    <% menu.with_item(variant: "button", text: "Log out", icon: "log-out", href: destroy_user_session_path, method: :delete) %>
+  <% end %>
+</div>

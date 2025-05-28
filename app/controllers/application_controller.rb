@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  include Breadcrumbable
   include Pagy::Backend
   include Pundit::Authorization
   impersonates :user
