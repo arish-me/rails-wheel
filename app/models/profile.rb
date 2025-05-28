@@ -2,8 +2,8 @@ class Profile < ApplicationRecord
   belongs_to :user
   has_one_attached :avatar do |attachable|
     attachable.variant :thumbnail, resize_to_fill: [ 150, 150 ]
-    attachable.variant :small, resize_to_fill: [ 100, 100 ]
     attachable.variant :icon, resize_to_fill: [ 50, 50 ]
+    attachable.variant :small, resize_to_fill: [ 72, 72 ], convert: :webp, saver: { quality: 80 }, preprocessed: true
   end
 
   # Default timezone if none is set

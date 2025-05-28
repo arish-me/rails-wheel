@@ -9,6 +9,7 @@ class ApplicationController < ActionController::Base
   allow_browser versions: :modern
 
   before_action :set_locale_from_session_or_params
+  before_action :set_active_storage_url_options
 
   # Locale switcher action - uses Turbo to avoid page reload
   def set_locale
@@ -25,6 +26,14 @@ class ApplicationController < ActionController::Base
       format.turbo_stream { render turbo_stream: turbo_stream.refresh(request_id: nil) }
       format.html { redirect_back(fallback_location: root_path) }
     end
+  end
+
+  def set_active_storage_url_options
+    ActiveStorage::Current.url_options = {
+      protocol: request.protocol,
+      host: request.host,
+      port: request.optional_port
+    }
   end
 
   private
