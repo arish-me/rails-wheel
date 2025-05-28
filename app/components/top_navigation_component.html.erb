@@ -34,11 +34,13 @@
                     <%= link_to item[:path], class: active_dropdown_item_class(item[:path]), data: item[:data] do %>
                       <div class="flex items-center">
                         <% if active_path?(item[:path]) %>
-                          <%= lucide_icon item[:icon], class: "w-4 h-4 mr-2 text-blue-500 theme-dark:text-blue-400" %>
+                          <%= lucide_icon item[:icon], class: "w-4 h-4 mr-2 text-blue-500 theme-dark:text-gray-400" %>
                         <% else %>
                           <%= lucide_icon item[:icon], class: "w-4 h-4 mr-2 text-gray-500 theme-dark:text-gray-400" %>
                         <% end %>
-                        <%= item[:name] %>
+                        <span class="theme-dark:text-gray-400">
+                          <%= item[:name] %>
+                        </span>
                       </div>
                     <% end %>
                   </li>

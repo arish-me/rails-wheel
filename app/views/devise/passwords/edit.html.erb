@@ -1,12 +1,12 @@
-<section class="bg-gray-50 dark:bg-gray-900">
+<section class="bg-gray-50 theme-dark:bg-gray-900">
   <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-    <%= link_to root_path, class: "flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white" do %>
+    <%= link_to root_path, class: "flex items-center mb-6 text-2xl font-semibold text-gray-900 theme-dark:text-white" do %>
       Wheel
     <% end %>
-    <div class="w-full bg-white rounded-lg shadow-lg dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+    <div class="w-full bg-white rounded-lg shadow-lg theme-dark:border md:mt-0 sm:max-w-md xl:p-0 theme-dark:bg-gray-800 theme-dark:border-gray-700">
       <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
         <div class="sm:mx-auto sm:w-full sm:max-w-md">
-          <h2 class="mt-6 text-center text-2xl font-bold text-gray-900 dark:text-white">
+          <h2 class="mt-6 text-center text-2xl font-bold text-gray-900 theme-dark:text-white">
             Reset Password
           </h2>
         </div>
@@ -18,7 +18,7 @@
           <section class="space-y-2 overflow-hidden">
             <%= f.password_field :password, label: 'Enter Password' , placeholder: 'Enter Password' %>
             <% if @minimum_password_length %>
-              <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">(<%= @minimum_password_length %> characters minimum)</p>
+              <p class="mt-1 text-sm text-gray-500 theme-dark:text-gray-400">(<%= @minimum_password_length %> characters minimum)</p>
             <% end %>
           </section>
           <section class="space-y-2 overflow-hidden">
@@ -28,7 +28,7 @@
             <%= f.submit 'Change my password' %>
           </section>
         <% end %>
-        <div class="mt-4 text-center text-sm text-gray-600 dark:text-gray-400">
+        <div class="mt-4 text-center text-sm text-gray-600 theme-dark:text-gray-400">
           <%= render "devise/shared/links" %>
         </div>
       </div>

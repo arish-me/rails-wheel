@@ -1,17 +1,17 @@
-<table class="min-w-full table-fixed divide-y divide-gray-200 dark:divide-gray-700">
+<table class="min-w-full table-fixed divide-y divide-gray-200 theme-dark:divide-gray-700">
   <thead>
-    <tr class="bg-gray-50 dark:bg-gray-700 sticky top-0 z-10">
+    <tr class="bg-gray-50 theme-dark:bg-gray-700 sticky top-0 z-10">
       <% if bulk_select && can?(:create, record) %>
         <th scope="col" class="p-4 w-4">
           <div class="flex items-center justify-center">
             <%= check_box_tag "selection_entry",
-                class: "w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600",
+                class: "w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 theme-dark:focus:ring-blue-600 theme-dark:ring-offset-gray-800 theme-dark:bg-gray-700 theme-dark:border-gray-600",
                 data: { action: "bulk-select#togglePageSelection" } %>
           </div>
         </th>
       <% end %>
       <% columns.each do |column| %>
-        <th scope="col" class="py-3.5 px-6 text-xs font-semibold tracking-wider text-left text-gray-500 uppercase dark:text-gray-300">
+        <th scope="col" class="py-3.5 px-6 text-xs font-semibold tracking-wider text-left text-gray-500 uppercase theme-dark:text-gray-300">
           <%= column[:header] %>
         </th>
       <% end %>
@@ -22,23 +22,23 @@
       <% end %>
     </tr>
   </thead>
-  <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
+  <tbody class="bg-white divide-y divide-gray-200 theme-dark:bg-gray-800 theme-dark:divide-gray-700">
     <% if records.any? %>
       <% records.each do |record| %>
-        <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-150">
+        <tr class="hover:bg-gray-50 theme-dark:hover:bg-gray-700 transition-colors duration-150">
           <% if bulk_select && can?(:create, record) %>
             <td class="p-4 w-4">
               <% if can?(:create, record) %>
                 <div class="flex items-center justify-center">
                   <%= check_box_tag dom_id(record, "selection"),
-                      class: "w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600",
+                      class: "w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 theme-dark:focus:ring-blue-600 theme-dark:ring-offset-gray-800 theme-dark:bg-gray-700 theme-dark:border-gray-600",
                       data: { id: record.id, "bulk-select-target": "row", action: "bulk-select#toggleRowSelection" } %>
                 </div>
               <% end %>
             </td>
           <% end %>
           <% columns.each_with_index do |column, index| %>
-            <td class="<%= index == 0 ? 'font-medium' : '' %> py-4 px-6 text-sm text-gray-700 <%= column[:nowrap] != false ? 'whitespace-nowrap' : '' %> dark:text-gray-200">
+            <td class="<%= index == 0 ? 'font-medium' : '' %> py-4 px-6 text-sm text-gray-700 <%= column[:nowrap] != false ? 'whitespace-nowrap' : '' %> theme-dark:text-gray-200">
               <% if column[:format] %>
                 <%= column[:format].call(record.public_send(column[:attribute])) %>
               <% elsif column[:attribute] == :created_at || column[:attribute] == :updated_at %>
@@ -54,7 +54,7 @@
                 <% actions.each do |action| %>
                   <%= link_to action[:url].call(record),
                       data: { turbo_frame: action[:turbo_frame] || nil, turbo_method: action[:turbo_method] || nil, turbo: action[:turbo] || true },
-                      class: "text-gray-500 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors" do %>
+                      class: "text-gray-500 hover:text-blue-600 theme-dark:text-gray-300 theme-dark:hover:text-blue-400 transition-colors" do %>
                     <% if action[:icon] %>
                       <%= lucide_icon(action[:icon], class: "w-5 h-5") %>
                     <% end %>
@@ -67,9 +67,9 @@
       <% end %>
     <% else %>
       <tr>
-        <td colspan="<%= columns.size + (bulk_select ? 1 : 0) + (actions.present? ? 1 : 0) %>" class="py-8 px-6 text-center text-gray-500 dark:text-gray-400">
+        <td colspan="<%= columns.size + (bulk_select ? 1 : 0) + (actions.present? ? 1 : 0) %>" class="py-8 px-6 text-center text-gray-500 theme-dark:text-gray-400">
           <div class="flex flex-col items-center justify-center">
-            <%= lucide_icon("database", class: "w-10 h-10 mb-2 text-gray-300 dark:text-gray-600") %>
+            <%= lucide_icon("database", class: "w-10 h-10 mb-2 text-gray-300 theme-dark:text-gray-600") %>
             <p class="text-base font-medium">No records found</p>
             <p class="text-sm mt-1">Try adjusting your search or filters</p>
           </div>

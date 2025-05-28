@@ -11,9 +11,9 @@ class TabComponent < ViewComponent::Base
   def tab_class(path)
     base_class = "inline-block p-4 border-b-2 rounded-t-lg"
     if path == current_path
-      "#{base_class} text-blue-600 border-blue-600 dark:text-white dark:border-gray-600"
+      "#{base_class} text-blue-600 border-blue-600 theme-dark:text-white theme-dark:border-gray-600"
     else
-      "#{base_class} hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+      "#{base_class} hover:text-gray-600 hover:border-gray-300 theme-dark:hover:text-gray-300"
     end
   end
 
