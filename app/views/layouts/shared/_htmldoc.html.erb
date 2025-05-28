@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<% theme = session[:theme] %>
+<% theme = current_user.profile&.theme_preference || "light" %>
 
 <html
   lang="en"

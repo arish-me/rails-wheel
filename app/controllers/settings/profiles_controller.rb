@@ -16,7 +16,7 @@ module Settings
           @profile.avatar.purge if should_purge_profile_image?
           flash[:notice] =  "Profile was successfully updated."
           format.html { redirect_to edit_settings_profile_path }
-          format.json { render :edit, status: :ok, location: @profile }
+          format.json { head :ok }
           format.turbo_stream { render turbo_stream: turbo_stream.refresh(request_id: nil) }
         else
           flash[:alert] = @profile.errors.full_messages
@@ -86,9 +86,9 @@ module Settings
         session[:theme] = theme
 
         respond_to do |format|
-          format.html { redirect_to edit_settings_profile_path, notice: "Theme updated successfully" }
+          #format.html { redirect_to edit_settings_profile_path, notice: "Theme updated successfully" }
           format.json { render json: { success: true, theme: theme } }
-          format.turbo_stream { render turbo_stream: turbo_stream.replace("theme_message", partial: "shared/flash", locals: { type: "success", message: "Theme updated successfully" }) }
+          # format.turbo_stream { render turbo_stream: turbo_stream.replace("theme_message", partial: "shared/flash", locals: { type: "success", message: "Theme updated successfully" }) }
         end
       else
         respond_to do |format|

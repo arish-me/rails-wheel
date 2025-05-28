@@ -1,8 +1,8 @@
 <%= form_with(model: profile, url: settings_profile_path, method: :patch, class: "contents", data: { controller: "searchable-select" }) do |form| %>
   <div class="flex justify-end mb-4">
-    <%= render(LinkComponent.new(
+    <%= render(ButtonComponent.new(
       text: "Save Profile",
-      variant: :default,
+      variant: :primary,
       type: "submit"
     )) %>
   </div>
