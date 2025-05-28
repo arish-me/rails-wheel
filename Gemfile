@@ -35,6 +35,8 @@ gem 'geocoder'                                           # For geocoding and loc
 gem 'countries'                                          # For country data and codes
 # Background Jobs
 gem "good_job"
+gem "hotwire_combobox"
+
 
 group :development, :test do
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
