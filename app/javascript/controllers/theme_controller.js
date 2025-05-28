@@ -8,7 +8,7 @@ export default class extends Controller {
     // First check for session preference, then user preference, then localStorage, then system preference
     this.loadTheme();
   }
-  
+
   loadTheme() {
     // Priority order:
     // 1. Session (most recent)
@@ -19,9 +19,9 @@ export default class extends Controller {
     const userPreference = this.hasUserPreferenceValue ? this.userPreferenceValue : null;
     const savedTheme = localStorage.getItem("theme");
     const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    
+
     let themeToUse;
-    
+
     if (sessionTheme && ['light', 'dark'].includes(sessionTheme)) {
       themeToUse = sessionTheme;
     } else if (userPreference === 'light' || userPreference === 'dark') {
@@ -33,7 +33,7 @@ export default class extends Controller {
     } else {
       themeToUse = 'light'; // Default fallback
     }
-    
+
     this.setTheme(themeToUse);
   }
 
@@ -41,24 +41,24 @@ export default class extends Controller {
     const isDarkMode = document.documentElement.classList.contains("dark");
     const newTheme = isDarkMode ? "light" : "dark";
     this.setTheme(newTheme);
-    
+
     // Update user preference if user is signed in
     if (document.querySelector('meta[name="user-signed-in"]')?.content === 'true') {
       this.updateUserThemePreference(newTheme);
     }
   }
-  
+
   updateThemeFromSelect(event) {
     const selectedTheme = event.target.value;
     const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    
+
     // If system preference selected, use system preference
     if (selectedTheme === 'system') {
       this.setTheme(systemPrefersDark ? 'dark' : 'light');
     } else if (['light', 'dark'].includes(selectedTheme)) {
       this.setTheme(selectedTheme);
     }
-    
+
     // Update user preference immediately
     if (document.querySelector('meta[name="user-signed-in"]')?.content === 'true') {
       this.updateUserThemePreference(selectedTheme);
@@ -75,17 +75,19 @@ export default class extends Controller {
       localStorage.setItem("theme", "dark");
       if (darkIcon) darkIcon.classList.remove("hidden");
       if (lightIcon) lightIcon.classList.add("hidden");
+      document.documentElement.setAttribute("data-theme", "dark");
     } else {
       document.documentElement.classList.remove("dark");
       localStorage.setItem("theme", "light");
       if (lightIcon) lightIcon.classList.remove("hidden");
       if (darkIcon) darkIcon.classList.add("hidden");
+      document.documentElement.setAttribute("data-theme", "light");
     }
   }
-  
+
   updateUserThemePreference(theme) {
     const token = document.querySelector('meta[name="csrf-token"]')?.content;
-    
+
     fetch('/settings/profile/update_theme', {
       method: 'PATCH',
       headers: {

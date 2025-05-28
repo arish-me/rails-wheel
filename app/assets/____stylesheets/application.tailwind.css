@@ -1,7 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import 'tom-select/dist/css/tom-select';
+/*@import 'tom-select/dist/css/tom-select';*/
 
 .ts-wrapper.plugin-drag_drop.multi > .ts-control > div.ui-sortable-placeholder {
   @apply visible border-none;

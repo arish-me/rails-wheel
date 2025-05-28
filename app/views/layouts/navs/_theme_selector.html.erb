@@ -1,4 +1,4 @@
-<div class="flex items-center" 
+<div class="flex items-center"
      data-controller="theme"
      <% if user_signed_in? && current_user.profile&.theme_preference.present? %>
        data-theme-user-preference-value="<%= current_user.profile.theme_preference %>"
@@ -6,7 +6,7 @@
   <button
     id="theme-toggle-button"
     data-action="click->theme#toggleTheme"
-    class="flex items-center justify-center p-2 text-gray-500 bg-gray-100 border border-gray-200 rounded-full w-9 h-9 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600 transition-colors duration-200"
+    class="flex items-center justify-center p-2 text-gray-500 bg-gray-100 border border-gray-200 rounded-full w-9 h-9 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-200 theme-dark:bg-gray-700 theme-dark:text-gray-300 theme-dark:border-gray-600 theme-dark:hover:bg-gray-600 transition-colors duration-200"
     title="<%= t('common.toggle_theme') %>">
     <%= lucide_icon 'sun', size: '18', class: 'hidden', id: 'light-icon' %>
     <%= lucide_icon 'moon', size: '18', class: 'hidden', id: 'dark-icon' %>
