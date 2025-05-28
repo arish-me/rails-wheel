@@ -1,22 +1,22 @@
 <section class="flex h-screen">
   <%= render partial: 'devise/shared/side_view' %>
 
-  <div class="w-full md:w-1/2 flex flex-col justify-center items-center p-8 bg-white">
+  <div class="w-full md:w-1/2 flex flex-col justify-center items-center p-8 bg-white theme-dark:bg-gray-900">
     <div class="w-full max-w-md">
       <!-- Mobile logo (visible only on mobile) -->
       <div class="md:hidden flex items-center justify-between mb-8">
-        <%= link_to root_path, class: "flex items-center text-2xl font-semibold text-gray-900" do %>
+        <%= link_to root_path, class: "flex items-center text-2xl font-semibold text-gray-900 theme-dark:text-white" do %>
           Wheel
         <% end %>
-        <%= link_to "Back", root_path, class: "text-sm font-medium text-gray-600" %>
+        <%= link_to "Back", root_path, class: "text-sm font-medium text-gray-600 theme-dark:text-gray-400" %>
       </div>
 
-      <h2 class="text-2xl font-bold text-gray-900 mb-2">
+      <h2 class="text-2xl font-bold text-gray-900 theme-dark:text-white mb-2">
         <%= t('auth.sign_in_to_account') %>
       </h2>
-      <p class="text-sm text-gray-600 mb-8">
+      <p class="text-sm text-gray-600 theme-dark:text-gray-400 mb-8">
         Or
-        <%= link_to "create an account", new_registration_path(resource_name), class: "font-medium text-gray-700 hover:text-gray-300 transition-colors duration-200" %>
+        <%= link_to "create an account", new_registration_path(resource_name), class: "font-medium text-gray-700 hover:text-gray-300 theme-dark:text-gray-300 theme-dark:hover:text-white transition-colors duration-200" %>
       </p>
 
       <%= styled_form_with(model: resource, url:  session_path(resource_name), method: :post, local: true, class: "space-y-4") do |f| %>
@@ -28,24 +28,22 @@
         </section>
         <div class="flex items-start">
           <div class="flex items-center h-5">
-            <%= f.check_box :remember_me, class: "w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-2 focus:ring-blue-500" %>
+            <%= f.check_box :remember_me, class: "w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-2 focus:ring-blue-500 theme-dark:border-gray-600 theme-dark:bg-gray-700" %>
           </div>
           <div class="ml-3 text-sm">
-            <%= f.label :remember_me, class: "text-gray-500" %>
+            <%= f.label :remember_me, class: "text-gray-500 theme-dark:text-gray-400" %>
           </div>
         </div>
         <%= f.submit "Sign In with Email" %>
       <% end %>
 
-
-
       <div class="mt-6">
         <div class="relative">
           <div class="absolute inset-0 flex items-center">
-            <div class="w-full border-t border-gray-300"></div>
+            <div class="w-full border-t border-gray-300 theme-dark:border-gray-700"></div>
           </div>
           <div class="relative flex justify-center text-sm">
-            <span class="px-2 bg-white text-gray-500">
+            <span class="px-2 bg-white theme-dark:bg-gray-900 text-gray-500 theme-dark:text-gray-400">
               OR CONTINUE WITH
             </span>
           </div>

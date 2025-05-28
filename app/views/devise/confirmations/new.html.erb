@@ -2,36 +2,34 @@
   <%= render partial: 'devise/shared/side_view' %>
 
   <!-- Right side - Form area -->
-  <div class="w-full md:w-1/2 flex flex-col justify-center items-center p-8 bg-white">
+  <div class="w-full md:w-1/2 flex flex-col justify-center items-center p-8 bg-white theme-dark:bg-gray-900">
     <div class="w-full max-w-md">
       <!-- Mobile logo (visible only on mobile) -->
       <div class="md:hidden flex items-center justify-between mb-8">
-        <%= link_to root_path, class: "flex items-center text-2xl font-semibold text-gray-900" do %>
+        <%= link_to root_path, class: "flex items-center text-2xl font-semibold text-gray-900 theme-dark:text-white" do %>
           Wheel
         <% end %>
-        <%= link_to "Back", root_path, class: "text-sm font-medium text-gray-600" %>
+        <%= link_to "Back", root_path, class: "text-sm font-medium text-gray-600 theme-dark:text-gray-400" %>
       </div>
 
-      <h2 class="text-2xl font-bold text-gray-900 mb-2">
-        Resend confirmation instructions
+      <h2 class="text-2xl font-bold text-gray-900 theme-dark:text-white mb-2">
+        <%= t('auth.resend_confirmation_instructions') %>
       </h2>
-      <p class="text-sm text-gray-600 mb-8">
-        Enter your email to get confirmation instructions
+      <p class="text-sm text-gray-600 theme-dark:text-gray-400 mb-8">
+        Enter your email address and we'll send you confirmation instructions.
       </p>
 
       <%= styled_form_with(model: resource, url: confirmation_path(resource_name), method: :post, local: true, class: "space-y-4") do |f| %>
-        <% if resource.errors.any? %>
-          <%= render "shared/form_errors", model: resource %>
-        <% end %>
+        <%= render "devise/shared/error_messages", resource: resource %>
+
         <section class="space-y-2 overflow-hidden">
-          <%= f.email_field :email, label: 'Email', placeholder: 'Enter Email', autofocus: true, autocomplete: "email", value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email) %>
+          <%= f.email_field :email, label: 'Email', placeholder: 'Enter Email', required: true, autofocus: true, autocomplete: "email", value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email) %>
         </section>
-        <section>
-          <%= f.submit 'Reset Password' %>
-        </section>
+
+        <%= f.submit "Resend confirmation instructions" %>
       <% end %>
 
-      <div class="mt-6 text-center text-sm text-gray-600">
+      <div class="mt-6 text-center">
         <%= render "devise/shared/links" %>
       </div>
     </div>
