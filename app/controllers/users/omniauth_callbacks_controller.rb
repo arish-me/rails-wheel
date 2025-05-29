@@ -15,9 +15,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
     if user.persisted?
       # Create or update the profile for the user
-      user.profile ||= user.build_profile(google_user(user_info))
-      user.profile.save
-      user.profile.attach_avatar(user_info["info"]["image"])
+      user.attach_avatar(user_info["info"]["image"])
       sign_in_and_redirect user, event: :authentication
       set_flash_message(:notice, :success, kind: "Google") if is_navigational_format?
     else
@@ -44,10 +42,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     end
 
     if user.persisted?
-      # Create or update the profile for the user
-      user.profile ||= user.build_profile(github_user(user_info))
-      user.profile.save
-      user.profile.attach_avatar(user_info["info"]["image"])
+      user.attach_avatar(user_info["info"]["image"])
       sign_in_and_redirect user, event: :authentication
       set_flash_message(:notice, :success, kind: "GitHub") if is_navigational_format?
     else
