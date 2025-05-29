@@ -2,7 +2,6 @@ module Onboardable
   extend ActiveSupport::Concern
 
   included do
-    before_action :authenticate_user!
     # before_action :need_onboard
     before_action :require_onboarding_and_upgrade
   end
@@ -10,6 +9,7 @@ module Onboardable
   private
     # First, we require onboarding, then once that's complete, we require an upgrade for non-subscribed users.
     def require_onboarding_and_upgrade
+      return unless current_user
       return unless redirectable_path?(request.path)
 
       if current_user.needs_onboarding?

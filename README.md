@@ -16,6 +16,12 @@
 
 **Rails Wheel** is a comprehensive, production-ready  starter template for building modern web applications with Ruby on Rails.
 
+![Homepage of the Rails Wheel application](docs/screenshots/home.png)
+![Login of the Rails Wheel application](docs/screenshots/login.png)
+![Dashboard of the Rails Wheel application](docs/screenshots/dashboard.png)
+![Profile of the Rails Wheel application](docs/screenshots/profile.png)
+
+
 Perfect for:
 - SaaS Applications
 - Internal Tools
