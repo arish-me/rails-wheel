@@ -52,17 +52,6 @@ module ApplicationHelper
     end
   end
 
-
-  def render_flash_notifications
-    notifications = flash.flat_map do |type, message_or_messages|
-      Array(message_or_messages).map do |message|
-        render partial: "shared/notification", locals: { type: type, message: message }
-      end
-    end
-
-    safe_join(notifications)
-  end
-
   def impersonating?
     current_user != true_user
   end
