@@ -7,6 +7,7 @@ Rails.application.routes.draw do
 
   namespace :settings do
     resource :profile, only: [ :edit, :update ] do # Singular resource for profile
+      resource :preferences, only: :show
       patch :update_avatar
       delete :delete_avatar
       patch :update_theme

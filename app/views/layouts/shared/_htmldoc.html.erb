@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<% theme = current_user.profile&.theme_preference || "light" %>
+<% theme = current_user&.profile&.theme_preference || "light" %>
 
 <html
   lang="en"

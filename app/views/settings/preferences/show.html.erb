@@ -1,0 +1,71 @@
+<%= content_for :page_title, t(".page_title") %>
+<%= settings_section title: t(".general_title"), subtitle: t(".general_subtitle") do %>
+  <%= styled_form_with(model: @profile, url: settings_profile_path, method: :patch, class: "contents", data: { controller: "searchable-select" }) do |form| %>
+    <div class="grid gap-4 sm:grid-cols-1 sm:gap-6">
+      <div class="w-full">
+        <%= form.text_field :location, label: "Location" , placeholder: "City, Country" %>
+      </div>
+      <div class="grid gap-4 sm:grid-cols-2 sm:gap-6">
+        <div class="w-full">
+          <%= form.select :country_code,  country_options, { include_blank: "---Select---", label: "Select a country..." }, data: {
+                        searchable_select_target: "select"
+                      } %>
+        </div>
+        <div class="w-full">
+          <%= form.text_field :postal_code, placeholder: "Location", label: "Location" , placeholder: "Enter postal code" %>
+        </div>
+      </div>
+      <div class="w-full">
+        <%= form.select :timezone,  timezone_options, { include_blank: "---Select---", label: "Search for a timezone..." }, data: {
+                        searchable_select_target: "select"
+                      } %>
+        <p class="mt-1 text-xs text-gray-500 theme-dark:text-gray-400">Your local timezone is used for displaying dates and times</p>
+      </div>
+      <div class="w-full">
+        <%= form.url_field :website, placeholder: "https://yourwebsite.com", label: "Website" %>
+      </div>
+      <div class="flex justify-end mt-4">
+        <%= render ButtonComponent.new(text: t(".save"), class: "md:w-auto w-full justify-center") %>
+      </div>
+    </div>
+  <% end %>
+<% end %>
+<%= settings_section title: t(".theme_title"), subtitle: t(".theme_subtitle") do %>
+  <%= form_with(model: @profile, url: settings_profile_path, method: :patch, class: "contents", data: { controller: "searchable-select" }) do |form| %>
+    <div class="w-full">
+      <%= form.label :theme_preference, class: 'block mb-2 text-sm font-medium text-gray-900 theme-dark:text-white' %>
+      <%= form.select :theme_preference,
+                      [["System Default", "system"], ["Light Mode", "light"], ["Dark Mode", "dark"]],
+                      {},
+                      class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 theme-dark:bg-gray-700 theme-dark:border-gray-600 theme-dark:placeholder-gray-400 theme-dark:text-white theme-dark:focus:ring-blue-500 theme-dark:focus:border-blue-500",
+                      data: { action: "change->theme#updateThemeFromSelect" } %>
+    </div>
+  <% end %>
+<% end %>
+
+<%= settings_section title: t(".theme_title"), subtitle: t(".theme_subtitle") do %>
+  <div data-controller="theme" data-theme-user-preference-value="<%= @profile.theme_preference %>">
+    <%= form_with(model: @profile, url: settings_profile_path, method: :patch, class: "flex flex-col md:flex-row justify-between items-center gap-4", id: "theme_form", data: { controller: "auto-submit-form", auto_submit_form_trigger_event_value: "change" }) do |form| %>
+      <%= form.hidden_field :redirect_to, value: "preferences" %>
+
+      <% theme_option_class = "text-center transition-all duration-200 p-3 rounded-lg hover:bg-surface-hover cursor-pointer [&:has(input:checked)]:bg-surface-hover [&:has(input:checked)]:border [&:has(input:checked)]:border-primary [&:has(input:checked)]:shadow-xs" %>
+
+      <% [
+        { value: "light", image: "light-mode-preview.png" },
+        { value: "dark", image: "dark-mode-preview.png" },
+        { value: "system", image: "system-mode-preview.png" }
+      ].each do |theme| %>
+        <%= form.label :"theme_#{theme[:value]}", class: "group" do %>
+          <div class="<%= theme_option_class %>">
+            <%= image_tag(theme[:image], alt: "#{theme[:value].titleize} Theme Preview", class: "h-44 mb-2") %>
+            <div class="<%= theme[:value] == "system" ? "flex items-center gap-2 justify-center" : "text-sm font-medium text-primary" %>">
+              <%= form.radio_button :theme, theme[:value], checked: @profile.theme_preference == theme[:value], class: "sr-only",
+                data: { auto_submit_form_target: "auto", autosubmit_trigger_event: "change", action: "theme#updateTheme" } %>
+              <%= t(".theme_#{theme[:value]}") %>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>
