@@ -43,13 +43,16 @@
 
 <% end %>
 
-<% mobile_nav_items = [
-  { name: "Dashboard", path: root_path, icon: "pie-chart", icon_custom: false, active: page_active?(root_path) },
-  { name: "Management", path: admin_users_path, icon: "users", icon_custom: false, active: page_active?(admin_users_path) },
-  { name: "Categories", path: categories_path, icon: "folder", icon_custom: false, active: page_active?(categories_path) },
+<% nav_items = [
+  { name: "Dashboard", path: root_path, icon: "pie-chart", icon_custom: false, active: page_active?(root_path), condition: true, mobile_only: true },
+  { name: "Management", path: admin_users_path, icon: "users", icon_custom: false, active: page_active?(admin_users_path), condition: can?(:index, User), mobile_only: true },
+  { name: "Categories", path: categories_path, icon: "folder", icon_custom: false, active: page_active?(categories_path), condition: can?(:index, Category), mobile_only: true },
 ] %>
 
-<% desktop_nav_items = mobile_nav_items.reject { |item| item[:mobile_only] } %>
+
+
+<% mobile_nav_items = nav_items.select { |item| item[:mobile_only] && item[:condition] } %>
+<% desktop_nav_items = nav_items.select { |item| item[:condition] } %>
 <% expanded_sidebar_class = "w-full" %>
 <% collapsed_sidebar_class = "w-0" %>
 
@@ -84,7 +87,7 @@
         </div>
 
         <ul class="space-y-0.5">
-          <% desktop_nav_items.reject { |item| item[:mobile_only] }.each do |nav_item| %>
+          <% desktop_nav_items.each do |nav_item| %>
             <li>
               <%= render "layouts/shared/nav_item", **nav_item %>
             </li>
