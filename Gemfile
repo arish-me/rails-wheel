@@ -25,16 +25,18 @@ gem "letter_opener"
 gem "pagy"
 gem "pg_search"
 gem "pundit"
-gem "tailwindcss-rails", "~> 3.1"
+gem "tailwindcss-rails"
 gem "omniauth-google-oauth2"
 gem "omniauth-rails_csrf_protection"
 gem "omniauth-github"
 gem "view_component"
-gem 'i18n'
-gem 'geocoder'                                           # For geocoding and location services
-gem 'countries'                                          # For country data and codes
+gem "i18n"
+gem "geocoder"                                           # For geocoding and location services
+gem "countries"                                          # For country data and codes
 # Background Jobs
 gem "good_job"
+gem "hotwire_combobox"
+
 
 group :development, :test do
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"

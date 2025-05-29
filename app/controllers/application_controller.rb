@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  include Breadcrumbable, Notifiable, Onboardable
   include Pagy::Backend
   include Pundit::Authorization
   impersonates :user
@@ -8,6 +9,7 @@ class ApplicationController < ActionController::Base
   allow_browser versions: :modern
 
   before_action :set_locale_from_session_or_params
+  before_action :set_active_storage_url_options
 
   # Locale switcher action - uses Turbo to avoid page reload
   def set_locale
@@ -26,14 +28,22 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def set_active_storage_url_options
+    ActiveStorage::Current.url_options = {
+      protocol: request.protocol,
+      host: request.host,
+      port: request.optional_port
+    }
+  end
+
   private
 
   def set_locale_from_session_or_params
     I18n.locale = if session[:locale].present? && I18n.available_locales.include?(session[:locale].to_sym)
                     session[:locale].to_sym
-                  else
+    else
                     I18n.default_locale
-                  end
+    end
   end
 
   def user_not_authorized

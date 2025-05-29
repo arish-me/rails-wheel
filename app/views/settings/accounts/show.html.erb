@@ -1,0 +1,51 @@
+<%= content_for :page_title, "Account" %>
+<%= settings_section title: "Email Setting" do %>
+  <%= styled_form_with(model: @user, url: registration_path(@user), method: :put, class: "space-y-4", data: { controller: "searchable-select" }) do |f| %>
+    <%= f.hidden_field :redirect_to, value: "settings_accounts_path" %>
+    <%= render "devise/shared/error_messages", resource: @user %>
+    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+    <div>
+      <%= f.password_field :current_password, autocomplete: "current-password"%>
+      <p class="text-sm text-gray-500 theme-dark:text-gray-400 mb-1">(we need your current password to confirm your changes)</p>
+    </div>
+    <%= render ButtonComponent.new(text: "Update Email", class: "md:w-auto w-full justify-end") %>
+  <% end %>
+<% end %>
+<%= settings_section title: "Change Password" do %>
+  <%= styled_form_with(model: @user, url: registration_path(@user), method: :put, class: "space-y-4", data: { controller: "searchable-select" }) do |f| %>
+    <%= f.hidden_field :redirect_to, value: "settings_accounts_path" %>
+    <div class="grid gap-4 sm:grid-cols-2 sm:gap-6">
+      <div class="sm:col-span-2">
+        <%= f.password_field :password, autocomplete: "new-password", label: "New Password", placeholder: "Enter new password" %>
+        <% if @minimum_password_length %>
+          <p class="text-xs text-gray-500 theme-dark:text-gray-400 mt-1"><em><%= @minimum_password_length %> characters minimum</em></p>
+        <% end %>
+      </div>
+      <div class="sm:col-span-2">
+        <%= f.password_field :password_confirmation, autocomplete: "new-password", label: "Confirm new password", placeholder: "Confirm new password" %>
+      </div>
+      <div class="sm:col-span-2">
+        <%= f.password_field :current_password, autocomplete: "new-password", label: "Current password", placeholder: "Current password" %>
+        <p class="text-sm text-gray-500 theme-dark:text-gray-400 mb-1">(we need your current password to confirm your changes)</p>
+      </div>
+    </div>
+    <%= render ButtonComponent.new(text: "Update Password", class: "md:w-auto w-full justify-end") %>
+  <% end %>
+<% end %>
+<%= settings_section title: t(".danger_zone_title") do %>
+  <div class="space-y-4">
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div class="w-full md:w-2/3">
+        <h3 class="font-medium text-primary"><%= t(".delete_account") %></h3>
+        <p class="text-secondary text-sm"><%= t(".delete_account_warning") %></p>
+      </div>
+      <%= render ButtonComponent.new(
+        text: t(".delete_account"),
+        variant: "destructive",
+        href: registration_path(@user),
+        method: :delete,
+        confirm: CustomConfirm.for_resource_deletion("your account", high_severity: true)
+      ) %>
+    </div>
+  </div>
+<% end %>

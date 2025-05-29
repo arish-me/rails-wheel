@@ -1,85 +1,61 @@
-<div class="flex flex-col items-center gap-4 shadow-sm rounded-lg p-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700" data-controller="profile-image-preview">
-  <div class="flex flex-col md:flex-row items-center gap-8 w-full">
-    <!-- Profile Image Wrapper -->
-    <div class="relative flex justify-center items-center bg-gray-100 dark:bg-gray-700 w-[150px] h-[150px] rounded-full border-gray-300 dark:border-gray-600 border-2 border-dashed overflow-hidden"
-         data-profile-image-preview-target="dropZone">
-      <!-- Drag & Drop Overlay -->
-      <div class="absolute inset-0 flex flex-col justify-center items-center text-gray-500 dark:text-gray-400 opacity-0 hover:opacity-100 transition-opacity bg-gray-100/80 dark:bg-gray-700/80 z-10">
-        <span class="text-sm font-medium">Drop image here</span>
-        <%= lucide_icon "upload", class: "w-8 h-8 mt-2" %>
+<%# locals: (form:, user:) %>
+
+<div class="flex flex-col items-center gap-4" data-controller="profile-image-preview">
+  <div class="relative">
+    <button type="button"
+            data-profile-image-preview-target="clearBtn"
+            data-action="click->profile-image-preview#clearFileInput"
+      class="<%= user.profile_image.attached? ? "" : "hidden" %> z-50 cursor-pointer absolute bottom-0 right-0 w-8 h-8 bg-gray-50 rounded-full flex justify-center items-center border border-white border-2">
+      <%= icon "x", size: "sm" %>
+    </button>
+
+    <div class="relative flex justify-center items-center bg-surface-inset size-26 md:size-24 rounded-full border-primary border border-dashed overflow-hidden">
+      <%# The image preview once user has uploaded a new file  %>
+      <div data-profile-image-preview-target="previewImage" class="h-full w-full flex justify-center items-center hidden">
+        <img src="" alt="Preview" class="w-full h-full rounded-full object-cover">
       </div>
 
-      <!-- Image Preview -->
-      <div data-profile-image-preview-target="previewImage" class="h-full w-full hidden">
-        <img src="" alt="Preview" class="w-full h-full rounded-full object-cover" style="object-position: center">
-      </div>
-
-      <!-- Profile avatar with Turbo Stream ID -->
-      <div id="profile_avatar" class="h-full w-full flex items-center justify-center">
-        <!-- Placeholder for Empty Avatar -->
-        <div data-profile-image-preview-target="placeholderImage" class="<%= profile.avatar.attached? ? "hidden" : "" %> flex justify-center items-center text-gray-500 dark:text-gray-400 h-full w-full">
-          <%= lucide_icon "image-plus", class: "w-12 h-12" %>
-        </div>
-
-        <!-- Attached Image -->
-        <div data-profile-image-preview-target="attachedImage" class="<%= profile.avatar.attached? ? "" : "hidden" %> h-full w-full">
-          <% if profile.avatar.attached? %>
-            <%= image_tag profile.avatar.variant(:thumbnail), class: "w-full h-full rounded-full object-cover", style: "object-position: center" %>
-          <% end %>
+      <%# The placeholder image for empty avatar field  %>
+      <div data-profile-image-preview-target="placeholderImage"
+         class="h-full w-full flex justify-center  items-center <%= user.profile_image.attached? ? "hidden" : "" %>">
+        <div class="h-full w-full flex justify-center items-center bg-surface-inset">
+          <%= icon "image-plus", size: "lg" %>
         </div>
       </div>
 
-      <!-- Clear Image Button -->
-      <button type="button"
-              data-profile-image-preview-target="clearBtn"
-              data-action="click->profile-image-preview#clearFileInput"
-              aria-label="Remove Image"
-              class="<%= profile.avatar.attached? ? "" : "hidden" %> absolute bottom-2 right-2 w-10 h-10 bg-white dark:bg-gray-800 rounded-full flex justify-center items-center shadow-md border border-gray-200 dark:border-gray-700 z-20 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-        <%= lucide_icon "x", class: "w-5 h-5 text-gray-500 dark:text-gray-400" %>
-      </button>
+      <%# The attached image if user has already uploaded one %>
+      <div data-profile-image-preview-target="attachedImage"
+         class="h-full w-full flex justify-center items-center <%= user.profile_image.attached? ? "" : "hidden" %>">
+        <% if user.profile_image.attached? %>
+          <div class="h-full w-full">
+            <%= render "settings/user_avatar", avatar_url: user.profile_image.url %>
+          </div>
+        <% end %>
+      </div>
     </div>
+  </div>
 
-    <!-- File Input Controls -->
-    <div class="flex flex-col w-full">
-      <div class="mb-4">
-        <h3 class="text-base font-medium text-gray-900 dark:text-white mb-1">Profile Picture</h3>
-        <p class="text-sm text-gray-600 dark:text-gray-400">Upload a profile picture or drag and drop an image.</p>
-      </div>
+  <div class="text-center">
+    <%= form.hidden_field :delete_profile_image, value: "0", data: { profile_image_preview_target: "deleteProfileImage" } %>
 
-      <%= form.hidden_field :delete_avatar, value: "0", data: { profile_image_preview_target: "deleteProfileImage" } %>
+    <%= form.label :profile_image, class: "px-3 py-2 rounded-lg text-sm hover:bg-surface-hover border border-secondary inline-flex items-center gap-2 cursor-pointer", data: { profile_image_preview_target: "uploadButton" } do %>
+      <%= icon "camera", data: { profile_image_preview_target: "cameraIcon" } %>
+      <span data-profile-image-preview-target="uploadText">
+        <%= t(".choose") %> <span class="text-secondary"><%= t(".choose_label") %></span>
+      </span>
+      <span data-profile-image-preview-target="changeText" class="hidden" aria-hidden="true">
+        <%= t(".change") %>
+      </span>
+    <% end %>
 
-      <div class="mt-2 flex flex-wrap gap-3">
-        <label for="avatar" class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
-          <%= lucide_icon "upload", class: "w-4 h-4" %>
-          <%= t(".choose", default: "Choose File") %>
-        </label>
+    <p class="mt-2 text-xs text-secondary"><%= t(".accepted_formats") %></p>
 
-        <span data-profile-image-preview-target="fileNameDisplay" class="hidden inline-flex items-center px-3 py-1 text-xs font-medium text-gray-700 bg-gray-100 dark:text-gray-300 dark:bg-gray-600 rounded-md"></span>
-
-        <span data-profile-image-preview-target="uploadStatus" class="hidden text-xs text-green-500 font-medium"></span>
-      </div>
-
-      <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">Accepted formats: JPEG, PNG (max 5MB)</p>
-
-      <!-- Progress bar -->
-      <div data-profile-image-preview-target="progressContainer" class="w-full mt-3 hidden">
-        <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-          <div data-profile-image-preview-target="progressBar" class="bg-blue-600 h-2.5 rounded-full transition-all duration-150"></div>
-        </div>
-      </div>
-
-      <!-- Error message placeholder for Turbo Stream -->
-      <div id="avatar_error" class="mt-2"></div>
-
-      <%= form.file_field :avatar,
-          id: "avatar",
-          accept: "image/png, image/jpeg",
-          class: "hidden",
-          data: {
-            profile_image_preview_target: "input",
-            action: "change->profile-image-preview#showFileInputPreview",
-            turbo_track: "reload"
-          } %>
-    </div>
+    <%= form.file_field :profile_image,
+        accept: "image/png, image/jpeg",
+        class: "hidden px-3 py-2 bg-gray-50 text-primary rounded-md text-sm font-medium",
+        data: {
+          profile_image_preview_target: "input",
+          action: "change->profile-image-preview#showFileInputPreview"
+        } %>
   </div>
 </div>

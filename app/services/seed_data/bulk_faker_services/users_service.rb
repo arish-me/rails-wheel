@@ -25,7 +25,6 @@ module SeedData
         # Use batch insertion for better performance
         users_to_create = []
         user_roles_to_create = []
-        profiles_to_create = []
 
         count.times do |i|
           email = unique_email
@@ -45,7 +44,10 @@ module SeedData
             encrypted_password: Devise::Encryptor.digest(User, "password123"),
             confirmed_at: now,
             created_at: now,
-            updated_at: now
+            updated_at: now,
+            first_name: Faker::Name.first_name,
+            last_name: Faker::Name.last_name,
+            gender: rand(1..3)
           }
         end
 
@@ -59,16 +61,6 @@ module SeedData
 
           # Prepare profile and role data
           bulk_users.each_with_index do |user, index|
-            # Profile data
-            profiles_to_create << {
-              user_id: user.id,
-              first_name: Faker::Name.first_name,
-              last_name: Faker::Name.last_name,
-              gender: rand(1..3),
-              created_at: user.created_at,
-              updated_at: user.updated_at
-            }
-
             # UserRole data - use index for role selection logic
             role = index % 10 == 0 ? roles.sample : default_role
             user_roles_to_create << {
@@ -79,8 +71,7 @@ module SeedData
             }
           end
 
-          # Bulk insert profiles and user roles
-          Profile.insert_all(profiles_to_create) if profiles_to_create.any?
+
           UserRole.insert_all(user_roles_to_create) if user_roles_to_create.any?
         end
 

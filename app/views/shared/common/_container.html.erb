@@ -2,34 +2,33 @@
      data-controller="bulk-select"
      data-bulk-select-singular-label-value='resource'
      data-bulk-select-plural-label-value="resources"
-     class="flex flex-col bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden">
-  <div id="entry-selection-bar" data-bulk-select-target="selectionBar" class="flex justify-center hidden px-6 py-3 bg-blue-50 dark:bg-blue-900/30 border-b border-blue-100 dark:border-blue-800">
+     class="flex flex-col bg-white theme-dark:bg-gray-800 rounded-xl border border-gray-200 theme-dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden">
+  <div id="entry-selection-bar" data-bulk-select-target="selectionBar" class="flex justify-center hidden px-6 py-3 bg-blue-50 theme-dark:bg-blue-900/30 border-b border-blue-100 theme-dark:border-blue-800">
     <%= render partial: "shared/common/selection_bar", locals: { destroy_path: destroy_path } %>
   </div>
-  <div class="divide-y divide-gray-200 dark:divide-gray-700">
+  <div class="divide-y divide-gray-200 theme-dark:divide-gray-700">
     <div class="px-6 py-5">
       <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <h1 class="text-xl font-bold text-gray-900 dark:text-white"><%= title %></h1>
+        <h1 class="text-xl font-bold text-gray-900 theme-dark:text-white"><%= title %></h1>
         <div class="flex">
           <%= render partial: "shared/common/search_bar", locals: { resource_path: resource_path, resource_id: resource_id, placeholder: search_placeholder } %>
         </div>
       </div>
     </div>
 
-    <div class="flex justify-between items-center px-6 py-3 bg-gray-50 dark:bg-gray-800/80 border-y border-gray-200 dark:border-gray-700">
-      <div class="text-sm text-gray-500 dark:text-gray-400">
+    <div class="flex justify-between items-center px-6 py-3 bg-gray-50 theme-dark:bg-gray-800/80 border-y border-gray-200 theme-dark:border-gray-700">
+      <div class="text-sm text-gray-500 theme-dark:text-gray-400">
         <% if resource.respond_to?(:total_count) %>
           <%= pluralize(resource.total_count, title.singularize) %> found
         <% end %>
       </div>
       <div>
         <% if can?(:create, record) %>
-         <%= render(ButtonComponent.new(
-            label: "Add #{title.singularize}",
+         <%= render(LinkComponent.new(
+            text: "Add #{title.singularize}",
             href: new_resource_path,
-            icon: "plus",
-            variant: :default,
-            turbo_frame: :modal
+            variant: :primary,
+            frame: :modal
           )) %>
         <% end %>
       </div>
@@ -47,7 +46,7 @@
                 actions: actions
               } %>
           </div>
-          <div class="px-6 py-3 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
+          <div class="px-6 py-3 bg-white theme-dark:bg-gray-800 border-t border-gray-200 theme-dark:border-gray-700">
             <%= render "shared/pagination", pagy: @pagy %>
           </div>
         </div>

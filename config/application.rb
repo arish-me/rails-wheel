@@ -36,11 +36,19 @@ module RailsWheel
     # config.eager_load_paths << Rails.root.join("extras")
 
     # I18n configuration
-    config.i18n.available_locales = [:en, :es, :fr]
+    config.i18n.available_locales = [ :en, :es, :fr ]
     config.i18n.default_locale = :en
     config.i18n.fallbacks = true
 
     # Don't generate system test files.
     config.generators.system_tests = nil
+
+    config.to_prepare do
+        Devise::SessionsController.layout "auth"
+        Devise::RegistrationsController.layout "auth"
+        Devise::ConfirmationsController.layout "auth"
+        Devise::UnlocksController.layout "auth"
+        Devise::PasswordsController.layout "auth"
+    end
   end
 end

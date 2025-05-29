@@ -22,7 +22,7 @@ class PrivateLayoutComponent < ViewComponent::Base
 
   def content_wrapper
     content_tag :div, class: "p-4 sm:ml-64" do
-      content_tag :div, class: "p-4 mt-14 bg-white dark:bg-gray-900 rounded-lg shadow-sm" do
+      content_tag :div, class: "p-4 mt-14 bg-white theme-dark:bg-gray-900 rounded-lg shadow-sm" do
         safe_join([
           impersonation_session,
           yield_settings_tab,

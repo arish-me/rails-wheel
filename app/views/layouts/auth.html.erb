@@ -1,0 +1,8 @@
+<%= render "layouts/shared/htmldoc" do %>
+  <% if !devise_controller? %>
+    <%= render partial: 'layouts/navs/public_nav' %>
+    <%= render partial: 'shared/content' %>
+  <% else %>
+    <%= render partial: 'shared/content' %>
+  <% end %>
+<% end %>

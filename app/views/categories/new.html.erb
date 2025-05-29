@@ -1,3 +1,11 @@
-<%= modal_form_wrapper title: t(".new_category") do %>
-  <%= render "form", category: @category %>
+<%if false%>
+  <%= modal_form_wrapper title: t(".new_category") do %>
+    <%= render "form", category: @category %>
+  <% end %>
+<% end %>
+<%= render DialogComponent.new do |dialog| %>
+  <% dialog.with_header(title: t(".new_category")) %>
+  <% dialog.with_body do %>
+    <%= render "form", category: @category %>
+  <% end %>
 <% end %>
