@@ -6,20 +6,18 @@
     <h2 class="text-lg font-bold text-gray-700">User Details</h2>
     <%= f.text_field :email, label: 'Email' , placeholder: 'Enter Email' %>
   </section>
-    <section class="space-y-2 overflow-hidden">
-      <h2 class="text-lg font-bold text-gray-700">User Details</h2>
-
-        <%= f.text_field :first_name, label: 'First Name', placeholder: 'Enter First Name' %>
-        <%= f.text_field :last_name, label: 'Last Name', placeholder: 'Enter Last Name' %>
-        <%= f.select :gender,
+  <section class="space-y-2 overflow-hidden">
+    <h2 class="text-lg font-bold text-gray-700">User Details</h2>
+    <%= f.text_field :first_name, label: 'First Name', placeholder: 'Enter First Name' %>
+    <%= f.text_field :last_name, label: 'Last Name', placeholder: 'Enter Last Name' %>
+    <%= f.select :gender,
                     User.genders.map { |key, _| [User::GENDER_DISPLAY[key.to_sym], key] },
                     { label: 'Gender' }
         %>
-
-    </section>
+  </section>
   <section class="space-y-2 overflow-hidden mt-2">
     <h2 class="text-lg font-bold text-gray-700">Roles</h2>
-      <%= f.select :role_ids,
+    <%= f.select :role_ids,
                     Role.pluck(:name, :id),
                     {
                       include_blank: false,
@@ -28,26 +26,18 @@
                     }
                    %>
   </section>
-
   <!-- Actions Section -->
   <section class="space-y-4 overflow-hidden">
     <h2 class="text-lg font-bold text-gray-700">Actions</h2>
-
     <div class="flex items-center gap-4">
-  <%= label_tag :locked, "Lock" %>
-  <%= check_box_tag :locked,
+      <%= label_tag :locked, "Lock" %>
+      <%= check_box_tag :locked,
                     "1", # The value for the checkbox when checked
                     @user.access_locked?, # Checked if the user is locked
                     class: ["wheel-checkbox wheel-checkbox--light"],
                     data: { action: "bulk-select#toggleGroupSelection" } %>
-</div>
-
-
-
-
-
+    </div>
   </section>
-
   <section>
     <%= f.submit 'Submit' %>
   </section>

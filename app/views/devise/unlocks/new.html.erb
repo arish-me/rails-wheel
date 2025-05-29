@@ -10,7 +10,6 @@
         <% end %>
         <%= link_to "Back", root_path, class: "text-sm font-medium text-gray-600 theme-dark:text-gray-400" %>
       </div>
-
       <h2 class="text-2xl font-bold text-gray-900 theme-dark:text-white mb-2">
         <%= t('auth.resend_unlock_instructions') %>
       </h2>
@@ -24,13 +23,9 @@
         </section>
         <%= f.submit "Resend unlock instructions" %>
       <% end %>
-
       <div class="mt-6 text-center">
         <%= render "devise/shared/links" %>
       </div>
     </div>
   </div>
 </section>
-
-
-

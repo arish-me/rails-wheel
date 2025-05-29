@@ -1,6 +1,5 @@
 <section class="flex h-screen">
   <%= render partial: 'devise/shared/side_view' %>
-
   <!-- Right side - Form area -->
   <div class="w-full md:w-1/2 flex flex-col justify-center items-center p-8 bg-white theme-dark:bg-gray-900">
     <div class="w-full max-w-md">
@@ -11,7 +10,6 @@
         <% end %>
         <%= link_to "Back", root_path, class: "text-sm font-medium text-gray-600 theme-dark:text-gray-400" %>
       </div>
-
       <h2 class="text-2xl font-bold text-gray-900 theme-dark:text-white mb-2">
         Create an account
       </h2>
@@ -19,7 +17,6 @@
         Or existing user
         <%= link_to "Login", new_session_path(resource_name), class: "font-medium text-blue-600 hover:text-blue-500 theme-dark:text-blue-400 theme-dark:hover:text-blue-300 transition-colors duration-200" %>
       </p>
-
       <% if resource.errors.present? %>
         <div class="text-red-600 theme-dark:text-red-400 flex items-center gap-2 mb-4">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -28,20 +25,16 @@
           <p class="text-sm"><%= resource.errors.full_messages.to_sentence %></p>
         </div>
       <% end %>
-
       <%= styled_form_with(model: resource, url:  registration_path(resource_name), method: :post, local: true, class: "space-y-4") do |f| %>
         <section class="space-y-2 overflow-hidden">
           <%= f.email_field :email, label: 'Email', placeholder: 'Enter Email', autofocus: true, autocomplete: "email",  required: true %>
         </section>
-
         <section class="space-y-2 overflow-hidden">
           <%= f.password_field :password, label: 'Password', placeholder: 'Enter Password', autocomplete: "new-password",  required: true %>
         </section>
-
         <section class="space-y-2 overflow-hidden">
           <%= f.password_field :password_confirmation, label: 'Confirm Password', placeholder: 'Enter Password', autocomplete: "new-password",  required: true %>
         </section>
-
         <div class="flex items-start">
           <div class="flex items-center h-5">
             <input id="terms" aria-describedby="terms" type="checkbox" class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-2 focus:ring-blue-500 theme-dark:border-gray-600 theme-dark:bg-gray-700" required="">
@@ -52,7 +45,6 @@
         </div>
         <%= f.submit "Create Account" %>
       <% end %>
-
       <div class="mt-6">
         <div class="relative">
           <div class="absolute inset-0 flex items-center">
@@ -64,11 +56,9 @@
             </span>
           </div>
         </div>
-
         <div class="mt-6 grid grid-cols-3 gap-3">
           <%= render "devise/shared/social_links" %>
         </div>
-
         <div class="mt-4 text-center text-sm text-gray-600">
           <%= render "devise/shared/links" %>
         </div>

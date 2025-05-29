@@ -1,6 +1,5 @@
 <section class="flex h-screen">
   <%= render partial: 'devise/shared/side_view' %>
-
   <div class="w-full md:w-1/2 flex flex-col justify-center items-center p-8 bg-white theme-dark:bg-gray-900">
     <div class="w-full max-w-md">
       <!-- Mobile logo (visible only on mobile) -->
@@ -10,7 +9,6 @@
         <% end %>
         <%= link_to "Back", root_path, class: "text-sm font-medium text-gray-600 theme-dark:text-gray-400" %>
       </div>
-
       <h2 class="text-2xl font-bold text-gray-900 theme-dark:text-white mb-2">
         <%= t('auth.sign_in_to_account') %>
       </h2>
@@ -18,7 +16,6 @@
         Or
         <%= link_to "create an account", new_registration_path(resource_name), class: "font-medium text-gray-700 hover:text-gray-300 theme-dark:text-gray-300 theme-dark:hover:text-white transition-colors duration-200" %>
       </p>
-
       <%= styled_form_with(model: resource, url:  session_path(resource_name), method: :post, local: true, class: "space-y-4") do |f| %>
         <section class="space-y-2 overflow-hidden">
           <%= f.email_field :email, label: 'Email', placeholder: 'Enter Email',  required: true %>
@@ -36,7 +33,6 @@
         </div>
         <%= f.submit "Sign In with Email" %>
       <% end %>
-
       <div class="mt-6">
         <div class="relative">
           <div class="absolute inset-0 flex items-center">
@@ -48,11 +44,9 @@
             </span>
           </div>
         </div>
-
         <div class="mt-6 grid grid-cols-3 gap-3">
           <%= render "devise/shared/social_links" %>
         </div>
-
         <div class="mt-4 text-center">
           <%= render "devise/shared/links" %>
         </div>
