@@ -59,6 +59,15 @@ class User < ApplicationRecord
     create_profile if profile.nil?
   end
 
+  def onboarded?
+    onboarded_at.present?
+  end
+
+  def needs_onboarding?
+    !onboarded?
+  end
+
+
   protected
 
   def password_required?

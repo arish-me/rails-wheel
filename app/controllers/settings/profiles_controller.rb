@@ -13,18 +13,33 @@ module Settings
     # PATCH/PUT /profiles/1
     def update
       respond_to do |format|
-        if update_profile
+        if update_profile_and_user
           @profile.avatar.purge if should_purge_profile_image?
           flash[:notice] =  "Profile was successfully updated."
-          format.html { redirect_to edit_settings_profile_path }
+          format.html { handle_redirect(flash[:notice]) }
           format.json { head :ok }
-          format.turbo_stream { render turbo_stream: turbo_stream.refresh(request_id: nil) }
         else
           flash[:alert] = @profile.errors.full_messages
           format.html { render :edit, status: :unprocessable_entity }
           format.json { render json: @profile.errors, status: :unprocessable_entity }
-          format.turbo_stream { render turbo_stream: turbo_stream.refresh(request_id: nil) }
         end
+      end
+    end
+
+    def handle_redirect(notice)
+      case params[:user][:redirect_to]
+      when "onboarding_preferences"
+        redirect_to preferences_onboarding_path
+      when "home"
+        redirect_to root_path
+      when "preferences"
+        redirect_to settings_preferences_path, notice: notice
+      when "goals"
+        redirect_to goals_onboarding_path
+      when "trial"
+        redirect_to trial_onboarding_path
+      else
+        redirect_to edit_settings_profile_path, notice: notice
       end
     end
 
@@ -102,20 +117,25 @@ module Settings
 
     private
 
-      # Find the profile or build a new one for the current user
       def set_or_initialize_profile
         @profile = Profile.find_or_initialize_by(user_id: current_user.id)
       end
 
-      def update_profile
-        result = @profile.update(profile_params.except(:delete_avatar))
+      def update_profile_and_user
+        ActiveRecord::Base.transaction do
+          # Update user attributes
+          current_user.update(user_params)
+          
+          # Update profile attributes
+          result = @profile.update(profile_params.except(:delete_avatar, :redirect_to))
 
-        # Update theme preference in user's session if it changed
-        if result && @profile.saved_change_to_theme?
-          session[:theme] = @profile.theme
+          # Update theme preference in user's session if it changed
+          if result && @profile.saved_change_to_theme?
+            session[:theme] = @profile.theme
+          end
+
+          result && current_user.errors.empty?
         end
-
-        result
       end
 
       def should_purge_profile_image?
@@ -123,9 +143,12 @@ module Settings
           profile_params[:avatar].blank?
       end
 
-      # Only allow a list of trusted parameters through.
+      def user_params
+        params.require(:user).permit(:set_onboarding_preferences_at)
+      end
+
       def profile_params
-        params.require(:profile).permit(
+        params.require(:user).require(:profile).permit(
           :first_name,
           :middle_name,
           :last_name,
@@ -136,6 +159,7 @@ module Settings
           :delete_avatar,
           :phone_number,
           :date_of_birth,
+          :redirect_to,
           :location,
           :website,
           :social_links,

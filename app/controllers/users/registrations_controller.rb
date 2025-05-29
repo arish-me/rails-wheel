@@ -14,8 +14,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def update
     self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
     prev_unconfirmed_email = resource.unconfirmed_email if resource.respond_to?(:unconfirmed_email)
-
-    resource_updated = update_resource(resource, account_update_params)
+    onboarding = params[:user][:redirect_to] == 'home' || resource.needs_onboarding?
+    resource_updated = if onboarding
+                        update_resource_without_password(resource, account_update_params)
+                       else
+                        update_resource(resource, account_update_params)
+                       end
     yield resource if block_given?
     if resource_updated
       set_flash_message_for_update(resource, prev_unconfirmed_email)
@@ -24,7 +28,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
       respond_to do |format|
         format.html do
           flash[:notice] = "Your account has been updated successfully."
-          redirect_to after_update_path_for(resource)
+          handle_redirect(flash[:notice], resource)
+
         end
         format.json { render json: { message: "Account updated successfully" }, status: :ok }
       end
@@ -41,6 +46,23 @@ class Users::RegistrationsController < Devise::RegistrationsController
     end
   end
 
+    def handle_redirect(notice, resource)
+      case params[:user][:redirect_to]
+      when "onboarding_preferences"
+        redirect_to preferences_onboarding_path
+      when "home"
+        redirect_to root_path
+      when "preferences"
+        redirect_to settings_preferences_path, notice: notice
+      when "goals"
+        redirect_to goals_onboarding_path
+      when "trial"
+        redirect_to trial_onboarding_path
+      else
+        redirect_to after_update_path_for(resource), notice: notice
+      end
+    end
+
   protected
 
   # If you have extra params to permit, append them to the sanitizer.
@@ -54,7 +76,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # If you have extra params to permit, append them to the sanitizer.
   def configure_account_update_params
     devise_parameter_sanitizer.permit(:account_update, keys: [
-      :email, :password, :password_confirmation, :current_password,
+      :email, :password, :password_confirmation, :current_password, :set_onboarding_goals_at, :onboarded_at,
       profile_attributes: [
         :id, :first_name, :middle_name, :last_name, :gender, :bio,
         :phone_number, :date_of_birth, :location, :website, :social_links,
@@ -70,6 +92,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
     else
       super
     end
+  end
+
+  def update_resource_without_password(resource, params)
+    resource.update_without_password(params.except(:redirect_to))
   end
 
   def update_resource(resource, params)

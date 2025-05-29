@@ -28,6 +28,14 @@ Rails.application.routes.draw do
 
   resources :user_roles
 
+  resource :onboarding, only: :show do
+    collection do
+      get :preferences
+      get :goals
+      get :trial
+    end
+  end
+
   resources :role_permissions do
     collection do
       post :bulk_destroy

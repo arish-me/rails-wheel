@@ -159,6 +159,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_20_113926) do
     t.datetime "updated_at", null: false
     t.string "phone_number"
     t.date "date_of_birth"
+    t.string "date_format", default: "%d-%m%-Y"
+    t.string "locale", default: "en"
     t.string "location"
     t.string "website"
     t.jsonb "social_links", default: {}
@@ -219,6 +221,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_20_113926) do
     t.datetime "updated_at", null: false
     t.string "provider"
     t.string "uid"
+    t.boolean "active", default: true, null: false
+    t.datetime "onboarded_at"
+    t.text "goals", default: [], array: true
+    t.datetime "set_onboarding_preferences_at"
+    t.datetime "set_onboarding_goals_at"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
