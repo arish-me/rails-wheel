@@ -65,7 +65,7 @@
                         <% if can?(:create, User) %>
                           <div class="flex items-center">
                             <%= check_box_tag dom_id(record, "selection"),
-                    class: "maybe-checkbox maybe-checkbox--light",
+                    class: "wheel-checkbox wheel-checkbox--light",
                     data: { id: record.id, "bulk-select-target": "row", action: "bulk-select#toggleRowSelection" } %>
                           </div>
                         <% end %>

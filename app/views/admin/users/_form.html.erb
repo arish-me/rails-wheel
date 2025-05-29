@@ -38,7 +38,7 @@
   <%= check_box_tag :locked,
                     "1", # The value for the checkbox when checked
                     @user.access_locked?, # Checked if the user is locked
-                    class: ["maybe-checkbox maybe-checkbox--light"],
+                    class: ["wheel-checkbox wheel-checkbox--light"],
                     data: { action: "bulk-select#toggleGroupSelection" } %>
 </div>
 
