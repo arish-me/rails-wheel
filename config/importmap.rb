@@ -17,4 +17,3 @@ pin "@floating-ui/utils", to: "@floating-ui--utils.js" # @0.2.9
 pin "@floating-ui/utils/dom", to: "@floating-ui--utils--dom.js" # @0.2.9
 pin "@lit/reactive-element", to: "@lit--reactive-element.js" # @2.1.0
 pin "@github/hotkey", to: "@github--hotkey.js" # @3.1.1
-

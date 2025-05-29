@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_20_113926) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_18_073510) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -148,31 +148,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_20_113926) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "profiles", force: :cascade do |t|
-    t.string "first_name"
-    t.string "middle_name"
-    t.string "last_name"
-    t.integer "gender"
-    t.text "bio"
-    t.bigint "user_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "phone_number"
-    t.date "date_of_birth"
-    t.string "date_format", default: "%d-%m%-Y"
-    t.string "locale", default: "en"
-    t.string "location"
-    t.string "website"
-    t.jsonb "social_links", default: {}
-    t.integer "theme", default: 0
-    t.string "timezone"
-    t.string "country_code"
-    t.string "postal_code"
-    t.index ["country_code"], name: "index_profiles_on_country_code"
-    t.index ["theme"], name: "index_profiles_on_theme"
-    t.index ["user_id"], name: "index_profiles_on_user_id"
-  end
-
   create_table "role_permissions", force: :cascade do |t|
     t.bigint "role_id", null: false
     t.bigint "permission_id", null: false
@@ -221,19 +196,35 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_20_113926) do
     t.datetime "updated_at", null: false
     t.string "provider"
     t.string "uid"
+    t.integer "gender"
+    t.text "bio"
+    t.string "timezone"
+    t.string "first_name"
+    t.string "last_name"
+    t.string "country_code", default: "US"
+    t.string "phone_number"
+    t.date "date_of_birth"
+    t.string "date_format", default: "%d.%m.%Y"
+    t.string "locale", default: "en"
+    t.string "location"
+    t.string "website"
+    t.jsonb "social_links", default: {}
+    t.string "theme", default: "system"
     t.boolean "active", default: true, null: false
     t.datetime "onboarded_at"
     t.text "goals", default: [], array: true
     t.datetime "set_onboarding_preferences_at"
     t.datetime "set_onboarding_goals_at"
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["locale"], name: "index_users_on_locale"
+    t.index ["onboarded_at"], name: "index_users_on_onboarded_at"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["theme"], name: "index_users_on_theme"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "categories", "users"
-  add_foreign_key "profiles", "users"
   add_foreign_key "role_permissions", "permissions"
   add_foreign_key "role_permissions", "roles"
   add_foreign_key "user_roles", "roles"

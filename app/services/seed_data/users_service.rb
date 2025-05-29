@@ -24,6 +24,9 @@ module SeedData
           u.password = "#{user_data[:email]}"
           u.password_confirmation = "#{user_data[:email]}"
           u.confirmed_at = Time.now.utc
+          u.first_name = user_data[:first_name]
+          u.last_name = user_data[:last_name]
+          gender =  user_data[:gender]
         end
 
         user.save(validate: false)
@@ -31,14 +34,6 @@ module SeedData
 
         role = Role.find_by(name: user_data[:role])
         UserRole.find_or_create_by!(user: user, role: role)
-
-        profile = user.profile || user.build_profile
-        profile.assign_attributes(
-          first_name: user_data[:first_name],
-          last_name: user_data[:last_name],
-          gender: user_data[:gender]
-        )
-        profile.save!
       end
 
       log "Users created and assigned roles."

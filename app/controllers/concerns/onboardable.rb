@@ -2,21 +2,22 @@ module Onboardable
   extend ActiveSupport::Concern
 
   included do
+    before_action :authenticate_user!
+    #before_action :need_onboard
     before_action :require_onboarding_and_upgrade
   end
 
   private
     # First, we require onboarding, then once that's complete, we require an upgrade for non-subscribed users.
     def require_onboarding_and_upgrade
-      return unless user_signed_in?
       return unless redirectable_path?(request.path)
 
       if current_user.needs_onboarding?
         redirect_to onboarding_path
-      # elsif Current.family.needs_subscription?
-      #   redirect_to trial_onboarding_path
-      # elsif Current.family.upgrade_required?
-      #   redirect_to upgrade_subscription_path
+        # elsif Current.family.needs_subscription?
+        #   redirect_to trial_onboarding_path
+        # elsif Current.family.upgrade_required?
+        #   redirect_to upgrade_subscription_path
       end
     end
 
@@ -28,7 +29,7 @@ module Onboardable
 
       [
         new_registration_path(User),
-        new_session_path(User),
+        new_session_path(User)
         # new_password_reset_path,
         # new_email_confirmation_path
       ].exclude?(path)

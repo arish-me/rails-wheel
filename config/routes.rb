@@ -6,6 +6,9 @@ Rails.application.routes.draw do
   # post '/rails/active_storage/direct_uploads', to: 'active_storage/direct_uploads#create', as: :rails_direct_uploads
 
   namespace :settings do
+    resource :profile, only: [ :show, :destroy ]
+    resource :preferences, only: :show
+    resource :accounts, only: :show
     resource :profile, only: [ :edit, :update ] do # Singular resource for profile
       resource :preferences, only: :show
       resource :accounts, only: :show

@@ -1,4 +1,4 @@
-<%= content_for :page_title, "Account Settings" %>
+<%= content_for :page_title, "Account" %>
 <%= settings_section title: "Email Setting" do %>
   <%= styled_form_with(model: @user, url: registration_path(@user), method: :put, class: "space-y-4", data: { controller: "searchable-select" }) do |f| %>
     <%= f.hidden_field :redirect_to, value: "settings_accounts_path" %>

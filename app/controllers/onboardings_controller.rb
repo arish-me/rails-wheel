@@ -2,6 +2,7 @@ class OnboardingsController < ApplicationController
   layout "wizard"
 
   before_action :set_user
+  before_action :need_onboard
   # before_action :load_invitation
 
   def show
@@ -16,6 +17,10 @@ class OnboardingsController < ApplicationController
   private
     def set_user
       @user = current_user
+    end
+
+    def need_onboard
+      redirect_to dashboard_path unless current_user.needs_onboarding?
     end
 
     def load_invitation

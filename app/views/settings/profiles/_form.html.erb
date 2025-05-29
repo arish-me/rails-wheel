@@ -1,6 +1,5 @@
-<%= styled_form_with(model: profile, url: settings_profile_path, method: :patch, class: "space-y-4", data: { controller: "searchable-select" }) do |form| %>
-    <%= render "settings/user_avatar_field", form: form, profile: profile, user: current_user %>
-
+<%= styled_form_with(model: current_user, url: registration_path(current_user), method: :patch, class: "space-y-4", data: { controller: "searchable-select" }) do |form| %>
+    <%= render "settings/user_avatar_field", form: form, user: current_user %>
   <div>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
       <%= form.text_field :first_name, placeholder: "First name", label: "First Name" %>
@@ -10,7 +9,7 @@
       <div class="w-full">
 
 
-          <%= form.select :gender,  Profile.genders.map { |key, _| [Profile::GENDER_DISPLAY[key.to_sym], key] }, { include_blank: "---Select---", label: "Pronounce" } %>
+          <%= form.select :gender,  User.genders.map { |key, _| [User::GENDER_DISPLAY[key.to_sym], key] }, { include_blank: "---Select---", label: "Pronounce" } %>
 
       </div>
       <div class="w-full">

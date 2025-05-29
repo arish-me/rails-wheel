@@ -10,13 +10,17 @@ module Settings
       # The `@profile` will either be an existing profile or a new instance
     end
 
+    def show
+      @user = current_user
+    end
+
     # PATCH/PUT /profiles/1
     def update
       respond_to do |format|
         if update_profile_and_user
           @profile.avatar.purge if should_purge_profile_image?
           flash[:notice] =  "Profile was successfully updated."
-          format.html { handle_redirect(flash[:notice]) }
+          redirect_to edit_settings_profile_path
           format.json { head :ok }
         else
           flash[:alert] = @profile.errors.full_messages
@@ -124,8 +128,8 @@ module Settings
       def update_profile_and_user
         ActiveRecord::Base.transaction do
           # Update user attributes
-          current_user.update(user_params)
-          
+          #current_user.update(user_params)
+
           # Update profile attributes
           result = @profile.update(profile_params.except(:delete_avatar, :redirect_to))
 
@@ -148,7 +152,7 @@ module Settings
       end
 
       def profile_params
-        params.require(:user).require(:profile).permit(
+        params.require(:profile).permit(
           :first_name,
           :middle_name,
           :last_name,
