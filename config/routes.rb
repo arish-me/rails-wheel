@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   # Locale switching route
-  post 'set_locale', to: 'application#set_locale', as: :set_locale
+  post "set_locale", to: "application#set_locale", as: :set_locale
 
   # ActiveStorage direct uploads
   # post '/rails/active_storage/direct_uploads', to: 'active_storage/direct_uploads#create', as: :rails_direct_uploads
@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   namespace :settings do
     resource :profile, only: [ :edit, :update ] do # Singular resource for profile
       resource :preferences, only: :show
+      resource :accounts, only: :show
       patch :update_avatar
       delete :delete_avatar
       patch :update_theme

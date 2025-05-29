@@ -41,9 +41,9 @@ class ApplicationController < ActionController::Base
   def set_locale_from_session_or_params
     I18n.locale = if session[:locale].present? && I18n.available_locales.include?(session[:locale].to_sym)
                     session[:locale].to_sym
-                  else
+    else
                     I18n.default_locale
-                  end
+    end
   end
 
   def user_not_authorized

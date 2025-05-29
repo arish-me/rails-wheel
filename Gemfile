@@ -30,9 +30,9 @@ gem "omniauth-google-oauth2"
 gem "omniauth-rails_csrf_protection"
 gem "omniauth-github"
 gem "view_component"
-gem 'i18n'
-gem 'geocoder'                                           # For geocoding and location services
-gem 'countries'                                          # For country data and codes
+gem "i18n"
+gem "geocoder"                                           # For geocoding and location services
+gem "countries"                                          # For country data and codes
 # Background Jobs
 gem "good_job"
 gem "hotwire_combobox"

@@ -87,7 +87,7 @@ module Settings
         session[:theme] = theme
 
         respond_to do |format|
-          #format.html { redirect_to edit_settings_profile_path, notice: "Theme updated successfully" }
+          # format.html { redirect_to edit_settings_profile_path, notice: "Theme updated successfully" }
           format.json { render json: { success: true, theme: theme } }
           # format.turbo_stream { render turbo_stream: turbo_stream.replace("theme_message", partial: "shared/flash", locals: { type: "success", message: "Theme updated successfully" }) }
         end

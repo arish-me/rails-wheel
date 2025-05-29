@@ -79,8 +79,8 @@ class Profile < ApplicationRecord
       end
 
       # Set timezone if not already set
-      if timezone.blank? && result.data['timezone'].present?
-        self.timezone = result.data['timezone']
+      if timezone.blank? && result.data["timezone"].present?
+        self.timezone = result.data["timezone"]
       end
 
       # Set location if not already set
@@ -102,6 +102,6 @@ class Profile < ApplicationRecord
   private
 
   def set_default_timezone
-    self.timezone = 'UTC'
+    self.timezone = "UTC"
   end
 end
