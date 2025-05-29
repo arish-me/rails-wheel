@@ -1,3 +1,6 @@
-<%= modal_form_wrapper title: t(".new_user") do %>
-  <%= render "form", user: @user %>
+<%= render DialogComponent.new do |dialog| %>
+  <% dialog.with_header(title: t(".new_user")) %>
+  <% dialog.with_body do %>
+    <%= render "form", user: @user %>
+  <% end %>
 <% end %>

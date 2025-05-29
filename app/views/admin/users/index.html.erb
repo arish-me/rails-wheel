@@ -19,7 +19,7 @@
         <% if can?(:create, User) %>
           <%= render LinkComponent.new(
               text: "Add User",
-              variant: "outline",
+              variant: :primary,
               icon: "plus",
               href: new_admin_user_path,
               frame: :modal,

@@ -17,11 +17,9 @@ class Admin::UsersController < ApplicationController
 
   def new
     @user = User.new
-    @user.build_profile
   end
 
   def edit
-    @user.build_profile unless @user.profile
   end
 
   def create
@@ -123,7 +121,7 @@ class Admin::UsersController < ApplicationController
       params.require(:user).permit(
         :email,
         :locked,
-        profile_attributes: [ :id, :first_name, :last_name, :gender ],
+        :first_name, :last_name, :gender,
         role_ids: [] # This allows multiple role IDs to be assigned
       )
     end

@@ -9,13 +9,6 @@ Rails.application.routes.draw do
     resource :profile, only: [ :show, :destroy ]
     resource :preferences, only: :show
     resource :accounts, only: :show
-    resource :profile, only: [ :edit, :update ] do # Singular resource for profile
-      resource :preferences, only: :show
-      resource :accounts, only: :show
-      patch :update_avatar
-      delete :delete_avatar
-      patch :update_theme
-    end
     get "account", to: "settings#edit_account", as: "edit_account"
   end
 
