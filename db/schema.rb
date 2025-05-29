@@ -162,12 +162,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_20_113926) do
     t.string "location"
     t.string "website"
     t.jsonb "social_links", default: {}
-    t.integer "theme_preference", default: 0
+    t.integer "theme", default: 0
     t.string "timezone"
     t.string "country_code"
     t.string "postal_code"
     t.index ["country_code"], name: "index_profiles_on_country_code"
-    t.index ["theme_preference"], name: "index_profiles_on_theme_preference"
+    t.index ["theme"], name: "index_profiles_on_theme"
     t.index ["user_id"], name: "index_profiles_on_user_id"
   end
 

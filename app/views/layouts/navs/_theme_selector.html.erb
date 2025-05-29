@@ -1,7 +1,7 @@
 <div class="flex items-center"
      data-controller="theme"
-     <% if user_signed_in? && current_user.profile&.theme_preference.present? %>
-       data-theme-user-preference-value="<%= current_user.profile.theme_preference %>"
+     <% if user_signed_in? && current_user.profile&.theme.present? %>
+       data-theme-user-preference-value="<%= current_user.profile.theme %>"
      <% end %>>
   <button
     id="theme-toggle-button"

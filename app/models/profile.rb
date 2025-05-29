@@ -10,10 +10,10 @@ class Profile < ApplicationRecord
   before_validation :set_default_timezone, if: -> { timezone.blank? }
 
   enum :gender, [ :he_she, :him_her, :they_them, :other ]
-  enum :theme_preference, { system: 0, light: 1, dark: 2 }, default: :system
+  enum :theme, { system: 0, light: 1, dark: 2 }, default: :system
 
   GENDER_DISPLAY = {
-    he_she: "He/She",
+    he_she: "He/Him",
     him_her: "Him/Her",
     they_them: "They/Them",
     other: "Other"

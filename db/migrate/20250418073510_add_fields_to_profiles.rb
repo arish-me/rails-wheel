@@ -5,8 +5,8 @@ class AddFieldsToProfiles < ActiveRecord::Migration[8.0]
     add_column :profiles, :location, :string
     add_column :profiles, :website, :string
     add_column :profiles, :social_links, :jsonb, default: {}
-    add_column :profiles, :theme_preference, :integer, default: 0
+    add_column :profiles, :theme, :integer, default: 0
 
-    add_index :profiles, :theme_preference
+    add_index :profiles, :theme
   end
 end

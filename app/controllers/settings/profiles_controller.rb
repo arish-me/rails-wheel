@@ -82,8 +82,8 @@ module Settings
     def update_theme
       theme = params[:theme]
 
-      if theme.present? && Profile.theme_preferences.keys.include?(theme)
-        @profile.update(theme_preference: theme)
+      if theme.present? && Profile.theme.keys.include?(theme)
+        @profile.update(theme: theme)
         session[:theme] = theme
 
         respond_to do |format|
@@ -111,8 +111,8 @@ module Settings
         result = @profile.update(profile_params.except(:delete_avatar))
 
         # Update theme preference in user's session if it changed
-        if result && @profile.saved_change_to_theme_preference?
-          session[:theme] = @profile.theme_preference
+        if result && @profile.saved_change_to_theme?
+          session[:theme] = @profile.theme
         end
 
         result
@@ -139,7 +139,7 @@ module Settings
           :location,
           :website,
           :social_links,
-          :theme_preference,
+          :theme,
           :timezone,
           :country_code,
           :postal_code
