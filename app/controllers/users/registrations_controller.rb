@@ -17,7 +17,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     onboarding = params[:user][:redirect_to] == "home" || resource.needs_onboarding?
     resource_updated = if onboarding
                         update_resource_without_password(resource, account_update_params)
-    elsif params[:user][:redirect_to] == 'settings_accounts_path'
+    elsif params[:user][:redirect_to] == "settings_accounts_path"
       update_resource(resource, account_update_params)
     else
                         update_resource_without_password(resource, account_update_params)

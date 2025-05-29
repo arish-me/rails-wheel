@@ -3,7 +3,7 @@ module Onboardable
 
   included do
     before_action :authenticate_user!
-    #before_action :need_onboard
+    # before_action :need_onboard
     before_action :require_onboarding_and_upgrade
   end
 
