@@ -2,6 +2,8 @@ module SettingsHelper
   SETTINGS_ORDER = [
     { name: I18n.t("settings.settings_nav.profile_label"), path: :edit_settings_profile_path },
     { name: "Preferences", path: :settings_profile_preferences_path },
+    { name: "Account Setting", path: :settings_edit_account_path }
+
   ]
 
   def adjacent_setting(current_path, offset)
