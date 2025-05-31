@@ -1,13 +1,13 @@
 class OnboardingsController < ApplicationController
   layout "wizard"
-
+  before_action :authenticate_user!
   before_action :set_user
   before_action :need_onboard
   # before_action :load_invitation
 
   def show
 
-    @company = current_user&.company&.presence? || Company.new
+    @company = current_user&.company || Company.new
   end
 
   def preferences

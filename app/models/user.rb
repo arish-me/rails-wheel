@@ -10,7 +10,7 @@ class User < ApplicationRecord
   has_many :categories, dependent: :destroy
   belongs_to :company, optional: true
 
-  after_create :assign_default_role
+  # after_create :assign_default_role
 
   attr_accessor :skip_password_validation
   attr_accessor :current_sign_in_ip_address
@@ -56,8 +56,8 @@ class User < ApplicationRecord
   end
 
   def assign_default_role
-    # default_role = Role.fetch_default_role
-    # UserRole.create!(user: self, role: default_role) if default_role
+    default_role = Role.fetch_default_role
+    UserRole.create!(user: self, role: default_role) if default_role
   end
 
   def has_role?(role_name)

@@ -2,6 +2,7 @@ class DashboardController < ApplicationController
   before_action :authenticate_user!
 
   def index
+    return unless current_user.company.present?
     ActsAsTenant.with_tenant(current_user.company) do
       # Metrics
       @total_users = ActsAsTenant.current_tenant.users.count
