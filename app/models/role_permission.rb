@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class RolePermission < ApplicationRecord
+  acts_as_tenant(:company)
   belongs_to :role
   belongs_to :permission
 
