@@ -58,7 +58,7 @@
 
 <%= render "layouts/shared/htmldoc" do %>
 <meta name="user-signed-in" content="true">
-      <meta name="direct-upload-url" content="<%= rails_direct_uploads_path %>">
+<meta name="direct-upload-url" content="<%= rails_direct_uploads_path %>">
 <div
     class="flex flex-col lg:flex-row h-full bg-surface"
     data-controller="app-layout"
@@ -76,6 +76,7 @@
 
       <%= render "users/user_menu", user: current_user, placement: "bottom-end", offset: 12 %>
     </nav>
+
 
     <%# DESKTOP - Left navbar %>
     <div class="hidden lg:block">
@@ -124,6 +125,11 @@
       <% if content_for?(:page_header) %>
         <%= yield :page_header %>
       <% end %>
+
+      <% if content_for?(:user_management_tab) %>
+        <%= yield :user_management_tab %>
+      <% end %>
+
 
       <%= yield %>
     <% end %>
