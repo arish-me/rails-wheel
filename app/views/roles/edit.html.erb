@@ -1,3 +1,6 @@
-<%= modal_form_wrapper title: t(".update_role") do %>
-  <%= render "form", role: @role %>
+<%= render DialogComponent.new do |dialog| %>
+  <% dialog.with_header(title: t(".update_role")) %>
+  <% dialog.with_body do %>
+    <%= render "form", role: @role %>
+  <% end %>
 <% end %>

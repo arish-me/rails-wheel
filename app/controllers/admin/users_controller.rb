@@ -1,6 +1,8 @@
 class Admin::UsersController < ApplicationController
+   before_action :authenticate_user!
+   before_action :authorize_resource, only: %i[index show edit update destroy]
    before_action :set_user, only: %i[ show edit update destroy ]
-   before_action :authorize_resource, only: %i[show edit update destroy]
+
    before_action :set_tenent
 
   def index
@@ -13,6 +15,8 @@ class Admin::UsersController < ApplicationController
   end
 
   def set_tenent
+    return if current_user.user?
+
     ActsAsTenant.current_tenant = current_user.company
   end
 
@@ -30,6 +34,10 @@ class Admin::UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     @user.skip_password_validation = true
+    @user.onboarded_at = Time.now.utc
+    @user.assign_default_role
+    @user.user_type = "company"
+    @user.company_id = ActsAsTenant.current_tenant.id
     respond_to do |format|
       if @user.save
         flash[:notice] = "User was successfully created."
@@ -107,7 +115,7 @@ class Admin::UsersController < ApplicationController
     end
 
     def authorize_resource
-      authorize @user
+      authorize current_user
     end
 
     def update_roles(user)

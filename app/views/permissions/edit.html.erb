@@ -1,3 +1,6 @@
-<%= modal_form_wrapper title: t(".edit_permission") do %>
-  <%= render "form", permission: @permission %>
+<%= render DialogComponent.new do |dialog| %>
+  <% dialog.with_header(title: t(".update_permission")) %>
+  <% dialog.with_body do %>
+    <%= render "form", permission: @permission %>
+  <% end %>
 <% end %>

@@ -21,6 +21,8 @@ class ApplicationPolicy
   def has_permission?(action)
     return false unless user
 
+    return false if user.user?
+
     resource_name = resolve_resource_name
 
     user.roles.joins(role_permissions: :permission).exists?(

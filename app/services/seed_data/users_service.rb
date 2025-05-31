@@ -26,6 +26,10 @@ module SeedData
           u.confirmed_at = Time.now.utc
           u.first_name = user_data[:first_name]
           u.last_name = user_data[:last_name]
+          u.company_id = ActsAsTenant.current_tenant.id
+          u.onboarded_at = Time.now.utc
+          u.set_onboarding_preferences_at = Time.now.utc
+          u.set_onboarding_goals_at = Time.now.utc
           gender =  user_data[:gender]
         end
 
