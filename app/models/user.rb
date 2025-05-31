@@ -8,6 +8,7 @@ class User < ApplicationRecord
   has_many :user_roles, dependent: :destroy
   has_many :roles, through: :user_roles
   has_many :categories, dependent: :destroy
+  has_one :company
 
   after_create :assign_default_role
 
@@ -29,6 +30,7 @@ class User < ApplicationRecord
               }
   enum :gender, [ :he_she, :him_her, :they_them, :other ]
   enum :theme, { system: 0, light: 1, dark: 2 }, default: :system
+  enum :user_type, { company: 0, user: 1, service: 2 }
 
   GENDER_DISPLAY = {
     he_she: "He/Him",

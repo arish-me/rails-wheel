@@ -4,6 +4,7 @@ class AddFieldsToUsers < ActiveRecord::Migration[8.0]
     add_column :users, :provider, :string
     add_column :users, :uid, :string
     # Other Attributes
+    add_column :users, :user_type, :integer
     add_column :users, :gender, :integer
     add_column :users, :bio, :text
     add_column :users, :timezone, :string

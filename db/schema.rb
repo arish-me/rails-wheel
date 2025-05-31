@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_18_073510) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_30_093632) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -50,6 +50,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_18_073510) do
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_categories_on_name"
     t.index ["user_id"], name: "index_categories_on_user_id"
+  end
+
+  create_table "companies", force: :cascade do |t|
+    t.string "name"
+    t.string "subdomain"
+    t.string "website"
+    t.integer "status", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "good_job_batches", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -196,6 +205,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_18_073510) do
     t.datetime "updated_at", null: false
     t.string "provider"
     t.string "uid"
+    t.integer "user_type"
     t.integer "gender"
     t.text "bio"
     t.string "timezone"
@@ -215,6 +225,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_18_073510) do
     t.text "goals", default: [], array: true
     t.datetime "set_onboarding_preferences_at"
     t.datetime "set_onboarding_goals_at"
+    t.bigint "company_id"
+    t.index ["company_id"], name: "index_users_on_company_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["locale"], name: "index_users_on_locale"
     t.index ["onboarded_at"], name: "index_users_on_onboarded_at"
@@ -229,4 +241,5 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_18_073510) do
   add_foreign_key "role_permissions", "roles"
   add_foreign_key "user_roles", "roles"
   add_foreign_key "user_roles", "users"
+  add_foreign_key "users", "companies"
 end

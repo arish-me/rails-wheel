@@ -6,9 +6,14 @@ class OnboardingsController < ApplicationController
   # before_action :load_invitation
 
   def show
+    @company = Company.new
   end
 
   def preferences
+  end
+
+  def profiles_setup
+    @company = Company.new
   end
 
   def trial

@@ -23,9 +23,10 @@ Rails.application.routes.draw do
   get "settings", to: "settings#index"
 
   resources :user_roles
-
+  resources :companies
   resource :onboarding, only: :show do
     collection do
+      get :profiles_setup
       get :preferences
       get :goals
       get :trial
