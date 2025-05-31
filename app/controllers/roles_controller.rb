@@ -1,6 +1,5 @@
 class RolesController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_tenent
   before_action :set_role, only: %i[ show edit update destroy ]
   before_action :authorize_resource, only: %i[show edit update destroy]
   # GET /roles or /roles.json
@@ -69,10 +68,6 @@ class RolesController < ApplicationController
         format.json { render json: @role.errors, status: :unprocessable_entity }
       end
     end
-  end
-
-  def set_tenent
-    ActsAsTenant.current_tenant = current_user.company
   end
 
   # DELETE /roles/1 or /roles/1.json

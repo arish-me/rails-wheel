@@ -10,6 +10,9 @@ class ApplicationController < ActionController::Base
 
   before_action :set_locale_from_session_or_params
   before_action :set_active_storage_url_options
+  before_action :set_tenent
+
+
 
   # Locale switcher action - uses Turbo to avoid page reload
   def set_locale
@@ -37,6 +40,12 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
+  def set_tenent
+    return unless current_user && current_user.company_id
+
+    ActsAsTenant.current_tenant = current_user.company
+  end
 
   def set_locale_from_session_or_params
     I18n.locale = if session[:locale].present? && I18n.available_locales.include?(session[:locale].to_sym)
