@@ -1,14 +1,19 @@
 class Admin::UsersController < ApplicationController
    before_action :set_user, only: %i[ show edit update destroy ]
    before_action :authorize_resource, only: %i[show edit update destroy]
+   before_action :set_tenent
 
   def index
     if params[:query].present?
       @pagy, @users = pagy(User.search_by_email(params[:query]), limit: params[:per_page] || "10")
     else
-      @pagy, @users = pagy(User.all, limit: params[:per_page] || "10")
+      @pagy, @users = pagy(ActsAsTenant.current_tenant.users.all, limit: params[:per_page] || "10")
     end
     authorize @users
+  end
+
+  def set_tenent
+    ActsAsTenant.current_tenant = current_user.company
   end
 
 

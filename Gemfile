@@ -1,5 +1,6 @@
 source "https://rubygems.org"
 
+gem "acts_as_tenant"
 gem "chartkick"
 gem "groupdate"
 gem "rails", "~> 8.0.1"

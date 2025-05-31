@@ -8,7 +8,7 @@ class User < ApplicationRecord
   has_many :user_roles, dependent: :destroy
   has_many :roles, through: :user_roles
   has_many :categories, dependent: :destroy
-  has_one :company
+  belongs_to :company, optional: true
 
   after_create :assign_default_role
 
@@ -56,8 +56,8 @@ class User < ApplicationRecord
   end
 
   def assign_default_role
-    default_role = Role.fetch_default_role
-    UserRole.create!(user: self, role: default_role) if default_role
+    # default_role = Role.fetch_default_role
+    # UserRole.create!(user: self, role: default_role) if default_role
   end
 
   def has_role?(role_name)
