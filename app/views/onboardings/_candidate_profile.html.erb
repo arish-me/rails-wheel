@@ -1,0 +1,26 @@
+<div class="space-y-1 mb-6 text-center">
+  <h1 class="text-2xl font-medium md:text-2xl">Let's set up your account</h1>
+  <p class="text-secondary text-sm">First things first, let's get your profile set up.</p>
+</div>
+
+<%= styled_form_with(model: @user, url: registration_path(@user), method: :patch, class: "space-y-4", data: { controller: "searchable-select" }) do |form| %>
+  <%= form.hidden_field :redirect_to, value: @invitation ? "home" : "onboarding_preferences" %>
+  <%= form.hidden_field :onboarded_at, value: Time.current if @invitation %>
+  <div class="mb-6">
+    <%= render "settings/user_avatar_field", form: form, user: @user %>
+  </div>
+
+  <% unless @invitation %>
+    <div class="space-y-4 mb-4">
+      <div class="flex flex-col md:flex-row md:justify-between md:items-center md:gap-4 space-y-4 md:space-y-0 mb-4">
+        <%= form.text_field :first_name, placeholder: "First name", label: "First name", container_class: "bg-container md:w-1/2 w-full", required: true %>
+        <%= form.text_field :last_name, placeholder: "Last name", label: "Last name", container_class: "bg-container md:w-1/2 w-full", required: true %>
+      </div>
+      <%= form.select :country_code,
+          country_options,
+          { label: "Country" },
+          required: true %>
+    </div>
+  <% end %>
+  <%= form.submit "Continue" %>
+<% end %>

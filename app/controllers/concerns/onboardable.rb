@@ -26,6 +26,8 @@ module Onboardable
       return false if path.starts_with?("/subscription")
       return false if path.starts_with?("/onboarding")
       return false if path.starts_with?("/users")
+      # Allow company creation during onboarding
+      return false if path == "/companies" && request.post? && current_user.needs_onboarding?
 
       [
         new_registration_path(User),
