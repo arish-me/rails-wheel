@@ -1,4 +1,5 @@
 
+
 # Rails Wheel: Production-Ready Ruby on Rails Starter
 
 <p align="center">
@@ -16,7 +17,7 @@
 
 **Rails Wheel** is a comprehensive, production-ready starter template for building modern web applications with Ruby on Rails.
 
-If people want to use the micro-sass startup wheel to maintain company with users with complete RBAC with Tailwind checkout this branch: [micro-sass branch](https://github.com/arish-me/rails-wheel/tree/micro-sass)
+#### If people want to use the micro-sass startup wheel to maintain company with users with complete RBAC with Tailwind checkout this branch: [micro-sass branch](https://github.com/arish-me/rails-wheel/tree/micro-sass)
 
 ![Homepage of the Rails Wheel application](docs/screenshots/home.png)
 ![Login of the Rails Wheel application](docs/screenshots/login.png)
