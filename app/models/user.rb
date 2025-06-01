@@ -30,7 +30,7 @@ class User < ApplicationRecord
               }
   enum :gender, [ :he_she, :him_her, :they_them, :other ]
   enum :theme, { system: 0, light: 1, dark: 2 }, default: :system
-  enum :user_type, { company: 0, user: 1, service: 2 }
+  enum :user_type, { company: 0, user: 1, platform_admin: 99 }
 
   GENDER_DISPLAY = {
     he_she: "He/Him",

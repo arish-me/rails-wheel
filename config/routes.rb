@@ -69,6 +69,23 @@ Rails.application.routes.draw do
     end
   end
 
+  namespace :platform do
+    resources :users do
+      member do
+        post :impersonate
+      end
+      collection do
+        post :bulk_destroy
+        post :stop_impersonating
+      end
+    end
+    resources :companies do
+      collection do
+        post :bulk_destroy
+      end
+    end
+  end
+
   get "up" => "rails/health#show", as: :rails_health_check
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
   root "pages#index"

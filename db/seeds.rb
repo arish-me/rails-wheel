@@ -10,3 +10,6 @@ company = Company.find_or_create_by!(name: "TTC Servoce", subdomain: 'wheel')
 ActsAsTenant.with_tenant(company) do
   SeedData::MainSeeder.new(faker_count, false, true).call
 end
+
+
+User.create!(email: "serviceuser@wheel.com", password: "serviceuser@wheel.com", password_confirmation: 'serviceuser@wheel.com', user_type: "platform_admin")

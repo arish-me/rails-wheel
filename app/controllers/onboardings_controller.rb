@@ -27,6 +27,7 @@ class OnboardingsController < ApplicationController
 
     def need_onboard
       redirect_to dashboard_path unless current_user.needs_onboarding?
+      redirect_to dashboard_path if current_user.platform_admin?
     end
 
     def load_invitation

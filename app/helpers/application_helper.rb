@@ -91,7 +91,10 @@ module ApplicationHelper
     end
   end
 
-  def can?(action, resource)
-    policy(resource).public_send("#{action}?")
+  def can?(action, record_or_class, policy_class: nil)
+    actual_policy = policy_class ? policy_class.new(current_user, record_or_class) : policy(record_or_class)
+    actual_policy.public_send("#{action}?")
+  rescue Pundit::NotAuthorizedError
+    false
   end
 end

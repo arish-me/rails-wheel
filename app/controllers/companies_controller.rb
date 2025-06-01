@@ -1,5 +1,5 @@
 class CompaniesController < ApplicationController
-  before_action :set_company, only: [:update]
+  before_action :set_company, only: [ :update ]
   def index
   end
 
@@ -53,7 +53,6 @@ class CompaniesController < ApplicationController
         end
         format.json { render :show, status: :created, location: @company }
       else
-        debugger
         if current_user&.needs_onboarding?
           format.html { redirect_to onboarding_path, alert: @company.errors.full_messages.join(", ") }
           format.turbo_stream { redirect_to onboarding_path, alert: @company.errors.full_messages.join(", ") }
