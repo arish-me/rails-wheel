@@ -85,7 +85,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     devise_parameter_sanitizer.permit(:account_update, keys: [
       :email, :password, :password_confirmation, :current_password, :set_onboarding_goals_at, :onboarded_at, :redirect_to,
       :first_name, :last_name, :country_code, :theme, :set_onboarding_preferences_at, :delete_profile_image, :profile_image,
-      :date_format, :locale, :gender, :phone_number, :date_of_birth, :bio, :timezone, :user_type,
+      :date_format, :locale, :gender, :phone_number, :date_of_birth, :bio, :timezone, :user_type, goals: [],
       profile_attributes: [
         :id, :last_name, :gender, :bio,
         :phone_number, :date_of_birth, :location, :website, :social_links,
