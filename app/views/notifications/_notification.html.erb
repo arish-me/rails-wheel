@@ -1,0 +1,8 @@
+<div id="<%= dom_id(notification) %>" class="notification">
+  <p class="text-sm text-gray-900">
+    <%= notification.params["message"] %>
+  </p>
+  <p class="mt-1 text-xs text-gray-500">
+    <%= time_ago_in_words(notification.created_at) %> ago
+  </p>
+</div>

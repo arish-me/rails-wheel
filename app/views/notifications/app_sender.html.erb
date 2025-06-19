@@ -1,0 +1,64 @@
+<h1>Send Notification</h1>
+
+<div>
+  <label for="user_email">Select User:</label>
+  <select id="user_email" name="user_id">
+    <option value="">Loading users...</option>
+  </select>
+</div>
+
+<div>
+  <label for="notification_message">Message:</label>
+  <input type="text" id="notification_message" placeholder="Enter notification message" />
+</div>
+
+<button id="send_notification_btn">Send Notification</button>
+
+<div id="notification_feedback" style="margin-top: 1em;"></div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Fetch users for dropdown
+    fetch('/notifications/users_list')
+      .then(response => response.json())
+      .then(users => {
+        const select = document.getElementById('user_email');
+        select.innerHTML = '<option value="">Select a user</option>';
+        users.forEach(user => {
+          const option = document.createElement('option');
+          option.value = user.id;
+          option.textContent = user.email;
+          select.appendChild(option);
+        });
+      });
+
+    // Send notification
+    document.getElementById('send_notification_btn').addEventListener('click', function() {
+      const userId = document.getElementById('user_email').value;
+      const message = document.getElementById('notification_message').value;
+      const feedback = document.getElementById('notification_feedback');
+      if (!userId) {
+        feedback.textContent = 'Please select a user.';
+        feedback.style.color = 'red';
+        return;
+      }
+      fetch('/notifications/send_to_user', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify({ user_id: userId, message: message })
+      })
+      .then(response => response.json())
+      .then(data => {
+        feedback.textContent = data.message;
+        feedback.style.color = data.success ? 'green' : 'red';
+      })
+      .catch(() => {
+        feedback.textContent = 'An error occurred.';
+        feedback.style.color = 'red';
+      });
+    });
+  });
+</script> 

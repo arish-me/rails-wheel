@@ -14,7 +14,8 @@ Rails.application.routes.draw do
 
   devise_for :users, controllers: {
     omniauth_callbacks: "users/omniauth_callbacks",
-    registrations: "users/registrations"
+    registrations: "users/registrations",
+    sessions: "users/sessions"
   }
   get "/auth/:provider/callback", to: "sessions#google_auth"
   get "/auth/failure", to: redirect("/")
@@ -53,6 +54,17 @@ Rails.application.routes.draw do
   resources :categories do
     collection do
       post :bulk_destroy
+    end
+  end
+
+  resources :notifications, only: [ :index ] do
+    member do
+      post :mark_as_read
+    end
+    collection do
+      get :users_list
+      post :send_to_user
+      get :send, action: :app_sender
     end
   end
 
