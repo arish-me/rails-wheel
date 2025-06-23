@@ -1,0 +1,19 @@
+<div>
+  <%= link_to notifications_path,
+      class: "relative font-medium whitespace-nowrap inline-flex items-center gap-1 rounded-lg justify-center w-9 h-9 text-sm hover:bg-gray-100 theme-dark:hover:bg-gray-700",
+      data: {
+        turbo_frame: "drawer",
+        notifications_target: "button"
+      } do %>
+    <%= lucide_icon "bell", class: "inline-flex items-center justify-center w-6 h-6" %>
+    <span id="notifications_index_<%=current_user.id %>"> <%# This is where the ID is set initially %>
+      <%# This content will be replaced by the partial %>
+      <%# You might want to initially render the unread count here as well %>
+      <% if current_user.notifications.unread.count > 0 %>
+        <span class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-red-500 rounded-full">
+          <%= current_user.notifications.unread.count %>
+        </span>
+      <% end %>
+    </span>
+  <% end %>
+</div>

@@ -1,21 +1,16 @@
 <h1>Send Notification</h1>
-
 <div>
   <label for="user_email">Select User:</label>
   <select id="user_email" name="user_id">
     <option value="">Loading users...</option>
   </select>
 </div>
-
 <div>
   <label for="notification_message">Message:</label>
   <input type="text" id="notification_message" placeholder="Enter notification message" />
 </div>
-
 <button id="send_notification_btn">Send Notification</button>
-
 <div id="notification_feedback" style="margin-top: 1em;"></div>
-
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     // Fetch users for dropdown

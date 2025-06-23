@@ -1,8 +1,22 @@
-<div id="<%= dom_id(notification) %>" class="notification">
-  <p class="text-sm text-gray-900">
-    <%= notification.params["message"] %>
-  </p>
-  <p class="mt-1 text-xs text-gray-500">
-    <%= time_ago_in_words(notification.created_at) %> ago
-  </p>
-</div>
+<!-- app/views/notifications/_notification.html.erb -->
+<turbo-frame id="<%= dom_id(notification) %>">
+  <div class="p-4 hover:bg-gray-50 <%= 'bg-blue-50' unless notification.read? %>">
+    <div id="<%= dom_id(notification) %>" class="flex justify-between notification notification">
+      <div>
+        <p class="text-sm text-gray-900">
+          <%= notification.message %>
+        </p>
+        <p class="mt-1 text-xs text-gray-500">
+          <%= time_ago_in_words(notification.created_at) %> ago
+        </p>
+      </div>
+      <div>
+        <% unless notification.read? %>
+          <%= button_to mark_as_read_notification_path(notification), method: :post, form: { data: { turbo_stream: true } }, class: "ml-2 text-xs text-blue-600 hover:text-blue-800" do %>
+            Mark as read
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</turbo-frame>

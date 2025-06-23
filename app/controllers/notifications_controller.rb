@@ -16,7 +16,13 @@ class NotificationsController < ApplicationController
   end
 
   def mark_as_read
-    Noticed::Notification.find(params[:id])&.mark_as_read
+    @notification = Noticed::Notification.find(params[:id])
+    @notification&.mark_as_read
+
+    respond_to do |format|
+      format.turbo_stream
+      format.html { redirect_to notifications_path }
+    end
   end
 
   # POST /notifications/send_to_user
