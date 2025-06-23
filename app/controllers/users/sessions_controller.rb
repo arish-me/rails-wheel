@@ -11,7 +11,7 @@ class Users::SessionsController < Devise::SessionsController
   # POST /resource/sign_in
   def create
     super do |user|
-      #UserNotifier.welcome_back(user) if user.persisted?
+      # UserNotifier.welcome_back(user) if user.persisted?
     end
   end
 
