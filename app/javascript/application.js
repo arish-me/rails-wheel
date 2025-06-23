@@ -5,6 +5,9 @@ import "chartkick"
 import "Chart.bundle"
 import { DirectUpload } from "@rails/activestorage"
 import * as ActiveStorage from "@rails/activestorage"
+import * as ActionCable from '@rails/actioncable'
+
+ActionCable.logger.enabled = true
 
 // Initialize ActiveStorage
 ActiveStorage.start()

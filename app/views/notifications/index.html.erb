@@ -1,0 +1,23 @@
+<!-- app/views/notifications/index.html.erb -->
+<div data-controller="notifications">
+  <%= render DialogComponent.new(variant: :drawer) do |dialog| %>
+    <% dialog.with_header(title: t(".notifications")) %>
+    <% dialog.with_body do %>
+      <div class="flex-1 overflow-y-auto">
+        <div data-notifications-target="notificationsList">
+          <div class="divide-y divide-gray-100">
+            <% if @notifications.any? %>
+              <% @notifications.each do |notification| %>
+                <%= render partial: "notifications/notification", locals: { notification: notification } %>
+              <% end %>
+            </div>
+          <% else %>
+            <div class="p-4 text-center text-gray-500">
+              No notifications yet
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+</div>

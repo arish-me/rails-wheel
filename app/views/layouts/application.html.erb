@@ -108,7 +108,7 @@
             icon: "message-circle-question",
             data: { action: "intercom#show" }
           ) %>
-
+          <%= render NotificationComponent.new(current_user: current_user) %>
           <%= render "users/user_menu", user: current_user %>
         </div>
       </nav>
@@ -122,8 +122,8 @@
       <% end %>
 
         <div class="flex items-center gap-2">
+          <%= turbo_stream_from current_user, "notifications" %>
           <%= icon("panel-left", as_button: true, data: { action: "app-layout#toggleLeftSidebar" }) %>
-
           <% if content_for?(:breadcrumbs) %>
             <%= yield :breadcrumbs %>
           <% else %>

@@ -9,6 +9,7 @@ class User < ApplicationRecord
   has_many :roles, through: :user_roles
   has_many :categories, dependent: :destroy
   belongs_to :company, optional: true
+  has_many :notifications, as: :recipient, class_name: "Noticed::Notification"
 
   # after_create :assign_default_role
 

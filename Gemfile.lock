@@ -274,6 +274,8 @@ GEM
       racc (~> 1.4)
     nokogiri (1.18.1-x86_64-linux-musl)
       racc (~> 1.4)
+    noticed (2.7.0)
+      rails (>= 6.1.0)
     oauth2 (2.0.9)
       faraday (>= 0.17.3, < 3.0)
       jwt (>= 1.0, < 3.0)
@@ -569,6 +571,7 @@ DEPENDENCIES
   letter_opener
   lucide-rails
   memory_profiler
+  noticed
   omniauth-github
   omniauth-google-oauth2
   omniauth-rails_csrf_protection

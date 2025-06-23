@@ -26,6 +26,7 @@ gem "letter_opener"
 gem "pagy"
 gem "pg_search"
 gem "pundit"
+gem "noticed"                                           # For handling notifications
 gem "tailwindcss-rails"
 gem "omniauth-google-oauth2"
 gem "omniauth-rails_csrf_protection"
