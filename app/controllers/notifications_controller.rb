@@ -1,4 +1,6 @@
 class NotificationsController < ApplicationController
+  before_action :authenticate_user!
+
   def index
     @unread_count = @current_user.notifications.unread.count
     # Fix the N+1 query here by adding .includes(:event)

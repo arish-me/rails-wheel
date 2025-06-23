@@ -61,11 +61,11 @@ Rails.application.routes.draw do
     member do
       post :mark_as_read
     end
-    collection do
-      get :users_list
-      post :send_to_user
-      get :send, action: :app_sender
-    end
+    # collection do
+    #   get :users_list
+    #   post :send_to_user
+    #   get :send, action: :app_sender
+    # end
   end
 
   namespace :admin do
