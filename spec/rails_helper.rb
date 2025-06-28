@@ -69,6 +69,17 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+
+  # Custom filtering based on command line arguments
+  if ARGV.include?('--capybara') || ARGV.include?('--automation')
+    # Run only feature tests when --capybara or --automation flag is passed
+    config.filter_run_including type: :feature
+    puts "Running Capybara feature tests only..."
+  else
+    # By default, exclude feature tests (run only unit tests)
+    config.filter_run_excluding type: :feature
+    puts "Running unit tests only (excluding feature tests)..."
+  end
 end
 
 # Configure Capybara

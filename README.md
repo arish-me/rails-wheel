@@ -88,9 +88,13 @@ Perfect for:
    ```
    Visit http://localhost:3000 to see your application in action!
 
-5. **Run tests**
+5. **Run Unit tests**
    ```bash
    bundle exec rspec
+   ```
+6. **Run Capybara tests**
+   ```bash
+   bundle exec rspec --capybara
    ```
 
 ## 🧩 Project Structure
