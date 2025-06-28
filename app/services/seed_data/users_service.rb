@@ -10,6 +10,20 @@ module SeedData
       { email: "guest@wheel.com", role: "Guest", first_name: "Guest", last_name: "User", gender: 1 }
     ].freeze
 
+    def initialize(company)
+      @company = company
+    end
+
+    def default_users
+      [
+        { email: "superadmin@#{@company.subdomain}", role: "SuperAdmin", first_name: "Super", last_name: "Admin", gender: 1 },
+        { email: "admin@#{@company.subdomain}", role: "Admin", first_name: "Admin", last_name: "User", gender: 1 },
+        { email: "user@#{@company.subdomain}", role: "User", first_name: "Regular", last_name: "User", gender: 1 },
+        { email: "recruiter#{@company.subdomain}", role: "Recruiter", first_name: "Recruiter", last_name: "User", gender: 1 },
+        { email: "guest@#{@company.subdomain}", role: "Guest", first_name: "Guest", last_name: "User", gender: 1 }
+      ]
+    end
+
     def call
       create_users_with_roles
     end
@@ -19,7 +33,7 @@ module SeedData
     def create_users_with_roles
       log "Creating Users and Assigning Roles..."
 
-      USERS.each do |user_data|
+      default_users.each do |user_data|
         user = User.find_or_initialize_by(email: user_data[:email]) do |u|
           u.password = "#{user_data[:email]}"
           u.password_confirmation = "#{user_data[:email]}"

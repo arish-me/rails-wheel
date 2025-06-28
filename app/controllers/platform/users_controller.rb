@@ -1,8 +1,8 @@
 class Platform::UsersController < ApplicationController
    before_action :authenticate_user!
-   # before_action :set_user, only: %i[ show edit update destroy ]
+  # before_action :set_user, only: %i[ show edit update destroy ]
 
-   # before_action :set_tenent
+  # before_action :set_tenent
 
   def index
     authorize User, policy_class: Platform::UserPolicy
@@ -11,14 +11,14 @@ class Platform::UsersController < ApplicationController
     else
       @pagy, @users = pagy(User.all, limit: params[:per_page] || "10")
     end
-    #authorize @users
+    # authorize @users
   end
 
-  def set_tenent
-    return if current_user.user?
+  # def set_tenent
+  #   return if current_user.user?
 
-    ActsAsTenant.current_tenant = current_user.company
-  end
+  #   ActsAsTenant.current_tenant = current_user.company
+  # end
 
 
   def show
@@ -114,7 +114,7 @@ class Platform::UsersController < ApplicationController
     end
 
     def authorize_resource
-      #authorize current_user, policy_class: Platform::UserPolicy
+      # authorize current_user, policy_class: Platform::UserPolicy
     end
 
     def update_roles(user)

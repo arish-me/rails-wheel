@@ -6,10 +6,8 @@ faker_count = ENV['FAKER_COUNT'] ? ENV['FAKER_COUNT'].to_i : nil
 # faker_count = 100
 # Call the main seeder service with the faker count
 
-company = Company.find_or_create_by!(name: "TTC Servoce", subdomain: 'wheel')
+company = Company.find_or_create_by!(name: "TTC Servoce", subdomain: 'wheel.in')
 ActsAsTenant.with_tenant(company) do
-  SeedData::MainSeeder.new(faker_count, false, true).call
+  SeedData::MainSeeder.new(faker_count, false, true, company).call
 end
-
-
-User.create!(email: "serviceuser@wheel.com", password: "serviceuser@wheel.com", password_confirmation: 'serviceuser@wheel.com', user_type: "platform_admin")
+SeedData::PlatformUserService.new('serviceuser@wheel.com').call

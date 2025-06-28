@@ -9,8 +9,8 @@ class Platform::BaseController < ApplicationController
   # Skip filters that set a tenant or enforce onboarding for the admin panel.
   # Replace `set_tenent` and `require_onboarding_and_upgrade` with the actual names
   # of your methods in ApplicationController.
-  skip_before_action :set_tenent, only: [:index, :show, :new, :create, :edit, :update, :destroy]
-  skip_before_action :require_onboarding_and_upgrade, only: [:index, :show, :new, :create, :edit, :update, :destroy]
+  skip_before_action :set_tenent, only: [ :index, :show, :new, :create, :edit, :update, :destroy ]
+  skip_before_action :require_onboarding_and_upgrade, only: [ :index, :show, :new, :create, :edit, :update, :destroy ]
   # You might want to use `except: []` or `prepend_before_action` depending on your filter chain.
   # `skip_before_action :set_tenent` without `only` would skip for all actions if you desire.
 

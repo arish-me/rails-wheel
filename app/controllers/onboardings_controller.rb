@@ -6,7 +6,6 @@ class OnboardingsController < ApplicationController
   # before_action :load_invitation
 
   def show
-
     @company = current_user&.company || Company.new
   end
 
