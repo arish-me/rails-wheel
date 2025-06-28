@@ -1,0 +1,13 @@
+{
+  "recommendations": [
+    "esbenp.prettier-vscode",
+    "bradlc.vscode-tailwindcss",
+    "heybourn.headwind",
+    "eamodio.gitlens",
+    "Shopify.ruby-lsp",
+    "elia.erb-formatter",
+    "github.copilot",
+    "github.copilot-chat",
+    "marcoroth.stimulus-lsp"
+  ]
+}
