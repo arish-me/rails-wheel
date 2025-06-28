@@ -1,11 +1,11 @@
 FactoryBot.define do
   factory :role_permission do
-    role
-    permission
-    action { "view" }
+    association :role
+    association :permission
+    action { 0 } # 0 for read, 1 for write, etc.
 
     trait :edit do
-      action { "edit" }
+      action { 1 }
     end
   end
 end
