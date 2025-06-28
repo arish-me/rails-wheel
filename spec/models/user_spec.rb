@@ -259,42 +259,6 @@ RSpec.describe User, type: :model do
       end
     end
 
-    # describe '#has_role?' do
-    #   let(:user) { create(:user) }
-    #   let(:role) { create(:role, name: 'admin') }
-
-    #   before do
-    #     create(:user_role, user: user, role: role)
-    #   end
-
-    #   it 'returns true when user has the role' do
-    #     expect(user.has_role?('admin')).to be true
-    #   end
-
-    #   it 'returns false when user does not have the role' do
-    #     expect(user.has_role?('super_admin')).to be false
-    #   end
-    # end
-
-    # describe '#can?' do
-    #   let(:user) { create(:user) }
-    #   let(:role) { create(:role) }
-    #   let(:permission) { create(:permission, name: 'read', resource: 'posts') }
-
-    #   before do
-    #     create(:user_role, user: user, role: role)
-    #     create(:role_permission, role: role, permission: permission, action: 0)
-    #   end
-
-    #   it 'returns true when user has the permission' do
-    #     expect(user.can?('read', 'posts')).to be true
-    #   end
-
-    #   it 'returns false when user does not have the permission' do
-    #     expect(user.can?('write', 'posts')).to be false
-    #   end
-    # end
-
     describe '#lock_access!' do
       let(:user) { create(:user) }
 
@@ -307,10 +271,9 @@ RSpec.describe User, type: :model do
       end
     end
 
-
     describe '#attach_avatar' do
       let(:user) { create(:user) }
-      let(:image_url) { 'https://example.com/avatar.png' }
+      let(:image_url) { 'https://example.com/avatar.jpg' }
 
       context 'when profile_image is already attached' do
         before do
@@ -324,6 +287,11 @@ RSpec.describe User, type: :model do
         it 'does not re-attach the avatar' do
           expect { user.attach_avatar(image_url) }.not_to change { user.profile_image.attached? }
         end
+
+        it 'does not call URI.parse when already attached' do
+          expect(URI).not_to receive(:parse)
+          user.attach_avatar(image_url)
+        end
       end
 
       context 'when URL is invalid' do
@@ -333,6 +301,63 @@ RSpec.describe User, type: :model do
           expect(Rails.logger).to receive(:error).with(/Failed to attach avatar/)
           expect { user.attach_avatar(image_url) }.not_to change { user.profile_image.attached? }
         end
+      end
+
+      context 'when URI.open raises an error' do
+        it 'logs an error and does not attach avatar' do
+          uri_double = double('uri')
+          allow(URI).to receive(:parse).with(image_url).and_return(uri_double)
+          allow(uri_double).to receive(:open).and_raise(StandardError.new('Network error'))
+
+          expect(Rails.logger).to receive(:error).with(/Failed to attach avatar/)
+          expect { user.attach_avatar(image_url) }.not_to change { user.profile_image.attached? }
+        end
+      end
+
+      context 'when profile_image.attach raises an error' do
+        it 'logs an error and handles the exception' do
+          mock_file = double('avatar_file', content_type: 'image/jpeg')
+          uri_double = double('uri')
+          
+          allow(URI).to receive(:parse).with(image_url).and_return(uri_double)
+          allow(uri_double).to receive(:open).and_return(mock_file)
+          allow(user.profile_image).to receive(:attach).and_raise(StandardError.new('Attachment failed'))
+
+          expect(Rails.logger).to receive(:error).with(/Failed to attach avatar/)
+          expect { user.attach_avatar(image_url) }.not_to raise_error
+        end
+      end
+    end
+
+    describe '#can?' do
+      let(:user) { create(:user) }
+      let(:role) { create(:role) }
+      let(:permission) { create(:permission, name: 'read', resource: 'posts') }
+
+      before do
+        create(:user_role, user: user, role: role)
+        create(:role_permission, role: role, permission: permission, action: 0)
+      end
+
+      it 'returns true when user has the permission' do
+        expect(user.can?('read', 'posts')).to be true
+      end
+
+      it 'returns false when user does not have the permission' do
+        expect(user.can?('write', 'posts')).to be false
+      end
+
+      it 'returns false when permission name is nil' do
+        expect(user.can?(nil, 'posts')).to be false
+      end
+
+      it 'returns false when resource is nil' do
+        expect(user.can?('read', nil)).to be false
+      end
+
+      it 'executes the joins query when checking permissions' do
+        expect(user.roles).to receive(:joins).with(:role_permissions).and_call_original
+        user.can?('read', 'posts')
       end
     end
   end
@@ -347,9 +372,22 @@ RSpec.describe User, type: :model do
       })
     end
 
-    it 'defines DATE_FORMATS constant' do
-      expect(User::DATE_FORMATS).to be_an(Array)
-      expect(User::DATE_FORMATS.first).to eq([ "MM-DD-YYYY", "%m-%d-%Y" ])
+    it 'defines DATE_FORMATS constant correctly' do
+      expect(User::DATE_FORMATS).to eq([
+        ["MM-DD-YYYY", "%m-%d-%Y"],
+        ["DD.MM.YYYY", "%d.%m.%Y"],
+        ["DD-MM-YYYY", "%d-%m-%Y"],
+        ["YYYY-MM-DD", "%Y-%m-%d"],
+        ["DD/MM/YYYY", "%d/%m/%Y"],
+        ["YYYY/MM/DD", "%Y/%m/%d"],
+        ["MM/DD/YYYY", "%m/%d/%Y"],
+        ["D/MM/YYYY", "%e/%m/%Y"],
+        ["YYYY.MM.DD", "%Y.%m.%d"]
+      ])
+    end
+
+    it 'has correct number of date formats' do
+      expect(User::DATE_FORMATS.size).to eq(9)
     end
   end
 
