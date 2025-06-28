@@ -110,3 +110,6 @@ end
 
 # Default max wait time for elements to appear
 Capybara.default_max_wait_time = 5
+
+# Add ActionCable test support
+# require 'action_cable/testing/rspec'
