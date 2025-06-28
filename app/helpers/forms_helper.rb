@@ -22,10 +22,6 @@ module FormsHelper
     form.select(:period, periods_for_select, { selected: selected }, class: classes, data: { "auto-submit-form-target": "auto" })
   end
 
-  def currencies_for_select
-    Money::Currency.all_instances.sort_by { |currency| [ currency.priority, currency.name ] }
-  end
-
   private
     def radio_tab_contents(label:, icon:)
       tag.div(class: "flex px-4 py-1 rounded-lg items-center space-x-2 justify-center text-gray-400 group-has-[:checked]:bg-white group-has-[:checked]:text-gray-800 group-has-[:checked]:shadow-sm") do
