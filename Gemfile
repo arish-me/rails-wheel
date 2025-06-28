@@ -64,7 +64,8 @@ end
 
 group :test do
   gem "capybara"                                         # Acceptance test framework
-  gem "selenium-webdriver"                               # Browser automation for JS tests
+  gem "selenium-webdriver"  
+  gem 'simplecov', require: false                             # Browser automation for JS tests
   gem "webdrivers"                                       # Easy installation of browser drivers
   gem "rails-controller-testing"                         # Controller test helpers
 end
