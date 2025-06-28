@@ -6,10 +6,9 @@ FactoryBot.define do
     first_name { Faker::Name.first_name }
     last_name { Faker::Name.last_name }
     confirmed_at { Time.current }
-    user_type { :user }
+    # user_type { :user }
     gender { :he_she }
-    theme { :system }
-    timezone { "UTC" }
+    # theme { :system }
     country_code { "US" }
     date_format { "%d.%m.%Y" }
     locale { "en" }
