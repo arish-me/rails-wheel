@@ -1,3 +1,6 @@
-<%= modal_form_wrapper title: t(".edit_role_permission") do %>
-  <%= render "form", role_permission: @role_permission %>
+<%= render DialogComponent.new do |dialog| %>
+  <% dialog.with_header(title: t(".manage_permission")) %>
+  <% dialog.with_body do %>
+    <%= render "form", role_permission: @role_permission %>
+  <% end %>
 <% end %>

@@ -23,7 +23,7 @@
             User::DATE_FORMATS,
             { label: t(".date_format"), required: true, selected: params[:date_format] || @user.date_format },
             { data: { action: "onboarding#setDateFormat" } } %>
-        <%= form.submit t(".submit") %>
+        <%= form.submit "Next Set Goals" %>
       <% end %>
     </div>
   </div>

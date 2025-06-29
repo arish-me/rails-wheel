@@ -1,4 +1,5 @@
-<h1 class="text-2xl font-bold text-gray-800 theme-dark:text-white mb-6">Dashboard</h1>
+<%= content_for :page_title, "Dashboard" %>
+<%= settings_section title: "Dashboard", subtitle: "Your Personal Dashboard" do %>
 <% if current_user.has_role?("SuperAdmin") %>
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
     <!-- Total Users -->
@@ -40,4 +41,5 @@
       </div>
     </div>
   </div>
+<% end %>
 <% end %>

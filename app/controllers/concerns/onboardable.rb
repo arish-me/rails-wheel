@@ -10,6 +10,7 @@ module Onboardable
     # First, we require onboarding, then once that's complete, we require an upgrade for non-subscribed users.
     def require_onboarding_and_upgrade
       return unless current_user
+      return false if current_user.platform_admin?
       return unless redirectable_path?(request.path)
 
       if current_user.needs_onboarding?
@@ -26,12 +27,13 @@ module Onboardable
       return false if path.starts_with?("/subscription")
       return false if path.starts_with?("/onboarding")
       return false if path.starts_with?("/users")
+      return false if path.starts_with?("/companies")
 
       [
         new_registration_path(User),
         new_session_path(User)
         # new_password_reset_path,
-        # new_email_confirmation_path
+        # new_email_confirmation_path,
       ].exclude?(path)
     end
 end

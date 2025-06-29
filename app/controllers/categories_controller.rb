@@ -72,12 +72,11 @@ class CategoriesController < ApplicationController
     resource_ids = bulk_delete_params[:resource_ids] # Extract entry_ids from params
     respond_to do |format|
       if resource_ids.present?
-        # Destroy roles matching the provided entry_ids
         Category.where(id: resource_ids).destroy_all
-        format.html { redirect_to roles_path, notice: "Category was successfully destroyed." }
+        format.html { redirect_to categories_path, notice: "Category was successfully destroyed." }
         format.turbo_stream { render turbo_stream: turbo_stream.refresh(request_id: nil) }
       else
-        format.html { render :new, status: :unprocessable_entity }
+        format.html { redirect_to categories_path, notice: "Something went wrong!" }
       end
     end
   end

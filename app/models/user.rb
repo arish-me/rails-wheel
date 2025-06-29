@@ -8,9 +8,10 @@ class User < ApplicationRecord
   has_many :user_roles, dependent: :destroy
   has_many :roles, through: :user_roles
   has_many :categories, dependent: :destroy
+  belongs_to :company, optional: true
   has_many :notifications, as: :recipient, class_name: "Noticed::Notification"
 
-  after_create :assign_default_role
+  # after_create :assign_default_role
 
   attr_accessor :skip_password_validation
   attr_accessor :current_sign_in_ip_address
@@ -30,6 +31,7 @@ class User < ApplicationRecord
               }
   enum :gender, [ :he_she, :him_her, :they_them, :other ]
   enum :theme, { system: 0, light: 1, dark: 2 }, default: :system
+  enum :user_type, { company: 0, user: 1, platform_admin: 99 }
 
   GENDER_DISPLAY = {
     he_she: "He/Him",
@@ -52,15 +54,6 @@ class User < ApplicationRecord
 
   def lock_access!
     update_columns(locked_at: Time.current, failed_attempts: 0)
-  end
-
-  def assign_default_role
-    default_role = Role.fetch_default_role
-    UserRole.create!(user: self, role: default_role) if default_role
-  end
-
-  def has_role?(role_name)
-    roles.exists?(name: role_name)
   end
 
   def can?(action, resource)
@@ -106,6 +99,10 @@ class User < ApplicationRecord
     end
   end
 
+  def has_role?(role_name)
+    roles.exists?(name: role_name)
+  end
+
   protected
 
   def password_required?
@@ -114,15 +111,6 @@ class User < ApplicationRecord
   end
 
   private
-
-    def ensure_valid_profile_image
-      return unless profile_image.attached?
-
-      unless profile_image.content_type.in?(%w[image/jpeg image/png])
-        errors.add(:profile_image, "must be a JPEG or PNG")
-        profile_image.purge
-      end
-    end
 
     def profile_image_size
       if profile_image.attached? && profile_image.byte_size > 10.megabytes

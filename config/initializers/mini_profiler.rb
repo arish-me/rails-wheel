@@ -1,4 +1,4 @@
-Rails.application.configure do
-  Rack::MiniProfiler.config.skip_paths = [ "/assets", "/cable", "/manifest", "/favicon.ico", "/hotwire-livereload", "/logo-pwa.png" ]
-  Rack::MiniProfiler.config.max_traces_to_show = 50
-end
+# Rails.application.configure do
+#   Rack::MiniProfiler.config.skip_paths = [ "/assets", "/cable", "/manifest", "/favicon.ico", "/hotwire-livereload", "/logo-pwa.png" ]
+#   Rack::MiniProfiler.config.max_traces_to_show = 50
+# end

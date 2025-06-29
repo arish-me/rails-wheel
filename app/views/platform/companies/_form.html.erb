@@ -1,0 +1,30 @@
+<%= styled_form_with model: @company, url: @company.new_record? ? platform_companies_path : platform_company_path(@company), method: @company.new_record? ? :post : :patch, class: "space-y-4" do |f| %>
+  <% if company.errors.any? %>
+    <%= render "shared/form_errors" , model: company %>
+  <% end %>
+  <section class="space-y-2 overflow-hidden">
+    <%= f.text_field :name, label: 'Name' , placeholder: 'Enter Company Name' %>
+  </section>
+  <section class="space-y-2 overflow-hidden">
+    <%= f.text_field :subdomain, label: 'Subdomain' , placeholder: 'Enter SubDomain' %>
+  </section>
+  <section class="space-y-2 overflow-hidden">
+    <%= f.text_field :website, label: 'Website' , placeholder: 'Enter Website' %>
+  </section>
+
+   <section class="space-y-2 overflow-hidden mt-8">
+    <h3>Point of Contact Details (Company Super Admin)</h3>
+    <%# Use f.fields_for to create inputs for the User object %>
+    <%# The key `point_of_contact_user` will be used in params for strong parameters %>
+    <%= f.fields_for :point_of_contact_user, @user do |user_fields| %>
+      <%= user_fields.text_field :email, label: 'Email', placeholder: 'Enter Email Address' %>
+      <%= user_fields.password_field :password, label: 'Password', placeholder: 'Enter Password' %>
+      <%= user_fields.password_field :password_confirmation, label: 'Confirm Password', placeholder: 'Confirm Password' %>
+    <% end %>
+  </section>
+
+
+  <section>
+    <%= f.submit 'Submit' %>
+  </section>
+<% end %>

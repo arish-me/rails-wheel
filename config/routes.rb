@@ -24,9 +24,10 @@ Rails.application.routes.draw do
   get "settings", to: "settings#index"
 
   resources :user_roles
-
+  resources :companies
   resource :onboarding, only: :show do
     collection do
+      get :profiles_setup
       get :preferences
       get :goals
       get :trial
@@ -76,6 +77,23 @@ Rails.application.routes.draw do
       collection do
         post :bulk_destroy
         post :stop_impersonating
+      end
+    end
+  end
+
+  namespace :platform do
+    resources :users do
+      member do
+        post :impersonate
+      end
+      collection do
+        post :bulk_destroy
+        post :stop_impersonating
+      end
+    end
+    resources :companies do
+      collection do
+        post :bulk_destroy
       end
     end
   end

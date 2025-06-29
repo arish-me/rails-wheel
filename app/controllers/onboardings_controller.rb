@@ -1,14 +1,19 @@
 class OnboardingsController < ApplicationController
   layout "wizard"
-
+  before_action :authenticate_user!
   before_action :set_user
   before_action :need_onboard
   # before_action :load_invitation
 
   def show
+    @company = current_user&.company || Company.new
   end
 
   def preferences
+  end
+
+  def profiles_setup
+    @company = Company.new
   end
 
   def trial
@@ -21,6 +26,7 @@ class OnboardingsController < ApplicationController
 
     def need_onboard
       redirect_to dashboard_path unless current_user.needs_onboarding?
+      redirect_to dashboard_path if current_user.platform_admin?
     end
 
     def load_invitation

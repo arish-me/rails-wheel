@@ -4,9 +4,11 @@ module SeedData
   class MainSeeder < BaseService
     attr_reader :faker_count
 
-    def initialize(faker_count = nil, fake_data = false)
+    def initialize(faker_count = nil, fake_data = false, seed_user = false, company = nil)
       @faker_count = faker_count || 100
       @fake_data = fake_data
+      @seed_user = seed_user
+      @company = company
     end
 
     def call
@@ -43,11 +45,11 @@ module SeedData
     end
 
     def seed_users
-      SeedData::UsersService.call
+      SeedData::UsersService.new(@company).call if @seed_user
     end
 
     def seed_faker_data
-      SeedData::BulkFakerSeeder.new(faker_count).call
+      SeedData::BulkFakerSeeder.new(faker_count).call if @seed_user && @fake_data
     end
   end
 end

@@ -47,7 +47,14 @@
   { name: "Dashboard", path: root_path, icon: "pie-chart", icon_custom: false, active: page_active?(root_path), condition: true, mobile_only: true },
   { name: "Management", path: admin_users_path, icon: "users", icon_custom: false, active: page_active?(admin_users_path), condition: can?(:index, User), mobile_only: true },
   { name: "Categories", path: categories_path, icon: "folder", icon_custom: false, active: page_active?(categories_path), condition: can?(:index, Category), mobile_only: true },
+  { name: "Management", path: platform_users_path, icon: "folder", icon_custom: false, active: page_active?(categories_path), condition: can?(:index, User, policy_class: Platform::UserPolicy), mobile_only: true },
 ] %>
+
+<% plaform_admin_navs = [
+  { name: "Dashboard", path: root_path, icon: "pie-chart", icon_custom: false, active: page_active?(root_path), condition: true, mobile_only: true },
+  { name: "Management", path: platform_users_path, icon: "pie-chart", icon_custom: false, active: page_active?(root_path), condition: true, mobile_only: true },
+]
+%>
 
 
 
@@ -58,7 +65,7 @@
 
 <%= render "layouts/shared/htmldoc" do %>
 <meta name="user-signed-in" content="true">
-      <meta name="direct-upload-url" content="<%= rails_direct_uploads_path %>">
+<meta name="direct-upload-url" content="<%= rails_direct_uploads_path %>">
 <div
     class="flex flex-col lg:flex-row h-full bg-surface"
     data-controller="app-layout"
@@ -76,6 +83,7 @@
 
       <%= render "users/user_menu", user: current_user, placement: "bottom-end", offset: 12 %>
     </nav>
+
 
     <%# DESKTOP - Left navbar %>
     <div class="hidden lg:block">
@@ -109,6 +117,10 @@
     <%# SHARED - Main content %>
     <%= tag.main class: class_names("grow overflow-y-auto px-3 lg:px-10 py-4 w-full mx-auto"), data: { app_layout_target: "content" } do %>
       <div class="hidden lg:flex gap-2 items-center justify-between mb-6">
+      <%if impersonating? %>
+        <%= render partial: "shared/impersonation_session" %>
+      <% end %>
+
         <div class="flex items-center gap-2">
           <%= turbo_stream_from current_user, "notifications" %>
           <%= icon("panel-left", as_button: true, data: { action: "app-layout#toggleLeftSidebar" }) %>
@@ -123,6 +135,10 @@
 
       <% if content_for?(:page_header) %>
         <%= yield :page_header %>
+      <% end %>
+
+      <% if content_for?(:user_management_tab) %>
+        <%= yield :user_management_tab %>
       <% end %>
 
       <%= yield %>

@@ -52,6 +52,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_14_043429) do
     t.index ["user_id"], name: "index_categories_on_user_id"
   end
 
+  create_table "companies", force: :cascade do |t|
+    t.string "name"
+    t.string "subdomain"
+    t.string "website"
+    t.integer "status", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "good_job_batches", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -178,6 +187,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_14_043429) do
     t.integer "action", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "company_id"
+    t.index ["company_id"], name: "index_role_permissions_on_company_id"
     t.index ["permission_id"], name: "index_role_permissions_on_permission_id"
     t.index ["role_id"], name: "index_role_permissions_on_role_id"
   end
@@ -187,6 +198,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_14_043429) do
     t.boolean "is_default", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "company_id"
+    t.index ["company_id"], name: "index_roles_on_company_id"
   end
 
   create_table "user_roles", force: :cascade do |t|
@@ -194,6 +207,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_14_043429) do
     t.bigint "role_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "company_id"
+    t.index ["company_id"], name: "index_user_roles_on_company_id"
     t.index ["role_id"], name: "index_user_roles_on_role_id"
     t.index ["user_id"], name: "index_user_roles_on_user_id"
   end
@@ -220,6 +235,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_14_043429) do
     t.datetime "updated_at", null: false
     t.string "provider"
     t.string "uid"
+    t.integer "user_type"
     t.integer "gender"
     t.text "bio"
     t.string "timezone"
@@ -233,12 +249,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_14_043429) do
     t.string "location"
     t.string "website"
     t.jsonb "social_links", default: {}
-    t.string "theme", default: "system"
+    t.integer "theme", default: 0
     t.boolean "active", default: true, null: false
     t.datetime "onboarded_at"
     t.text "goals", default: [], array: true
     t.datetime "set_onboarding_preferences_at"
     t.datetime "set_onboarding_goals_at"
+    t.bigint "company_id"
+    t.index ["company_id"], name: "index_users_on_company_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["locale"], name: "index_users_on_locale"
     t.index ["onboarded_at"], name: "index_users_on_onboarded_at"
@@ -249,8 +267,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_14_043429) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "categories", "users"
+  add_foreign_key "role_permissions", "companies"
   add_foreign_key "role_permissions", "permissions"
   add_foreign_key "role_permissions", "roles"
+  add_foreign_key "roles", "companies"
+  add_foreign_key "user_roles", "companies"
   add_foreign_key "user_roles", "roles"
   add_foreign_key "user_roles", "users"
+  add_foreign_key "users", "companies"
 end

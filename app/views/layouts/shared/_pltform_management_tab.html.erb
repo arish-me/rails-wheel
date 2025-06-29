@@ -1,0 +1,15 @@
+<%= render(TabComponent.new(
+  tabs: [
+    {
+      label: "All Users",
+      path: platform_users_path,
+      id: "users-tab"
+    },
+    {
+      label: "All Companies",
+      path: platform_companies_path,
+      id: "companies-tab"
+    }
+  ],
+  current_path: request.path
+)) %>
