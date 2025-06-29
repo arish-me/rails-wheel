@@ -12,7 +12,7 @@ gem "pretender"
 gem "turbo-rails"
 gem "stimulus-rails"
 gem "jbuilder"
-gem 'devise', '~> 4.9', '>= 4.9.4'
+gem "devise", "~> 4.9", ">= 4.9.4"
 gem "image_processing", ">= 1.2"
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 gem "solid_cache"

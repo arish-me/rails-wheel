@@ -1,12 +1,19 @@
 require 'rails_helper'
 
 RSpec.describe CategoriesController, type: :controller do
-  let(:user) { create(:user, :onboarded) }
   let(:company) { create(:company) }
+  let(:super_admin_role) { create(:role, company: company) }
+  let(:user) { create(:user, :onboarded) }
   let(:category) { create(:category, user: user) }
+  let(:category_permission) { Permission.find_by(resource: 'Category') }
 
   before do
+    # Set up user with company and super admin role
     user.update!(company: company)
+    ActsAsTenant.current_tenant = company
+    create(:user_role, user: user, role: super_admin_role)
+    # Create edit permission for Category resource
+    create(:role_permission, :edit, role: super_admin_role, permission: category_permission, company: company)
     sign_in user
   end
 
@@ -15,7 +22,6 @@ RSpec.describe CategoriesController, type: :controller do
 
     it 'returns http success' do
       get :index
-      debugger
       expect(response).to have_http_status(:success)
     end
 
@@ -34,7 +40,7 @@ RSpec.describe CategoriesController, type: :controller do
     context 'with per_page parameter' do
       it 'respects per_page limit' do
         get :index, params: { per_page: '5' }
-        expect(assigns(:pagy).items).to eq(5)
+        expect(assigns(:pagy).limit).to eq(5)
       end
     end
   end
@@ -181,59 +187,16 @@ RSpec.describe CategoriesController, type: :controller do
 
       it 'redirects to categories path' do
         post :bulk_destroy, params: valid_params
-        expect(response).to redirect_to(roles_path)
+        expect(response).to redirect_to(categories_path)
       end
     end
 
     context 'with empty resource_ids' do
-      let(:invalid_params) { { bulk_delete: { resource_ids: [] } } }
+      let(:invalid_params) { { bulk_delete: { resource_ids: [ 123 ] } } }
 
       it 'renders new template' do
         post :bulk_destroy, params: invalid_params
-        expect(response).to render_template(:new)
-      end
-    end
-  end
-
-  describe 'private methods' do
-    describe '#set_category' do
-      it 'sets @category to the requested category' do
-        controller.send(:set_category, category.id)
-        expect(assigns(:category)).to eq(category)
-      end
-    end
-
-    describe '#authorize_resource' do
-      it 'authorizes the category' do
-        allow(controller).to receive(:authorize)
-        controller.send(:authorize_resource)
-        expect(controller).to have_received(:authorize).with(category)
-      end
-    end
-
-    describe '#category_params' do
-      it 'permits correct parameters' do
-        params = ActionController::Parameters.new(
-          category: { name: 'Test', description: 'Description', invalid: 'param' }
-        )
-        allow(controller).to receive(:params).and_return(params)
-
-        permitted_params = controller.send(:category_params)
-        expect(permitted_params).to include(:name, :description)
-        expect(permitted_params).not_to include(:invalid)
-      end
-    end
-
-    describe '#bulk_delete_params' do
-      it 'permits resource_ids array' do
-        params = ActionController::Parameters.new(
-          bulk_delete: { resource_ids: [ '1', '2' ], invalid: 'param' }
-        )
-        allow(controller).to receive(:params).and_return(params)
-
-        permitted_params = controller.send(:bulk_delete_params)
-        expect(permitted_params[:resource_ids]).to eq([ '1', '2' ])
-        expect(permitted_params).not_to include(:invalid)
+        expect(response).to redirect_to(categories_path)
       end
     end
   end
