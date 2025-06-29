@@ -40,6 +40,7 @@ gem "good_job"
 gem "hotwire_combobox"
 gem "classy-yaml"
 gem "inline_svg"
+gem "redcarpet"
 
 
 group :development, :test do

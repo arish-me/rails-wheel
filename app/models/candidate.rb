@@ -8,6 +8,6 @@ class Candidate < ApplicationRecord
   accepts_nested_attributes_for :user
   accepts_nested_attributes_for :profile
   accepts_nested_attributes_for :work_preference
-  accepts_nested_attributes_for :role_type
-  accepts_nested_attributes_for :role_level
+  accepts_nested_attributes_for :role_level, update_only: true
+  accepts_nested_attributes_for :role_type, update_only: true
 end
