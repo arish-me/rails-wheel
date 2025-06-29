@@ -99,6 +99,10 @@ class User < ApplicationRecord
     end
   end
 
+  def has_role?(role_name)
+    roles.exists?(name: role_name)
+  end
+
   protected
 
   def password_required?
