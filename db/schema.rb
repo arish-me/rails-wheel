@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_14_043429) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_29_154547) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -40,6 +40,20 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_14_043429) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "candidate_role_groups", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "candidate_roles", force: :cascade do |t|
+    t.string "name"
+    t.bigint "candidate_role_group_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["candidate_role_group_id"], name: "index_candidate_roles_on_candidate_role_group_id"
   end
 
   create_table "categories", force: :cascade do |t|
@@ -266,6 +280,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_14_043429) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "candidate_roles", "candidate_role_groups"
   add_foreign_key "categories", "users"
   add_foreign_key "role_permissions", "companies"
   add_foreign_key "role_permissions", "permissions"

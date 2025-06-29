@@ -36,13 +36,13 @@
             <div class="flex items-center">
               <%= f.radio_button :user_type, :user, id: 'user_type_user', class: "h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 theme-dark:bg-gray-700 theme-dark:border-gray-600", required: true %>
               <label for="user_type_user" class="ml-2 text-sm text-gray-700 theme-dark:text-gray-300">
-                Individual User
+                <b>Want to work?</b>
               </label>
             </div>
             <div class="flex items-center">
               <%= f.radio_button :user_type, :company, id: 'user_type_company', class: "h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 theme-dark:bg-gray-700 theme-dark:border-gray-600", required: true %>
               <label for="user_type_company" class="ml-2 text-sm text-gray-700 theme-dark:text-gray-300">
-                Company
+                <b>Want to hire?</b>
               </label>
             </div>
           </div>

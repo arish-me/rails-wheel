@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  get "candidate_profile/index"
+  get "candidate_profile/show"
+  get "candidate_profile/update"
+  get "candidate_profile/edit"
   # Locale switching route
   post "set_locale", to: "application#set_locale", as: :set_locale
 

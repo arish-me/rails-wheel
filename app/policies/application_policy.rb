@@ -22,6 +22,7 @@ class ApplicationPolicy
     return false unless user
 
     # TODO: DONT KNOW why I have added this.
+    # I thin user is a candidate and not need permissions?
     # return false if user.user?
 
     resource_name = resolve_resource_name

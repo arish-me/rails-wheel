@@ -1,0 +1,2 @@
+class CandidateRoleGroup < ApplicationRecord
+end
