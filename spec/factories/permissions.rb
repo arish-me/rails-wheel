@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :permission do
-    sequence(:name) { |n| "permission_#{n}" }
-    sequence(:resource) { |n| "resource_#{n}" }
+    sequence(:name) { |n| "Permission#{n}" }
+    resource { "resource" }
 
     factory :view_permission do
       name { "view" }

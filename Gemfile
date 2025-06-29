@@ -1,6 +1,5 @@
 source "https://rubygems.org"
 
-gem "acts_as_tenant"
 gem "chartkick"
 gem "groupdate"
 gem "rails", "~> 8.0.1"
@@ -12,7 +11,7 @@ gem "pretender"
 gem "turbo-rails"
 gem "stimulus-rails"
 gem "jbuilder"
-gem "devise", "~> 4.9", ">= 4.9.4"
+gem "devise"
 gem "image_processing", ">= 1.2"
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 gem "solid_cache"
@@ -64,8 +63,7 @@ end
 
 group :test do
   gem "capybara"                                         # Acceptance test framework
-  gem "selenium-webdriver"
-  gem "simplecov", require: false                             # Browser automation for JS tests
+  gem "selenium-webdriver"                               # Browser automation for JS tests
   gem "webdrivers"                                       # Easy installation of browser drivers
   gem "rails-controller-testing"                         # Controller test helpers
 end

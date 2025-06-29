@@ -1,4 +1,3 @@
-<%if false %>
 <%= content_for :prev_nav do %>
   <%= image_tag "logomark-color.svg", class: "w-10 h-10" %>
 <% end %>
@@ -8,11 +7,8 @@
 <%= content_for :cancel_action do %>
   <%= render "onboardings/logout" %>
 <% end %>
-
 <div class="grow max-w-lg w-full mx-auto bg-surface flex flex-col justify-center md:py-0 py-6 px-4 md:px-0">
-
   <div>
-    <%if false %>
     <div class="space-y-1 mb-6 text-center">
       <h1 class="text-2xl font-medium md:text-2xl">Let's set up your account</h1>
       <p class="text-secondary text-sm">First things first, let's get your profile set up.</p>
@@ -40,102 +36,6 @@
       <%= form.submit "Continue" %>
     <% end %>
   </div>
-  <% end %>
-
-<%= styled_form_with(model: @user, url: registration_path(@user), method: :patch, class: "space-y-4", data: { controller: "searchable-select" }) do |form| %>
-      <%= form.hidden_field :redirect_to, value: @invitation ? "home" : "onboarding_profile_setup" %>
-      <%= form.hidden_field :onboarded_at, value: Time.current if @invitation %>
-  <section class="space-y-4 overflow-hidden">
-    <h2 class="text-lg font-bold text-gray-700">User Type</h2>
-    <div class="flex items-center gap-4">
-      <%= form.label :user_type_company, "Company Account" %>
-      <%= form.check_box :user_type,
-                          { multiple: false, checked: @user.company? }, # Set checked if user is a company
-                          "company", # Value if checked
-                          nil # Value if unchecked (or use false)
-      %>
-    </div>
-    <div class="flex items-center gap-4">
-      <%= form.label :user_type_user, "Individual User Account" %>
-      <%= form.check_box :user_type,
-                          { multiple: false, checked: @user.user? }, # Set checked if user is a user
-                          "user", # Value if checked
-                          nil # Value if unchecked (or use false)
-      %>
-    </div>
-    <% if @user.errors.any? %>
-      <div id="error_explanation" class="text-red-500">
-        <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
-        <ul>
-          <% @user.errors.full_messages.each do |message| %>
-            <li><%= message %></li>
-          <% end %>
-        </ul>
-      </div>
-    <% end %>
-    <div>
-      <%= form.submit "Continue" %>
-    </div>
-  </section>
-<% end %>
-
-
-
 </div>
 <%= render "layouts/shared/footer" %>
 </div>
-<% end %>
-
-
-<%= content_for :previous_path, onboarding_path %>
-<%= content_for :header_nav do %>
-  <%= render "onboardings/onboarding_nav", user: @user %>
-<% end %>
-<%= content_for :cancel_action do %>
-  <%= render "onboardings/logout" %>
-<% end %>
-
-<div class="grow max-w-lg w-full mx-auto bg-surface flex flex-col justify-center md:py-0 py-6 px-4 md:px-0">
-  <div>
-    <% if @user.user_type == 'user' %>
-      <%= render partial: 'user_user_type', user: @user %>
-    <% else %>
-      <div class="space-y-6">
-        <div>
-          <h2 class="text-xl font-semibold mb-4">Company Information</h2>
-          <p class="text-gray-600 mb-6">Please provide your company details to get started.</p>
-        </div>
-
-        <%= styled_form_with model: @company, method: (@company.persisted? ? "put" : "post"), class: "space-y-4" do |f| %>
-          <%= f.hidden_field :redirect_to, value: @invitation ? "home" : "onboarding_preferences" %>
-          <% if @company.errors.any? %>
-            <%= render "shared/form_errors", model: @company %>
-          <% end %>
-
-          <section class="space-y-4">
-            <%= f.text_field :name,
-                label: 'Company Name',
-                placeholder: 'Enter Company Name'
-                 %>
-
-            <%= f.text_field :subdomain,
-                label: 'Subdomain',
-                placeholder: 'Enter Subdomain (e.g., your-company)',
-                hint: 'This will be used for your company URL' %>
-
-            <%= f.text_field :website,
-                label: 'Website',
-                placeholder: 'Enter Website (e.g., https://your-company.com)'
-                 %>
-          </section>
-
-          <section class="pt-4">
-            <%= f.submit 'Continue to Preferences', class: "w-full" %>
-          </section>
-        <% end %>
-      </div>
-    <% end %>
-  </div>
-  <%= render "layouts/shared/footer" %>
-</div>
-

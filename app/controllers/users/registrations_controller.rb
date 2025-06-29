@@ -75,7 +75,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # If you have extra params to permit, append them to the sanitizer.
   def configure_sign_up_params
     devise_parameter_sanitizer.permit(:sign_up, keys: [
-      :email, :password, :password_confirmation, :user_type,
+      :email, :password, :password_confirmation,
       profile_attributes: [ :first_name, :last_name, :gender, :location ]
     ])
   end
@@ -85,7 +85,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     devise_parameter_sanitizer.permit(:account_update, keys: [
       :email, :password, :password_confirmation, :current_password, :set_onboarding_goals_at, :onboarded_at, :redirect_to,
       :first_name, :last_name, :country_code, :theme, :set_onboarding_preferences_at, :delete_profile_image, :profile_image,
-      :date_format, :locale, :gender, :phone_number, :date_of_birth, :bio, :timezone, :user_type, goals: [],
+      :date_format, :locale, :gender, :phone_number, :date_of_birth, :bio, :timezone,
       profile_attributes: [
         :id, :last_name, :gender, :bio,
         :phone_number, :date_of_birth, :location, :website, :social_links,

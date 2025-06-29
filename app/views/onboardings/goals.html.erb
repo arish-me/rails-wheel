@@ -12,56 +12,12 @@
   <div>
     <div class="space-y-1 mb-6 text-center">
       <h1 class="text-2xl font-medium md:text-2xl">What brings you to Wheel?</h1>
-      <p class="text-secondary text-sm">Select one or more goals that you have with using Wheel as your daily job search tool.</p>
+      <p class="text-secondary text-sm">Select one or more goals that you have with using Maybe as your personal finance tool.</p>
     </div>
     <%= styled_form_with(model: @user, url: registration_path(@user), method: :patch, class: "space-y-4", data: { controller: "searchable-select" }) do |form| %>
-      <%= form.hidden_field :redirect_to, value: "trial" %>
+      <%= form.hidden_field :redirect_to, value: "home" %>
       <%= form.hidden_field :set_onboarding_goals_at, value: Time.current %>
       <%= form.hidden_field :onboarded_at, value: Time.current %>
-      <%# Assuming current_user is available and has a 'user_type' attribute %>
-
-<%
-# Define all possible goal sets
-candidate_goals = [
-  { icon: "briefcase", label: "Find new job opportunities", value: "find_jobs" },
-  { icon: "file-text", label: "Build and optimize my resume/profile", value: "optimize_profile" },
-  { icon: "clipboard-list", label: "Track my job applications easily", value: "track_applications" },
-  { icon: "network", label: "Connect with recruiters and companies", value: "networking" },
-  { icon: "lightbulb", label: "Get career advice and resources", value: "career_advice" },
-  { icon: "graduation-cap", label: "Discover relevant skills and training", value: "skill_development" },
-  { icon: "star", label: "Highlight my unique qualifications", value: "highlight_qualifications" },
-  { icon: "smile", label: "Reduce job search stress", value: "reduce_stress" }
-]
-
-company_goals = [
-  { icon: "user-plus", label: "Find qualified candidates quickly", value: "find_candidates" },
-  { icon: "list-checks", label: "Efficiently manage job postings", value: "manage_postings" },
-  { icon: "filter", label: "Streamline candidate screening", value: "screen_candidates" },
-  { icon: "users", label: "Collaborate with my hiring team", value: "team_collaboration" },
-  { icon: "award", label: "Enhance our employer brand", value: "employer_branding" },
-  { icon: "bar-chart-2", label: "Access hiring analytics and insights", value: "hiring_analytics" },
-  { icon: "calendar-check", label: "Simplify interview scheduling", value: "schedule_interviews" },
-  { icon: "rocket", label: "Accelerate our recruitment process", value: "accelerate_recruitment" }
-]
-
-# Select the appropriate set of goals based on user type
-display_goals = case current_user.user_type
-                when "user" then candidate_goals
-                when "company" then company_goals
-                else [] # Default to an empty array or another set if user_type is neither
-                end
-%>
-
-<div class="space-y-3">
-  <% display_goals.each do |goal| %>
-    <label class="flex items-center gap-2.5 p-4 rounded-lg border border-tertiary cursor-pointer hover:bg-container transition-colors [&:has(input:checked)]:border-solid [&:has(input:checked)]:bg-container">
-      <%= form.check_box :goals, { multiple: true, class: "sr-only" }, goal[:value], nil %>
-      <%= icon goal[:icon] %>
-      <span class="text-primary text-sm"><%= goal[:label] %></span>
-    </label>
-  <% end %>
-</div>
-
       <div class="mt-6">
         <%= render ButtonComponent.new(
           text: "Next",
@@ -71,5 +27,3 @@ display_goals = case current_user.user_type
     <% end %>
   </div>
 </div>
-
-
