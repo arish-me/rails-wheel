@@ -187,11 +187,11 @@ RSpec.describe CompaniesController, type: :controller do
           company: { name: 'Test', subdomain: 'test', website: 'https://test.com', invalid: 'param' }
         )
         allow(controller).to receive(:params).and_return(params)
-        
+
         permitted_params = controller.send(:company_params)
         expect(permitted_params).to include(:name, :subdomain, :website)
         expect(permitted_params).not_to include(:invalid)
       end
     end
   end
-end 
+end

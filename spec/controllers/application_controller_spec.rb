@@ -54,7 +54,7 @@ RSpec.describe ApplicationController, type: :controller do
     let(:user) { create(:user) }
 
     before do
-      sign_in user, scope: :user 
+      sign_in user, scope: :user
       allow(controller).to receive(:request).and_return(double(referrer: '/previous'))
     end
 
@@ -75,7 +75,7 @@ RSpec.describe ApplicationController, type: :controller do
 
     before do
       user.update!(company: company)
-      sign_in user, scope: :user 
+      sign_in user, scope: :user
     end
 
     it 'sets current tenant to user company' do
@@ -83,4 +83,4 @@ RSpec.describe ApplicationController, type: :controller do
       expect(ActsAsTenant.current_tenant).to eq(company)
     end
   end
-end 
+end

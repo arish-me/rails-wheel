@@ -10,4 +10,4 @@ RSpec.describe ApplicationDeliveryMethod, type: :notifier do
   it 'can be instantiated' do
     expect { ApplicationDeliveryMethod.new }.not_to raise_error
   end
-end 
+end

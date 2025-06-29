@@ -9,4 +9,4 @@ RSpec.describe SeedData::BulkFakerSeeder do
     seeder = SeedData::BulkFakerSeeder.new(10)
     expect(seeder).to respond_to(:call)
   end
-end 
+end

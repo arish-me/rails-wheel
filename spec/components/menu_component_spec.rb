@@ -9,4 +9,4 @@ RSpec.describe MenuComponent, type: :component do
     component = MenuComponent.new
     expect { render_inline(component) }.not_to raise_error
   end
-end 
+end

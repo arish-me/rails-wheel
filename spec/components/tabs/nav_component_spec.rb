@@ -1,14 +1,14 @@
 require 'rails_helper'
 
 RSpec.describe Tabs::NavComponent, type: :component do
-  let(:component) { 
+  let(:component) {
     described_class.new(
       active_tab: 'tab1',
       classes: 'nav-class',
       active_btn_classes: 'active-class',
       inactive_btn_classes: 'inactive-class',
       btn_classes: 'btn-class'
-    ) 
+    )
   }
 
   describe 'inheritance' do
@@ -32,4 +32,4 @@ RSpec.describe Tabs::NavComponent, type: :component do
       expect(component).to respond_to(:with_btn)
     end
   end
-end 
+end

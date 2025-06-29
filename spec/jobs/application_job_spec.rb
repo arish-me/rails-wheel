@@ -12,4 +12,4 @@ RSpec.describe ApplicationJob, type: :job do
   it 'raises NotImplementedError when performed' do
     expect { ApplicationJob.perform_now }.to raise_error(NotImplementedError)
   end
-end 
+end

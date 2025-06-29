@@ -318,7 +318,7 @@ RSpec.describe User, type: :model do
         it 'logs an error and handles the exception' do
           mock_file = double('avatar_file', content_type: 'image/jpeg')
           uri_double = double('uri')
-          
+
           allow(URI).to receive(:parse).with(image_url).and_return(uri_double)
           allow(uri_double).to receive(:open).and_return(mock_file)
           allow(user.profile_image).to receive(:attach).and_raise(StandardError.new('Attachment failed'))
@@ -374,15 +374,15 @@ RSpec.describe User, type: :model do
 
     it 'defines DATE_FORMATS constant correctly' do
       expect(User::DATE_FORMATS).to eq([
-        ["MM-DD-YYYY", "%m-%d-%Y"],
-        ["DD.MM.YYYY", "%d.%m.%Y"],
-        ["DD-MM-YYYY", "%d-%m-%Y"],
-        ["YYYY-MM-DD", "%Y-%m-%d"],
-        ["DD/MM/YYYY", "%d/%m/%Y"],
-        ["YYYY/MM/DD", "%Y/%m/%d"],
-        ["MM/DD/YYYY", "%m/%d/%Y"],
-        ["D/MM/YYYY", "%e/%m/%Y"],
-        ["YYYY.MM.DD", "%Y.%m.%d"]
+        [ "MM-DD-YYYY", "%m-%d-%Y" ],
+        [ "DD.MM.YYYY", "%d.%m.%Y" ],
+        [ "DD-MM-YYYY", "%d-%m-%Y" ],
+        [ "YYYY-MM-DD", "%Y-%m-%d" ],
+        [ "DD/MM/YYYY", "%d/%m/%Y" ],
+        [ "YYYY/MM/DD", "%Y/%m/%d" ],
+        [ "MM/DD/YYYY", "%m/%d/%Y" ],
+        [ "D/MM/YYYY", "%e/%m/%Y" ],
+        [ "YYYY.MM.DD", "%Y.%m.%d" ]
       ])
     end
 

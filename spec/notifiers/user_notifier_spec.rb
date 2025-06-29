@@ -25,4 +25,4 @@ RSpec.describe UserNotifier, type: :notifier do
       expect(UserNotifier.required_params).to include(:message)
     end
   end
-end 
+end

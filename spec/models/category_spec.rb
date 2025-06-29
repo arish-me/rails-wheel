@@ -23,4 +23,4 @@ RSpec.describe Category, type: :model do
       expect(results).not_to include(category2, category3)
     end
   end
-end 
+end

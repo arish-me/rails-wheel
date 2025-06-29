@@ -12,4 +12,4 @@ RSpec.describe ApplicationMailer, type: :mailer do
   it 'can be instantiated' do
     expect { ApplicationMailer.new }.not_to raise_error
   end
-end 
+end

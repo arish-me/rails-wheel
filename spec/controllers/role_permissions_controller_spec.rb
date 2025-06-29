@@ -217,11 +217,11 @@ RSpec.describe RolePermissionsController, type: :controller do
           role_permission: { role_id: '1', permission_id: '2', action: 'view', invalid: 'param' }
         )
         allow(controller).to receive(:params).and_return(params)
-        
+
         permitted_params = controller.send(:role_permission_params)
         expect(permitted_params).to include(:role_id, :permission_id, :action)
         expect(permitted_params).not_to include(:invalid)
       end
     end
   end
-end 
+end

@@ -11,4 +11,4 @@ RSpec.describe StyledFormBuilder, type: :helper do
       expect(StyledFormBuilder).to be < ActionView::Helpers::FormBuilder
     end
   end
-end 
+end

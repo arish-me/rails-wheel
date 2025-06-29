@@ -117,4 +117,4 @@ RSpec.describe DeviseMailer, type: :mailer do
       expect { DeviseMailer.password_change(user) }.not_to raise_error
     end
   end
-end 
+end

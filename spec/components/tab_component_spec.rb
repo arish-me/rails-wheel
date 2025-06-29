@@ -18,4 +18,4 @@ RSpec.describe TabComponent, type: :component do
     component = TabComponent.new(tabs:, current_path: "/user")
     expect { render_inline(component) }.not_to raise_error
   end
-end 
+end

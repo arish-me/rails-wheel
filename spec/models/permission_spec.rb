@@ -39,14 +39,14 @@ RSpec.describe Permission, type: :model do
     it 'generates unique names' do
       permission1 = create(:permission)
       permission2 = create(:permission)
-      
+
       expect(permission1.name).not_to eq(permission2.name)
     end
 
     it 'generates unique resources' do
       permission1 = create(:permission)
       permission2 = create(:permission)
-      
+
       expect(permission1.resource).not_to eq(permission2.resource)
     end
   end
@@ -89,4 +89,4 @@ RSpec.describe Permission, type: :model do
       expect { permission.destroy }.to change { RolePermission.count }.by(-2)
     end
   end
-end 
+end

@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe NotificationComponent, type: :component do
-  let(:user) {create(:user)}
+  let(:user) { create(:user) }
   it 'can be instantiated' do
     expect { NotificationComponent.new(current_user: user) }.not_to raise_error
   end
@@ -10,4 +10,4 @@ RSpec.describe NotificationComponent, type: :component do
     component = NotificationComponent.new(current_user: user)
     expect { render_inline(component) }.not_to raise_error
   end
-end 
+end

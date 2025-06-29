@@ -11,4 +11,4 @@ RSpec.describe SeedData::UserRoleAssigner do
     service = SeedData::UserRoleAssigner.new(user, company)
     expect(service).to respond_to(:call)
   end
-end 
+end

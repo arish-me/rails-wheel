@@ -9,4 +9,4 @@ RSpec.describe SeedData::BaseService do
     service = SeedData::BaseService
     expect(service).to respond_to(:call)
   end
-end 
+end

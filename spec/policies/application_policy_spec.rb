@@ -33,4 +33,4 @@ RSpec.describe ApplicationPolicy do
       expect { scope.resolve }.to raise_error(NoMethodError)
     end
   end
-end 
+end

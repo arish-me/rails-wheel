@@ -9,4 +9,4 @@ RSpec.describe LinkComponent, type: :component do
     component = LinkComponent.new(href: "/users")
     expect { render_inline(component) }.not_to raise_error
   end
-end 
+end

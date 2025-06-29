@@ -10,4 +10,4 @@ RSpec.describe ApplicationNotifier, type: :notifier do
   it 'can be instantiated' do
     expect { ApplicationNotifier.new }.not_to raise_error
   end
-end 
+end

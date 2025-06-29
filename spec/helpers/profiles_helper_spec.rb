@@ -8,4 +8,4 @@ RSpec.describe ProfilesHelper, type: :helper do
   it 'responds to display_user_name' do
     expect(helper).to respond_to(:display_user_name)
   end
-end 
+end

@@ -3,4 +3,4 @@ FactoryBot.define do
     sequence(:name) { |n| "Category #{n}" }
     association :user
   end
-end 
+end

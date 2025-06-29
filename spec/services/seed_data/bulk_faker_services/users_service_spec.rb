@@ -28,4 +28,4 @@ RSpec.describe SeedData::BulkFakerServices::UsersService, type: :service do
       expect(described_class).to be < SeedData::BulkFakerServices::BaseService
     end
   end
-end 
+end

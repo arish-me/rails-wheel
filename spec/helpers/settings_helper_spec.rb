@@ -8,4 +8,4 @@ RSpec.describe SettingsHelper, type: :helper do
   it 'responds to adjacent_setting' do
     expect(helper).to respond_to(:adjacent_setting)
   end
-end 
+end

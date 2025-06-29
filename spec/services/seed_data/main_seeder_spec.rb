@@ -18,4 +18,4 @@ RSpec.describe SeedData::MainSeeder do
     seeder = SeedData::MainSeeder.new(50)
     expect(seeder.faker_count).to eq(50)
   end
-end 
+end

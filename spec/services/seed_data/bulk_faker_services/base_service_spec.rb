@@ -13,7 +13,7 @@ RSpec.describe SeedData::BulkFakerServices::BaseService, type: :service do
       expect(service.count).to eq(50)
     end
   end
-  
+
   describe '#log' do
     it 'outputs the message' do
       expect { service.log("test message") }.to output("test message\n").to_stdout
@@ -31,4 +31,4 @@ RSpec.describe SeedData::BulkFakerServices::BaseService, type: :service do
       expect(result).to eq("success")
     end
   end
-end 
+end

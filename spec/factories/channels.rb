@@ -10,4 +10,4 @@ FactoryBot.define do
       connection
     end
   end
-end 
+end

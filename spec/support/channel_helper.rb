@@ -20,4 +20,4 @@ end
 
 RSpec.configure do |config|
   config.include ChannelHelper, type: :channel
-end 
+end

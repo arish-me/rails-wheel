@@ -12,4 +12,4 @@ RSpec.describe ApplicationRecord, type: :model do
       expect(ApplicationRecord.included_modules).to include(PgSearch::Model)
     end
   end
-end 
+end

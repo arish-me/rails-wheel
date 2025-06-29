@@ -9,4 +9,4 @@ RSpec.describe FilledIconComponent, type: :component do
     component = FilledIconComponent.new
     expect { render_inline(component) }.not_to raise_error
   end
-end 
+end

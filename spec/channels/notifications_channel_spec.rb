@@ -2,14 +2,14 @@ require 'rails_helper'
 
 RSpec.describe NotificationsChannel, type: :channel do
   let(:user) { create(:user) }
-  let(:connection) { 
-    double('connection', 
+  let(:connection) {
+    double('connection',
       current_user: user,
-      identifiers: [:current_user],
+      identifiers: [ :current_user ],
       logger: Rails.logger,
       transmit: nil,
       reject: nil
-    ) 
+    )
   }
   let(:identifier) { 'notifications' }
   let(:channel) { described_class.new(connection, identifier) }

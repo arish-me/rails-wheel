@@ -9,4 +9,4 @@ RSpec.describe MenuItemComponent, type: :component do
     component = MenuItemComponent.new(variant: "button", href: "/users")
     expect { render_inline(component) }.not_to raise_error
   end
-end 
+end

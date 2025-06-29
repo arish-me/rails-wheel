@@ -2,8 +2,8 @@ require 'rails_helper'
 
 RSpec.describe ApplicationCable::Connection, type: :channel do
   let(:user) { create(:user) }
-  let(:test_env) { instance_double('env') }  
-  
+  let(:test_env) { instance_double('env') }
+
   before do
     allow_any_instance_of(described_class).to receive(:env).and_return(test_env)
   end
@@ -33,4 +33,4 @@ RSpec.describe ApplicationCable::Connection, type: :channel do
       expect { connect '/cable' }.to have_rejected_connection
     end
   end
-end 
+end

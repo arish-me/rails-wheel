@@ -8,4 +8,4 @@ RSpec.describe LanguagesHelper, type: :helper do
   it 'responds to language_options' do
     expect(helper).to respond_to(:language_options)
   end
-end 
+end

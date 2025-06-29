@@ -9,4 +9,4 @@ RSpec.describe ButtonishComponent, type: :component do
     component = ButtonishComponent.new
     expect(component).to respond_to(:call)
   end
-end 
+end

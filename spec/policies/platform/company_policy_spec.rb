@@ -12,4 +12,4 @@ RSpec.describe Platform::CompanyPolicy do
   it 'can be instantiated' do
     expect { described_class.new(user, record) }.not_to raise_error
   end
-end 
+end

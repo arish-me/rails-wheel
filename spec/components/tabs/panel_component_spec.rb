@@ -21,4 +21,4 @@ RSpec.describe Tabs::PanelComponent, type: :component do
       expect(component.call).to eq('test content')
     end
   end
-end 
+end

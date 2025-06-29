@@ -10,4 +10,4 @@ RSpec.describe SeedData::UsersService do
     service = SeedData::UsersService.new(company)
     expect(service).to respond_to(:call)
   end
-end 
+end

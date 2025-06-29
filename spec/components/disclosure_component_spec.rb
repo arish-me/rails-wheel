@@ -9,4 +9,4 @@ RSpec.describe DisclosureComponent, type: :component do
     component = DisclosureComponent.new(title: "Test Title")
     expect { render_inline(component) }.not_to raise_error
   end
-end 
+end

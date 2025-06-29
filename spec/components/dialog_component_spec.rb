@@ -9,4 +9,4 @@ RSpec.describe DialogComponent, type: :component do
     component = DialogComponent.new
     expect { render_inline(component) }.not_to raise_error
   end
-end 
+end

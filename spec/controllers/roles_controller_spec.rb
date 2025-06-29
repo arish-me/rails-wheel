@@ -215,7 +215,7 @@ RSpec.describe RolesController, type: :controller do
           role: { name: 'Test', is_default: false, invalid: 'param' }
         )
         allow(controller).to receive(:params).and_return(params)
-        
+
         permitted_params = controller.send(:role_params)
         expect(permitted_params).to include(:name, :is_default)
         expect(permitted_params).not_to include(:invalid)
@@ -225,14 +225,14 @@ RSpec.describe RolesController, type: :controller do
     describe '#bulk_delete_params' do
       it 'permits resource_ids array' do
         params = ActionController::Parameters.new(
-          bulk_delete: { resource_ids: ['1', '2'], invalid: 'param' }
+          bulk_delete: { resource_ids: [ '1', '2' ], invalid: 'param' }
         )
         allow(controller).to receive(:params).and_return(params)
-        
+
         permitted_params = controller.send(:bulk_delete_params)
-        expect(permitted_params[:resource_ids]).to eq(['1', '2'])
+        expect(permitted_params[:resource_ids]).to eq([ '1', '2' ])
         expect(permitted_params).not_to include(:invalid)
       end
     end
   end
-end 
+end

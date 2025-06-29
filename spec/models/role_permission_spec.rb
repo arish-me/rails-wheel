@@ -50,7 +50,7 @@ RSpec.describe RolePermission, type: :model do
     it 'prevents duplicate permission assignments to the same role' do
       create(:role_permission, role: role, permission: permission, company: company)
       duplicate = build(:role_permission, role: role, permission: permission, company: company)
-      
+
       expect(duplicate).not_to be_valid
       expect(duplicate.errors[:permission_id]).to include('already assigned to this role')
     end
@@ -59,7 +59,7 @@ RSpec.describe RolePermission, type: :model do
       role2 = create(:role, company: company)
       create(:role_permission, role: role, permission: permission, company: company)
       role_permission2 = build(:role_permission, role: role2, permission: permission, company: company)
-      
+
       expect(role_permission2).to be_valid
     end
   end
@@ -79,4 +79,4 @@ RSpec.describe RolePermission, type: :model do
       expect(role_permission.edit?).to be true
     end
   end
-end 
+end
