@@ -14,6 +14,7 @@ class CandidatesController < ApplicationController
   def edit
     @candidate.build_profile unless @candidate.profile
     @candidate.build_user unless @candidate.user
+    @candidate.build_work_preference unless @candidate.work_preference
   end
 
 def update
@@ -31,9 +32,11 @@ end
   end
 
   def candidate_params
+    debugger
     params.require(:candidate).permit(
       profile_attributes: [ :id, :headline, :_destroy ],
-      user_attributes: [ :id, :first_name, :last_name, :gender, :phone_number, :date_of_birth, :bio ]
+      user_attributes: [ :id, :first_name, :last_name, :gender, :phone_number, :date_of_birth, :bio ],
+      work_preference_attributes: [ :id, :search_status, :role_type, :role_level, :_destroy ],
     )
   end
 end

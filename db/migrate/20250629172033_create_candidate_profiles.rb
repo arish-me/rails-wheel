@@ -3,7 +3,7 @@ class CreateCandidateProfiles < ActiveRecord::Migration[8.0]
     create_table :candidate_profiles do |t|
       t.references :candidate, null: false, foreign_key: true
       t.references :candidate_role, foreign_key: true
-      t.string :title
+      t.string :headline
       t.integer :experience
       t.decimal :hourly_rate
 

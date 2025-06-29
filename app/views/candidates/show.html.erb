@@ -26,13 +26,19 @@
             </div>
 
             <aside class="mt-8 lg:hidden">
-              <%= render "details", developer: @candidate, public_key: @public_key %>
+              <%= render "details", candidate: @candidate, public_key: @public_key %>
             </aside>
+            <div class="pb-3 lg:pb-0">
+              <h2 class="sr-only"><%= t(".description") %></h2>
+              <div class="prose max-w-prose">
+                <%= current_user.bio %>
+              </div>
+            </div>
           </div>
         </div>
 
         <aside class="hidden lg:block lg:pl-8">
-          <%= render "details", developer: @candidate, public_key: @public_key %>
+          <%= render "details", candidate: @candidate, public_key: @public_key %>
         </aside>
       </div>
     </div>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_29_172033) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_29_203632) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -66,6 +66,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_29_172033) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["candidate_role_group_id"], name: "index_candidate_roles_on_candidate_role_group_id"
+  end
+
+  create_table "candidate_work_preferences", force: :cascade do |t|
+    t.bigint "candidate_id", null: false
+    t.integer "search_status"
+    t.integer "role_type"
+    t.integer "role_level"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["candidate_id"], name: "index_candidate_work_preferences_on_candidate_id"
   end
 
   create_table "candidates", force: :cascade do |t|
@@ -302,6 +312,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_29_172033) do
   add_foreign_key "candidate_profiles", "candidate_roles"
   add_foreign_key "candidate_profiles", "candidates"
   add_foreign_key "candidate_roles", "candidate_role_groups"
+  add_foreign_key "candidate_work_preferences", "candidates"
   add_foreign_key "candidates", "users"
   add_foreign_key "categories", "users"
   add_foreign_key "role_permissions", "companies"

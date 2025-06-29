@@ -120,7 +120,14 @@ en:
     upload_error_text: Something went wrong uploading your image, please try again.
     upload_file: Upload a file
     upload_help_text: PNG, JPG, GIF up to 10MB
-
+  work_preference:
+   search_status:
+      actively_looking: Actively looking for work
+      actively_looking_tag: Actively looking
+      not_interested: Not interested in work right now
+      not_interested_tag: Not interested
+      open: Open, but not actively looking
+      open_tag: Open to offers
   errors:
     not_authorized: "You are not authorized to perform this action."
     page_not_found: "Page not found."
