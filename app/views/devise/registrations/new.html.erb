@@ -26,29 +26,6 @@
         </div>
       <% end %>
       <%= styled_form_with(model: resource, url:  registration_path(resource_name), method: :post, local: true, class: "space-y-4") do |f| %>
-
-       <%# --- START: User Type Checkboxes --- %>
-        <div class="space-y-2">
-          <label class="block text-sm font-medium text-gray-700 theme-dark:text-gray-200">
-            I want to sign up as: <span class="text-red-500">*</span>
-          </label>
-          <div class="flex gap-4">
-            <div class="flex items-center">
-              <%= f.radio_button :user_type, :user, id: 'user_type_user', class: "h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 theme-dark:bg-gray-700 theme-dark:border-gray-600", required: true %>
-              <label for="user_type_user" class="ml-2 text-sm text-gray-700 theme-dark:text-gray-300">
-                Individual User
-              </label>
-            </div>
-            <div class="flex items-center">
-              <%= f.radio_button :user_type, :company, id: 'user_type_company', class: "h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 theme-dark:bg-gray-700 theme-dark:border-gray-600", required: true %>
-              <label for="user_type_company" class="ml-2 text-sm text-gray-700 theme-dark:text-gray-300">
-                Company
-              </label>
-            </div>
-          </div>
-        </div>
-        <%# --- END: User Type Checkboxes --- %>
-
         <section class="space-y-2 overflow-hidden">
           <%= f.email_field :email, label: 'Email', placeholder: 'Enter Email', autofocus: true, autocomplete: "email",  required: true %>
         </section>

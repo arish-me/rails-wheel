@@ -7,7 +7,7 @@ module SeedData
     end
 
     def log(message)
-      Rails.logger.info(message)
+      puts message
     end
   end
 end

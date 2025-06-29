@@ -1,6 +1,3 @@
-<%= render DialogComponent.new do |dialog| %>
-  <% dialog.with_header(title: t(".new_permission")) %>
-  <% dialog.with_body do %>
-    <%= render "form", permission: @permission %>
-  <% end %>
+<%= modal_form_wrapper title: t(".new_permission") do %>
+  <%= render "form", permission: @permission %>
 <% end %>

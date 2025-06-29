@@ -11,7 +11,6 @@ require 'rspec/rails'
 # Add additional requires below this line. Rails is not loaded until this point!
 require 'capybara/rails'
 require 'capybara/rspec'
-require "view_component/test_helpers"
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -36,8 +35,6 @@ rescue ActiveRecord::PendingMigrationError => e
   abort e.to_s.strip
 end
 RSpec.configure do |config|
-  config.include ViewComponent::TestHelpers, type: :component
-  config.include Devise::TestHelpers, type: :controller
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_paths = [
     Rails.root.join('spec/fixtures')
@@ -72,17 +69,6 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
-
-  # Custom filtering based on command line arguments
-  if ARGV.include?('--capybara') || ARGV.include?('--automation')
-    # Run only feature tests when --capybara or --automation flag is passed
-    config.filter_run_including type: :feature
-    puts "Running Capybara feature tests only..."
-  else
-    # By default, exclude feature tests (run only unit tests)
-    config.filter_run_excluding type: :feature
-    puts "Running unit tests only (excluding feature tests)..."
-  end
 end
 
 # Configure Capybara
@@ -113,6 +99,3 @@ end
 
 # Default max wait time for elements to appear
 Capybara.default_max_wait_time = 5
-
-# Add ActionCable test support
-# require 'action_cable/testing/rspec'
