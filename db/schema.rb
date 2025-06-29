@@ -249,7 +249,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_14_043429) do
     t.string "location"
     t.string "website"
     t.jsonb "social_links", default: {}
-    t.string "theme", default: "system"
+    t.integer "theme", default: 0
     t.boolean "active", default: true, null: false
     t.datetime "onboarded_at"
     t.text "goals", default: [], array: true

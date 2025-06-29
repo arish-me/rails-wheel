@@ -21,7 +21,8 @@ class ApplicationPolicy
   def has_permission?(action)
     return false unless user
 
-    return false if user.user?
+    # TODO: DONT KNOW why I have added this.
+    # return false if user.user?
 
     resource_name = resolve_resource_name
 

@@ -67,7 +67,7 @@ class Platform::CompaniesController < Platform::BaseController
   end
 
   def destroy
-   #  authorize @company, policy_class: Platform::CompanyPolicy
+    #  authorize @company, policy_class: Platform::CompanyPolicy
     @company.destroy!
 
     respond_to do |format|

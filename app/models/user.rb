@@ -56,15 +56,6 @@ class User < ApplicationRecord
     update_columns(locked_at: Time.current, failed_attempts: 0)
   end
 
-  def assign_default_role
-    default_role = Role.fetch_default_role
-    UserRole.create!(user: self, role: default_role) if default_role
-  end
-
-  def has_role?(role_name)
-    roles.exists?(name: role_name)
-  end
-
   def can?(action, resource)
     roles.joins(:role_permissions)
          .joins("INNER JOIN permissions ON permissions.id = role_permissions.permission_id")
@@ -108,6 +99,10 @@ class User < ApplicationRecord
     end
   end
 
+  def has_role?(role_name)
+    roles.exists?(name: role_name)
+  end
+
   protected
 
   def password_required?
@@ -116,15 +111,6 @@ class User < ApplicationRecord
   end
 
   private
-
-    def ensure_valid_profile_image
-      return unless profile_image.attached?
-
-      unless profile_image.content_type.in?(%w[image/jpeg image/png])
-        errors.add(:profile_image, "must be a JPEG or PNG")
-        profile_image.purge
-      end
-    end
 
     def profile_image_size
       if profile_image.attached? && profile_image.byte_size > 10.megabytes

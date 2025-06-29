@@ -1,6 +1,5 @@
 # app/policies/platform/company_policy.rb
 class Platform::CompanyPolicy < ApplicationPolicy
-
   def index?
     user.platform_admin?
   end

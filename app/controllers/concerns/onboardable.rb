@@ -31,7 +31,7 @@ module Onboardable
 
       [
         new_registration_path(User),
-        new_session_path(User),
+        new_session_path(User)
         # new_password_reset_path,
         # new_email_confirmation_path,
       ].exclude?(path)

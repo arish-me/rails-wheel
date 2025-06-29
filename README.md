@@ -1,5 +1,3 @@
-
-
 # Rails Wheel: Production-Ready Ruby on Rails Starter
 
 <p align="center">
@@ -24,34 +22,39 @@
 ![Dashboard of the Rails Wheel application](docs/screenshots/dashboard.png)
 ![Profile of the Rails Wheel application](docs/screenshots/profile.png)
 
-
 Perfect for:
-- SaaS Applications
+
 - Internal Tools
+
 - MVPs and Prototypes
 - Full-featured Web Applications
 
 ## ✨ Key Features
 
 ### 🔐 Authentication & User Management
+
 - **Devise Integration**: Email/password authentication ready out of the box
+
 - **OAuth Support**: Google authentication with easy expansion to other providers
 - **Role-based Access Control**: Pundit integration for authorization
 - **User Impersonation**: Admin tools for debugging user experiences
 
 ### 🎨 Modern UI with TailwindCSS
+
 - **Responsive Design**: Mobile-first responsive layouts
 - **Dark Mode**: Built-in theme toggling with user preference persistence
 - **Component Library**: Pre-built UI components following best practices
 - **Utility-first CSS**: Rapid UI development with TailwindCSS
 
 ### ⚡ Hotwire & Modern Rails Stack
+
 - **Turbo Drive/Frames/Streams**: SPA-like experience with server-rendered HTML
 - **Stimulus Controllers**: Enhanced client-side interactivity
 - **Importmap**: Simplified JavaScript module management without complex bundlers
 - **Hotwire Combobox**: Accessible form components
 
 ### 🛠️ Developer Experience
+
 - **PostgreSQL**: Powerful database with advanced querying capabilities
 - **Background Jobs**: Ready for ActiveJob implementation
 - **Internationalization**: i18n setup for multi-language support
@@ -67,30 +70,44 @@ Perfect for:
 ## 🔧 Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/arish-me/rails-wheel.git your-app-name
    cd your-app-name
+
    ```
 
 2. **Install dependencies**
+
    ```bash
+
    bundle install
    ```
 
 3. **Set up the database**
+
    ```bash
    rails db:create db:migrate db:seed
    ```
 
-4. **Start the development server**
-   ```bash
-   bin/dev
-   ```
-   Visit http://localhost:3000 to see your application in action!
+<http://localhost:3000> 4. **Start the development server**
 
-5. **Run tests**
+```bash
+bin/dev
+```
+
+Visit <http://localhost:3000> to see your application in action!
+
+5. **Run Unit tests**
+
    ```bash
    bundle exec rspec
+   ```
+
+6. **Run Capybara tests**
+
+   ```bash
+   bundle exec rspec --capybara
    ```
 
 ## 🧩 Project Structure
@@ -146,4 +163,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 <p align="center">
   Built with ❤️ by <a href="https://github.com/arish-me">Arish</a>
 </p>
-

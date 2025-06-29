@@ -11,5 +11,8 @@ require 'rails_helper'
 #   end
 # end
 RSpec.describe CompanyHelper, type: :helper do
-  pending "add some examples to (or delete) #{__FILE__}"
+  it 'is a module' do
+    expect(defined?(CompanyHelper)).to eq('constant')
+    expect(CompanyHelper).to be_a(Module)
+  end
 end

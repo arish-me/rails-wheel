@@ -18,7 +18,7 @@ class AddFieldsToUsers < ActiveRecord::Migration[8.0]
     add_column :users, :location, :string
     add_column :users, :website, :string
     add_column :users, :social_links, :jsonb, default: {}
-    add_column :users, :theme, :string, default: "system"
+    add_column :users, :theme, :integer, default: 0
 
     add_column :users, :active, :boolean, default: true, null: false
     add_column :users, :onboarded_at, :datetime
