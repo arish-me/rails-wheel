@@ -9,10 +9,7 @@
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
       <div class="w-full">
-
-
-          <%= form.select :gender,  User.genders.map { |key, _| [User::GENDER_DISPLAY[key.to_sym], key] }, { include_blank: "---Select---", label: "Pronounce" } %>
-
+        <%= form.select :gender,  User.genders.map { |key, _| [User::GENDER_DISPLAY[key.to_sym], key] }, { include_blank: "---Select---", label: "Pronounce" } %>
       </div>
       <div class="w-full">
         <%= form.telephone_field :phone_number, placeholder: "+1 (555) 123-4567" , label: "Phone" %>
@@ -20,8 +17,6 @@
 
       <div class="w-full">
         <%= form.date_field :date_of_birth,   max: Date.today - 10.years, min: Date.today - 120.years, label: "Date of birth" %>
-
-
       </div>
 
       <div class="sm:col-span-2">
