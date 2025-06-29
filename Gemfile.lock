@@ -560,7 +560,7 @@ DEPENDENCIES
   countries
   database_cleaner-active_record
   debug
-  devise
+  devise (~> 4.9, >= 4.9.4)
   dotenv
   factory_bot_rails
   faker

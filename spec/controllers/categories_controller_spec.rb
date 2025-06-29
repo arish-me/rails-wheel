@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe CategoriesController, type: :controller do
-  let(:user) { create(:user) }
+  let(:user) { create(:user, :onboarded) }
   let(:company) { create(:company) }
   let(:category) { create(:category, user: user) }
 
@@ -15,6 +15,7 @@ RSpec.describe CategoriesController, type: :controller do
 
     it 'returns http success' do
       get :index
+      debugger
       expect(response).to have_http_status(:success)
     end
 
