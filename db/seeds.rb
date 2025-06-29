@@ -11,3 +11,4 @@ ActsAsTenant.with_tenant(company) do
   SeedData::MainSeeder.new(faker_count, false, true, company).call
 end
 SeedData::PlatformUserService.new('serviceuser@wheel.com').call
+SeedData::CandidateRoleService.call

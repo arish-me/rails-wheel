@@ -1,8 +1,4 @@
 Rails.application.routes.draw do
-  get "candidate_profile/index"
-  get "candidate_profile/show"
-  get "candidate_profile/update"
-  get "candidate_profile/edit"
   # Locale switching route
   post "set_locale", to: "application#set_locale", as: :set_locale
 
@@ -100,6 +96,10 @@ Rails.application.routes.draw do
         post :bulk_destroy
       end
     end
+  end
+
+  resources :candidates do
+    resources :profiles, module: :candidates
   end
 
   get "up" => "rails/health#show", as: :rails_health_check

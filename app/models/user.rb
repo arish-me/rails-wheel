@@ -11,7 +11,8 @@ class User < ApplicationRecord
   belongs_to :company, optional: true
   has_many :notifications, as: :recipient, class_name: "Noticed::Notification"
 
-  # after_create :assign_default_role
+  has_one :candidate, dependent: :destroy, class_name: "Candidate"
+  after_create :ensure_candidate
 
   attr_accessor :skip_password_validation
   attr_accessor :current_sign_in_ip_address
@@ -101,6 +102,12 @@ class User < ApplicationRecord
 
   def has_role?(role_name)
     roles.exists?(name: role_name)
+  end
+
+  def ensure_candidate
+    if user?
+      create_candidate
+    end
   end
 
   protected
