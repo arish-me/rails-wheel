@@ -1,5 +1,5 @@
 module RoleTypes
-  class Component  < ViewComponent::Base
+  class Component < ViewComponent::Base
     attr_reader :role_type
 
     def initialize(role_type)
@@ -11,14 +11,18 @@ module RoleTypes
     end
 
     def role_types
-      Candidate::WorkPreference.role_types.keys
+      RoleType::TYPES
+    end
+
+    def humanize(attribute)
+      RoleType.human_attribute_name(attribute)
     end
 
     private
 
     def selected_role_types
       role_types.select do |rt|
-        @role_type
+        role_type.public_send("#{rt}?")
       end
     end
   end

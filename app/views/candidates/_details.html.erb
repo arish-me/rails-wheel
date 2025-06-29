@@ -4,6 +4,9 @@
     <%= render Candidates::SearchStatusComponent.new(candidate&.work_preference) %>
   <% end %>
   <%= render RenderableComponent.new("space-y-5 pt-4") do %>
-    <%= render RoleTypes::Component.new(candidate&.work_preference.role_type) %>
+    <%= render RoleTypes::Component.new(candidate&.role_type) %>
+  <% end %>
+   <%= render RenderableComponent.new("space-y-5 pt-4") do %>
+    <%= render RoleLevels::Component.new(candidate&.role_level) %>
   <% end %>
 </div>

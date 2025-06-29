@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_29_203632) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_29_212426) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -45,7 +45,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_29_203632) do
   create_table "candidate_profiles", force: :cascade do |t|
     t.bigint "candidate_id", null: false
     t.bigint "candidate_role_id"
-    t.string "title"
+    t.string "headline"
     t.integer "experience"
     t.decimal "hourly_rate"
     t.datetime "created_at", null: false
@@ -69,13 +69,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_29_203632) do
   end
 
   create_table "candidate_work_preferences", force: :cascade do |t|
-    t.bigint "candidate_id", null: false
+    t.bigint "candidate_id"
     t.integer "search_status"
-    t.integer "role_type"
-    t.integer "role_level"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["candidate_id"], name: "index_candidate_work_preferences_on_candidate_id"
+    t.index ["candidate_id"], name: "index_candidate_work_preferences_on_candidate_id", unique: true
   end
 
   create_table "candidates", force: :cascade do |t|
@@ -224,6 +222,18 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_29_203632) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "role_levels", force: :cascade do |t|
+    t.bigint "candidate_id"
+    t.boolean "junior"
+    t.boolean "mid"
+    t.boolean "senior"
+    t.boolean "principal"
+    t.boolean "c_level"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["candidate_id"], name: "index_role_levels_on_candidate_id", unique: true
+  end
+
   create_table "role_permissions", force: :cascade do |t|
     t.bigint "role_id", null: false
     t.bigint "permission_id", null: false
@@ -234,6 +244,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_29_203632) do
     t.index ["company_id"], name: "index_role_permissions_on_company_id"
     t.index ["permission_id"], name: "index_role_permissions_on_permission_id"
     t.index ["role_id"], name: "index_role_permissions_on_role_id"
+  end
+
+  create_table "role_types", force: :cascade do |t|
+    t.bigint "candidate_id"
+    t.boolean "part_time_contract"
+    t.boolean "full_time_contract"
+    t.boolean "full_time_employment"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["candidate_id"], name: "index_role_types_on_candidate_id", unique: true
   end
 
   create_table "roles", force: :cascade do |t|
@@ -315,9 +335,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_29_203632) do
   add_foreign_key "candidate_work_preferences", "candidates"
   add_foreign_key "candidates", "users"
   add_foreign_key "categories", "users"
+  add_foreign_key "role_levels", "candidates"
   add_foreign_key "role_permissions", "companies"
   add_foreign_key "role_permissions", "permissions"
   add_foreign_key "role_permissions", "roles"
+  add_foreign_key "role_types", "candidates"
   add_foreign_key "roles", "companies"
   add_foreign_key "user_roles", "companies"
   add_foreign_key "user_roles", "roles"

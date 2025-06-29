@@ -11,7 +11,7 @@
       <%= form.fields_for :profile do |profile_form| %>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <%= profile_form.text_field :title, label: 'Title / Headline' , placeholder: 'Enter Title or Headline' %>
+            <%= profile_form.text_field :headline, label: 'Title / Headline' , placeholder: 'Enter Title or Headline' %>
             <p class="mt-2 text-xs text-gray-500">e.g. Full-stack developer with 6+ years of experience</p>
           </div>
         </div>
@@ -64,29 +64,69 @@
       </div>
     </div>
     <!-- Role Type -->
-    <div>
-      <label class="block text-sm font-medium text-gray-700 mb-2">Role Type</label>
-      <div class="flex flex-wrap gap-4">
-        <% Candidate::WorkPreference.role_types.each do |key, value| %>
-          <label class="inline-flex items-center">
-            <%= wp_form.radio_button :role_type, key, checked: wp_form.object.role_type == key, class: "form-radio text-blue-600" %>
-            <span class="ml-2 capitalize"><%= key.to_s.humanize %></span>
-          </label>
-        <% end %>
-      </div>
-    </div>
-    <!-- Role Level -->
-    <div>
-      <label class="block text-sm font-medium text-gray-700 mb-2">Role Level</label>
-      <div class="flex flex-wrap gap-4">
-        <% Candidate::WorkPreference.role_levels.each do |key, value| %>
-          <label class="inline-flex items-center">
-            <%= wp_form.radio_button :role_level, key, checked: wp_form.object.role_level == key, class: "form-radio text-blue-600" %>
-            <span class="ml-2 capitalize"><%= key.to_s.humanize %></span>
-          </label>
-        <% end %>
-      </div>
-    </div>
+   <%= form.fields_for :role_type, include_id: false do |role_type| %>
+              <fieldset>
+                <div>
+                  <legend class="text-base font-medium text-gray-900 w-full">
+                    <div class="flex">
+                      <%= t(".role_type.title") %>
+
+                    </div>
+                  </legend>
+                  <p class="text-sm text-gray-500"><%= t(".role_type.help_text") %></p>
+                </div>
+                <div class="mt-4 space-y-4">
+                  <div class="flex items-center">
+                    <%= role_type.check_box :part_time_contract, class: "focus:ring-gray-500 h-4 w-4 text-gray-600 border-gray-300 rounded" %>
+                    <%= role_type.label :part_time_contract, class: "ml-3 block text-sm font-medium text-gray-700" %>
+                  </div>
+                  <div class="flex items-center">
+                    <%= role_type.check_box :full_time_contract, class: "focus:ring-gray-500 h-4 w-4 text-gray-600 border-gray-300 rounded" %>
+                    <%= role_type.label :full_time_contract, class: "ml-3 block text-sm font-medium text-gray-700" %>
+                  </div>
+                  <div class="flex items-center">
+                    <%= role_type.check_box :full_time_employment, class: "focus:ring-gray-500 h-4 w-4 text-gray-600 border-gray-300 rounded" %>
+                    <%= role_type.label :full_time_employment, class: "ml-3 block text-sm font-medium text-gray-700" %>
+                  </div>
+                </div>
+              </fieldset>
+            <% end %>
+     <%= form.fields_for :role_level, include_id: false do |role_level| %>
+              <fieldset>
+                <div>
+                  <legend class="text-base font-medium text-gray-900 w-full">
+                    <div class="flex">
+                      <%= t(".role_level.title") %>
+
+                    </div>
+                  </legend>
+                  <p class="text-sm text-gray-500"><%= t(".role_level.help_text") %></p>
+                </div>
+                <div class="mt-4 space-y-4">
+                  <div class="flex items-center">
+                    <%= role_level.check_box :junior, class: "focus:ring-gray-500 h-4 w-4 text-gray-600 border-gray-300 rounded" %>
+                    <%= role_level.label :junior, class: "ml-3 block text-sm font-medium text-gray-700" %>
+                  </div>
+                  <div class="flex items-center">
+                    <%= role_level.check_box :mid, class: "focus:ring-gray-500 h-4 w-4 text-gray-600 border-gray-300 rounded" %>
+                    <%= role_level.label :mid, class: "ml-3 block text-sm font-medium text-gray-700" %>
+                  </div>
+                  <div class="flex items-center">
+                    <%= role_level.check_box :senior, class: "focus:ring-gray-500 h-4 w-4 text-gray-600 border-gray-300 rounded" %>
+                    <%= role_level.label :senior, class: "ml-3 block text-sm font-medium text-gray-700" %>
+                  </div>
+                  <div class="flex items-center">
+                    <%= role_level.check_box :principal, class: "focus:ring-gray-500 h-4 w-4 text-gray-600 border-gray-300 rounded" %>
+                    <%= role_level.label :principal, class: "ml-3 block text-sm font-medium text-gray-700" %>
+                  </div>
+                  <div class="flex items-center">
+                    <%= role_level.check_box :c_level, class: "focus:ring-gray-500 h-4 w-4 text-gray-600 border-gray-300 rounded" %>
+                    <%= role_level.label :c_level, class: "ml-3 block text-sm font-medium text-gray-700" %>
+                  </div>
+                </div>
+              </fieldset>
+            <% end %>
+
   <% end %>
 </div>
 

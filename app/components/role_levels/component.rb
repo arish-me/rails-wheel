@@ -1,5 +1,5 @@
 module RoleLevels
-  class Component < ApplicationComponent
+  class Component < ViewComponent::Base
     attr_reader :role_level
 
     def initialize(role_level)
