@@ -1,21 +1,16 @@
 <% content_for :candidate_tab do %>
   <%= render 'layouts/candidate_tab' %>
 <% end %>
-<h1>Candidate Profiles</h1>
+<div class="flex-1">
+<main class="mx-auto">
+<div class="max-w-5xl mx-auto mt-0 lg:mt-16 pb-8 mb-16 bg-white shadow lg:rounded-lg overflow-hidden">
+  <%= render Candidates::CoverImageComponent.new(developer: @profile, classes: "lg:rounded-t-lg") %>
 
-<div class="p-4">
-  <h2 class="text-xl font-bold mb-4">Candidate: <%= @candidate.user&.display_name || "Unknown" %></h2>
-
-  <% if @candidate.respond_to?(:profiles) && @profiles.present? %>
-    <div class="space-y-4">
-      <% @profiles.each do |profile| %>
-        <div class="border p-4 rounded">
-          <h3 class="font-semibold">Profile ID: <%= profile.id %></h3>
-          <!-- Add more profile details here -->
-        </div>
-      <% end %>
+  <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="-mt-12 sm:-mt-16 sm:flex sm:items-end sm:space-x-5">
+      <%= render AvatarComponent.new(avatarable: current_user, variant: :thumbnail) %>
     </div>
-  <% else %>
-    <p class="text-gray-500">No profiles found for this candidate.</p>
-  <% end %>
+  </div>
+</div>
+</main>
 </div>

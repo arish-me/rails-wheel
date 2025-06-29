@@ -1,0 +1,33 @@
+class AvatarComponent < ViewComponent::Base
+  DEFAULT_AVATAR = "avatar.png"
+
+  attr_reader :avatarable, :variant, :data
+
+  def initialize(avatarable:, variant: nil, classes: nil, data: {})
+    @avatarable = avatarable
+    @variant = variant
+    @classes = classes
+    @data = data
+  end
+
+  def classes
+    [
+      (@classes || "h-24 w-24 sm:h-32 sm:w-32 ring-4 ring-white"),
+      "object-cover rounded-full"
+    ]
+  end
+
+  def avatar_image_url
+    return image_path(DEFAULT_AVATAR) unless avatarable&.profile_image&.attached?
+    url_for variant ? avatarable.profile_image.variant(variant) : avatarable.profile_image
+  end
+
+  def avatar_image_2x_url
+    return image_path(DEFAULT_AVATAR) unless avatarable&.profile_image&.attached?
+    url_for variant ? avatarable.profile_image.variant("#{variant}".to_sym) : avatarable.profile_image
+  end
+
+  def name
+    "#{avatarable.class.name}'s"
+  end
+end
