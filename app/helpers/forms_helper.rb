@@ -4,6 +4,11 @@ module FormsHelper
     form_with(**options, &block)
   end
 
+  def field_classes(form, field, type: :text_field)
+    status = (form.object.errors[field].any? ? :error : :clean)
+    yass(input: [ type => status ])
+  end
+
   def modal_form_wrapper(title:, subtitle: nil, &block)
     content = capture &block
 

@@ -1,16 +1,15 @@
 <% content_for :candidate_tab do %>
   <%= render 'layouts/candidate_tab' %>
 <% end %>
-<div class="flex-1">
-<main class="mx-auto">
-<div class="max-w-5xl mx-auto mt-0 lg:mt-16 pb-8 mb-16 bg-white shadow lg:rounded-lg overflow-hidden">
+
+
+<div class=" mx-auto mt-0 lg:mt-16 pb-8 mb-16 bg-white shadow lg:rounded-lg overflow-hidden">
   <%= render Candidates::CoverImageComponent.new(developer: @profile, classes: "lg:rounded-t-lg") %>
 
-  <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+  <div class="relative z-10 mx-auto px-4 sm:px-6 lg:px-8">
     <div class="-mt-12 sm:-mt-16 sm:flex sm:items-end sm:space-x-5">
       <%= render AvatarComponent.new(avatarable: current_user, variant: :thumbnail) %>
     </div>
   </div>
 </div>
-</main>
-</div>
+

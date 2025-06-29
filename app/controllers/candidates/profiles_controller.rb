@@ -1,6 +1,6 @@
 class Candidates::ProfilesController < ApplicationController
   before_action :set_candidate
-  before_action :set_profile, only: [:show, :edit, :update, :destroy]
+  before_action :set_profile, only: [ :show, :edit, :update, :destroy ]
 
   def index
     # @profiles = @candidate.profiles if @candidate.respond_to?(:profiles)
@@ -18,7 +18,7 @@ class Candidates::ProfilesController < ApplicationController
     @profile = @candidate.build_profile(profile_params)
 
     if @profile.save
-      redirect_to candidate_profile_path(@candidate, @profile), notice: 'Profile was successfully created.'
+      redirect_to candidate_profile_path(@candidate, @profile), notice: "Profile was successfully created."
     else
       render :new, status: :unprocessable_entity
     end
@@ -29,7 +29,7 @@ class Candidates::ProfilesController < ApplicationController
 
   def update
     if @profile.update(profile_params)
-      redirect_to candidate_profile_path(@candidate, @profile), notice: 'Profile was successfully updated.'
+      redirect_to candidate_profile_path(@candidate, @profile), notice: "Profile was successfully updated."
     else
       render :edit, status: :unprocessable_entity
     end
@@ -37,7 +37,7 @@ class Candidates::ProfilesController < ApplicationController
 
   def destroy
     @profile.destroy
-    redirect_to candidate_profiles_path(@candidate), notice: 'Profile was successfully deleted.'
+    redirect_to candidate_profiles_path(@candidate), notice: "Profile was successfully deleted."
   end
 
   private

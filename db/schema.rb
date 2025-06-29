@@ -44,11 +44,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_29_172033) do
 
   create_table "candidate_profiles", force: :cascade do |t|
     t.bigint "candidate_id", null: false
+    t.bigint "candidate_role_id"
+    t.string "title"
     t.integer "experience"
     t.decimal "hourly_rate"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["candidate_id"], name: "index_candidate_profiles_on_candidate_id"
+    t.index ["candidate_role_id"], name: "index_candidate_profiles_on_candidate_role_id"
   end
 
   create_table "candidate_role_groups", force: :cascade do |t|
@@ -67,10 +70,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_29_172033) do
 
   create_table "candidates", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.bigint "candidate_role_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["candidate_role_id"], name: "index_candidates_on_candidate_role_id"
     t.index ["user_id"], name: "index_candidates_on_user_id"
   end
 
@@ -298,9 +299,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_29_172033) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "candidate_profiles", "candidate_roles"
   add_foreign_key "candidate_profiles", "candidates"
   add_foreign_key "candidate_roles", "candidate_role_groups"
-  add_foreign_key "candidates", "candidate_roles"
   add_foreign_key "candidates", "users"
   add_foreign_key "categories", "users"
   add_foreign_key "role_permissions", "companies"

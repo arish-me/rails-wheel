@@ -38,6 +38,8 @@ gem "countries"                                          # For country data and 
 # Background Jobs
 gem "good_job"
 gem "hotwire_combobox"
+gem "classy-yaml"
+gem "inline_svg"
 
 
 group :development, :test do

@@ -1,0 +1,60 @@
+<%= content_for :page_title, "Edit Profile" %>
+<%= settings_section title: "Profile", subtitle: "Customize how you appear on Wheel" do %>
+  <%= styled_form_with model: @candidate, local: true, class: "space-y-8" do |form| %>
+    <% if @candidate.errors.any? %>
+      <%= render "shared/form_errors", model: @candidate %>
+    <% end %>
+
+    <!-- Profile Section -->
+    <div class="bg-white rounded-lg shadow p-6 space-y-6">
+      <h2 class="text-xl font-semibold text-gray-900 mb-4">Professional Details</h2>
+      <%= form.fields_for :profile do |profile_form| %>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <%= profile_form.label :title, "Title / Headline", class: "block text-sm font-medium text-gray-700" %>
+            <%= profile_form.text_field :title, class: field_classes(profile_form, :title) %>
+            <p class="mt-2 text-xs text-gray-500">e.g. Full-stack developer with 6+ years of experience</p>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- User Section -->
+    <div class="bg-white rounded-lg shadow p-6 space-y-6">
+      <h2 class="text-xl font-semibold text-gray-900 mb-4">Personal Information</h2>
+      <%= form.fields_for :user do |user_form| %>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <%= user_form.label :first_name, class: "block text-sm font-medium text-gray-700" %>
+            <%= user_form.text_field :first_name, class: field_classes(user_form, :first_name) %>
+          </div>
+          <div>
+            <%= user_form.label :last_name, class: "block text-sm font-medium text-gray-700" %>
+            <%= user_form.text_field :last_name, class: field_classes(user_form, :last_name) %>
+          </div>
+          <div>
+            <%= user_form.label :gender, class: "block text-sm font-medium text-gray-700" %>
+            <%= user_form.select :gender, options_for_select([['Male', 'male'], ['Female', 'female'], ['Other', 'other']], user_form.object.gender), { prompt: "Select gender" }, class: field_classes(user_form, :gender) %>
+          </div>
+          <div>
+            <%= user_form.label :phone_number, class: "block text-sm font-medium text-gray-700" %>
+            <%= user_form.telephone_field :phone_number, class: field_classes(user_form, :phone_number) %>
+          </div>
+          <div>
+            <%= user_form.label :date_of_birth, class: "block text-sm font-medium text-gray-700" %>
+            <%= user_form.date_field :date_of_birth, class: field_classes(user_form, :date_of_birth) %>
+          </div>
+          <div class="md:col-span-2">
+            <%= user_form.label :bio, class: "block text-sm font-medium text-gray-700" %>
+            <%= user_form.text_area :bio, rows: 4, class: field_classes(user_form, :bio) %>
+            <p class="mt-2 text-xs text-gray-500">A short bio about yourself</p>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="flex justify-end mt-4">
+      <%= render ButtonComponent.new(text: t(".save", default: "Save"), class: "md:w-auto w-full justify-center") %>
+    </div>
+  <% end %>
+<% end %>

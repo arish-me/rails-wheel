@@ -1,0 +1,6 @@
+<h2 class="sr-only"><%= t(".title") %></h2>
+<div class="space-y-5 divide-y divide-gray-200">
+  <%= render RenderableComponent.new("space-y-3") do %>
+    <%= render Candidates::SearchStatusComponent.new(developer) %>
+  <% end %>
+</div>

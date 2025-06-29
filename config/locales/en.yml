@@ -36,7 +36,7 @@ en:
     learn_more: "Learn More"
     home: "Home"
     about: "About"
-    services: "Services" 
+    services: "Services"
     contact: "Contact"
     sign_in: "Sign in"
     sign_up: "Sign up"
@@ -91,7 +91,7 @@ en:
       cta_heading: "Ready to Build Your Next Application?"
       cta_subheading: "Start with a solid foundation and focus on what makes your application unique."
       get_started_now: "Get Started Now"
-      
+
   auth:
     sign_in_to_account: "Sign in to your account"
     email: "Email"
@@ -99,14 +99,28 @@ en:
     remember_me: "Remember me"
     forgot_password: "Forgot your password?"
     unlock_instructions: "Didn't receive unlock instructions?"
-    
+
   settings:
     profile: "Profile"
     account: "Account"
     appearance: "Appearance"
     notifications: "Notifications"
     save_changes: "Save Changes"
-    
+
+  profile:
+    avatar: Avatar
+    avatar_error_text: Something went wrong uploading your image, please try again.
+    change: Upload
+    cover_image: Cover image
+    help_text: This information will be displayed publicly so be careful what you share.
+    hero_help_text: Summarize yourself as a developer in a few words.
+    location_help_text: Providing your location makes it easier to connect with local business.
+    name_help_text_html: Your name will <i>not</i> be displayed on your public profile.
+    title: Profile
+    upload_error_text: Something went wrong uploading your image, please try again.
+    upload_file: Upload a file
+    upload_help_text: PNG, JPG, GIF up to 10MB
+
   errors:
     not_authorized: "You are not authorized to perform this action."
     page_not_found: "Page not found."

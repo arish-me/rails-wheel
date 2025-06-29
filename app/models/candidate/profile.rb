@@ -3,9 +3,9 @@ class Candidate::Profile < ApplicationRecord
   belongs_to :candidate_role, optional: true
 
   has_one_attached :cover_image do |attachable|
-    attachable.variant :thumbnail, resize_to_limit: [400, 200]
-    attachable.variant :medium, resize_to_limit: [800, 400]
-    attachable.variant :large, resize_to_limit: [1200, 600]
+    attachable.variant :thumbnail, resize_to_limit: [ 400, 200 ]
+    attachable.variant :medium, resize_to_limit: [ 800, 400 ]
+    attachable.variant :large, resize_to_limit: [ 1200, 600 ]
   end
 
   # Delegate profile_image to user through candidate
