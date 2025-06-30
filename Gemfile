@@ -41,6 +41,7 @@ gem "hotwire_combobox"
 gem "classy-yaml"
 gem "inline_svg"
 gem "redcarpet"
+gem "hashid-rails"
 
 
 group :development, :test do

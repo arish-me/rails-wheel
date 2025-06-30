@@ -175,6 +175,10 @@ GEM
       thor (>= 1.0.0)
     groupdate (6.5.1)
       activesupport (>= 7)
+    hashid-rails (1.4.1)
+      activerecord (>= 4.0)
+      hashids (~> 1.0)
+    hashids (1.0.6)
     hashie (5.0.0)
     hotwire-livereload (2.0.0)
       actioncable (>= 7.0.0)
@@ -576,6 +580,7 @@ DEPENDENCIES
   geocoder
   good_job
   groupdate
+  hashid-rails
   hotwire-livereload
   hotwire_combobox
   htmlbeautifier

@@ -1,4 +1,6 @@
 class Candidate < ApplicationRecord
+  include Hashid::Rails
+
   belongs_to :user
   has_one :profile, class_name: "Candidate::Profile", dependent: :destroy
   has_one :work_preference, class_name: "Candidate::WorkPreference", dependent: :destroy

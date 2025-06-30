@@ -31,13 +31,13 @@ class User < ApplicationRecord
               using: {
                 tsearch: { prefix: true } # Enables partial matches (e.g., "Admin" matches "Administrator")
               }
-  enum :gender, [ :he_she, :him_her, :they_them, :other ]
+  enum :gender, [ :he_him, :she_her, :they_them, :other ]
   enum :theme, { system: 0, light: 1, dark: 2 }, default: :system
   enum :user_type, { company: 0, user: 1, platform_admin: 99 }
 
   GENDER_DISPLAY = {
-    he_she: "He/Him",
-    him_her: "Him/Her",
+    he_him: "He/Him",
+    she_her: "She/Her",
     they_them: "They/Them",
     other: "Other"
   }.freeze
