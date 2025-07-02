@@ -5,7 +5,7 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
   "[erb]": {
-    "editor.defaultFormatter": "elia.erb-formatter",
+    "editor.defaultFormatter": "aliariff.vscode-erb-beautify",
     "editor.formatOnSave": true
   },
   "prettier.semi": false,

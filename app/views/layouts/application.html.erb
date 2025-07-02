@@ -48,7 +48,7 @@
   { name: "Management", path: admin_users_path, icon: "users", icon_custom: false, active: page_active?(admin_users_path), condition: can?(:index, User), mobile_only: true },
   { name: "Categories", path: categories_path, icon: "folder", icon_custom: false, active: page_active?(categories_path), condition: can?(:index, Category), mobile_only: true },
   { name: "Management", path: platform_users_path, icon: "folder", icon_custom: false, active: page_active?(categories_path), condition: can?(:index, User, policy_class: Platform::UserPolicy), mobile_only: true },
-  { name: "Profile", path: candidate_profiles_path(current_user.candidate), icon: "user", icon_custom: false, active: page_active?(candidate_profiles_path(current_user.candidate)), condition: true, mobile_only: true },
+  { name: "Profile", path: edit_candidate_path(current_user.candidate), icon: "user", icon_custom: false, active: page_active?(edit_candidate_path(current_user.candidate)), condition: true, mobile_only: true },
 ] %>
 
 <% plaform_admin_navs = [

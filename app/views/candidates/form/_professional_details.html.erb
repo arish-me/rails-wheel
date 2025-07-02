@@ -1,0 +1,12 @@
+<!-- Profile Section -->
+<div class="p-6 space-y-6 bg-white rounded-lg shadow">
+  <h2 class="mb-4 text-xl font-semibold text-gray-900">Professional Details</h2>
+  <%= form.fields_for :profile do |profile_form| %>
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+      <div>
+        <%= profile_form.text_field :headline, label: 'Title / Headline' , placeholder: 'Enter Title or Headline' %>
+        <p class="mt-2 text-xs text-gray-500">e.g. Full-stack developer with 6+ years of experience</p>
+      </div>
+    </div>
+  <% end %>
+</div>

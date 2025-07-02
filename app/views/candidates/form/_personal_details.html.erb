@@ -1,0 +1,28 @@
+<!-- User Section -->
+<div class="bg-white rounded-lg shadow p-6 space-y-6">
+  <h2 class="text-xl font-semibold text-gray-900 mb-4">Personal Information</h2>
+  <%= form.fields_for :user do |user_form| %>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div>
+        <%= user_form.text_field :first_name, label: 'First Name' , placeholder: 'Enter First Name' %>
+      </div>
+      <div>
+        <%= user_form.text_field :last_name, label: 'Last Name' , placeholder: 'Enter Last Name' %>
+      </div>
+      <div>
+        <%= user_form.select :gender,  User.genders.map { |key, _| [User::GENDER_DISPLAY[key.to_sym], key] }, { include_blank: "---Select---", label: "Pronounce" } %>
+      </div>
+      <div>
+        <%= user_form.telephone_field :phone_number, placeholder: "+1 (555) 123-4567" , label: "Phone" %>
+      </div>
+      <div>
+        <%= user_form.date_field :date_of_birth,   max: Date.today - 10.years, min: Date.today - 120.years, label: "Date of birth" %>
+      </div>
+      <div class="sm:col-span-2">
+        <%= user_form.label :bio, class: 'block mb-2 text-sm font-medium text-gray-900 theme-dark:text-white' %>
+        <%= user_form.text_area :bio, rows: 4, class: "block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 theme-dark:bg-gray-700 theme-dark:border-gray-600 theme-dark:placeholder-gray-400 theme-dark:text-white theme-dark:focus:ring-blue-500 theme-dark:focus:border-blue-500", placeholder: "Write a short bio about yourself..." %>
+        <p class="mt-1 text-xs text-gray-500 theme-dark:text-gray-400">Maximum 500 characters</p>
+      </div>
+    </div>
+  <% end %>
+</div>
