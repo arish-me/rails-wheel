@@ -2,13 +2,13 @@
 	<fieldset>
 		<div>
 			<legend class="w-full text-base font-medium text-gray-900">
-				<div class="flex">
-					<%= t(".role_level.title") %>
+				<div class="flex mb-2">
+					<%= I18n.t(".form.role_level.title") %>
 				</div>
 			</legend>
-			<p class="text-sm text-gray-500"><%= t(".role_level.help_text") %></p>
+			<p class="text-sm text-gray-500 mb-4"><%= I18n.t(".form.role_level.help_text") %></p>
 		</div>
-		<div class="mt-4 space-y-4">
+		<div class="flex flex-wrap gap-4">
 			<div class="flex items-center">
 				<%= role_level.check_box :junior, class: "focus:ring-gray-500 h-4 w-4 text-gray-600 border-gray-300 rounded" %>
 				<%= role_level.label :junior, class: "ml-3 block text-sm font-medium text-gray-700" %>

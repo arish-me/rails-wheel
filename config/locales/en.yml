@@ -128,6 +128,29 @@ en:
       not_interested_tag: Not interested
       open: Open, but not actively looking
       open_tag: Open to offers
+  role_level:
+    c_level: C-level
+    junior: Junior
+    mid: Mid-level
+    principal: Principal / staff
+    senior: Senior
+  role_type:
+    full_time_contract: Full-time contract
+    full_time_employment: Full-time employment
+    part_time_contract: Part-time contract
+  form:
+    role_level:
+      help_text: Select all the experience levels you would consider taking.
+      title: Role level
+    role_type:
+        help_text: Select all roles that you would consider taking.
+        title: Role type
+  search_status:
+    actively_looking_help_text: Your profile can get featured on the homepage.
+    invisible_help_text: Your profile is hidden and can only be seen by yourself.
+    not_interested_help_text: Your profile will not appear in search results.
+    open_help_text: Companies can still find you, but you won't appear on the homepage.
+    title: Search status
   errors:
     not_authorized: "You are not authorized to perform this action."
     page_not_found: "Page not found."
