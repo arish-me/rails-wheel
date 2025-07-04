@@ -1,4 +1,6 @@
 <%= content_for :page_title, "Edit Profile" %>
 <div class="mx-auto">
-  <%= render "form", candidate: @candidate %>
+
+    <%= render "candidates/form/tabbed_form", candidate: @candidate %>
+
 </div>

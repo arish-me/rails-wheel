@@ -1,0 +1,19 @@
+<div class="bg-white rounded-lg shadow p-6 space-y-6">
+  <h2 class="text-xl font-semibold text-gray-900 mb-4">Social Links</h2>
+  <%= form.fields_for :profile do |profile_form| %>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div>
+        <%= profile_form.text_field :linkedin, label: 'LinkedIn', placeholder: 'https://linkedin.com/in/your-profile' %>
+      </div>
+      <div>
+        <%= profile_form.text_field :twitter, label: 'Twitter', placeholder: 'https://twitter.com/your-handle' %>
+      </div>
+      <div>
+        <%= profile_form.text_field :github, label: 'GitHub', placeholder: 'https://github.com/your-username' %>
+      </div>
+      <div>
+        <%= profile_form.text_field :website, label: 'Website', placeholder: 'https://yourwebsite.com' %>
+      </div>
+    </div>
+  <% end %>
+</div> 

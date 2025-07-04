@@ -1,0 +1,36 @@
+
+<%= settings_section title: "Profile", subtitle: "Customize how you appear on Wheel" do %>
+<%= render TabsComponent.new(active_tab: params[:tab] || 'personal') do |tabs| %>
+<% tabs.with_nav do %>
+  <% tabs.nav.with_btn(id: "personal", label: "Personal Details") %>
+  <% tabs.nav.with_btn(id: "professional", label: "Professional Details") %>
+  <% tabs.nav.with_btn(id: "work", label: "Work Preferences") %>
+<% end %>
+  <% tabs.with_panel(tab_id: 'personal') do %>
+    <% turbo_frame_tag "candidate_form_personal" do %>
+      <%= styled_form_with model: candidate, url: candidate_path(candidate, tab: 'personal'), method: :patch, data: { turbo_frame: 'candidate_form_personal', controller: 'tab-save' } do |form| %>
+        <%= render 'candidates/form/personal_details', form: form %>
+        <%= render ButtonComponent.new(text: 'Next', class: 'btn btn-primary') %>
+      <% end %>
+    <% end %>
+  <% end %>
+  <% tabs.with_panel(tab_id: 'professional') do %>
+  <% turbo_frame_tag "candidate_form_professional" do %>
+
+      <%= styled_form_with model: candidate, url: candidate_path(candidate, tab: 'professional'), method: :patch, data: { turbo_frame: 'candidate_form_professional', controller: 'tab-save' } do |form| %>
+        <%= render 'candidates/form/professional_details', form: form %>
+        <%= render ButtonComponent.new(text: 'Next', class: 'btn btn-primary') %>
+      <% end %>
+      <% end %>
+  <% end %>
+  <% tabs.with_panel(tab_id: 'work') do %>
+
+      <% turbo_frame_tag "candidate_form_work" do %>
+      <%= styled_form_with model: candidate, url: candidate_path(candidate, tab: 'work'), method: :patch, data: { turbo_frame: 'candidate_form_work', controller: 'tab-save' } do |form| %>
+        <%= render 'candidates/form/work_preferences', form: form %>
+        <%= render ButtonComponent.new(text: 'Save', class: 'btn btn-success') %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>
+<% end %>

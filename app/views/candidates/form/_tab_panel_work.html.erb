@@ -1,0 +1,6 @@
+<turbo-frame id="candidate_form_work">
+  <%= styled_form_with model: candidate, url: candidate_path(candidate, tab: 'work'), method: :patch, data: { turbo_frame: 'candidate_form_work', controller: 'tab-save' } do |form| %>
+    <%= render 'candidates/form/work_preferences', form: form %>
+    <%= render ButtonComponent.new(text: 'Save', class: 'btn btn-success') %>
+  <% end %>
+</turbo-frame> 

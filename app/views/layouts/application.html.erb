@@ -65,6 +65,7 @@
 <% collapsed_sidebar_class = "w-0" %>
 
 <%= render "layouts/shared/htmldoc" do %>
+<head><% turbo_page_requires_reload %></head>
 <meta name="user-signed-in" content="true">
 <meta name="direct-upload-url" content="<%= rails_direct_uploads_path %>">
 <div

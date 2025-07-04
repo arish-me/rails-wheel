@@ -97,4 +97,14 @@ module ApplicationHelper
   rescue Pundit::NotAuthorizedError
     false
   end
+
+  def candidate_profile_completion(candidate)
+    total = 4
+    complete = 0
+    complete += 1 if candidate.user&.first_name.present? && candidate.user&.last_name.present?
+    complete += 1 if candidate.profile&.headline.present?
+    complete += 1 if candidate.work_preference&.search_status.present?
+    complete += 1 if candidate.user&.profile_image&.attached?
+    ((complete.to_f / total) * 100).round
+  end
 end
