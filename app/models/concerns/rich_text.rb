@@ -46,4 +46,3 @@ module RichText
     @plain_text_markdown ||= Redcarpet::Markdown.new(plain_text_renderer, MARKDOWN_OPTIONS)
   end
 end
-

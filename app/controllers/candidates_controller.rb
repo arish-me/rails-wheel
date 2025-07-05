@@ -19,6 +19,7 @@ class CandidatesController < ApplicationController
     @candidate.build_work_preference unless @candidate.work_preference
     @candidate.build_role_type unless @candidate.role_type
     @candidate.build_role_level unless @candidate.role_level
+    @candidate.build_social_link unless @candidate.social_link
   end
 
 def update
@@ -40,6 +41,7 @@ end
       profile_attributes: [ :id, :headline, :_destroy ],
       user_attributes: [ :id, :first_name, :last_name, :gender, :phone_number, :date_of_birth, :bio, :profile_image, :delete_profile_image ],
       work_preference_attributes: [ :id, :search_status, :role_type, :role_level, :_destroy ],
+      social_link_attributes: [ :id, :github, :website, :linked_in, :twitter, :_destroy ],
       role_type_attributes: RoleType::TYPES,
       role_level_attributes: RoleLevel::TYPES
     )

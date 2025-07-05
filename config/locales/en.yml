@@ -135,6 +135,9 @@ en:
     invisible_help_text: Your profile is hidden and can only be seen by yourself.
     not_interested_help_text: Your profile will not appear in search results.
     open_help_text: Companies can still find you, but you won't appear on the homepage.
+  online_presence:
+    help_text: Where can people learn more about you and your work?
+    title: Online presence
   role_level:
     help_text: Select all the experience levels you would consider taking.
     title: Role level
