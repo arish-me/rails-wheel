@@ -1,4 +1,5 @@
 module ApplicationHelper
+  include ActionView::Helpers::TranslationHelper
   include Pagy::Frontend
 
   # Return a human-readable name for the given locale
