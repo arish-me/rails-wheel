@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_05_073718) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_05_082635) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -189,6 +189,24 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_05_073718) do
     t.index ["priority", "scheduled_at"], name: "index_good_jobs_on_priority_scheduled_at_unfinished_unlocked", where: "((finished_at IS NULL) AND (locked_by_id IS NULL))"
     t.index ["queue_name", "scheduled_at"], name: "index_good_jobs_on_queue_name_and_scheduled_at", where: "(finished_at IS NULL)"
     t.index ["scheduled_at"], name: "index_good_jobs_on_scheduled_at", where: "(finished_at IS NULL)"
+  end
+
+  create_table "locations", force: :cascade do |t|
+    t.string "locatable_type", null: false
+    t.bigint "locatable_id", null: false
+    t.string "city"
+    t.string "state"
+    t.string "country"
+    t.string "country_code"
+    t.string "latitude"
+    t.string "longitude"
+    t.string "time_zone", null: false
+    t.integer "utc_offset", null: false
+    t.jsonb "data"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["locatable_type", "locatable_id"], name: "index_locations_on_locatable"
+    t.index ["locatable_type", "locatable_id"], name: "index_locations_on_locatable_type_and_locatable_id"
   end
 
   create_table "noticed_events", force: :cascade do |t|

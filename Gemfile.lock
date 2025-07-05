@@ -514,6 +514,7 @@ GEM
     thruster (0.1.9-x86_64-darwin)
     thruster (0.1.9-x86_64-linux)
     timeout (0.4.3)
+    timezone_finder (1.5.7)
     turbo-rails (2.0.13)
       actionpack (>= 7.1.0)
       railties (>= 7.1.0)
@@ -620,6 +621,7 @@ DEPENDENCIES
   stimulus-rails
   tailwindcss-rails
   thruster
+  timezone_finder
   turbo-rails
   tzinfo-data
   view_component
