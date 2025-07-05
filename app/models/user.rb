@@ -17,6 +17,7 @@ class User < ApplicationRecord
 
   attr_accessor :skip_password_validation
   attr_accessor :current_sign_in_ip_address
+  attr_accessor :delete_profile_image
 
   accepts_nested_attributes_for :user_roles, allow_destroy: true
 
@@ -24,6 +25,8 @@ class User < ApplicationRecord
     attachable.variant :thumbnail, resize_to_fill: [ 300, 300 ], convert: :webp, saver: { quality: 80 }
     attachable.variant :small, resize_to_fill: [ 72, 72 ], convert: :webp, saver: { quality: 80 }, preprocessed: true
   end
+  has_one_attached :cover_image
+
   validate :profile_image_size
 
   pg_search_scope :search_by_email,

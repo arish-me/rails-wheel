@@ -38,7 +38,7 @@ end
   def candidate_params
     params.require(:candidate).permit(
       profile_attributes: [ :id, :headline, :_destroy ],
-      user_attributes: [ :id, :first_name, :last_name, :gender, :phone_number, :date_of_birth, :bio ],
+      user_attributes: [ :id, :first_name, :last_name, :gender, :phone_number, :date_of_birth, :bio, :profile_image, :delete_profile_image ],
       work_preference_attributes: [ :id, :search_status, :role_type, :role_level, :_destroy ],
       role_type_attributes: RoleType::TYPES,
       role_level_attributes: RoleLevel::TYPES
