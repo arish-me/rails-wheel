@@ -45,10 +45,10 @@ end
     params.require(:candidate).permit(
 
       profile_attributes: [ :id, :headline, :candidate_role_id, :experience, :_destroy ],
-      user_attributes: [ :id, :first_name, :last_name, :gender, :phone_number, :date_of_birth, :bio, :profile_image, :delete_profile_image, :cover_image],
+      user_attributes: [ :id, :first_name, :last_name, :gender, :phone_number, :date_of_birth, :bio, :profile_image, :delete_profile_image, :cover_image ],
       work_preference_attributes: [ :id, :search_status ],
       social_link_attributes: [ :id, :github, :website, :linked_in, :twitter, :_destroy ],
-      location_attributes: [:city, :state, :country_code],
+      location_attributes: [ :city, :state, :country_code ],
       role_type_attributes: RoleType::TYPES,
       role_level_attributes: RoleLevel::TYPES
     )

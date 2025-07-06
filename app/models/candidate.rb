@@ -10,11 +10,11 @@ class Candidate < ApplicationRecord
   has_one :social_link, as: :linkable, dependent: :destroy
   has_one :location, as: :locatable, dependent: :destroy, autosave: true
   accepts_nested_attributes_for :user
-  accepts_nested_attributes_for :profile
-  accepts_nested_attributes_for :work_preference
-  accepts_nested_attributes_for :candidate_role
-  accepts_nested_attributes_for :role_level, update_only: true
-  accepts_nested_attributes_for :role_type, update_only: true
-  accepts_nested_attributes_for :social_link, allow_destroy: true, reject_if: :all_blank
-  accepts_nested_attributes_for :location, reject_if: :all_blank, update_only: true
+  # accepts_nested_attributes_for :profile
+  # accepts_nested_attributes_for :work_preference
+  # accepts_nested_attributes_for :candidate_role
+  # accepts_nested_attributes_for :role_level, update_only: true
+  #accepts_nested_attributes_for :role_type, update_only: true
+  #accepts_nested_attributes_for :social_link, allow_destroy: true, reject_if: :all_blank
+  #accepts_nested_attributes_for :location, reject_if: :all_blank, update_only: true
 end

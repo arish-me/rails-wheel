@@ -1,118 +1,94 @@
-<%= styled_form_with model: @candidate, url: candidate_profile_path(@candidate), method: :patch, local: true, class: "space-y-8" do |form| %>
+<%= styled_form_with model: @profile, url: candidate_profile_path(@candidate), method: :patch, local: true, class: "space-y-8" do |form| %>
+	<!-- Professional Information Section -->
+		<section class="bg-white shadow px-4 py-5 lg:rounded-lg sm:p-6">
+			<div class="md:grid md:grid-cols-3 md:gap-6">
+				<div class="md:col-span-1">
+					<h2 class="text-lg font-medium leading-6 text-gray-900">Professional Information</h2>
+					<p class="mt-2 text-sm text-gray-500">Update your professional details and role information.</p>
+				</div>
+				<div class="mt-5 md:mt-0 md:col-span-2">
+					<div class="space-y-6">
+						<div class="grid grid-cols-1 gap-6">
+							<div>
+								<%= form.text_field :headline, label: 'Title / Headline' , placeholder: 'Enter Title or Headline' %>
+								<p class="mt-2 text-xs text-gray-500">e.g. Full-stack developer with 6+ years of experience</p>
+							</div>
+							<div>
+								<%= form.collection_select :candidate_role_id, CandidateRole.all.order(:name), :id, :name, { prompt: "--Select--", label: "Candidate Role" } %>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
 
-  <!-- Personal Details Section -->
-  <%= form.fields_for :user do |user_form| %>
-    <section class="bg-white shadow px-4 py-5 lg:rounded-lg sm:p-6">
-      <div class="md:grid md:grid-cols-3 md:gap-6">
-        <div class="md:col-span-1">
-          <h2 class="text-lg font-medium leading-6 text-gray-900"><%= t("profile.title") %></h2>
-          <p class="mt-2 text-sm text-gray-500"><%= t("profile.help_text") %></p>
-        </div>
-        <div class="mt-5 md:mt-0 md:col-span-2">
-          <div class="space-y-6">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <%= user_form.text_field :first_name, label: 'First Name' , placeholder: 'Enter First Name' %>
-              </div>
-              <div>
-                <%= user_form.text_field :last_name, label: 'Last Name' , placeholder: 'Enter Last Name' %>
-              </div>
-              <div>
-                <%= user_form.select :gender,  User.genders.map { |key, _| [User::GENDER_DISPLAY[key.to_sym], key] }, { include_blank: "---Select---", label: "Pronounce" } %>
-              </div>
-              <div>
-                <%= user_form.telephone_field :phone_number, placeholder: "+1 (555) 123-4567" , label: "Phone" %>
-              </div>
-              <div>
-                <%= user_form.date_field :date_of_birth,   max: Date.today - 10.years, min: Date.today - 120.years, label: "Date of birth" %>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  <% end %>
+	<!-- Personal Details Section -->
+	<%= form.fields_for :user do |user_form| %>
+		<section class="bg-white shadow px-4 py-5 lg:rounded-lg sm:p-6">
+			<div class="md:grid md:grid-cols-3 md:gap-6">
+				<div class="md:col-span-1">
+					<h2 class="text-lg font-medium leading-6 text-gray-900"><%= t("profile.title") %></h2>
+					<p class="mt-2 text-sm text-gray-500"><%= t("profile.help_text") %></p>
+				</div>
+				<div class="mt-5 md:mt-0 md:col-span-2">
+					<div class="space-y-6">
+						<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+							<div>
+								<%= user_form.text_field :first_name, label: 'First Name' , placeholder: 'Enter First Name' %>
+							</div>
+							<div>
+								<%= user_form.text_field :last_name, label: 'Last Name' , placeholder: 'Enter Last Name' %>
+							</div>
+							<div>
+								<%= user_form.select :gender,  User.genders.map { |key, _| [User::GENDER_DISPLAY[key.to_sym], key] }, { include_blank: "---Select---", label: "Pronounce" } %>
+							</div>
+							<div>
+								<%= user_form.telephone_field :phone_number, placeholder: "+1 (555) 123-4567" , label: "Phone" %>
+							</div>
+							<div>
+								<%= user_form.date_field :date_of_birth,   max: Date.today - 10.years, min: Date.today - 120.years, label: "Date of birth" %>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	<% end %>
 
-  <!-- Professional Information Section -->
-  <%= form.fields_for :profile do |profile_form| %>
-    <section class="bg-white shadow px-4 py-5 lg:rounded-lg sm:p-6">
-      <div class="md:grid md:grid-cols-3 md:gap-6">
-        <div class="md:col-span-1">
-          <h2 class="text-lg font-medium leading-6 text-gray-900">Professional Information</h2>
-          <p class="mt-2 text-sm text-gray-500">Update your professional details and role information.</p>
-        </div>
-        <div class="mt-5 md:mt-0 md:col-span-2">
-          <div class="space-y-6">
-            <div class="grid grid-cols-1 gap-6">
-              <div>
-                <%= profile_form.text_field :headline, label: 'Title / Headline' , placeholder: 'Enter Title or Headline' %>
-                <p class="mt-2 text-xs text-gray-500">e.g. Full-stack developer with 6+ years of experience</p>
-              </div>
-              <div>
-                <%= profile_form.collection_select :candidate_role_id, CandidateRole.all.order(:name), :id, :name, { prompt: "--Select--", label: "Candidate Role" } %>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  <% end %>
+	<%= form.fields_for :location, include_id: false, data: { controller: "searchable-select" } do |location| %>
+	<section class="bg-white shadow px-4 py-5 lg:rounded-lg sm:p-6">
+		<div class="md:grid md:grid-cols-3 md:gap-6">
+			<div class="md:col-span-1">
+				<h2 class="text-lg font-medium leading-6 text-gray-900"><%= t("location.title") %></h2>
+				<p class="mt-2 text-sm text-gray-500"><%= t("location.help_text") %></p>
+			</div>
+			<div class="mt-5 md:mt-0 md:col-span-2">
+				<div class="space-y-6">
+					<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+						<div>
+							<%= location.text_field :city, label: 'City' , placeholder: 'Enter City Name' %>
+						</div>
+						<div>
+							<%= location.text_field :state, label: 'State' , placeholder: 'Enter State Name' %>
+						</div>
+						<div>
+							<%= location.select :country_code,  country_options, { include_blank: "---Select---", label: "Select a country..." }, data: {
+                        searchable_select_target: "select"
+                      } %>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+<% end %>
 
-  <!-- Social Links Section -->
-  <%= form.fields_for :social_link do |social_link_form| %>
-    <section class="bg-white shadow px-4 py-5 lg:rounded-lg sm:p-6">
-      <div class="md:grid md:grid-cols-3 md:gap-6">
-        <div class="md:col-span-1">
-          <h2 class="text-lg font-medium leading-6 text-gray-900"><%= t("online_presence.title") %></h2>
-          <p class="mt-2 text-sm text-gray-500"><%= t("online_presence.help_text") %></p>
-        </div>
-        <div class="mt-5 md:mt-0 md:col-span-2">
-          <div class="space-y-6">
-            <div>
-              <div class="mt-1 flex rounded-md shadow-sm">
-                <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 sm:text-sm">
-                  https://
-                </span>
-                <%= social_link_form.text_field :website, label: 'Enter Website' , placeholder: 'yourexample.com' %>
-              </div>
-            </div>
-            <div>
-              <div class="mt-1 flex rounded-md shadow-sm">
-                <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 sm:text-sm">
-                  https://
-                </span>
-                <%= social_link_form.text_field :github, label: 'Enter Github Profile Link' , placeholder: 'github.com/username' %>
-              </div>
-            </div>
-            <div>
-              <div class="mt-1 flex rounded-md shadow-sm">
-                <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 sm:text-sm">
-                  https://
-                </span>
-                <%= social_link_form.text_field :linked_in, label: 'Enter LinkedIn Profile Link' , placeholder: 'linkedin.com/in/username' %>
-              </div>
-            </div>
-            <div>
-              <div class="mt-1 flex rounded-md shadow-sm">
-                <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 sm:text-sm">
-                  https://
-                </span>
-                <%= social_link_form.text_field :twitter, label: 'Enter Twitter Profile Link' , placeholder: 'twitter.com/username' %>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  <% end %>
-
-  <!-- Navigation -->
-  <div class="flex justify-between mt-6">
-    <div></div>
-    <div class="flex space-x-3">
-      <%= render ButtonComponent.new(text: "Save", type: "submit", class: "md:w-auto w-full justify-center") %>
-      <%= link_to "Next: Work Preferences", candidate_work_preference_path(@candidate), class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
-    </div>
-  </div>
-
+	<!-- Navigation -->
+	<div class="flex justify-between mt-6">
+		<div></div>
+		<div class="flex space-x-3">
+			<%= render ButtonComponent.new(text: "Save", type: "submit", class: "md:w-auto w-full justify-center") %>
+			<%= link_to "Next: Work Preferences", candidate_work_preference_path(@candidate), class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+		</div>
+	</div>
 <% end %>

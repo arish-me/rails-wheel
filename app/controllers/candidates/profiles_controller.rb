@@ -1,22 +1,11 @@
 class Candidates::ProfilesController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_candidate
-  before_action :set_profile, only: [ :show, :edit, :update, :destroy ]
-
-  def index
-    # If no profile exists, redirect to new to create one
-    unless @candidate.profile
-      redirect_to new_candidate_profile_path(@candidate)
-      return
-    end
-
-    @profile = @candidate.profile
-  end
+  before_action :set_profile, only: [ :show, :update ]
 
   def show
-    @candidate.build_profile unless @candidate.profile
-    @candidate.build_user unless @candidate.user
-    @candidate.build_social_link unless @candidate.social_link
-    @candidate.build_location unless @candidate.location
+    @profile.build_user unless @candidate.user
+    @profile.build_location unless @candidate.location
   end
 
   def new
@@ -33,17 +22,9 @@ class Candidates::ProfilesController < ApplicationController
     end
   end
 
-  def edit
-    # Ensure associated models are built
-    @candidate.build_profile unless @candidate.profile
-    @candidate.build_user unless @candidate.user
-    @candidate.build_social_link unless @candidate.social_link
-    @candidate.build_location unless @candidate.location
-  end
-
   def update
     respond_to do |format|
-      if @candidate.update(candidate_params)
+      if @profile.update(profile_params)
         flash[:notice] =  "Professional information was successfully updated."
         format.html { redirect_to candidate_profile_path(@candidate), notice: "Professional information was successfully updated." }
       else
@@ -53,37 +34,27 @@ class Candidates::ProfilesController < ApplicationController
         @candidate.build_social_link unless @candidate.social_link
         @candidate.build_location unless @candidate.location
 
-        flash[:alert] = @candidate.errors.full_messages.join(", ")
+        flash[:alert] = @profile.errors.full_messages.join(", ")
         format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @candidate.errors, status: :unprocessable_entity }
+        format.json { render json: @profile.errors, status: :unprocessable_entity }
       end
     end
-  end
-
-  def destroy
-    @profile.destroy
-    redirect_to candidate_profiles_path(@candidate), notice: "Profile was successfully deleted."
   end
 
   private
 
   def set_candidate
-    @candidate = Candidate.find(params[:candidate_id])
+    @candidate = current_user.candidate
   end
 
   def set_profile
-    @profile = @candidate.profile
+    @profile = @candidate.profile || @candidate.build_profile
   end
 
   def profile_params
-    params.require(:candidate_profile).permit(:candidate_role_id, :headline)
-  end
-
-  def candidate_params
-    params.require(:candidate).permit(
-      profile_attributes: [:id, :headline, :candidate_role_id],
-      user_attributes: [:id, :first_name, :last_name, :gender, :phone_number, :date_of_birth, :bio, :profile_image, :delete_profile_image, :cover_image],
-      social_link_attributes: [:id, :github, :website, :linked_in, :twitter]
+    params.require(:candidate_profile).permit(:candidate_role_id, :headline,
+      user_attributes: [ :id, :first_name, :last_name, :gender, :phone_number, :date_of_birth, :bio, :profile_image, :delete_profile_image, :cover_image ],
+      location_attributes: [ :city, :state, :country_code ],
     )
   end
 end

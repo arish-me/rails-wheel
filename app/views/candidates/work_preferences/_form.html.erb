@@ -1,165 +1,161 @@
 <%= styled_form_with model: @candidate, url: candidate_work_preference_path(@candidate), method: :patch, local: true, class: "space-y-8" do |form| %>
-  <!-- Work Preference Section -->
-  <section class="bg-white shadow mt-8 px-4 py-5 lg:rounded-lg sm:p-6">
-    <div class="md:grid md:grid-cols-3 md:gap-6">
-      <div class="md:col-span-1">
-        <h2 class="text-lg font-medium leading-6 text-gray-900"><%= t("work_preference.title") %></h2>
-        <p class="mt-2 text-sm text-gray-500"><%= t("work_preference.help_text") %></p>
-      </div>
-      <div class="mt-5 md:mt-0 md:col-span-2">
-        <div class="space-y-6">
-          <%= form.fields_for :work_preference do |wp_form| %>
-            <fieldset>
-              <legend class="text-base font-medium text-gray-900">
-                <div class="flex">
-                  <%= t("work_preference.search_status.title") %>
-                </div>
-              </legend>
-                <% if @candidate.work_preference&.errors&.any? %>
-                <div class="mt-2 text-sm text-red-600">
-                  <% @candidate.work_preference.errors.full_messages.each do |message| %>
-                    <p><%= message %></p>
-                  <% end %>
-                </div>
-              <% end %>
-
-              <div class="mt-4 space-y-4">
-                <div class="flex items-start">
-                  <div class="h-5 flex items-center">
-                    <%= wp_form.radio_button :search_status, :actively_looking, class: "focus:ring-gray-500 h-4 w-4 text-gray-600 border-gray-300" %>
-                  </div>
-                  <div class="ml-3 text-sm">
-                    <%= wp_form.label :search_status, value: :actively_looking, class: "font-medium text-gray-700" %>
-                    <p class="text-gray-500"><%= t("work_preference.search_status.actively_looking_help_text") %></p>
-                  </div>
-                </div>
-                <div class="flex items-start">
-                  <div class="flex items-center h-5">
-                    <%= wp_form.radio_button :search_status, :open, class: "focus:ring-gray-500 h-4 w-4 text-gray-600 border-gray-300" %>
-                  </div>
-                  <div class="ml-3 text-sm">
-                    <%= wp_form.label :search_status, value: :open, class: "font-medium text-gray-700" %>
-                    <p class="text-gray-500"><%= t("work_preference.search_status.open_help_text") %></p>
-                  </div>
-                </div>
-                <div class="flex items-start">
-                  <div class="flex items-center h-5">
-                    <%= wp_form.radio_button :search_status, :not_interested, class: "focus:ring-gray-500 h-4 w-4 text-gray-600 border-gray-300" %>
-                  </div>
-                  <div class="ml-3 text-sm">
-                    <%= wp_form.label :search_status, value: :not_interested, class: "font-medium text-gray-700" %>
-                    <p class="text-gray-500"><%= t("work_preference.search_status.not_interested_help_text") %></p>
-                  </div>
-                </div>
-                <div class="flex items-start">
-                  <div class="flex items-center h-5">
-                    <%= wp_form.radio_button :search_status, :invisible, class: "focus:ring-gray-500 h-4 w-4 text-gray-600 border-gray-300" %>
-                  </div>
-                  <div class="ml-3 text-sm">
-                    <%= wp_form.label :search_status, value: :invisible, class: "font-medium text-gray-700" %>
-                    <p class="text-gray-500"><%= t("work_preference.search_status.invisible_help_text") %></p>
-                  </div>
-                </div>
-              </div>
-            </fieldset>
-          <% end %>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Role Type Section -->
-  <section class="bg-white shadow mt-8 px-4 py-5 lg:rounded-lg sm:p-6">
-    <div class="md:grid md:grid-cols-3 md:gap-6">
-      <div class="md:col-span-1">
-        <h2 class="text-lg font-medium leading-6 text-gray-900"><%= t("role_type.title") %></h2>
-        <p class="mt-2 text-sm text-gray-500"><%= t("role_type.help_text") %></p>
-      </div>
-      <div class="mt-5 md:mt-0 md:col-span-2">
-        <div class="space-y-6">
-          <%= form.fields_for :role_type do |role_type| %>
-            <fieldset>
-              <div class="mt-4 space-y-4">
-                <div class="flex items-center">
-                  <%= role_type.check_box :part_time_contract, class: "focus:ring-gray-500 h-4 w-4 text-gray-600 border-gray-300 rounded" %>
-                  <%= role_type.label :part_time_contract, class: "ml-3 block text-sm font-medium text-gray-700" %>
-                </div>
-                <div class="flex items-center">
-                  <%= role_type.check_box :full_time_contract, class: "focus:ring-gray-500 h-4 w-4 text-gray-600 border-gray-300 rounded" %>
-                  <%= role_type.label :full_time_contract, class: "ml-3 block text-sm font-medium text-gray-700" %>
-                </div>
-                <div class="flex items-center">
-                  <%= role_type.check_box :full_time_employment, class: "focus:ring-gray-500 h-4 w-4 text-gray-600 border-gray-300 rounded" %>
-                  <%= role_type.label :full_time_employment, class: "ml-3 block text-sm font-medium text-gray-700" %>
-                </div>
-              </div>
-              <% if @candidate.role_type&.errors&.any? %>
-                <div class="mt-2 text-sm text-red-600">
-                  <% @candidate.role_type.errors.full_messages.each do |message| %>
-                    <p><%= message %></p>
-                  <% end %>
-                </div>
-              <% end %>
-            </fieldset>
-          <% end %>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Role Level Section -->
-  <section class="bg-white shadow mt-8 px-4 py-5 lg:rounded-lg sm:p-6">
-    <div class="md:grid md:grid-cols-3 md:gap-6">
-      <div class="md:col-span-1">
-        <h2 class="text-lg font-medium leading-6 text-gray-900"><%= t("role_level.title") %></h2>
-        <p class="mt-2 text-sm text-gray-500"><%= t("role_level.help_text") %></p>
-      </div>
-      <div class="mt-5 md:mt-0 md:col-span-2">
-        <div class="space-y-6">
-          <%= form.fields_for :role_level do |role_level| %>
-            <fieldset>
-              <div class="mt-4 space-y-4">
-                <div class="flex items-center">
-                  <%= role_level.check_box :junior, class: "focus:ring-gray-500 h-4 w-4 text-gray-600 border-gray-300 rounded" %>
-                  <%= role_level.label :junior, class: "ml-3 block text-sm font-medium text-gray-700" %>
-                </div>
-                <div class="flex items-center">
-                  <%= role_level.check_box :mid, class: "focus:ring-gray-500 h-4 w-4 text-gray-600 border-gray-300 rounded" %>
-                  <%= role_level.label :mid, class: "ml-3 block text-sm font-medium text-gray-700" %>
-                </div>
-                <div class="flex items-center">
-                  <%= role_level.check_box :senior, class: "focus:ring-gray-500 h-4 w-4 text-gray-600 border-gray-300 rounded" %>
-                  <%= role_level.label :senior, class: "ml-3 block text-sm font-medium text-gray-700" %>
-                </div>
-                <div class="flex items-center">
-                  <%= role_level.check_box :principal, class: "focus:ring-gray-500 h-4 w-4 text-gray-600 border-gray-300 rounded" %>
-                  <%= role_level.label :principal, class: "ml-3 block text-sm font-medium text-gray-700" %>
-                </div>
-                <div class="flex items-center">
-                  <%= role_level.check_box :c_level, class: "focus:ring-gray-500 h-4 w-4 text-gray-600 border-gray-300 rounded" %>
-                  <%= role_level.label :c_level, class: "ml-3 block text-sm font-medium text-gray-700" %>
-                </div>
-              </div>
-              <% if @candidate.role_level&.errors&.any? %>
-                <div class="mt-2 text-sm text-red-600">
-                  <% @candidate.role_level.errors.full_messages.each do |message| %>
-                    <p><%= message %></p>
-                  <% end %>
-                </div>
-              <% end %>
-            </fieldset>
-          <% end %>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Navigation -->
-  <div class="flex justify-between mt-6">
-    <%= link_to "Previous: Professional Information", candidate_profile_path(@candidate), class: "inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
-    <div class="flex space-x-3">
-      <%= render ButtonComponent.new(text: "Save All", type: "submit", class: "md:w-auto w-full justify-center") %>
-    </div>
-  </div>
+	<!-- Work Preference Section -->
+	<section class="bg-white shadow mt-8 px-4 py-5 lg:rounded-lg sm:p-6">
+		<div class="md:grid md:grid-cols-3 md:gap-6">
+			<div class="md:col-span-1">
+				<h2 class="text-lg font-medium leading-6 text-gray-900"><%= t("work_preference.title") %></h2>
+				<p class="mt-2 text-sm text-gray-500"><%= t("work_preference.help_text") %></p>
+			</div>
+			<div class="mt-5 md:mt-0 md:col-span-2">
+				<div class="space-y-6">
+					<%= form.fields_for :work_preference do |wp_form| %>
+						<fieldset>
+							<legend class="text-base font-medium text-gray-900">
+								<div class="flex">
+									<%= t("work_preference.search_status.title") %>
+								</div>
+							</legend>
+							<% if @candidate.work_preference&.errors&.any? %>
+								<div class="mt-2 text-sm text-red-600">
+									<% @candidate.work_preference.errors.full_messages.each do |message| %>
+										<p><%= message %></p>
+									<% end %>
+								</div>
+							<% end %>
+							<div class="mt-4 space-y-4">
+								<div class="flex items-start">
+									<div class="h-5 flex items-center">
+										<%= wp_form.radio_button :search_status, :actively_looking, class: "focus:ring-gray-500 h-4 w-4 text-gray-600 border-gray-300" %>
+									</div>
+									<div class="ml-3 text-sm">
+										<%= wp_form.label :search_status, value: :actively_looking, class: "font-medium text-gray-700" %>
+										<p class="text-gray-500"><%= t("work_preference.search_status.actively_looking_help_text") %></p>
+									</div>
+								</div>
+								<div class="flex items-start">
+									<div class="flex items-center h-5">
+										<%= wp_form.radio_button :search_status, :open, class: "focus:ring-gray-500 h-4 w-4 text-gray-600 border-gray-300" %>
+									</div>
+									<div class="ml-3 text-sm">
+										<%= wp_form.label :search_status, value: :open, class: "font-medium text-gray-700" %>
+										<p class="text-gray-500"><%= t("work_preference.search_status.open_help_text") %></p>
+									</div>
+								</div>
+								<div class="flex items-start">
+									<div class="flex items-center h-5">
+										<%= wp_form.radio_button :search_status, :not_interested, class: "focus:ring-gray-500 h-4 w-4 text-gray-600 border-gray-300" %>
+									</div>
+									<div class="ml-3 text-sm">
+										<%= wp_form.label :search_status, value: :not_interested, class: "font-medium text-gray-700" %>
+										<p class="text-gray-500"><%= t("work_preference.search_status.not_interested_help_text") %></p>
+									</div>
+								</div>
+								<div class="flex items-start">
+									<div class="flex items-center h-5">
+										<%= wp_form.radio_button :search_status, :invisible, class: "focus:ring-gray-500 h-4 w-4 text-gray-600 border-gray-300" %>
+									</div>
+									<div class="ml-3 text-sm">
+										<%= wp_form.label :search_status, value: :invisible, class: "font-medium text-gray-700" %>
+										<p class="text-gray-500"><%= t("work_preference.search_status.invisible_help_text") %></p>
+									</div>
+								</div>
+							</div>
+						</fieldset>
+					<% end %>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- Role Type Section -->
+	<section class="bg-white shadow mt-8 px-4 py-5 lg:rounded-lg sm:p-6">
+		<div class="md:grid md:grid-cols-3 md:gap-6">
+			<div class="md:col-span-1">
+				<h2 class="text-lg font-medium leading-6 text-gray-900"><%= t("role_type.title") %></h2>
+				<p class="mt-2 text-sm text-gray-500"><%= t("role_type.help_text") %></p>
+			</div>
+			<div class="mt-5 md:mt-0 md:col-span-2">
+				<div class="space-y-6">
+					<%= form.fields_for :role_type do |role_type| %>
+						<fieldset>
+							<div class="mt-4 space-y-4">
+								<div class="flex items-center">
+									<%= role_type.check_box :part_time_contract, class: "focus:ring-gray-500 h-4 w-4 text-gray-600 border-gray-300 rounded" %>
+									<%= role_type.label :part_time_contract, class: "ml-3 block text-sm font-medium text-gray-700" %>
+								</div>
+								<div class="flex items-center">
+									<%= role_type.check_box :full_time_contract, class: "focus:ring-gray-500 h-4 w-4 text-gray-600 border-gray-300 rounded" %>
+									<%= role_type.label :full_time_contract, class: "ml-3 block text-sm font-medium text-gray-700" %>
+								</div>
+								<div class="flex items-center">
+									<%= role_type.check_box :full_time_employment, class: "focus:ring-gray-500 h-4 w-4 text-gray-600 border-gray-300 rounded" %>
+									<%= role_type.label :full_time_employment, class: "ml-3 block text-sm font-medium text-gray-700" %>
+								</div>
+							</div>
+							<% if @candidate.role_type&.errors&.any? %>
+								<div class="mt-2 text-sm text-red-600">
+									<% @candidate.role_type.errors.full_messages.each do |message| %>
+										<p><%= message %></p>
+									<% end %>
+								</div>
+							<% end %>
+						</fieldset>
+					<% end %>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- Role Level Section -->
+	<section class="bg-white shadow mt-8 px-4 py-5 lg:rounded-lg sm:p-6">
+		<div class="md:grid md:grid-cols-3 md:gap-6">
+			<div class="md:col-span-1">
+				<h2 class="text-lg font-medium leading-6 text-gray-900"><%= t("role_level.title") %></h2>
+				<p class="mt-2 text-sm text-gray-500"><%= t("role_level.help_text") %></p>
+			</div>
+			<div class="mt-5 md:mt-0 md:col-span-2">
+				<div class="space-y-6">
+					<%= form.fields_for :role_level do |role_level| %>
+						<fieldset>
+							<div class="mt-4 space-y-4">
+								<div class="flex items-center">
+									<%= role_level.check_box :junior, class: "focus:ring-gray-500 h-4 w-4 text-gray-600 border-gray-300 rounded" %>
+									<%= role_level.label :junior, class: "ml-3 block text-sm font-medium text-gray-700" %>
+								</div>
+								<div class="flex items-center">
+									<%= role_level.check_box :mid, class: "focus:ring-gray-500 h-4 w-4 text-gray-600 border-gray-300 rounded" %>
+									<%= role_level.label :mid, class: "ml-3 block text-sm font-medium text-gray-700" %>
+								</div>
+								<div class="flex items-center">
+									<%= role_level.check_box :senior, class: "focus:ring-gray-500 h-4 w-4 text-gray-600 border-gray-300 rounded" %>
+									<%= role_level.label :senior, class: "ml-3 block text-sm font-medium text-gray-700" %>
+								</div>
+								<div class="flex items-center">
+									<%= role_level.check_box :principal, class: "focus:ring-gray-500 h-4 w-4 text-gray-600 border-gray-300 rounded" %>
+									<%= role_level.label :principal, class: "ml-3 block text-sm font-medium text-gray-700" %>
+								</div>
+								<div class="flex items-center">
+									<%= role_level.check_box :c_level, class: "focus:ring-gray-500 h-4 w-4 text-gray-600 border-gray-300 rounded" %>
+									<%= role_level.label :c_level, class: "ml-3 block text-sm font-medium text-gray-700" %>
+								</div>
+							</div>
+							<% if @candidate.role_level&.errors&.any? %>
+								<div class="mt-2 text-sm text-red-600">
+									<% @candidate.role_level.errors.full_messages.each do |message| %>
+										<p><%= message %></p>
+									<% end %>
+								</div>
+							<% end %>
+						</fieldset>
+					<% end %>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- Navigation -->
+	<div class="flex justify-between mt-6">
+		<%= link_to "Previous: Professional Information", candidate_profile_path(@candidate), class: "inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+		<div class="flex space-x-3">
+			<%= render ButtonComponent.new(text: "Save All", type: "submit", class: "md:w-auto w-full justify-center") %>
+			<%= link_to "Next: Social Link", candidate_social_link_path(@candidate), class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+		</div>
+	</div>
 <% end %>
-

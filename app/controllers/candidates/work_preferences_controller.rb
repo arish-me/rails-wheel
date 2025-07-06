@@ -20,7 +20,7 @@ class Candidates::WorkPreferencesController < ApplicationController
         format.html { redirect_to edit_candidate_work_preference_path(@candidate, @work_preference), notice: "Work preferences were successfully created." }
       else
         flash[:alert] = @work_preference.errors.full_messages.join(", ")
-        format.html { redirect_to edit_candidate_work_preference_path(@candidate, @work_preference)}
+        format.html { redirect_to edit_candidate_work_preference_path(@candidate, @work_preference) }
         format.json { render json: @work_preference.errors, status: :unprocessable_entity }
       end
     end
@@ -30,7 +30,7 @@ class Candidates::WorkPreferencesController < ApplicationController
     respond_to do |format|
       if @candidate.update(candidate_params)
         flash[:notice] =  "Work preferences were successfully updated."
-        format.html { redirect_to edit_candidate_work_preference_path(@candidate), notice: "Work preferences were successfully updated." }
+        format.html { redirect_to candidate_work_preference_path(@candidate), notice: "Work preferences were successfully updated." }
       else
         @candidate.build_role_type unless @candidate.role_type
         @candidate.build_role_level unless @candidate.role_level
@@ -59,9 +59,9 @@ class Candidates::WorkPreferencesController < ApplicationController
 
   def candidate_params
     params.require(:candidate).permit(
-      work_preference_attributes: [:id, :search_status],
-      role_type_attributes: [:id, :part_time_contract, :full_time_contract, :full_time_employment],
-      role_level_attributes: [:id, :junior, :mid, :senior, :principal, :c_level]
+      work_preference_attributes: [ :id, :search_status ],
+      role_type_attributes: [ :id, :part_time_contract, :full_time_contract, :full_time_employment ],
+      role_level_attributes: [ :id, :junior, :mid, :senior, :principal, :c_level ]
     )
   end
 end

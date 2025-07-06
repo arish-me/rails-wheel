@@ -1,9 +1,8 @@
 <%= styled_form_with model: @candidate, local: true, class: "space-y-8" do |form| %>
-  <%= form.fields_for :user do |user_form| %>
-    <%= render 'candidates/form/upload_component', user_form: user_form%>
-  <% end %>
+	<%= form.fields_for :user do |user_form| %>
+		<%= render 'candidates/form/upload_component', user_form: user_form%>
+	<% end %>
 <% end %>
-
 <%= render(TabComponent.new(
   tabs: [
     {
@@ -15,8 +14,12 @@
       label: "Work Preferences",
       path: candidate_work_preference_path(@candidate),
       id: "work-preferences-tab"
+    },
+    {
+      label: "Online Presence",
+      path: candidate_social_link_path(@candidate),
+      id: "online-presence-tab"
     }
   ],
   current_path: request.path
 )) %>
-
