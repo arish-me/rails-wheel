@@ -9,7 +9,7 @@ module Candidates
     end
 
     def render?
-      work_preference.search_status.present?
+      work_preference&.search_status&.present?
     end
 
     def humanize(enum_value)

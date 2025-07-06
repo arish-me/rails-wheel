@@ -1,4 +1,4 @@
-<%= form.fields_for :location, include_id: false do |location| %>
+<%= form.fields_for :location, include_id: false, data: { controller: "searchable-select" } do |location| %>
   <section class="bg-white shadow px-4 py-5 lg:rounded-lg sm:p-6">
     <div class="md:grid md:grid-cols-3 md:gap-6">
       <div class="md:col-span-1">
@@ -15,7 +15,9 @@
               <%= location.text_field :state, label: 'State' , placeholder: 'Enter State Name' %>
             </div>
             <div>
-              <%= location.text_field :country, label: 'Country' , placeholder: 'Enter Country Name' %>
+              <%= location.select :country_code,  country_options, { include_blank: "---Select---", label: "Select a country..." }, data: {
+                        searchable_select_target: "select"
+                      } %>
             </div>
           </div>
         </div>

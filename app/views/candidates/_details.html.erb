@@ -1,7 +1,7 @@
 <h2 class="sr-only"><%= t(".title") %></h2>
 <div class="space-y-5 divide-y divide-gray-200">
   <%= render RenderableComponent.new("space-y-3 pb-4") do %>
-    <%= render Candidates::SearchStatusComponent.new(candidate&.work_preference) %>
+    <%= render Candidates::SearchStatusComponent.new(candidate&.work_preference) if candidate&.work_preference %>
   <% end %>
   <%= render RenderableComponent.new("space-y-5 pb-4") do %>
     <%= render RoleTypes::Component.new(candidate&.role_type) %>
@@ -11,7 +11,7 @@
   <% end %>
 
     <%= render Candidates::PaywalledComponent.new(current_user, candidate, size: :large, public_key:) do %>
-    <%= render RenderableComponent.new("space-y-3 pb-4") do %>
+    <%= render RenderableComponent.new("space-y-3 pb-4") if candidate&.work_preference do %>
       <%= render ExternalLinkComponent.new(candidate.social_link.website) %>
       <%= render SocialLinkComponent.new(candidate.social_link.github, :github) %>
 

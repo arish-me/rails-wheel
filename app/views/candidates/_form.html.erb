@@ -1,8 +1,6 @@
 <%= settings_section title: "Edit Your Information", subtitle: "Enhance your Profile for better appearance" do %>
 	<%= styled_form_with model: @candidate, local: true, class: "space-y-8" do |form| %>
-		<% if @candidate.errors.any? %>
-			<%= render "shared/form_errors", model: @candidate %>
-		<% end %>
+
 		<!-- Personal Details Column -->
 		<%= form.fields_for :user do |user_form| %>
 			<%= render 'candidates/form/upload_component', user_form: user_form%>

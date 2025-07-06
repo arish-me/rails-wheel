@@ -12,10 +12,9 @@ class Candidate::Profile < ApplicationRecord
   delegate :profile_image, to: :candidate, prefix: false
   delegate :user, to: :candidate, prefix: false
 
-
-
-  scope :with_cover_image, -> { joins(:cover_image_attachment) }
   scope :with_role, -> { includes(:candidate_role) }
+
+  validates :headline, presence: true
 
   def display_name
     user&.display_name || "Unknown"

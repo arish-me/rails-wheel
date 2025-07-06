@@ -78,8 +78,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_05_082635) do
 
   create_table "candidates", force: :cascade do |t|
     t.bigint "user_id", null: false
+    t.bigint "candidate_role_id"
+    t.string "experience"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["candidate_role_id"], name: "index_candidates_on_candidate_role_id"
     t.index ["user_id"], name: "index_candidates_on_user_id"
   end
 
@@ -198,8 +201,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_05_082635) do
     t.string "state"
     t.string "country"
     t.string "country_code"
-    t.string "latitude"
-    t.string "longitude"
+    t.decimal "latitude"
+    t.decimal "longitude"
     t.string "time_zone", null: false
     t.integer "utc_offset", null: false
     t.jsonb "data"
@@ -364,6 +367,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_05_082635) do
   add_foreign_key "candidate_profiles", "candidates"
   add_foreign_key "candidate_roles", "candidate_role_groups"
   add_foreign_key "candidate_work_preferences", "candidates"
+  add_foreign_key "candidates", "candidate_roles"
   add_foreign_key "candidates", "users"
   add_foreign_key "categories", "users"
   add_foreign_key "role_levels", "candidates"

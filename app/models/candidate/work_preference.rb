@@ -6,4 +6,6 @@ class Candidate::WorkPreference < ApplicationRecord
     not_interested: 3,
     invisible: 4
   }
+
+  validates :search_status, presence: true
 end

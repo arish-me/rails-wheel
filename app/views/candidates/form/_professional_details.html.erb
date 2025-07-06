@@ -7,6 +7,9 @@
 				<%= profile_form.text_field :headline, label: 'Title / Headline' , placeholder: 'Enter Title or Headline' %>
 				<p class="mt-2 text-xs text-gray-500">e.g. Full-stack developer with 6+ years of experience</p>
 			</div>
+      <div>
+        <%= profile_form.collection_select :candidate_role_id, CandidateRole.all.order(:name), :id, :name, { prompt: "--Select--", label: "Candidate Role" } %>
+      </div>
 		</div>
 	<% end %>
 </div>
