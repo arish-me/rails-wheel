@@ -1,0 +1,15 @@
+<%= render(TabComponent.new(
+  tabs: [
+    {
+      label: "Profile",
+      path: edit_settings_profile_path,
+      id: "profile"
+    },
+    {
+      label: "Account",
+      path: settings_edit_account_path,
+      id: "settings"
+    }
+  ],
+  current_path: request.path
+)) %>

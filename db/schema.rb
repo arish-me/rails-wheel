@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_29_154547) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_05_082635) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -42,6 +42,18 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_29_154547) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "candidate_profiles", force: :cascade do |t|
+    t.bigint "candidate_id", null: false
+    t.bigint "candidate_role_id"
+    t.string "headline"
+    t.integer "experience"
+    t.decimal "hourly_rate"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["candidate_id"], name: "index_candidate_profiles_on_candidate_id"
+    t.index ["candidate_role_id"], name: "index_candidate_profiles_on_candidate_role_id"
+  end
+
   create_table "candidate_role_groups", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -54,6 +66,24 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_29_154547) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["candidate_role_group_id"], name: "index_candidate_roles_on_candidate_role_group_id"
+  end
+
+  create_table "candidate_work_preferences", force: :cascade do |t|
+    t.bigint "candidate_id"
+    t.integer "search_status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["candidate_id"], name: "index_candidate_work_preferences_on_candidate_id", unique: true
+  end
+
+  create_table "candidates", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "candidate_role_id"
+    t.string "experience"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["candidate_role_id"], name: "index_candidates_on_candidate_role_id"
+    t.index ["user_id"], name: "index_candidates_on_user_id"
   end
 
   create_table "categories", force: :cascade do |t|
@@ -164,6 +194,24 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_29_154547) do
     t.index ["scheduled_at"], name: "index_good_jobs_on_scheduled_at", where: "(finished_at IS NULL)"
   end
 
+  create_table "locations", force: :cascade do |t|
+    t.string "locatable_type", null: false
+    t.bigint "locatable_id", null: false
+    t.string "city"
+    t.string "state"
+    t.string "country"
+    t.string "country_code"
+    t.decimal "latitude"
+    t.decimal "longitude"
+    t.string "time_zone", null: false
+    t.integer "utc_offset", null: false
+    t.jsonb "data"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["locatable_type", "locatable_id"], name: "index_locations_on_locatable"
+    t.index ["locatable_type", "locatable_id"], name: "index_locations_on_locatable_type_and_locatable_id"
+  end
+
   create_table "noticed_events", force: :cascade do |t|
     t.string "type"
     t.string "record_type"
@@ -195,6 +243,18 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_29_154547) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "role_levels", force: :cascade do |t|
+    t.bigint "candidate_id"
+    t.boolean "junior"
+    t.boolean "mid"
+    t.boolean "senior"
+    t.boolean "principal"
+    t.boolean "c_level"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["candidate_id"], name: "index_role_levels_on_candidate_id", unique: true
+  end
+
   create_table "role_permissions", force: :cascade do |t|
     t.bigint "role_id", null: false
     t.bigint "permission_id", null: false
@@ -207,6 +267,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_29_154547) do
     t.index ["role_id"], name: "index_role_permissions_on_role_id"
   end
 
+  create_table "role_types", force: :cascade do |t|
+    t.bigint "candidate_id"
+    t.boolean "part_time_contract"
+    t.boolean "full_time_contract"
+    t.boolean "full_time_employment"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["candidate_id"], name: "index_role_types_on_candidate_id", unique: true
+  end
+
   create_table "roles", force: :cascade do |t|
     t.string "name"
     t.boolean "is_default", default: false, null: false
@@ -214,6 +284,19 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_29_154547) do
     t.datetime "updated_at", null: false
     t.bigint "company_id"
     t.index ["company_id"], name: "index_roles_on_company_id"
+  end
+
+  create_table "social_links", force: :cascade do |t|
+    t.string "linkable_type", null: false
+    t.bigint "linkable_id", null: false
+    t.string "github"
+    t.string "linked_in"
+    t.string "website"
+    t.string "twitter"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["linkable_type", "linkable_id"], name: "index_social_links_on_linkable"
+    t.index ["linkable_type", "linkable_id"], name: "index_social_links_on_linkable_type_and_linkable_id"
   end
 
   create_table "user_roles", force: :cascade do |t|
@@ -280,11 +363,18 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_29_154547) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "candidate_profiles", "candidate_roles"
+  add_foreign_key "candidate_profiles", "candidates"
   add_foreign_key "candidate_roles", "candidate_role_groups"
+  add_foreign_key "candidate_work_preferences", "candidates"
+  add_foreign_key "candidates", "candidate_roles"
+  add_foreign_key "candidates", "users"
   add_foreign_key "categories", "users"
+  add_foreign_key "role_levels", "candidates"
   add_foreign_key "role_permissions", "companies"
   add_foreign_key "role_permissions", "permissions"
   add_foreign_key "role_permissions", "roles"
+  add_foreign_key "role_types", "candidates"
   add_foreign_key "roles", "companies"
   add_foreign_key "user_roles", "companies"
   add_foreign_key "user_roles", "roles"

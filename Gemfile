@@ -33,11 +33,16 @@ gem "omniauth-rails_csrf_protection"
 gem "omniauth-github"
 gem "view_component"
 gem "i18n"
-gem "geocoder"                                           # For geocoding and location services
+gem "geocoder"
+gem "timezone_finder"                                           # For geocoding and location services
 gem "countries"                                          # For country data and codes
 # Background Jobs
 gem "good_job"
 gem "hotwire_combobox"
+gem "classy-yaml"
+gem "inline_svg"
+gem "redcarpet"
+gem "hashid-rails"
 
 
 group :development, :test do

@@ -1,0 +1,27 @@
+<!-- Role Type -->
+<%= form.fields_for :role_type, include_id: false do |role_type| %>
+	<fieldset>
+		<div>
+			<legend class="text-base font-medium text-gray-900 w-full">
+				<div class="flex mb-2">
+					<%= I18n.t(".form.role_type.title") %>
+				</div>
+			</legend>
+			<p class="text-sm text-gray-500 mb-4"><%= I18n.t(".form.role_type.help_text") %></p>
+		</div>
+		<div class="flex flex-wrap gap-4">
+			<div class="flex items-center">
+				<%= role_type.check_box :part_time_contract, class: "focus:ring-gray-500 h-4 w-4 text-gray-600 border-gray-300 rounded" %>
+				<%= role_type.label :part_time_contract, class: "ml-3 block text-sm font-medium text-gray-700" %>
+			</div>
+			<div class="flex items-center">
+				<%= role_type.check_box :full_time_contract, class: "focus:ring-gray-500 h-4 w-4 text-gray-600 border-gray-300 rounded" %>
+				<%= role_type.label :full_time_contract, class: "ml-3 block text-sm font-medium text-gray-700" %>
+			</div>
+			<div class="flex items-center">
+				<%= role_type.check_box :full_time_employment, class: "focus:ring-gray-500 h-4 w-4 text-gray-600 border-gray-300 rounded" %>
+				<%= role_type.label :full_time_employment, class: "ml-3 block text-sm font-medium text-gray-700" %>
+			</div>
+		</div>
+	</fieldset>
+<% end %>

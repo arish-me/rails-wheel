@@ -36,7 +36,7 @@ en:
     learn_more: "Learn More"
     home: "Home"
     about: "About"
-    services: "Services" 
+    services: "Services"
     contact: "Contact"
     sign_in: "Sign in"
     sign_up: "Sign up"
@@ -71,6 +71,8 @@ en:
                 while other users are present. Please delete all members first.
             profile_image:
               invalid_file_size: file size must be less than %{max_megabytes}MB
+        location:
+          invalid_coordinates: can't be found
   pages:
     home:
       title: "The Ultimate Rails Framework for Modern Applications"
@@ -91,7 +93,7 @@ en:
       cta_heading: "Ready to Build Your Next Application?"
       cta_subheading: "Start with a solid foundation and focus on what makes your application unique."
       get_started_now: "Get Started Now"
-      
+
   auth:
     sign_in_to_account: "Sign in to your account"
     email: "Email"
@@ -99,14 +101,85 @@ en:
     remember_me: "Remember me"
     forgot_password: "Forgot your password?"
     unlock_instructions: "Didn't receive unlock instructions?"
-    
+
   settings:
     profile: "Profile"
     account: "Account"
     appearance: "Appearance"
     notifications: "Notifications"
     save_changes: "Save Changes"
-    
+
+  profile:
+    avatar: Avatar
+    avatar_error_text: Something went wrong uploading your image, please try again.
+    change: Upload
+    cover_image: Cover image
+    help_text: This information will be displayed publicly so be careful what you share.
+    hero_help_text: Summarize yourself as a developer in a few words.
+    location_help_text: Providing your location makes it easier to connect with local business.
+    name_help_text_html: Your name will <i>not</i> be displayed on your public profile.
+    title: Profile
+    upload_error_text: Something went wrong uploading your image, please try again.
+    upload_file: Upload a file
+    upload_help_text: PNG, JPG, GIF up to 10MB
+  work_preference:
+   help_text: What kind of work are you looking for next?
+   title: Work preferences
+   search_status:
+    title: Search status
+    actively_looking: Actively looking for work
+    actively_looking_tag: Actively looking
+    not_interested: Not interested in work right now
+    not_interested_tag: Not interested
+    open: Open, but not actively looking
+    open_tag: Open to offers
+    actively_looking_help_text: Your profile can get featured on the homepage.
+    invisible_help_text: Your profile is hidden and can only be seen by yourself.
+    not_interested_help_text: Your profile will not appear in search results.
+    open_help_text: Companies can still find you, but you won't appear on the homepage.
+  online_presence:
+    help_text: Where can people learn more about you and your work?
+    title: Online presence
+  location:
+    title: Location
+    help_text: Providing your location makes it easier to connect with local business.
+  role_level:
+    help_text: Select all the experience levels you would consider taking.
+    title: Role level
+    c_level: C-level
+    junior: Junior
+    mid: Mid-level
+    principal: Principal / staff
+    senior: Senior
+  role_type:
+    help_text: Select all roles that you would consider taking.
+    title: Role type
+    full_time_contract: Full-time contract
+    full_time_employment: Full-time employment
+    part_time_contract: Part-time contract
+  form:
+    role_level:
+      help_text: Select all the experience levels you would consider taking.
+      title: Role level
+    role_type:
+        help_text: Select all roles that you would consider taking.
+        title: Role type
+    bio:
+        description: Share a few paragraphs on what makes you unique as a developer. This is your chance to market yourself to potential employers – sell yourself a little!
+        examples:
+          accomplishment: A recent milestone or accomplishment
+          help: How you can help where others can't
+          learned: Something new you learned
+          origin: Your developer origin story
+          passion: What you're passionate about
+          title: Example topics
+          unique: Your unique skills that make you awesome
+        help_text: Personally identifiable information will be removed.
+        markdown: Markdown is supported but links and images are removed.
+
+  utc_offsets:
+    component:
+      gmt: GMT
   errors:
     not_authorized: "You are not authorized to perform this action."
     page_not_found: "Page not found."

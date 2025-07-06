@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  include RichText
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -11,10 +12,12 @@ class User < ApplicationRecord
   belongs_to :company, optional: true
   has_many :notifications, as: :recipient, class_name: "Noticed::Notification"
 
-  # after_create :assign_default_role
+  has_one :candidate, dependent: :destroy, class_name: "Candidate"
+  after_create :ensure_candidate
 
   attr_accessor :skip_password_validation
   attr_accessor :current_sign_in_ip_address
+  attr_accessor :delete_profile_image
 
   accepts_nested_attributes_for :user_roles, allow_destroy: true
 
@@ -22,20 +25,24 @@ class User < ApplicationRecord
     attachable.variant :thumbnail, resize_to_fill: [ 300, 300 ], convert: :webp, saver: { quality: 80 }
     attachable.variant :small, resize_to_fill: [ 72, 72 ], convert: :webp, saver: { quality: 80 }, preprocessed: true
   end
+  has_one_attached :cover_image
+
   validate :profile_image_size
+  validates :first_name, presence: true, on: :update
+  validates :last_name, presence: true, on: :update
 
   pg_search_scope :search_by_email,
               against: :email,
               using: {
                 tsearch: { prefix: true } # Enables partial matches (e.g., "Admin" matches "Administrator")
               }
-  enum :gender, [ :he_she, :him_her, :they_them, :other ]
+  enum :gender, [ :he_him, :she_her, :they_them, :other ]
   enum :theme, { system: 0, light: 1, dark: 2 }, default: :system
   enum :user_type, { company: 0, user: 1, platform_admin: 99 }
 
   GENDER_DISPLAY = {
-    he_she: "He/Him",
-    him_her: "Him/Her",
+    he_him: "He/Him",
+    she_her: "She/Her",
     they_them: "They/Them",
     other: "Other"
   }.freeze
@@ -101,6 +108,12 @@ class User < ApplicationRecord
 
   def has_role?(role_name)
     roles.exists?(name: role_name)
+  end
+
+  def ensure_candidate
+    if user?
+      create_candidate
+    end
   end
 
   protected
