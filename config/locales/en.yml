@@ -52,6 +52,7 @@ en:
     profile: "Profile"
     account: "Account"
     preferences: "Preferences"
+    loading: "Loading..."
   activerecord:
     attributes:
       user:
