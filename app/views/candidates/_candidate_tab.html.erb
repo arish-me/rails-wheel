@@ -1,25 +1,15 @@
 <%= render(TabComponent.new(
   tabs: [
     {
-      label: "Personal",
-      path: edit_candidate_profile_path(@candidate, @candidate.profile),
-      id: "users-tab"
-    },
-    {
       label: "Professional Information",
-      path: roles_path,
-      id: "roles-tab"
+      path: edit_candidate_profile_path(@candidate, @candidate.profile),
+      id: "professional-info-tab"
     },
     {
       label: "Work Preferences",
       path: edit_candidate_work_preference_path(@candidate),
-      id: "permission-tab"
-    },
-    {
-      label: "Online Presence",
-      path: role_permissions_path,
-      id: "roles-tab"
-    },
+      id: "work-preferences-tab"
+    }
   ],
   current_path: request.path
 )) %>

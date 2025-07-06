@@ -28,21 +28,11 @@ class Candidates::ProfilesController < ApplicationController
     @profile.build_location unless @candidate.location
   end
 
-  # def update
-  #   if @profile.update(profile_params)
-  #     redirect_to candidate_profile_path(@candidate, @profile), notice: "Profile was successfully updated."
-  #   else
-  #     render :edit, status: :unprocessable_entity
-  #   end
-  # end
-
   def update
     respond_to do |format|
       if @profile.update(profile_params)
-        flash[:notice] =  "Profile was successfully updated."
-        # format.turbo_stream { render turbo_stream: turbo_stream.refresh(request_id: nil) }
-        format.html { redirect_to candidate_profile_path(@candidate, @profile), notice: "Profile was successfully updated." }
-
+        flash[:notice] =  "Professional information was successfully updated."
+        format.html { redirect_to edit_candidate_profile_path(@candidate, @profile), notice: "Professional information was successfully updated." }
       else
         flash[:alert] = @profile.errors.full_messages.join(", ")
         format.html { render :edit, status: :unprocessable_entity }
