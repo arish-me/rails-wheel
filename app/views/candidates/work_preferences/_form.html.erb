@@ -156,7 +156,7 @@
 
   <!-- Navigation -->
   <div class="flex justify-between mt-6">
-    <%= link_to "Previous: Professional Information", edit_candidate_profile_path(@candidate, @candidate.profile), class: "inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+    <%= link_to "Previous: Professional Information", candidate_profile_path(@candidate), class: "inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
     <div class="flex space-x-3">
       <%= render ButtonComponent.new(text: "Save All", type: "submit", class: "md:w-auto w-full justify-center") %>
     </div>

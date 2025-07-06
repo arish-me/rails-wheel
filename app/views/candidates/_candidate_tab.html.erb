@@ -1,15 +1,22 @@
+<%= styled_form_with model: @candidate, local: true, class: "space-y-8" do |form| %>
+  <%= form.fields_for :user do |user_form| %>
+    <%= render 'candidates/form/upload_component', user_form: user_form%>
+  <% end %>
+<% end %>
+
 <%= render(TabComponent.new(
   tabs: [
     {
       label: "Professional Information",
-      path: edit_candidate_profile_path(@candidate, @candidate.profile),
+      path: candidate_profile_path(@candidate),
       id: "professional-info-tab"
     },
     {
       label: "Work Preferences",
-      path: edit_candidate_work_preference_path(@candidate),
+      path: candidate_work_preference_path(@candidate),
       id: "work-preferences-tab"
     }
   ],
   current_path: request.path
 )) %>
+

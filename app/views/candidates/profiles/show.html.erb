@@ -1,14 +1,5 @@
-<h1>Candidate Profile Details</h1>
+<% content_for :candidate_tab do %>
+  <%= render 'candidates/candidate_tab' %>
+  <%= render 'candidates/profiles/form' %>
+<% end %>
 
-<div class="p-4">
-  <h2 class="text-xl font-bold mb-4">Candidate: <%= @candidate.user&.display_name || "Unknown" %></h2>
-  
-  <% if @profile.present? %>
-    <div class="border p-4 rounded">
-      <h3 class="font-semibold">Profile ID: <%= @profile.id %></h3>
-      <!-- Add more profile details here -->
-    </div>
-  <% else %>
-    <p class="text-gray-500">Profile not found.</p>
-  <% end %>
-</div> 

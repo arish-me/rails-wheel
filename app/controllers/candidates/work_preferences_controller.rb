@@ -8,6 +8,8 @@ class Candidates::WorkPreferencesController < ApplicationController
     @candidate.build_role_level unless @candidate.role_level
   end
   def show
+    @candidate.build_role_type unless @candidate.role_type
+    @candidate.build_role_level unless @candidate.role_level
   end
 
   def create
@@ -32,7 +34,7 @@ class Candidates::WorkPreferencesController < ApplicationController
       else
         @candidate.build_role_type unless @candidate.role_type
         @candidate.build_role_level unless @candidate.role_level
-        
+
         flash[:alert] = @candidate.errors.full_messages.join(", ")
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @candidate.errors, status: :unprocessable_entity }

@@ -3,11 +3,20 @@ class Candidates::ProfilesController < ApplicationController
   before_action :set_profile, only: [ :show, :edit, :update, :destroy ]
 
   def index
-    # @profiles = @candidate.profiles if @candidate.respond_to?(:profiles)
-    @profile = @candidate.profile ? @candidate.profile : @candidate.build_profile
+    # If no profile exists, redirect to new to create one
+    unless @candidate.profile
+      redirect_to new_candidate_profile_path(@candidate)
+      return
+    end
+
+    @profile = @candidate.profile
   end
 
   def show
+    @candidate.build_profile unless @candidate.profile
+    @candidate.build_user unless @candidate.user
+    @candidate.build_social_link unless @candidate.social_link
+    @candidate.build_location unless @candidate.location
   end
 
   def new
@@ -18,7 +27,7 @@ class Candidates::ProfilesController < ApplicationController
     @profile = @candidate.build_profile(profile_params)
 
     if @profile.save
-      redirect_to candidate_profile_path(@candidate, @profile), notice: "Profile was successfully created."
+      redirect_to candidate_profile_path(@candidate), notice: "Profile was successfully created."
     else
       render :new, status: :unprocessable_entity
     end
@@ -36,14 +45,14 @@ class Candidates::ProfilesController < ApplicationController
     respond_to do |format|
       if @candidate.update(candidate_params)
         flash[:notice] =  "Professional information was successfully updated."
-        format.html { redirect_to edit_candidate_profile_path(@candidate, @profile), notice: "Professional information was successfully updated." }
+        format.html { redirect_to candidate_profile_path(@candidate), notice: "Professional information was successfully updated." }
       else
         # Build associated models if they don't exist for proper form rendering
         @candidate.build_profile unless @candidate.profile
         @candidate.build_user unless @candidate.user
         @candidate.build_social_link unless @candidate.social_link
         @candidate.build_location unless @candidate.location
-        
+
         flash[:alert] = @candidate.errors.full_messages.join(", ")
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @candidate.errors, status: :unprocessable_entity }
