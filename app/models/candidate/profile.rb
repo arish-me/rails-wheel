@@ -9,12 +9,18 @@ class Candidate::Profile < ApplicationRecord
   end
 
   # Delegate profile_image to user through candidate
-  delegate :profile_image, to: :candidate, prefix: false
-  delegate :user, to: :candidate, prefix: false
-
+  # delegate :profile_image, to: :candidate, prefix: false
+  #delegate :user, to: :candidate, prefix: false
+  has_one :user, through: :candidate
+  has_one :location, as: :locatable, dependent: :destroy, autosave: true
+  accepts_nested_attributes_for :user
+  accepts_nested_attributes_for :location, reject_if: :all_blank, update_only: true
   scope :with_role, -> { includes(:candidate_role) }
 
   validates :headline, presence: true
+  validates :candidate_role, presence: true
+
+  # accepts_nested_attributes_for :user
 
   def display_name
     user&.display_name || "Unknown"

@@ -1,0 +1,20 @@
+<%= styled_form_with model: @profile, local: true, class: "space-y-8" do |form| %>
+  <!-- Profile Section -->
+<div class="p-6 space-y-6 bg-white rounded-lg shadow">
+  <h2 class="mb-4 text-xl font-semibold text-gray-900">Professional Details</h2>
+
+    <div class="grid grid-cols-1 gap-6">
+      <div>
+        <%= form.text_field :headline, label: 'Title / Headline' , placeholder: 'Enter Title or Headline' %>
+        <p class="mt-2 text-xs text-gray-500">e.g. Full-stack developer with 6+ years of experience</p>
+      </div>
+      <div>
+        <%= form.collection_select :candidate_role_id, CandidateRole.all.order(:name), :id, :name, { prompt: "--Select--", label: "Candidate Role" } %>
+      </div>
+    </div>
+    <div class="flex justify-end mt-4">
+      <%= render ButtonComponent.new(text: t(".save", default: "Save"), class: "md:w-auto w-full justify-center") %>
+    </div>
+</div>
+
+<% end %>

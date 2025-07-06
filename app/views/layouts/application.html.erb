@@ -141,6 +141,9 @@
       <% if content_for?(:user_management_tab) %>
         <%= yield :user_management_tab %>
       <% end %>
+      <% if content_for?(:candidate_tab) %>
+        <%= yield :candidate_tab %>
+      <% end %>
       <%= yield %>
     <% end %>
 

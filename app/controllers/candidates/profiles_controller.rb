@@ -25,13 +25,29 @@ class Candidates::ProfilesController < ApplicationController
   end
 
   def edit
+    @profile.build_location unless @candidate.location
   end
 
+  # def update
+  #   if @profile.update(profile_params)
+  #     redirect_to candidate_profile_path(@candidate, @profile), notice: "Profile was successfully updated."
+  #   else
+  #     render :edit, status: :unprocessable_entity
+  #   end
+  # end
+
   def update
-    if @profile.update(profile_params)
-      redirect_to candidate_profile_path(@candidate, @profile), notice: "Profile was successfully updated."
-    else
-      render :edit, status: :unprocessable_entity
+    respond_to do |format|
+      if @profile.update(profile_params)
+        flash[:notice] =  "Profile was successfully updated."
+        # format.turbo_stream { render turbo_stream: turbo_stream.refresh(request_id: nil) }
+        format.html { redirect_to candidate_profile_path(@candidate, @profile), notice: "Profile was successfully updated." }
+
+      else
+        flash[:alert] = @profile.errors.full_messages.join(", ")
+        format.html { render :edit, status: :unprocessable_entity }
+        format.json { render json: @profile.errors, status: :unprocessable_entity }
+      end
     end
   end
 
@@ -51,6 +67,6 @@ class Candidates::ProfilesController < ApplicationController
   end
 
   def profile_params
-    params.require(:candidate_profile).permit(:candidate_role_id, :cover_image)
+    params.require(:candidate_profile).permit(:candidate_role_id, :headline)
   end
 end
