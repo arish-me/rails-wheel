@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_05_082635) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_06_133105) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -244,7 +244,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_05_082635) do
   end
 
   create_table "role_levels", force: :cascade do |t|
-    t.bigint "candidate_id"
     t.boolean "junior"
     t.boolean "mid"
     t.boolean "senior"
@@ -252,7 +251,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_05_082635) do
     t.boolean "c_level"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["candidate_id"], name: "index_role_levels_on_candidate_id", unique: true
+    t.bigint "work_preference_id", null: false
+    t.index ["work_preference_id"], name: "index_role_levels_on_work_preference_id", unique: true
   end
 
   create_table "role_permissions", force: :cascade do |t|
@@ -268,13 +268,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_05_082635) do
   end
 
   create_table "role_types", force: :cascade do |t|
-    t.bigint "candidate_id"
     t.boolean "part_time_contract"
     t.boolean "full_time_contract"
     t.boolean "full_time_employment"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["candidate_id"], name: "index_role_types_on_candidate_id", unique: true
+    t.bigint "work_preference_id", null: false
+    t.index ["work_preference_id"], name: "index_role_types_on_work_preference_id", unique: true
   end
 
   create_table "roles", force: :cascade do |t|
@@ -370,11 +370,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_05_082635) do
   add_foreign_key "candidates", "candidate_roles"
   add_foreign_key "candidates", "users"
   add_foreign_key "categories", "users"
-  add_foreign_key "role_levels", "candidates"
+  add_foreign_key "role_levels", "candidate_work_preferences", column: "work_preference_id"
   add_foreign_key "role_permissions", "companies"
   add_foreign_key "role_permissions", "permissions"
   add_foreign_key "role_permissions", "roles"
-  add_foreign_key "role_types", "candidates"
+  add_foreign_key "role_types", "candidate_work_preferences", column: "work_preference_id"
   add_foreign_key "roles", "companies"
   add_foreign_key "user_roles", "companies"
   add_foreign_key "user_roles", "roles"

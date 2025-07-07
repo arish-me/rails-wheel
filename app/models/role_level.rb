@@ -1,7 +1,7 @@
 class RoleLevel < ApplicationRecord
   TYPES = %i[junior mid senior principal c_level].freeze
 
-  belongs_to :candidate
+  belongs_to :work_preference, class_name: "Candidate::WorkPreference"
 
   validate :at_least_one_level_selected
 

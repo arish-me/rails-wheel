@@ -1,26 +1,31 @@
 class Candidates::WorkPreferencesController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_candidate
-  before_action :set_work_preference, only: [ :show, :edit, :update, :destroy ]
+  before_action :set_work_preference, only: [:show, :edit, :update, :destroy]
+
   def index
   end
+
   def edit
-    @candidate.build_role_type unless @candidate.role_type
-    @candidate.build_role_level unless @candidate.role_level
+    # Ensure role associations exist
+    @work_preference.ensure_role_associations
   end
+
   def show
-    @candidate.build_role_type unless @candidate.role_type
-    @candidate.build_role_level unless @candidate.role_level
+    # Ensure role associations exist
+    @work_preference.ensure_role_associations
   end
 
   def create
     @work_preference = @candidate.build_work_preference(work_preference_params)
+    @work_preference.ensure_role_associations
+
     respond_to do |format|
       if @work_preference.save
-        flash[:notice] =  "Work preferences were successfully created."
-        format.html { redirect_to edit_candidate_work_preference_path(@candidate, @work_preference), notice: "Work preferences were successfully created." }
+        flash[:notice] = "Work preferences were successfully created."
+        format.html { redirect_to candidate_work_preference_path(@candidate), notice: "Work preferences were successfully created." }
       else
-        flash[:alert] = @work_preference.errors.full_messages.join(", ")
-        format.html { redirect_to edit_candidate_work_preference_path(@candidate, @work_preference) }
+        format.html { render :edit }
         format.json { render json: @work_preference.errors, status: :unprocessable_entity }
       end
     end
@@ -28,22 +33,21 @@ class Candidates::WorkPreferencesController < ApplicationController
 
   def update
     respond_to do |format|
-      if @candidate.update(candidate_params)
-        flash[:notice] =  "Work preferences were successfully updated."
-        format.html { redirect_to candidate_work_preference_path(@candidate), notice: "Work preferences were successfully updated." }
+      if @work_preference.update(work_preference_params)
+        flash[:notice] =  "Work preferences was successfully updated."
+        format.html { redirect_to candidate_profile_path(@candidate), notice: "Professional information was successfully updated." }
       else
-        @candidate.build_role_type unless @candidate.role_type
-        @candidate.build_role_level unless @candidate.role_level
-
-        flash[:alert] = @candidate.errors.full_messages.join(", ")
+        flash[:alert] = @work_preference.errors.full_messages.join(", ")
         format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @candidate.errors, status: :unprocessable_entity }
+        format.json { render json: @work_preference.errors, status: :unprocessable_entity }
       end
     end
   end
 
   def destroy
   end
+
+  private
 
   def set_candidate
     @candidate = Candidate.find(params[:candidate_id])
@@ -54,14 +58,10 @@ class Candidates::WorkPreferencesController < ApplicationController
   end
 
   def work_preference_params
-    params.require(:candidate_work_preference).permit(:search_status)
-  end
-
-  def candidate_params
-    params.require(:candidate).permit(
-      work_preference_attributes: [ :id, :search_status ],
-      role_type_attributes: [ :id, :part_time_contract, :full_time_contract, :full_time_employment ],
-      role_level_attributes: [ :id, :junior, :mid, :senior, :principal, :c_level ]
+    params.require(:candidate_work_preference).permit(
+      :search_status,
+      role_type_attributes: [:id, :part_time_contract, :full_time_contract, :full_time_employment],
+      role_level_attributes: [:id, :junior, :mid, :senior, :principal, :c_level]
     )
   end
 end

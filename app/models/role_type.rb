@@ -1,7 +1,7 @@
 class RoleType < ApplicationRecord
   TYPES = %i[part_time_contract full_time_contract full_time_employment].freeze
 
-  belongs_to :candidate
+  belongs_to :work_preference, class_name: "Candidate::WorkPreference"
 
   validate :at_least_one_type_selected
 
