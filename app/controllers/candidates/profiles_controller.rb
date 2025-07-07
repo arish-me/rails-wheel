@@ -32,7 +32,7 @@ class Candidates::ProfilesController < ApplicationController
         # @candidate.build_profile unless @candidate.profile
         # @candidate.build_user unless @candidate.user
         # @candidate.build_social_link unless @candidate.social_link
-        # @candidate.build_location unless @candidate.location
+        @candidate.build_location unless @profile.location
 
         flash[:alert] = @profile.errors.full_messages.join(", ")
         format.html { render :edit, status: :unprocessable_entity }
@@ -54,7 +54,7 @@ class Candidates::ProfilesController < ApplicationController
   def profile_params
     params.require(:candidate_profile).permit(:candidate_role_id, :headline,
       user_attributes: [ :id, :first_name, :last_name, :gender, :phone_number, :date_of_birth, :bio, :profile_image, :delete_profile_image, :cover_image ],
-      location_attributes: [ :location_search, :city, :state, :country ],
+      location_attributes: [:id, :location_search, :city, :state, :country ],
     )
   end
 end

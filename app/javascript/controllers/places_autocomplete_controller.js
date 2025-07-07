@@ -6,7 +6,7 @@ export default class extends PlacesAutocomplete {
   connect() {
     console.log('Places autocomplete controller connecting...')
     this.initializeAutocomplete()
-    
+
     // Listen for form re-render events
     document.addEventListener('turbo:render', this.handleFormRerender.bind(this))
     document.addEventListener('turbo:before-render', this.handleBeforeRender.bind(this))
@@ -69,10 +69,10 @@ export default class extends PlacesAutocomplete {
   waitForGoogleMaps() {
     let attempts = 0
     const maxAttempts = 20 // Increased attempts
-    
+
     const checkGoogleMaps = () => {
       attempts++
-      
+
       if (typeof google !== 'undefined' && google.maps && google.maps.places) {
         this.setupAutocomplete()
       } else if (attempts < maxAttempts) {
@@ -81,7 +81,7 @@ export default class extends PlacesAutocomplete {
         console.warn('Google Maps API failed to load after multiple attempts')
       }
     }
-    
+
     checkGoogleMaps()
   }
 
@@ -104,7 +104,7 @@ export default class extends PlacesAutocomplete {
 
       // Customize the dropdown styling
       this.customizeDropdown()
-      
+
       console.log('Places autocomplete initialized successfully')
     } catch (error) {
       console.error('Error initializing Places autocomplete:', error)
@@ -133,11 +133,11 @@ export default class extends PlacesAutocomplete {
           item.style.cursor = 'pointer'
           item.style.fontSize = '0.875rem'
           item.style.color = '#374151'
-          
+
           // Remove Google icons
           const icons = item.querySelectorAll('img, .pac-icon')
           icons.forEach(icon => icon.style.display = 'none')
-          
+
           // Hover effect
           item.addEventListener('mouseenter', () => {
             item.style.backgroundColor = '#f9fafb'
@@ -153,7 +153,7 @@ export default class extends PlacesAutocomplete {
   placeChanged() {
     try {
       const place = this.autocomplete.getPlace()
-      
+
       if (!place.geometry) {
         console.warn("No details available for input: '" + place.name + "'")
         return
@@ -165,23 +165,22 @@ export default class extends PlacesAutocomplete {
       // Extract address components
       for (const component of place.address_components) {
         const componentType = component.types[0]
-
         switch (componentType) {
           case "locality":
             this.cityTarget.value = component.long_name
             break
           case "administrative_area_level_1":
-            this.stateTarget.value = component.short_name
+            this.stateTarget.value = component.long_name
             break
           case "country":
-            this.countryTarget.value = component.short_name
+            this.countryTarget.value = component.long_name
             break
         }
       }
 
       // Show the selected location details
       this.showLocationDisplay()
-      
+
       console.log('Place selected:', place.name)
     } catch (error) {
       console.error('Error processing place selection:', error)

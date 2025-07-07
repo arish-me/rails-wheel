@@ -26,7 +26,7 @@ class Candidates::SocialLinksController < ApplicationController
   end
 
   def social_link_params
-    params.require(:candidate).permit(
+    params.require(:social_link).permit(
       :website, :github, :linked_in, :twitter
     )
   end

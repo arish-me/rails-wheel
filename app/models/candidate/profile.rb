@@ -14,7 +14,7 @@ class Candidate::Profile < ApplicationRecord
   has_one :user, through: :candidate
   has_one :location, as: :locatable, dependent: :destroy, autosave: true
   accepts_nested_attributes_for :user
-  accepts_nested_attributes_for :location, update_only: true
+  accepts_nested_attributes_for :location, allow_destroy: false
   scope :with_role, -> { includes(:candidate_role) }
 
   validates :headline, presence: true

@@ -35,7 +35,7 @@ class Candidates::WorkPreferencesController < ApplicationController
     respond_to do |format|
       if @work_preference.update(work_preference_params)
         flash[:notice] =  "Work preferences was successfully updated."
-        format.html { redirect_to candidate_profile_path(@candidate), notice: "Professional information was successfully updated." }
+        format.html { redirect_to candidate_work_preference_path(@candidate), notice: "Work preferences were successfully created." }
       else
         flash[:alert] = @work_preference.errors.full_messages.join(", ")
         format.html { render :edit, status: :unprocessable_entity }

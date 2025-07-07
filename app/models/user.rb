@@ -30,6 +30,7 @@ class User < ApplicationRecord
   validate :profile_image_size
   validates :first_name, presence: true, on: :update
   validates :last_name, presence: true, on: :update
+  validates :bio, presence: true, on: :update
 
   pg_search_scope :search_by_email,
               against: :email,

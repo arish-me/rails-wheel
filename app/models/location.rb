@@ -52,9 +52,9 @@ class Location < ApplicationRecord
 
   def geocode
     if (result = Geocoder.search(query).first)
-      self.city = result.city || result.city_district
-      self.state = result.state
-      self.country = result.country
+      # self.city = result.city || result.city_district
+      # self.state = result.state
+      # self.country = result.country
       self.country_code = result.country_code
       self.latitude = result.latitude
       self.longitude = result.longitude
