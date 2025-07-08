@@ -2,6 +2,8 @@ module RichText
   require "redcarpet/render_strip"
 
   def rich_text_bio
+    return nil unless bio
+
     @rich_text_bio ||= markdown.render(bio).strip
   end
 

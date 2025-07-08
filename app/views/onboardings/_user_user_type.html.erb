@@ -16,10 +16,15 @@
         <%= form.text_field :first_name, placeholder: "First name", label: "First name", container_class: "bg-container md:w-1/2 w-full", required: true %>
         <%= form.text_field :last_name, placeholder: "Last name", label: "Last name", container_class: "bg-container md:w-1/2 w-full", required: true %>
       </div>
+
       <%= form.select :country_code,
           country_options,
           { label: "Country" },
           required: true %>
+      <div class="form-field pr-0">
+        <%= form.text_area :bio, rows: 20, class: field_classes(form, :bio) %>
+        <p class="mt-2 text-sm text-gray-500"><%= t("form.bio.help_text") %></p>
+      </div>
     </div>
   <% end %>
   <%= form.submit "Continue" %>

@@ -6,20 +6,24 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable, :lockable,
          :lockable, :timeoutable, :trackable, :confirmable,
          :omniauthable, omniauth_providers: %i[google_oauth2 github]
+
+  belongs_to :company, optional: true
   has_many :user_roles, dependent: :destroy
   has_many :roles, through: :user_roles
   has_many :categories, dependent: :destroy
-  belongs_to :company, optional: true
   has_many :notifications, as: :recipient, class_name: "Noticed::Notification"
 
   has_one :candidate, dependent: :destroy, class_name: "Candidate"
+  has_one :location, as: :locatable, dependent: :destroy
   after_create :ensure_candidate
 
   attr_accessor :skip_password_validation
   attr_accessor :current_sign_in_ip_address
   attr_accessor :delete_profile_image
 
+
   accepts_nested_attributes_for :user_roles, allow_destroy: true
+  accepts_nested_attributes_for :location, allow_destroy: true
 
   has_one_attached :profile_image do |attachable|
     attachable.variant :thumbnail, resize_to_fill: [ 300, 300 ], convert: :webp, saver: { quality: 80 }

@@ -1,7 +1,7 @@
 class Candidates::WorkPreferencesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_candidate
-  before_action :set_work_preference, only: [:show, :edit, :update, :destroy]
+  before_action :set_work_preference, only: [ :show, :edit, :update, :destroy ]
 
   def index
   end
@@ -60,8 +60,8 @@ class Candidates::WorkPreferencesController < ApplicationController
   def work_preference_params
     params.require(:candidate_work_preference).permit(
       :search_status,
-      role_type_attributes: [:id, :part_time_contract, :full_time_contract, :full_time_employment],
-      role_level_attributes: [:id, :junior, :mid, :senior, :principal, :c_level]
+      role_type_attributes: [ :id, :part_time_contract, :full_time_contract, :full_time_employment ],
+      role_level_attributes: [ :id, :junior, :mid, :senior, :principal, :c_level ]
     )
   end
 end

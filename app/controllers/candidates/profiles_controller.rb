@@ -5,7 +5,7 @@ class Candidates::ProfilesController < ApplicationController
 
   def show
     @profile.build_user unless @profile.user
-    @profile.build_location unless @profile.location
+    @profile.user.build_location unless @profile.user.location
   end
 
   def new
@@ -28,12 +28,6 @@ class Candidates::ProfilesController < ApplicationController
         flash[:notice] =  "Professional information was successfully updated."
         format.html { redirect_to candidate_profile_path(@candidate), notice: "Professional information was successfully updated." }
       else
-        # Build associated models if they don't exist for proper form rendering
-        # @candidate.build_profile unless @candidate.profile
-        # @candidate.build_user unless @candidate.user
-        # @candidate.build_social_link unless @candidate.social_link
-        @candidate.build_location unless @profile.location
-
         flash[:alert] = @profile.errors.full_messages.join(", ")
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @profile.errors, status: :unprocessable_entity }
@@ -53,8 +47,9 @@ class Candidates::ProfilesController < ApplicationController
 
   def profile_params
     params.require(:candidate_profile).permit(:candidate_role_id, :headline,
-      user_attributes: [ :id, :first_name, :last_name, :gender, :phone_number, :date_of_birth, :bio, :profile_image, :delete_profile_image, :cover_image ],
-      location_attributes: [:id, :location_search, :city, :state, :country ],
+      user_attributes: [ :id, :first_name, :last_name, :gender, :phone_number, :date_of_birth, :bio, :profile_image, :delete_profile_image, :cover_image,  location_attributes: [
+        :id, :location_search, :city, :state, :country, :_destroy
+      ] ]
     )
   end
 end
