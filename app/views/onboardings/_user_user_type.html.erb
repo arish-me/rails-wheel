@@ -1,31 +1,123 @@
 <div class="space-y-1 mb-6 text-center">
-  <h1 class="text-2xl font-medium md:text-2xl">Let's set up your account</h1>
-  <p class="text-secondary text-sm">First things first, let's get your profile set up.</p>
+	<h1 class="text-2xl font-medium md:text-2xl">Let's set up your account</h1>
+	<p class="text-secondary text-sm">First things first, let's get your profile set up.</p>
 </div>
-
 <%= styled_form_with(model: @user, url: registration_path(@user), method: :patch, class: "space-y-4", data: { controller: "searchable-select" }) do |form| %>
-  <%= form.hidden_field :redirect_to, value: @invitation ? "home" : "onboarding_preferences" %>
-  <%= form.hidden_field :onboarded_at, value: Time.current if @invitation %>
-  <div class="mb-6">
-    <%= render "settings/user_avatar_field", form: form, user: @user %>
-  </div>
-
-  <% unless @invitation %>
-    <div class="space-y-4 mb-4">
-      <div class="flex flex-col md:flex-row md:justify-between md:items-center md:gap-4 space-y-4 md:space-y-0 mb-4">
-        <%= form.text_field :first_name, placeholder: "First name", label: "First name", container_class: "bg-container md:w-1/2 w-full", required: true %>
-        <%= form.text_field :last_name, placeholder: "Last name", label: "Last name", container_class: "bg-container md:w-1/2 w-full", required: true %>
-      </div>
-
-      <%= form.select :country_code,
-          country_options,
-          { label: "Country" },
-          required: true %>
-      <div class="form-field pr-0">
-        <%= form.text_area :bio, rows: 20, class: field_classes(form, :bio) %>
-        <p class="mt-2 text-sm text-gray-500"><%= t("form.bio.help_text") %></p>
-      </div>
-    </div>
-  <% end %>
-  <%= form.submit "Continue" %>
-<% end %>
+	<%= form.hidden_field :redirect_to, value: @invitation ? "home" : "onboarding_preferences" %>
+	<%= form.hidden_field :onboarded_at, value: Time.current if @invitation %>
+	<div class="mb-6">
+		<%= render "settings/user_avatar_field", form: form, user: @user %>
+	</div>
+	<% unless @invitation %>
+		<div class="space-y-4 mb-4">
+			<div class="flex flex-col md:flex-row md:justify-between md:items-center md:gap-4 space-y-4 md:space-y-0 mb-4">
+				<section class="bg-white shadow px-4 py-5 lg:rounded-lg sm:p-6">
+					<div class="md:grid md:grid-cols-3 md:gap-6">
+						<div class="md:col-span-1">
+							<h2 class="text-lg font-medium leading-6 text-gray-900"><%= t("profile.title") %></h2>
+							<p class="mt-2 text-sm text-gray-500"><%= t("profile.help_text") %></p>
+						</div>
+						<div class="mt-5 md:mt-0 md:col-span-2">
+							<div class="space-y-6">
+								<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+									<div>
+										<%= form.text_field :first_name, label: 'First Name' , placeholder: 'Enter First Name' %>
+									</div>
+									<div>
+										<%= form.text_field :last_name, label: 'Last Name' , placeholder: 'Enter Last Name' %>
+									</div>
+									<div>
+										<%= form.select :gender,  User.genders.map { |key, _| [User::GENDER_DISPLAY[key.to_sym], key] }, { include_blank: "---Select---", label: "Pronounce" } %>
+									</div>
+									<div>
+										<%= form.telephone_field :phone_number, placeholder: "+1 (555) 123-4567" , label: "Phone" %>
+									</div>
+									<div>
+										<%= form.date_field :date_of_birth,   max: Date.today - 10.years, min: Date.today - 120.years, label: "Date of birth" %>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<section class="bg-white shadow mt-8 px-4 py-5 lg:rounded-lg sm:p-6">
+					<div class="md:grid md:grid-cols-3 md:gap-6">
+						<div class="md:col-span-1">
+							<h2><%= form.label :bio, class: "text-lg font-medium leading-6 text-gray-900" %></h2>
+							<p class="mt-2 text-sm text-gray-500"><%= t("form.bio.description") %></p>
+							<h4 class="font-medium uppercase tracking-wide text-gray-500 text-sm mt-4"><%= t("form.bio.examples.title") %></h4>
+							<ul class="text-sm text-gray-500 list-disc list-inside">
+								<li class="mt-1"><%= t("form.bio.examples.origin") %></li>
+								<li class="mt-1"><%= t("form.bio.examples.accomplishment") %></li>
+								<li class="mt-1"><%= t("form.bio.examples.learned") %></li>
+								<li class="mt-1"><%= t("form.bio.examples.passion") %></li>
+								<li class="mt-1"><%= t("form.bio.examples.help") %></li>
+								<li class="mt-1"><%= t("form.bio.examples.unique") %></li>
+							</ul>
+							<p class="mt-4 text-sm text-gray-500"><%= t("form.bio.markdown") %></p>
+						</div>
+						<div class="mt-5 md:mt-0 md:col-span-2">
+							<div class="space-y-6">
+								<div>
+									<%= form.text_area :bio, rows: 20, class: field_classes(form, :bio) %>
+									<p class="mt-2 text-sm text-gray-500"><%= t("form.bio.help_text") %></p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+				<%= form.fields_for :location, include_id: false do |location| %>
+					<section class="bg-white shadow px-4 py-5 lg:rounded-lg sm:p-6">
+						<div class="md:grid md:grid-cols-3 md:gap-6">
+							<div class="md:col-span-1">
+								<h2 class="text-lg font-medium leading-6 text-gray-900"><%= t("location.title") %></h2>
+								<p class="mt-2 text-sm text-gray-500"><%= t("location.help_text") %></p>
+							</div>
+							<div class="mt-5 md:mt-0 md:col-span-2">
+								<div class="space-y-6">
+									<div data-controller="places-autocomplete">
+										<div class="mb-4">
+											<label class="block text-sm font-medium text-gray-700 mb-2">Search Address</label>
+											<%= location.text_field :location_search,
+                  label: 'Search Address',
+                  placeholder: 'Start typing your city...',
+                  data: {
+                    action: "keydown->places-autocomplete#preventSubmit",
+                    places_autocomplete_target: "address"
+                  }
+                %>
+											<p class="mt-1 text-xs text-gray-500">Please enter a complete address including city, state, and country</p>
+										</div>
+										<!-- Hidden fields that will be populated by autocomplete -->
+										<%= location.hidden_field :city, data: { places_autocomplete_target: "city" } %>
+										<%= location.hidden_field :state, data: { places_autocomplete_target: "state" } %>
+										<%= location.hidden_field :country, data: { places_autocomplete_target: "country" } %>
+										<%= location.hidden_field :id %>
+										<!-- Additional hidden fields for autocomplete -->
+										<input type="hidden" data-places-autocomplete-target="streetNumber" />
+										<input type="hidden" data-places-autocomplete-target="route" />
+										<input type="hidden" data-places-autocomplete-target="county" />
+										<input type="hidden" data-places-autocomplete-target="postalCode" />
+										<input type="hidden" data-places-autocomplete-target="longitude" />
+										<input type="hidden" data-places-autocomplete-target="latitude" />
+										<!-- Display selected location details -->
+										<%if Rails.env.development? %>
+											<div id="location-display" class="hidden mt-4 p-3 bg-gray-50 rounded-md">
+												<h4 class="text-sm font-medium text-gray-900 mb-2">Selected Location:</h4>
+												<div class="text-sm text-gray-600">
+													<div id="city-display"></div>
+													<div id="state-display"></div>
+													<div id="country-display"></div>
+												</div>
+											</div>
+										<% end  %>
+									</div>
+								</div>
+							</div>
+						</div>
+					</section>
+				<% end %>
+			</div>
+		<% end %>
+		<%= form.submit "Continue" %>
+	<% end %>
