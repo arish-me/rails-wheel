@@ -22,7 +22,7 @@ class CandidatesController < ApplicationController
     respond_to do |format|
       if @candidate.update(candidate_params)
         flash[:notice] = "Profile was successfully updated."
-        format.html { redirect_to @candidate, notice: "Profile was successfully updated." }
+        format.html { }
       else
         flash[:alert] = @candidate.errors.full_messages.join(", ")
         format.html { render :edit, status: :unprocessable_entity }
