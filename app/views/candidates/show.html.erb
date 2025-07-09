@@ -31,7 +31,7 @@
             <div class="pb-3 lg:pb-0">
               <h2 class="sr-only"><%= t(".description") %></h2>
               <div class="prose max-w-prose">
-                <%== current_user.rich_text_bio %>
+                <%== current_user&.rich_text_bio %>
               </div>
             </div>
           </div>

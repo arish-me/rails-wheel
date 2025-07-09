@@ -100,6 +100,8 @@ Rails.application.routes.draw do
 
   resources :candidates do
     resources :profiles, module: :candidates
+    resources :work_preferences, module: :candidates
+    resources :social_links, module: :candidates
   end
 
   get "up" => "rails/health#show", as: :rails_health_check

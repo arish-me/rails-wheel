@@ -52,6 +52,7 @@ en:
     profile: "Profile"
     account: "Account"
     preferences: "Preferences"
+    loading: "Loading..."
   activerecord:
     attributes:
       user:
@@ -62,6 +63,16 @@ en:
         last_name: Last Name
         password: Password
         password_confirmation: Password Confirmation
+      role_type:
+        part_time_contract: Part-time contract
+        full_time_contract: Full-time contract
+        full_time_employment: Full-time employment
+      role_level:
+        junior: Junior
+        mid: Mid-level
+        senior: Senior
+        principal: Principal / staff
+        c_level: C-level
     errors:
       models:
         user:
@@ -73,6 +84,10 @@ en:
               invalid_file_size: file size must be less than %{max_megabytes}MB
         location:
           invalid_coordinates: can't be found
+        role_type:
+          at_least_one_type_selected: Please select at least one role type
+        role_level:
+          at_least_one_level_selected: Please select at least one role level
   pages:
     home:
       title: "The Ultimate Rails Framework for Modern Applications"

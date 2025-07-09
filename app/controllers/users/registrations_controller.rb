@@ -58,8 +58,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
         redirect_to settings_preferences_path, notice: notice
       when "goals"
         redirect_to goals_onboarding_path
-      when "trial"
-        redirect_to trial_onboarding_path
+      # when "trial"
+      #   redirect_to trial_onboarding_path
       else
         redirect_to settings_profile_path, notice: notice
       end

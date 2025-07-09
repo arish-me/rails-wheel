@@ -4,25 +4,25 @@
     <%= render Candidates::SearchStatusComponent.new(candidate&.work_preference) if candidate&.work_preference %>
   <% end %>
   <%= render RenderableComponent.new("space-y-5 pb-4") do %>
-    <%= render RoleTypes::Component.new(candidate&.role_type) %>
+    <%= render RoleTypes::Component.new(candidate&.role_type) if candidate&.work_preference&.role_type %>
   <% end %>
    <%= render RenderableComponent.new("space-y-5 pb-4") do %>
-    <%= render RoleLevels::Component.new(candidate&.role_level) %>
+    <%= render RoleLevels::Component.new(candidate&.role_level) if candidate&.work_preference&.role_level %>
   <% end %>
 
-    <%= render Candidates::PaywalledComponent.new(current_user, candidate, size: :large, public_key:) do %>
-    <%= render RenderableComponent.new("space-y-3 pb-4") if candidate&.work_preference do %>
-      <%= render ExternalLinkComponent.new(candidate.social_link.website) %>
-      <%= render SocialLinkComponent.new(candidate.social_link.github, :github) %>
+    <%= render RenderableComponent.new("space-y-3 pb-4") do %>
+    <%if candidate&.social_link %>
+        <%= render ExternalLinkComponent.new(candidate.social_link.website) %>
+        <%= render SocialLinkComponent.new(candidate.social_link.github, :github) %>
 
-      <%= render SocialLinkComponent.new(candidate.social_link.linked_in, :linkedin) %>
+        <%= render SocialLinkComponent.new(candidate.social_link.linked_in, :linkedin) %>
 
-      <%= render SocialLinkComponent.new(candidate.social_link.twitter, :twitter) %>
-
+        <%= render SocialLinkComponent.new(candidate.social_link.twitter, :twitter) %>
+      <% end %>
     <% end %>
-  <% end %>
+
   <%= render RenderableComponent.new("space-y-3 pb-4") do %>
-    <%= render Locations::Component.new(candidate.location) %>
-    <%= render Locations::TimeZoneComponent.new(candidate.location) %>
+    <%= render Locations::Component.new(candidate.profile.location) %>
+    <%= render Locations::TimeZoneComponent.new(candidate.profile.location) %>
   <% end %>
 </div>

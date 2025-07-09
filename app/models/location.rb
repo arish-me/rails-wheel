@@ -1,4 +1,5 @@
 class Location < ApplicationRecord
+  attr_accessor :location_search
   belongs_to :locatable, polymorphic: true
 
   scope :top_countries, ->(limit = ENV.fetch("TOP_COUNTRIES", 5)) do
@@ -36,6 +37,10 @@ class Location < ApplicationRecord
     country.blank?
   end
 
+  def location_search
+    query
+  end
+
   private
 
   def valid_coordinates
@@ -47,9 +52,9 @@ class Location < ApplicationRecord
 
   def geocode
     if (result = Geocoder.search(query).first)
-      self.city = result.city || result.city_district
-      self.state = result.state
-      self.country = result.country
+      # self.city = result.city || result.city_district
+      # self.state = result.state
+      # self.country = result.country
       self.country_code = result.country_code
       self.latitude = result.latitude
       self.longitude = result.longitude
@@ -62,7 +67,6 @@ class Location < ApplicationRecord
   end
 
   def query
-    [city, state, country_code].join(" ").squish
+    [ city, state, country ].join(" ").squish
   end
 end
-

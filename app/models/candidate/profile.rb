@@ -8,13 +8,12 @@ class Candidate::Profile < ApplicationRecord
     attachable.variant :large, resize_to_limit: [ 1200, 600 ]
   end
 
-  # Delegate profile_image to user through candidate
-  delegate :profile_image, to: :candidate, prefix: false
-  delegate :user, to: :candidate, prefix: false
-
-  scope :with_role, -> { includes(:candidate_role) }
+  has_one :user, through: :candidate
+  has_one :location, as: :locatable, dependent: :destroy, autosave: true
+  accepts_nested_attributes_for :user
 
   validates :headline, presence: true
+  validates :candidate_role, presence: true
 
   def display_name
     user&.display_name || "Unknown"
