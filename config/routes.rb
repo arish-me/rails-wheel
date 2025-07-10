@@ -34,6 +34,9 @@ Rails.application.routes.draw do
       get :candidate_setup
       post :candidate_setup
 
+      get :online_presence
+      post :online_presence
+
       get :preferences
       get :goals
       get :trial

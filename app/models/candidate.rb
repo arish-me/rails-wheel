@@ -19,6 +19,7 @@ class Candidate < ApplicationRecord
   accepts_nested_attributes_for :specializations, allow_destroy: true
   accepts_nested_attributes_for :role_level, update_only: true
   accepts_nested_attributes_for :role_type, update_only: true
+  accepts_nested_attributes_for :social_link, update_only: true
 
   validate :specialization_count_within_bounds, on: :update, if: :validate_for_redirect_target?
 
@@ -53,15 +54,15 @@ class Candidate < ApplicationRecord
     experiences.keys.map do |key|
       case key.to_sym
       when :fresher
-        ["Fresher", key]
+        [ "Fresher", key ]
       when :greater_than_10_years
-        ["> 10 Years", key]
-      when -> (k) { k.to_s.start_with?('year_') }
+        [ "> 10 Years", key ]
+      when ->(k) { k.to_s.start_with?("year_") }
         # Extract the number from 'year_X' and append 'Year(s)'
-        year_number = key.to_s.gsub('year_', '').to_i
-        ["#{year_number} Year#{'s' if year_number > 1}", key]
+        year_number = key.to_s.gsub("year_", "").to_i
+        [ "#{year_number} Year#{'s' if year_number > 1}", key ]
       else
-        [key.humanize, key] # Fallback for any other unexpected keys
+        [ key.humanize, key ] # Fallback for any other unexpected keys
       end
     end
   end
@@ -73,8 +74,8 @@ class Candidate < ApplicationRecord
       "Fresher"
     when :greater_than_10_years
       "> 10 Years"
-    when -> (k) { k.to_s.start_with?('year_') }
-      year_number = experience_level.to_s.gsub('year_', '').to_i
+    when ->(k) { k.to_s.start_with?("year_") }
+      year_number = experience_level.to_s.gsub("year_", "").to_i
       "#{year_number} Year#{'s' if year_number > 1}"
     else
       experience_level.humanize # Fallback
@@ -89,8 +90,12 @@ class Candidate < ApplicationRecord
     super || build_role_type
   end
 
+  def social_link
+    super || build_social_link
+  end
+
    def validate_for_redirect_target?
-    ['onboarding_candidate'].include?(redirect_to)
+    [ "onboarding_candidate" ].include?(redirect_to)
   end
 
 

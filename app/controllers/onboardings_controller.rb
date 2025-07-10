@@ -3,8 +3,7 @@ class OnboardingsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_user
   before_action :need_onboard
-  before_action :set_candidate, only: [:specialization, :candidate_setup]
-  # before_action :load_invitation
+  before_action :set_candidate, only: [ :specialization, :candidate_setup, :online_presence ]
 
   def show
     @company = current_user&.company || Company.new
@@ -53,12 +52,31 @@ class OnboardingsController < ApplicationController
     end
   end
 
+  def online_presence
+    if request.get?
+    else
+      respond_to do |format|
+       if @candidate.update(specialization_params)
+         flash[:notice] = "Profile was successfully updated."
+         handle_redirect(flash[:notice])
+         format.html { }
+       else
+         flash[:alert] = @candidate.errors.full_messages.join(", ")
+         format.html { render :online_presence, status: :unprocessable_entity }
+         format.json { render json: @candidate.errors, status: :unprocessable_entity }
+       end
+      end
+    end
+  end
+
   def trial
   end
 
   def handle_redirect(notice)
     case params[:candidate][:redirect_to]
-    when 'onboarding_candidate'
+    when "online_presence"
+      redirect_to online_presence_onboarding_path
+    when "onboarding_candidate"
       redirect_to candidate_setup_onboarding_path
     when "onboarding_preferences"
       redirect_to preferences_onboarding_path
@@ -101,7 +119,8 @@ class OnboardingsController < ApplicationController
         :search_status,
         candidate_role_ids: [],
         role_type_attributes: RoleType::TYPES,
-        role_level_attributes: RoleLevel::TYPES
+        role_level_attributes: RoleLevel::TYPES,
+        social_link_attributes: [ :id, :github, :website, :linked_in, :twitter, :_destroy ],
       )
     end
 end

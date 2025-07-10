@@ -1,26 +1,25 @@
 <%= content_for :previous_path, preferences_onboarding_path %>
 <%= content_for :header_nav do %>
-  <%= render "onboardings/onboarding_nav", user: @user %>
+	<%= render "onboardings/onboarding_nav", user: @user %>
 <% end %>
 <%= content_for :cancel_action do %>
-  <%= render "onboardings/logout" %>
+	<%= render "onboardings/logout" %>
 <% end %>
 <%= content_for :footer do %>
-  <%= render "layouts/shared/footer" %>
+	<%= render "layouts/shared/footer" %>
 <% end %>
 <div class="grow max-w-lg w-full mx-auto bg-surface flex flex-col justify-center md:py-0 py-6 px-4 md:px-0">
-  <div>
-    <div class="space-y-1 mb-6 text-center">
-      <h1 class="text-2xl font-medium md:text-2xl">What brings you to Wheel?</h1>
-      <p class="text-secondary text-sm">Select one or more goals that you have with using Wheel as your daily job search tool.</p>
-    </div>
-    <%= styled_form_with(model: @user, url: registration_path(@user), method: :patch, class: "space-y-4", data: { controller: "searchable-select" }) do |form| %>
-      <%= form.hidden_field :redirect_to, value: "trial" %>
-      <%= form.hidden_field :set_onboarding_goals_at, value: Time.current %>
-      <%= form.hidden_field :onboarded_at, value: Time.current %>
-      <%# Assuming current_user is available and has a 'user_type' attribute %>
-
-<%
+	<div>
+		<div class="space-y-1 mb-6 text-center">
+			<h1 class="text-2xl font-medium md:text-2xl">What brings you to Wheel?</h1>
+			<p class="text-secondary text-sm">Select one or more goals that you have with using Wheel as your daily job search tool.</p>
+		</div>
+		<%= styled_form_with(model: @user, url: registration_path(@user), method: :patch, class: "space-y-4", data: { controller: "searchable-select" }) do |form| %>
+			<%= form.hidden_field :redirect_to, value: "trial" %>
+			<%= form.hidden_field :set_onboarding_goals_at, value: Time.current %>
+			<%= form.hidden_field :onboarded_at, value: Time.current %>
+			<%# Assuming current_user is available and has a 'user_type' attribute %>
+			<%
 # Define all possible goal sets
 candidate_goals = [
   { icon: "briefcase", label: "Find new job opportunities", value: "find_jobs" },
@@ -51,25 +50,21 @@ display_goals = case current_user.user_type
                 else [] # Default to an empty array or another set if user_type is neither
                 end
 %>
-
-<div class="space-y-3">
-  <% display_goals.each do |goal| %>
-    <label class="flex items-center gap-2.5 p-4 rounded-lg border border-tertiary cursor-pointer hover:bg-container transition-colors [&:has(input:checked)]:border-solid [&:has(input:checked)]:bg-container">
-      <%= form.check_box :goals, { multiple: true, class: "sr-only" }, goal[:value], nil %>
-      <%= icon goal[:icon] %>
-      <span class="text-primary text-sm"><%= goal[:label] %></span>
-    </label>
-  <% end %>
-</div>
-
-      <div class="mt-6">
-        <%= render ButtonComponent.new(
+			<div class="space-y-3">
+				<% display_goals.each do |goal| %>
+					<label class="flex items-center gap-2.5 p-4 rounded-lg border border-tertiary cursor-pointer hover:bg-container transition-colors [&:has(input:checked)]:border-solid [&:has(input:checked)]:bg-container">
+						<%= form.check_box :goals, { multiple: true, class: "sr-only" }, goal[:value], nil %>
+						<%= icon goal[:icon] %>
+						<span class="text-primary text-sm"><%= goal[:label] %></span>
+					</label>
+				<% end %>
+			</div>
+			<div class="mt-6">
+				<%= render ButtonComponent.new(
           text: "Next",
           full_width: true
         ) %>
-      </div>
-    <% end %>
-  </div>
+			</div>
+		<% end %>
+	</div>
 </div>
-
-
