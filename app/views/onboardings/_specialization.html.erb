@@ -13,7 +13,7 @@
 <div class="mb-4 p-3 bg-yellow-50 border-l-4 border-yellow-400 text-yellow-800 rounded">
   <strong>Note:</strong> You can select up to <span class="font-bold">5</span> specializations.
 </div>
-<%= styled_form_with(model: @candidate, url: specialization_onboarding_path, method: :post) do |form| %>
+<%= styled_form_with(model: @user, url: registration_path(@user), method: :patch) do |form| %>
   <% if @user.candidate && @user.candidate.errors[:candidate_role_ids].any? %>
   <div class="mb-4 p-3 bg-red-50 border-l-4 border-red-400 text-red-800 rounded">
     <%= @user.candidate.errors[:candidate_role_ids].first %>
@@ -21,7 +21,7 @@
 <% end %>
 
   <%= form.hidden_field :redirect_to, value: "onboarding_preferences" %>
-
+  <%= form.fields_for :candidate, @user.candidate do |candidate_fields| %>
   <section id="specialties" class="shadow mt-8 px-4 py-5 lg:rounded-lg sm:p-6">
     <div class="md:grid md:grid-cols-3 md:gap-6">
       <div>
@@ -38,7 +38,7 @@
               <h3 class="font-medium mb-2"><%= group.name %></h3>
               <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
 
-                <%= form.collection_check_boxes(:candidate_role_ids, group.candidate_roles, :id, :name, checked: @user.candidate.instance_variable_get(:@attempted_candidate_role_ids) || @user.candidate.candidate_role_ids) do |specialty| %>
+                <%= candidate_fields.collection_check_boxes(:candidate_role_ids, group.candidate_roles, :id, :name, checked: @user.candidate.instance_variable_get(:@attempted_candidate_role_ids) || @user.candidate.candidate_role_ids) do |specialty| %>
                   <div class="flex items-center">
                     <%= specialty.check_box class: "h-4 w-4 border-gray-300 rounded focus:ring-gray-500" %>
                     <%= specialty.label class: "text-sm ml-3" %>
@@ -51,7 +51,7 @@
       </div>
     </div>
   </section>
-
+  <% end %>
   <%= form.submit "Next" %>
 <% end %>
 </div>

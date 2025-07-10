@@ -20,10 +20,13 @@ class User < ApplicationRecord
   attr_accessor :skip_password_validation
   attr_accessor :current_sign_in_ip_address
   attr_accessor :delete_profile_image
+  attr_accessor :redirect_to
+  # attr_accessor :candidate_role_ids
 
 
   accepts_nested_attributes_for :user_roles, allow_destroy: true
   accepts_nested_attributes_for :location, allow_destroy: true
+  accepts_nested_attributes_for :candidate, allow_destroy: true
 
   has_one_attached :profile_image do |attachable|
     attachable.variant :thumbnail, resize_to_fill: [ 300, 300 ], convert: :webp, saver: { quality: 80 }

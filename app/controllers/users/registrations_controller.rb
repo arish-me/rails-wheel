@@ -52,23 +52,25 @@ class Users::RegistrationsController < Devise::RegistrationsController
     end
   end
 
-    def handle_redirect(notice, resource)
-      case params[:user][:redirect_to]
-      when "onboarding_preferences"
-        redirect_to preferences_onboarding_path
-      when "home"
-        redirect_to root_path
-      when "preferences"
-        redirect_to settings_preferences_path, notice: notice
-      when "goals"
-        redirect_to goals_onboarding_path
-      # when "trial"
-      #   redirect_to trial_onboarding_path
-      else
-        # path = current_user.user? ? : settings_profile_path
-        redirect_to settings_profile_path, notice: notice
-      end
+  def handle_redirect(notice, resource)
+    case params[:user][:redirect_to]
+    when "specialization"
+      redirect_to specialization_onboarding_path
+    when "onboarding_preferences"
+      redirect_to preferences_onboarding_path
+    when "home"
+      redirect_to root_path
+    when "preferences"
+      redirect_to settings_preferences_path, notice: notice
+    when "goals"
+      redirect_to goals_onboarding_path
+    # when "trial"
+    #   redirect_to trial_onboarding_path
+    else
+      # path = current_user.user? ? : settings_profile_path
+      redirect_to settings_profile_path, notice: notice
     end
+  end
 
   protected
 

@@ -29,6 +29,7 @@ Rails.application.routes.draw do
     collection do
       get :profiles_setup
       get :specialization
+      post :specialization
       get :preferences
       get :goals
       get :trial

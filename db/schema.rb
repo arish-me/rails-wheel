@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_05_082635) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_10_145346) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -295,6 +295,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_05_082635) do
     t.index ["linkable_type", "linkable_id"], name: "index_social_links_on_linkable_type_and_linkable_id"
   end
 
+  create_table "specializations", force: :cascade do |t|
+    t.string "specializable_type", null: false
+    t.bigint "specializable_id", null: false
+    t.bigint "candidate_role_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["candidate_role_id"], name: "index_specializations_on_candidate_role_id"
+    t.index ["specializable_type", "specializable_id"], name: "index_specializations_on_specializable"
+  end
+
   create_table "user_roles", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "role_id", null: false
@@ -370,6 +380,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_05_082635) do
   add_foreign_key "role_permissions", "roles"
   add_foreign_key "role_types", "candidates"
   add_foreign_key "roles", "companies"
+  add_foreign_key "specializations", "candidate_roles"
   add_foreign_key "user_roles", "companies"
   add_foreign_key "user_roles", "roles"
   add_foreign_key "user_roles", "users"
