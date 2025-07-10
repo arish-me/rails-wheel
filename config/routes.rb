@@ -28,6 +28,7 @@ Rails.application.routes.draw do
   resource :onboarding, only: :show do
     collection do
       get :profiles_setup
+      get :specialization
       get :preferences
       get :goals
       get :trial

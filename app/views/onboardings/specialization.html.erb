@@ -1,0 +1,26 @@
+<%= content_for :previous_path, onboarding_path %>
+<%= content_for :header_nav do %>
+  <%= render "onboardings/onboarding_nav", user: @user %>
+<% end %>
+<%= content_for :cancel_action do %>
+  <%= render "onboardings/logout" %>
+<% end %>
+
+<%= styled_form_with(model: @candidate, url: candidate_path(@candidate), method: :patch, class: "space-y-4") do |form| %>
+  <%= form.hidden_field :redirect_to, value: "specialization" %>
+  <div class="mb-6">
+    <h2 class="text-xl font-semibold mb-4">Select Your Specialization</h2>
+    <% @candidate_role_groups.each do |group| %>
+      <div class="mb-4">
+        <h3 class="font-medium mb-2"><%= group.name %></h3>
+        <% group.candidate_roles.each do |role| %>
+          <div class="flex items-center mb-1">
+            <%= form.radio_button :candidate_role_id, role.id, checked: @candidate.candidate_role_id == role.id %>
+            <%= form.label :candidate_role_id, role.name, value: role.id, class: "ml-2" %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+  <%= form.submit "Continue", class: "w-full" %>
+<% end %>

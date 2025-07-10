@@ -9,7 +9,7 @@
 <div class="grow max-w-4xl w-full mx-auto bg-surface flex flex-col justify-center md:py-0 py-6 px-4 md:px-0">
   <div>
     <% if @user.user_type == 'user' %>
-      <%= render partial: 'user_user_type', user: @user %>
+      <%= render partial: 'onboardings/user_user_type', user: @user %>
     <% else %>
       <div class="space-y-6">
         <div>

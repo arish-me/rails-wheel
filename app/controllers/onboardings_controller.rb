@@ -7,6 +7,14 @@ class OnboardingsController < ApplicationController
 
   def show
     @company = current_user&.company || Company.new
+    @location = current_user.build_location unless current_user.location
+    @candidate = current_user.candidate
+  end
+
+  def specialization
+    @user = current_user
+    @candidate = @user.candidate
+    @candidate_role_groups = CandidateRoleGroup.includes(:candidate_roles).all
   end
 
   def preferences

@@ -29,6 +29,8 @@ module Onboardable
       return false if path.starts_with?("/users")
       return false if path.starts_with?("/companies")
 
+
+
       [
         new_registration_path(User),
         new_session_path(User)

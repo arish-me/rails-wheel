@@ -40,8 +40,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
       set_minimum_password_length
       respond_to do |format|
         format.html do
-          flash[:alert] = resource.errors.full_messages.join(", ")
-          redirect_to request.referer || after_update_path_for(resource)
+          flash.now[:alert] = resource.errors.full_messages.join(", ")
+          if request.referrer.split("/").include?("onboarding")
+            render "onboardings/show", status: :unprocessable_entity, layout: "wizard"
+          else
+            redirect_to request.referer || after_update_path_for(resource)
+          end
         end
         format.json { render json: { errors: resource.errors.full_messages }, status: :unprocessable_entity }
       end

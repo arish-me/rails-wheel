@@ -1,6 +1,8 @@
 class Candidate < ApplicationRecord
   include Hashid::Rails
 
+  attr_accessor :redirect_to
+
   belongs_to :user
   belongs_to :candidate_role, optional: true
   has_one :profile, class_name: "Candidate::Profile", dependent: :destroy
