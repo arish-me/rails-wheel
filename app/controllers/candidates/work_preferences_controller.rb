@@ -12,6 +12,15 @@ class Candidates::WorkPreferencesController < ApplicationController
 
   def show
     @work_preference.ensure_role_associations
+    # respond_to do |format|
+    #   format.html do
+    #     if turbo_frame_request?
+    #       render partial: 'candidates/work_preferences/form', layout: false
+    #     else
+    #       render :show
+    #     end
+    #   end
+    # end
   end
 
   def create

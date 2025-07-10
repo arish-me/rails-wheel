@@ -11,11 +11,7 @@ class CandidatesController < ApplicationController
   end
 
   def edit
-    @candidate.build_profile unless @candidate.profile
-    @candidate.build_user unless @candidate.user
-    @candidate.build_work_preference unless @candidate.work_preference
-    @candidate.build_social_link unless @candidate.social_link
-    @candidate.build_location unless @candidate.location
+    @profile = @candidate.profile ? @candidate.profile : @candidate.build_profile
   end
 
   def update

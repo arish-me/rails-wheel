@@ -6,7 +6,7 @@
                     tab[:path],
                     class: tab_class(tab[:path]),
                     id: "#{tab[:id]}-tab",
-                    data: { tabs_target: "##{tab[:id]}-content" },
+                    data: { tabs_target: "##{tab[:id]}-content", turbo_frame: "candidate-tab-content" },
                     role: "tab",
                     "aria-controls": tab[:id],
                     "aria-selected": is_current?(tab[:path]) %>

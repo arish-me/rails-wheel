@@ -2,6 +2,11 @@ class Candidates::SocialLinksController < ApplicationController
   before_action :set_candidate
   before_action :set_social_link, only: [ :show, :update ]
   def show
+    # if turbo_frame_request?
+    #   render partial: 'candidates/social_links/form', layout: false
+    # else
+    #   render :show
+    # end
   end
 
   def update

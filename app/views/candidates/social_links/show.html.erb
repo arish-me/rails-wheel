@@ -1,3 +1,9 @@
-<%= render 'candidates/tab_container' do %>
-  <%= render 'candidates/social_links/form' %>
+<% if turbo_frame_request? %>
+  <turbo-frame id="candidate-tab-content">
+    <%= render 'candidates/social_links/form' %>
+  </turbo-frame>
+<% else %>
+  <%= render 'candidates/tab_container' do %>
+    <%= render 'candidates/social_links/form' %>
+  <% end %>
 <% end %>
