@@ -7,12 +7,10 @@ class Candidates::WorkPreferencesController < ApplicationController
   end
 
   def edit
-    # Ensure role associations exist
     @work_preference.ensure_role_associations
   end
 
   def show
-    # Ensure role associations exist
     @work_preference.ensure_role_associations
   end
 
@@ -25,7 +23,7 @@ class Candidates::WorkPreferencesController < ApplicationController
         flash[:notice] = "Work preferences were successfully created."
         format.html { redirect_to candidate_work_preference_path(@candidate), notice: "Work preferences were successfully created." }
       else
-        format.html { render :edit }
+        format.html { render :show }
         format.json { render json: @work_preference.errors, status: :unprocessable_entity }
       end
     end
@@ -38,7 +36,7 @@ class Candidates::WorkPreferencesController < ApplicationController
         format.html { redirect_to candidate_work_preference_path(@candidate), notice: "Work preferences were successfully created." }
       else
         flash[:alert] = @work_preference.errors.full_messages.join(", ")
-        format.html { render :edit, status: :unprocessable_entity }
+        format.html { render :show, status: :unprocessable_entity }
         format.json { render json: @work_preference.errors, status: :unprocessable_entity }
       end
     end

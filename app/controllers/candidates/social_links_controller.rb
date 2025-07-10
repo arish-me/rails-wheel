@@ -11,7 +11,7 @@ class Candidates::SocialLinksController < ApplicationController
         format.html { redirect_to candidate_social_link_path(@candidate) }
       else
         flash[:alert] = @social_link.errors.full_messages.join(", ")
-        format.html { render :edit, status: :unprocessable_entity }
+        format.html { render :show, status: :unprocessable_entity }
         format.json { render json: @social_link.errors, status: :unprocessable_entity }
       end
     end

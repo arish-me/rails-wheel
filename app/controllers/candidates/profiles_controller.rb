@@ -8,10 +8,6 @@ class Candidates::ProfilesController < ApplicationController
     @profile.user.build_location unless @profile.user.location
   end
 
-  def new
-    @profile = @candidate.build_profile
-  end
-
   def create
     @profile = @candidate.build_profile(profile_params)
 
@@ -29,7 +25,7 @@ class Candidates::ProfilesController < ApplicationController
         format.html { redirect_to candidate_profile_path(@candidate), notice: "Professional information was successfully updated." }
       else
         flash[:alert] = @profile.errors.full_messages.join(", ")
-        format.html { render :edit, status: :unprocessable_entity }
+        format.html { render :show, status: :unprocessable_entity }
         format.json { render json: @profile.errors, status: :unprocessable_entity }
       end
     end
