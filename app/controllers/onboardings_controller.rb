@@ -3,7 +3,7 @@ class OnboardingsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_user
   before_action :need_onboard
-  before_action :set_candidate, only: [ :specialization ]
+  before_action :set_candidate, only: [:specialization, :candidate_setup]
   # before_action :load_invitation
 
   def show
@@ -13,7 +13,8 @@ class OnboardingsController < ApplicationController
   end
 
   def specialization
-    unless request.get?
+    if request.get?
+    else
       respond_to do |format|
        if @candidate.update(specialization_params)
          flash[:notice] = "Profile was successfully updated."
@@ -35,11 +36,30 @@ class OnboardingsController < ApplicationController
     @company = Company.new
   end
 
+  def candidate_setup
+    if request.get?
+    else
+      respond_to do |format|
+       if @candidate.update(specialization_params)
+         flash[:notice] = "Profile was successfully updated."
+         handle_redirect(flash[:notice])
+         format.html { }
+       else
+         flash[:alert] = @candidate.errors.full_messages.join(", ")
+         format.html { render :candidate_setup, status: :unprocessable_entity }
+         format.json { render json: @candidate.errors, status: :unprocessable_entity }
+       end
+      end
+    end
+  end
+
   def trial
   end
 
   def handle_redirect(notice)
     case params[:candidate][:redirect_to]
+    when 'onboarding_candidate'
+      redirect_to candidate_setup_onboarding_path
     when "onboarding_preferences"
       redirect_to preferences_onboarding_path
     when "home"
@@ -77,8 +97,11 @@ class OnboardingsController < ApplicationController
     end
 
     def specialization_params
-      params.require(:candidate).permit(:redirect_to,
+      params.require(:candidate).permit(:redirect_to, :headline, :experience, :hourly_rate,
+        :search_status,
         candidate_role_ids: [],
+        role_type_attributes: RoleType::TYPES,
+        role_level_attributes: RoleLevel::TYPES
       )
     end
 end

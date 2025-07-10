@@ -30,6 +30,10 @@ Rails.application.routes.draw do
       get :profiles_setup
       get :specialization
       post :specialization
+
+      get :candidate_setup
+      post :candidate_setup
+
       get :preferences
       get :goals
       get :trial
