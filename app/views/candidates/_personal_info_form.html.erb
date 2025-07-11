@@ -1,0 +1,37 @@
+<%= render DialogComponent.new do |dialog| %>
+	<% dialog.with_header(title: t("edit_personal_information")) %>
+	<% dialog.with_body do %>
+		<div id="candidate_profile_personal_info">
+			<%= styled_form_with model: candidate, url: candidate_path(candidate), method: :patch, class: "space-y-4" do |form| %>
+				<% if candidate.errors.any? %>
+					<%= render "shared/form_errors" , model: candidate %>
+				<% end %>
+				<%= form.fields_for :user do |user_form| %>
+					<%= user_form.hidden_field :email_required, value: false %>
+					<div class="space-y-6 overflow-hidden">
+						<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+							<div>
+								<%= user_form.text_field :first_name, label: 'First Name' , placeholder: 'Enter First Name' %>
+							</div>
+							<div>
+								<%= user_form.text_field :last_name, label: 'Last Name' , placeholder: 'Enter Last Name' %>
+							</div>
+							<div>
+								<%= user_form.select :gender,  User.genders.map { |key, _| [User::GENDER_DISPLAY[key.to_sym], key] }, { include_blank: "---Select---", label: "Pronounce" } %>
+							</div>
+							<div>
+								<%= user_form.telephone_field :phone_number, placeholder: "+1 (555) 123-4567" , label: "Phone" %>
+							</div>
+							<div>
+								<%= user_form.date_field :date_of_birth,   max: Date.today - 10.years, min: Date.today - 120.years, label: "Date of birth" %>
+							</div>
+						</div>
+					</div>
+				<% end %>
+				<section>
+					<%= form.submit 'Submit' %>
+				</section>
+			<% end %>
+		</div>
+	<% end %>
+<% end %>

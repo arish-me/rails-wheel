@@ -1,0 +1,135 @@
+<div class="mx-auto py-8 px-4">
+	<!-- Header Section -->
+	<turbo-frame id="candidate_profile_header">
+		<div class="relative rounded-lg overflow-hidden shadow bg-white mb-8">
+			<div class="h-40 w-full bg-gray-200 relative">
+				<%= image_tag 'default_splash.jpg', class: 'object-cover w-full h-40', alt: 'Cover Image' %>
+			</div>
+			<div class="relative -bottom-12 left-8 flex items-center">
+				<div class="h-24 w-24 rounded-full border-4 border-white bg-gray-300 overflow-hidden">
+					<%= image_tag 'avatar.png', class: 'object-cover w-full h-full', alt: 'Avatar' %>
+				</div>
+				<div class="ml-6 mt-8">
+					<h1 class="text-2xl font-bold text-gray-900"><%= @candidate.user.display_name %></h1>
+					<div class="text-gray-600 text-sm mt-1"><%= @candidate.headline.presence || 'Student / CS Undergraduate' %></div>
+          <div class="text-gray-500 text-xs mt-1"><%= @candidate.user.location.location_search || 'Location' %></div>
+				</div>
+			</div>
+			<% if @candidate == current_user.candidate %>
+				<div class="absolute top-4 right-4">
+					<%= link_to 'Edit', edit_candidate_path(@candidate), class: 'btn btn-sm btn-primary' %>
+				</div>
+			<% end %>
+			<div class="h-16"></div>
+			<!-- Spacer for avatar overlap -->
+		</div>
+	</turbo-frame>
+	<!-- Profile Completion Section -->
+	<turbo-frame id="candidate_profile_completion">
+		<div class="bg-white rounded-lg shadow p-6 mb-8">
+			<div class="flex items-center justify-between mb-2">
+				<span class="font-semibold text-gray-700">Complete your profile</span>
+				<span class="text-lg font-bold text-gray-900">88%</span>
+			</div>
+			<div class="w-full bg-gray-200 rounded-full h-2.5 mb-4">
+				<div class="bg-blue-600 h-2.5 rounded-full" style="width: 88%"></div>
+			</div>
+			<div class="space-y-2">
+				<div class="flex items-center justify-between">
+					<span>Personal Information</span>
+					<span class="text-xs text-red-500 bg-red-100 rounded px-2 py-0.5">Incomplete</span>
+					<%= link_to 'Update Now', edit_candidate_path(@candidate, anchor: 'personal-info'), class: 'text-blue-600 text-xs' %>
+				</div>
+				<div class="flex items-center justify-between">
+					<span>Education</span>
+					<span class="text-xs text-red-500 bg-red-100 rounded px-2 py-0.5">Incomplete</span>
+					<%= link_to 'Update Now', edit_candidate_path(@candidate, anchor: 'education'), class: 'text-blue-600 text-xs' %>
+				</div>
+				<div class="flex items-center justify-between">
+					<span>Work Experience</span>
+					<span class="text-xs text-red-500 bg-red-100 rounded px-2 py-0.5">Incomplete</span>
+					<%= link_to 'Update Now', edit_candidate_path(@candidate, anchor: 'work-experience'), class: 'text-blue-600 text-xs' %>
+				</div>
+			</div>
+		</div>
+	</turbo-frame>
+	<!-- Personal Information Section -->
+	<%= turbo_frame_tag("candidate_profile_personal_info") do %>
+		<div class="bg-white rounded-lg shadow p-6 mb-8">
+			<div class="flex items-center justify-between mb-4">
+				<h2 class="text-lg font-semibold text-gray-800">Personal Information</h2>
+				<% if @candidate == current_user.candidate %>
+					<%= render LinkComponent.new(
+                  text: "Edit",
+                  variant: :primary,
+                  href: candidate_path(@candidate, edit: 'personal_info'),
+                  frame: :modal
+                ) %>
+				<% end %>
+			</div>
+			<% if params[:edit] == "personal_info" %>
+				<%= render "candidates/personal_info_form", candidate: @candidate %>
+			<% else %>
+				<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+					<div>
+						<div class="text-xs text-gray-500">Name</div>
+						<div class="text-gray-900"><%= @candidate.user.display_name %></div>
+					</div>
+					<div>
+						<div class="text-xs text-gray-500">Mobile Number</div>
+						<div class="text-gray-900"><%= @candidate.user.phone_number.presence || '—' %></div>
+					</div>
+					<div>
+						<div class="text-xs text-gray-500">Birthday</div>
+						<div class="text-gray-900"><%= @candidate.user.date_of_birth&.strftime('%d %B %Y') || '—' %></div>
+					</div>
+					<div>
+						<div class="text-xs text-gray-500">Nationality</div>
+						<div class="text-gray-500 text-xs mt-1"><%= @candidate.user.location.location_search || '-' %></div>
+					</div>
+					<div>
+						<div class="text-xs text-gray-500">Gender</div>
+						<div class="text-gray-900"><%= @candidate.user.gender&.humanize || '—' %></div>
+					</div>
+				</div>
+			</div>
+		<% end %>
+	<% end %>
+	<!-- Education Section -->
+	<turbo-frame id="candidate_profile_education">
+		<div class="bg-white rounded-lg shadow p-6 mb-8">
+			<div class="flex items-center justify-between mb-4">
+				<h2 class="text-lg font-semibold text-gray-800">Education</h2>
+				<% if @candidate == current_user.candidate %>
+					<%= link_to 'Edit', edit_candidate_path(@candidate, anchor: 'education'), class: 'text-blue-600 text-xs' %>
+				<% end %>
+			</div>
+			<div>
+				<div class="text-gray-900">King Saud University</div>
+				<div class="text-gray-500 text-sm">BSc Computer Science, 2021 - Present</div>
+			</div>
+		</div>
+	</turbo-frame>
+	<!-- Work Experience Section -->
+	<turbo-frame id="candidate_profile_work_experience">
+		<div class="bg-white rounded-lg shadow p-6 mb-8">
+			<div class="flex items-center justify-between mb-4">
+				<h2 class="text-lg font-semibold text-gray-800">Work Experience</h2>
+				<% if @candidate == current_user.candidate %>
+					<%= link_to 'Edit', edit_candidate_path(@candidate, anchor: 'work-experience'), class: 'text-blue-600 text-xs' %>
+				<% end %>
+			</div>
+			<div>
+				<div class="mb-4">
+					<div class="font-semibold text-gray-900">Coop Training</div>
+					<div class="text-gray-500 text-sm">Cyber Security Associate, Jul 2023 - Jan 2024 · 1 yr</div>
+					<div class="text-gray-500 text-xs">Enhanced InfoWatch by boosting high alert notifications by 40%, ensuring prompt response for at-risk individuals, and slashing danger zone entries by 80% through evacuation navigation</div>
+				</div>
+				<div>
+					<div class="font-semibold text-gray-900">ABC Training</div>
+					<div class="text-gray-500 text-sm">Cyber Security Intern, Jan 2023 - Jun 2023 · 6 mos</div>
+				</div>
+			</div>
+		</div>
+	</turbo-frame>
+</div>

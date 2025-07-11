@@ -38,7 +38,7 @@ class Location < ApplicationRecord
   end
 
   def location_search
-    query
+    [ city, state, country ].join(", ")
   end
 
   private
