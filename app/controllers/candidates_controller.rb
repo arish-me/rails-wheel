@@ -34,7 +34,10 @@ class CandidatesController < ApplicationController
   private
   def candidate_params
     params.require(:candidate).permit(
-      user_attributes: [:id, :first_name, :last_name, :phone_number, :gender, :date_of_birth, :email_required]
+      user_attributes: [:id, :first_name, :last_name, :phone_number, :gender, :date_of_birth, :email_required,
+      location_attributes: [:id, :location_search, :city, :state, :country, :_destroy]
+      ],
+
     )
   end
 end
