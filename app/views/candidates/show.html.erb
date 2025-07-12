@@ -12,68 +12,67 @@
 			<div class="text-sm text-gray-900"><%= @candidate.headline %></div>
 		</div>
 		<!-- Personal Info -->
-    <div class="w-full text-start mb-6">
-      <%= turbo_frame_tag "candidate_profile_personal_info" do %>
-      <div class="flex items-center justify-between mb-4">
-        <h2 class="text-sm font-medium text-gray-500">Personal Information</h2>
-              <%= render LinkComponent.new(
+		<div class="w-full text-start mb-6">
+			<%= turbo_frame_tag "candidate_profile_personal_info" do %>
+				<div class="flex items-center justify-between mb-4">
+					<h2 class="text-sm font-medium text-gray-500">Personal Information</h2>
+					<%= render LinkComponent.new(
                   text: "Edit",
                   variant: :primary,
                   href: candidate_path(@candidate, edit: 'personal_info'),
                   frame: :modal
               ) %>
-        <% if params[:edit] == "personal_info" %>
-          <%= render "candidates/personal_info_form", candidate: @candidate %>
-        <% end %>
-      </div>
-      <div class="space-y-5">
-				<!-- Gender -->
-				<div class="flex items-center gap-4">
-					<div class="flex-shrink-0 bg-gray-100 rounded-lg w-10 h-10 flex items-center justify-center">
-						<!-- Gender Icon -->
-            <%= inline_svg_tag "icons/solid/gender.svg", class: "h-5 w-5 text-gray-400", aria_hidden: true %>
+					<% if params[:edit] == "personal_info" %>
+						<%= render "candidates/personal_info_form", candidate: @candidate %>
+					<% end %>
+				</div>
+				<div class="space-y-5">
+					<!-- Gender -->
+					<div class="flex items-center gap-4">
+						<div class="flex-shrink-0 bg-gray-100 rounded-lg w-10 h-10 flex items-center justify-center">
+							<!-- Gender Icon -->
+							<%= inline_svg_tag "icons/solid/gender.svg", class: "h-5 w-5 text-gray-400", aria_hidden: true %>
+						</div>
+						<div>
+							<div class="text-xs text-gray-500">Gender</div>
+							<span class="text-gray-900 text-sm font-medium"><%= @candidate.user.gender&.humanize || '-' %></span>
+						</div>
 					</div>
-					<div>
-						<div class="text-xs text-gray-500">Gender</div>
-						<span class="text-gray-900 text-sm font-medium"><%= @candidate.user.gender&.humanize || '-' %></span>
+					<!-- Date of Birth -->
+					<div class="flex items-center gap-4">
+						<div class="flex-shrink-0 bg-gray-100 rounded-lg w-10 h-10 flex items-center justify-center">
+							<!-- Calendar Icon -->
+							<%= inline_svg_tag "icons/solid/date_of_birth.svg", class: "h-5 w-5 text-gray-400", aria_hidden: true %>
+						</div>
+						<div>
+							<div class="text-xs text-gray-500">Date of Birth</div>
+							<span class="text-gray-900 text-sm font-medium"><%= @candidate.user.date_of_birth&.strftime('%B %d, %Y') || '-' %></span>
+						</div>
+					</div>
+					<!-- Email -->
+					<div class="flex items-center gap-4">
+						<div class="flex-shrink-0 bg-gray-100 rounded-lg w-10 h-10 flex items-center justify-center">
+							<!-- Email Icon -->
+							<%= inline_svg_tag "icons/solid/mail.svg", class: "h-5 w-5 text-gray-400", aria_hidden: true %>
+						</div>
+						<div>
+							<div class="text-xs text-gray-500">Email Address</div>
+							<span class="text-gray-900 text-sm font-medium"><%= @candidate.user.email %></span>
+						</div>
+					</div>
+					<!-- Phone -->
+					<div class="flex items-center gap-4">
+						<div class="flex-shrink-0 bg-gray-100 rounded-lg w-10 h-10 flex items-center justify-center">
+							<!-- Phone Icon -->
+							<%= lucide_icon "phone", class: "inline-flex items-center justify-center w-6 h-6 text-gray-400" %>
+						</div>
+						<div>
+							<div class="text-xs text-gray-500">Phone Number</div>
+							<span class="text-gray-900 text-sm font-medium"><%= @candidate.user.phone_number || '-' %></span>
+						</div>
 					</div>
 				</div>
-				<!-- Date of Birth -->
-				<div class="flex items-center gap-4">
-					<div class="flex-shrink-0 bg-gray-100 rounded-lg w-10 h-10 flex items-center justify-center">
-						<!-- Calendar Icon -->
-						<%= inline_svg_tag "icons/solid/date_of_birth.svg", class: "h-5 w-5 text-gray-400", aria_hidden: true %>
-					</div>
-					<div>
-						<div class="text-xs text-gray-500">Date of Birth</div>
-						<span class="text-gray-900 text-sm font-medium"><%= @candidate.user.date_of_birth&.strftime('%B %d, %Y') || '-' %></span>
-					</div>
-				</div>
-				<!-- Email -->
-				<div class="flex items-center gap-4">
-					<div class="flex-shrink-0 bg-gray-100 rounded-lg w-10 h-10 flex items-center justify-center">
-						<!-- Email Icon -->
-						<%= inline_svg_tag "icons/solid/mail.svg", class: "h-5 w-5 text-gray-400", aria_hidden: true %>
-					</div>
-					<div>
-						<div class="text-xs text-gray-500">Email Address</div>
-						<span class="text-gray-900 text-sm font-medium"><%= @candidate.user.email %></span>
-					</div>
-				</div>
-				<!-- Phone -->
-				<div class="flex items-center gap-4">
-					<div class="flex-shrink-0 bg-gray-100 rounded-lg w-10 h-10 flex items-center justify-center">
-						<!-- Phone Icon -->
-						<%= lucide_icon "phone", class: "inline-flex items-center justify-center w-6 h-6 text-gray-400" %>
-					</div>
-					<div>
-						<div class="text-xs text-gray-500">Phone Number</div>
-						<span class="text-gray-900 text-sm font-medium"><%= @candidate.user.phone_number || '-' %></span>
-					</div>
-				</div>
-			</div>
-      <% end %>
-
+			<% end %>
 		</div>
 		<div class="w-full text-start mb-6">
 			<div class="space-y-5 divide-y divide-gray-200">
@@ -84,7 +83,7 @@
 					<%= render RoleLevels::Component.new(@candidate&.role_level) %>
 				<% end %>
 				<%= render RenderableComponent.new("space-y-3 pb-4") do %>
-          <h2 class="text-sm font-medium text-gray-500"><%= t(".social_links") %></h2>
+					<h2 class="text-sm font-medium text-gray-500"><%= t(".social_links") %></h2>
 					<%= render ExternalLinkComponent.new(@candidate.social_link.website) %>
 					<%= render SocialLinkComponent.new(@candidate.social_link.github, :github) %>
 					<%= render SocialLinkComponent.new(@candidate.social_link.linked_in, :linkedin) %>
@@ -98,5 +97,5 @@
 		</div>
 	</aside>
 	<!-- Main Content -->
-  <%= render 'candidates/main_content' %>
+	<%= render 'candidates/main_content' %>
 </div>

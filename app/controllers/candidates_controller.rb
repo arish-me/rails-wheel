@@ -19,7 +19,7 @@ class CandidatesController < ApplicationController
         flash.now[:alert] = @candidate.errors.full_messages.join(", ")
         format.turbo_stream {
           render turbo_stream: [
-            turbo_stream.replace("candidate_profile_personal_info", partial: "candidates/personal_info_form", locals: { candidate: @candidate })
+            turbo_stream.replace("candidate_profile_personal_info", partial: "candidates/forms/personal_information", locals: { candidate: @candidate })
           ], status: :unprocessable_entity
         }
         format.html { render :edit, status: :unprocessable_entity }
