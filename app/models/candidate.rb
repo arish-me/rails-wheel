@@ -11,17 +11,22 @@ class Candidate < ApplicationRecord
   has_one :role_level, class_name: "RoleLevel", dependent: :destroy
 
   has_one :social_link, as: :linkable, dependent: :destroy
-  has_one :location, as: :locatable, dependent: :destroy, autosave: true
+  # has_one :location, as: :locatable, dependent: :destroy, autosave: true
   accepts_nested_attributes_for :user
   # accepts_nested_attributes_for :work_preference
   has_many :specializations, as: :specializable, dependent: :destroy
   has_many :candidate_roles, through: :specializations
+  has_many :candidate_skills
+  has_many :skills, through: :candidate_skills
+
   accepts_nested_attributes_for :specializations, allow_destroy: true
   accepts_nested_attributes_for :role_level, update_only: true
   accepts_nested_attributes_for :role_type, update_only: true
   accepts_nested_attributes_for :social_link, update_only: true
 
   validate :specialization_count_within_bounds, on: :update, if: :validate_for_redirect_target?
+  validate :skills_count_within_bounds, on: :update, if: :validate_for_redirect_target?
+
 
   validates :headline, presence: true, on: :update, unless: :validate_for_redirect_target?
   validates :experience, presence: true, on: :update, unless: :validate_for_redirect_target?
@@ -94,8 +99,12 @@ class Candidate < ApplicationRecord
     super || build_social_link
   end
 
-   def validate_for_redirect_target?
-    [ "onboarding_candidate" ].include?(redirect_to)
+  def validate_for_redirect_target?
+    [ "onboarding_candidate", 'online_presence' ].include?(redirect_to)
+  end
+
+  def missing_fields
+    social_link.valid?
   end
 
 
@@ -105,6 +114,15 @@ class Candidate < ApplicationRecord
       errors.add(:candidate_role_ids, "You must select at least one specialization.")
     elsif count > 5
       errors.add(:candidate_role_ids, "You can select up to 5 specializations only.")
+    end
+  end
+
+  def skills_count_within_bounds
+    count = skill_ids.reject(&:blank?).size
+    if count < 1
+      errors.add(:skill_ids, "You must select at least one skill.")
+    elsif count > 5
+      errors.add(:skill_ids, "You can select up to 10 skill only.")
     end
   end
 end

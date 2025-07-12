@@ -1,12 +1,14 @@
-<%= styled_form_with model: category, class: "space-y-4" do |f| %>
-  <% if category.errors.any? %>
-    <%= render "shared/form_errors" , model: category %>
+<%= modal_form_wrapper title: t(".edit_category") do %>
+  <%= styled_form_with model: category, class: "space-y-4" do |f| %>
+    <% if category.errors.any? %>
+      <%= render "shared/form_errors" , model: category %>
+    <% end %>
+    <section class="space-y-2 overflow-hidden">
+      <%= f.text_field :name, label: 'Name' , placeholder: 'Enter Name' %>
+      <%= f.textarea :description, label: 'Description' , placeholder: 'Enter Resource Name' %>
+    </section>
+    <section>
+      <%= f.submit 'Submit' %>
+    </section>
   <% end %>
-  <section class="space-y-2 overflow-hidden">
-    <%= f.text_field :name, label: 'Name' , placeholder: 'Enter Name' %>
-    <%= f.textarea :description, label: 'Description' , placeholder: 'Enter Resource Name' %>
-  </section>
-  <section>
-    <%= f.submit 'Submit' %>
-  </section>
 <% end %>

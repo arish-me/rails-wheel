@@ -324,6 +324,10 @@ GEM
     pg_search (2.3.7)
       activerecord (>= 6.1)
       activesupport (>= 6.1)
+    phony (2.22.2)
+    phony_rails (0.15.0)
+      activesupport (>= 3.0)
+      phony (>= 2.18.12)
     platform_agent (1.0.1)
       activesupport (>= 5.2.0)
       useragent (~> 0.16.3)
@@ -601,6 +605,7 @@ DEPENDENCIES
   pagy
   pg (~> 1.1)
   pg_search
+  phony_rails
   pretender
   propshaft
   puma (>= 5.0)

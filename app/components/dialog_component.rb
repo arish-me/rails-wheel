@@ -81,7 +81,9 @@ class DialogComponent < ViewComponent::Base
 
   def dialog_inner_classes
     variant_classes = if drawer?
-      "lg:w-[550px] h-full"
+      class_names(
+        "lg:w-[550px] h-full"
+      )
     else
       class_names(
         "max-h-full",

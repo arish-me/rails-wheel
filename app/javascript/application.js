@@ -3,6 +3,7 @@ import "@hotwired/turbo-rails"
 import "controllers"
 import "chartkick"
 import "Chart.bundle"
+
 import { DirectUpload } from "@rails/activestorage"
 import * as ActiveStorage from "@rails/activestorage"
 import * as ActionCable from '@rails/actioncable'
