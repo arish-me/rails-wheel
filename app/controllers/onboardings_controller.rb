@@ -38,6 +38,7 @@ class OnboardingsController < ApplicationController
 
   def candidate_setup
     if request.get?
+      @skills = Skill.order(:name)
     else
       respond_to do |format|
        if @candidate.update(specialization_params)

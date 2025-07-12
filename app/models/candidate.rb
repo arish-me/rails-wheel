@@ -25,6 +25,8 @@ class Candidate < ApplicationRecord
   accepts_nested_attributes_for :social_link, update_only: true
 
   validate :specialization_count_within_bounds, on: :update, if: :validate_for_redirect_target?
+  validate :skills_count_within_bounds, on: :update, if: :validate_for_redirect_target?
+
 
   validates :headline, presence: true, on: :update, unless: :validate_for_redirect_target?
   validates :experience, presence: true, on: :update, unless: :validate_for_redirect_target?
@@ -98,7 +100,7 @@ class Candidate < ApplicationRecord
   end
 
   def validate_for_redirect_target?
-    [ "onboarding_candidate" ].include?(redirect_to)
+    [ "onboarding_candidate", 'online_presence' ].include?(redirect_to)
   end
 
   def missing_fields
@@ -112,6 +114,15 @@ class Candidate < ApplicationRecord
       errors.add(:candidate_role_ids, "You must select at least one specialization.")
     elsif count > 5
       errors.add(:candidate_role_ids, "You can select up to 5 specializations only.")
+    end
+  end
+
+  def skills_count_within_bounds
+    count = skill_ids.reject(&:blank?).size
+    if count < 1
+      errors.add(:skill_ids, "You must select at least one skill.")
+    elsif count > 5
+      errors.add(:skill_ids, "You can select up to 10 skill only.")
     end
   end
 end
