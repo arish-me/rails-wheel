@@ -11,7 +11,7 @@ class Candidate < ApplicationRecord
   has_one :role_level, class_name: "RoleLevel", dependent: :destroy
 
   has_one :social_link, as: :linkable, dependent: :destroy
-  has_one :location, as: :locatable, dependent: :destroy, autosave: true
+  # has_one :location, as: :locatable, dependent: :destroy, autosave: true
   accepts_nested_attributes_for :user
   # accepts_nested_attributes_for :work_preference
   has_many :specializations, as: :specializable, dependent: :destroy

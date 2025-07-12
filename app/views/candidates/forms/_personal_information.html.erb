@@ -23,7 +23,8 @@
 								<%= user_form.select :gender,  User.genders.map { |key, _| [User::GENDER_DISPLAY[key.to_sym], key] }, { include_blank: "---Select---", label: "Pronounce" } %>
 							</div>
 							<div>
-								<%= user_form.telephone_field :phone_number, placeholder: "+1 (555) 123-4567" , label: "Phone" %>
+								<%= user_form.telephone_field :phone_number,  placeholder: "+1 (555) 123-4567 or +91 98765 43210", label: "Phone" %>
+								<p class="text-gray-500 text-sm mt-1">Please include your country code (e.g., +1 for USA, +91 for India).</p>
 							</div>
 							<div>
 								<%= user_form.date_field :date_of_birth,   max: Date.today - 10.years, min: Date.today - 120.years, label: "Date of birth" %>
@@ -45,6 +46,7 @@
 							<%= location.text_field :location_search, placeholder: 'Enter address e.g. San Francisco, California' %>
 							<div class="form-field combobox text-xs">
 								<%= location.combobox :country,  ISO3166::Country.pluck(:iso_short_name) %>
+
 							</div>
 
 							<%if Rails.env.development? && false  %>
@@ -61,13 +63,13 @@
                     places_autocomplete_target: "address"
                   }
                 %>
-										<p class="mt-1 text-xs text-gray-500">Please enter a complete address including city, state, and country</p>
+									<p class="mt-1 text-xs text-gray-500">Please enter a complete address including city, state, and country</p>
 									</div>
 									<!-- Hidden fields that will be populated by autocomplete -->
 									<%= location.hidden_field :city, data: { places_autocomplete_target: "city" } %>
 									<%= location.hidden_field :state, data: { places_autocomplete_target: "state" } %>
 									<%= location.hidden_field :country, data: { places_autocomplete_target: "country" } %>
-									<%= location.hidden_field :id %>
+
 									<!-- Additional hidden fields for autocomplete -->
 									<input type="hidden" data-places-autocomplete-target="streetNumber" />
 									<input type="hidden" data-places-autocomplete-target="route" />

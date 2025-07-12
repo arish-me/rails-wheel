@@ -6,7 +6,7 @@ class CandidatesController < ApplicationController
   def show
   end
   def edit
-    @location = current_user.build_location unless current_user.location
+    # @location = current_user.build_location unless current_user.location
   end
 
   def update

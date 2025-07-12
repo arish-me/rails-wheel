@@ -20,7 +20,7 @@ class User < ApplicationRecord
   attr_accessor :skip_password_validation
   attr_accessor :current_sign_in_ip_address
   attr_accessor :delete_profile_image
-  attr_accessor :redirect_to, :email_required
+  attr_accessor :redirect_to, :email_required, :full_phone_number
   # attr_accessor :candidate_role_ids
 
 
