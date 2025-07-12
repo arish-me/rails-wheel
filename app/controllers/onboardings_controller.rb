@@ -13,6 +13,7 @@ class OnboardingsController < ApplicationController
 
   def specialization
     if request.get?
+       @skills = Skill.order(:name)
     else
       respond_to do |format|
        if @candidate.update(specialization_params)
@@ -117,6 +118,7 @@ class OnboardingsController < ApplicationController
     def specialization_params
       params.require(:candidate).permit(:redirect_to, :headline, :experience, :hourly_rate,
         :search_status,
+        skill_ids: [],
         candidate_role_ids: [],
         role_type_attributes: RoleType::TYPES,
         role_level_attributes: RoleLevel::TYPES,

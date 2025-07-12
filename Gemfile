@@ -43,7 +43,7 @@ gem "classy-yaml"
 gem "inline_svg"
 gem "redcarpet"
 gem "hashid-rails"
-gem 'phony_rails'
+gem "phony_rails"
 
 
 group :development, :test do

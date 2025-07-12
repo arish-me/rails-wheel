@@ -16,6 +16,9 @@ class Candidate < ApplicationRecord
   # accepts_nested_attributes_for :work_preference
   has_many :specializations, as: :specializable, dependent: :destroy
   has_many :candidate_roles, through: :specializations
+  has_many :candidate_skills
+  has_many :skills, through: :candidate_skills
+
   accepts_nested_attributes_for :specializations, allow_destroy: true
   accepts_nested_attributes_for :role_level, update_only: true
   accepts_nested_attributes_for :role_type, update_only: true

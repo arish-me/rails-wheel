@@ -54,8 +54,8 @@ class Location < ApplicationRecord
 
   def valid_coordinates
     if latitude.blank? || longitude.blank?
-      # i18n-tasks-use t('activerecord.errors.models.location.invalid_coordinates')
-      # errors.add(:city, :invalid_coordinates)
+        # i18n-tasks-use t('activerecord.errors.models.location.invalid_coordinates')
+        # errors.add(:city, :invalid_coordinates)
         errors.add(:base, "Please Enter Correct Location")
     end
     if time_zone.blank? || utc_offset.blank?

@@ -6,6 +6,6 @@ class CreateCandidateSkills < ActiveRecord::Migration[8.0]
 
       t.timestamps
     end
-    add_index :candidate_skills, [:candidate_id, :skill_id], unique: true
+    add_index :candidate_skills, [ :candidate_id, :skill_id ], unique: true
   end
 end

@@ -39,4 +39,4 @@ module SeedData
       log_error "Failed to seed skills: #{e.message}"
     end
   end
-end 
+end
