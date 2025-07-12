@@ -6,6 +6,7 @@ class CandidatesController < ApplicationController
   def show
   end
   def edit
+    @location = current_user.build_location unless current_user.location
   end
 
   def update
@@ -34,8 +35,8 @@ class CandidatesController < ApplicationController
   private
   def candidate_params
     params.require(:candidate).permit(
-      user_attributes: [:id, :first_name, :last_name, :phone_number, :gender, :date_of_birth, :email_required,
-      location_attributes: [:id, :location_search, :city, :state, :country, :_destroy]
+      user_attributes: [ :id, :first_name, :last_name, :phone_number, :gender, :date_of_birth, :email_required,
+      location_attributes: [ :id, :location_search, :city, :state, :country, :_destroy ]
       ],
 
     )

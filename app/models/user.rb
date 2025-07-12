@@ -128,6 +128,10 @@ class User < ApplicationRecord
     email_required
   end
 
+  def location
+    super || build_location
+  end
+
   protected
 
   def password_required?
