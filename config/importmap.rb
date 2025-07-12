@@ -22,3 +22,4 @@ pin "@rails/actioncable", to: "@rails--actioncable.js" # @8.0.200
 pin_all_from "app/javascript/channels", under: "channels" # This is important for ActionCable channels
 pin "stimulus-places-autocomplete" # @0.5.0
 pin "intl-tel-input", to: "https://ga.jspm.io/npm:intl-tel-input@25.3.1/build/js/intlTelInput.js" # @25.3.1
+pin "choices.js" # @11.1.0

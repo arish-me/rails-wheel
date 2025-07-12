@@ -20,7 +20,7 @@ class User < ApplicationRecord
   attr_accessor :skip_password_validation
   attr_accessor :current_sign_in_ip_address
   attr_accessor :delete_profile_image
-  attr_accessor :redirect_to, :email_required, :full_phone_number
+  attr_accessor :redirect_to, :email_required, :bio_required
   # attr_accessor :candidate_role_ids
 
 
@@ -37,7 +37,7 @@ class User < ApplicationRecord
   validate :profile_image_size
   validates :first_name, presence: true, on: :update
   validates :last_name, presence: true, on: :update
-  validates :bio, presence: true, on: :update
+  validates :bio, presence: true, on: :update, if: :bio_required
 
   pg_search_scope :search_by_email,
               against: :email,

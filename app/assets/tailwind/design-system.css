@@ -10,6 +10,7 @@
 @import './design-system/text-utils.css';
 @import './design-system/border-utils.css';
 @import './design-system/component-utils.css';
+@import "./design-system/choices-js.css";
 
 @custom-variant theme-dark (&:where([data-theme=dark], [data-theme=dark] *));
 

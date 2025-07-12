@@ -94,8 +94,12 @@ class Candidate < ApplicationRecord
     super || build_social_link
   end
 
-   def validate_for_redirect_target?
+  def validate_for_redirect_target?
     [ "onboarding_candidate" ].include?(redirect_to)
+  end
+
+  def missing_fields
+    social_link.valid?
   end
 
 

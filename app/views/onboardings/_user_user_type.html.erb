@@ -34,12 +34,14 @@
 									<div>
 										<%= form.date_field :date_of_birth,   max: Date.today - 10.years, min: Date.today - 120.years, label: "Date of birth" %>
 									</div>
+									<%= form.hidden_field :bio_required, value: false %>
 								</div>
 							</div>
 						</div>
 					</div>
 				</section>
 				</div>
+				<%if false %>
 				<section class="bg-white shadow mt-8 px-4 py-5 lg:rounded-lg sm:p-6">
 					<div class="md:grid md:grid-cols-3 md:gap-6">
 						<div class="md:col-span-1">
@@ -66,6 +68,8 @@
 						</div>
 					</div>
 				</section>
+				<% end %>
+
 
 				<%= form.fields_for :location, include_id: false do |location| %>
 					<section class="bg-white shadow px-4 py-5 lg:rounded-lg sm:p-6">
