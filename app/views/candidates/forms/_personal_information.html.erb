@@ -46,6 +46,7 @@
 							<div class="form-field combobox text-xs">
 								<%= location.combobox :country,  ISO3166::Country.pluck(:iso_short_name) %>
 							</div>
+
 							<%if Rails.env.development? && false  %>
 								<div data-controller="places-autocomplete">
 									<div class="mb-4">
