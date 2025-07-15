@@ -3,7 +3,7 @@
 	<p class="text-secondary text-sm">First things first, let's get your profile set up.</p>
 </div>
 <%= styled_form_with(model: @user, url: registration_path(@user), method: :patch, class: "space-y-4", data: { controller: "searchable-select" }) do |form| %>
-	<%= form.hidden_field :redirect_to, value: "specialization" %>
+	<%= form.hidden_field :redirect_to, value: "onboarding_candidate" %>
 	<div class="mb-6">
 		<%= render "settings/user_avatar_field", form: form, user: @user %>
 	</div>

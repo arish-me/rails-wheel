@@ -100,7 +100,7 @@ class Candidate < ApplicationRecord
   end
 
   def validate_for_redirect_target?
-    [ "onboarding_candidate", 'online_presence' ].include?(redirect_to)
+    [ "onboarding_candidate" ].include?(redirect_to)
   end
 
   def missing_fields

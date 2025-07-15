@@ -32,8 +32,7 @@
 								</div>
 							</div>
 							<div>
-								<%= form.select :experience, Candidate.experience_options_for_select, prompt: "Select Experience Level", class: "form-select" %>
-								<p class="mt-2 text-xs ">e.g. Full-stack developer with 6+ years of experience</p>
+								<%= form.select :experience,  Candidate.experience_options_for_select, { include_blank: "---Select---", label: "Experience" } %>
 								<div class="mt-2 text-sm text-red-600">
 									<% @candidate.errors[:experience].each do |message| %>
 										<p><%= message %></p>
@@ -41,7 +40,7 @@
 								</div>
 							</div>
 							<div>
-								<%= form.number_field :hourly_rate, step: 0.01, min: 0.00, max: 99999999.99, placeholder: "e.g., 25.50" %>
+								<%= form.number_field :hourly_rate, step: 0.01, min: 0.00, max: 99999999.99, placeholder: "e.g., 25.50", label: 'Rate/Hour' %>
 								<% if @candidate.errors[:hourly_rate].any? %>
 									<div class="mt-2 text-sm text-red-600">
 										<% @candidate.errors[:hourly_rate].each do |message| %>
@@ -133,12 +132,13 @@
 					<p class="mt-1 text-sm"><%= t(".specialties.note.description") %></p>
 				</div>
 				<div class="md:col-span-2">
-					<div data-controller="multi-select"
+					<div class="relative" data-controller="multi-select"
                data-multi-select-max-items-value="5" <%# <-- Pass maxItems as a Stimulus value %>
-               data-multi-select-placeholder-value="Select up to 3 specializations" <%# <-- Pass placeholder as a Stimulus value %>
+               data-multi-select-placeholder-value="Select up to 5 specializations" <%# <-- Pass placeholder as a Stimulus value %>
                data-multi-select-remove-item-button-value="true" <%# <-- Pass boolean for remove button %>
                data-multi-select-search-enabled-value="true" <%# <-- Pass boolean for search %>
                >
+
 						<%= form.select :candidate_role_ids,
                             options_from_collection_for_select(
                               @candidate_role_groups.flat_map(&:candidate_roles),
@@ -219,7 +219,7 @@
 				</div>
 				<div class="mt-5 md:mt-0 md:col-span-2">
 					<div class="space-y-6">
-						<%= form.fields_for :role_level do |role_level| %>
+						<%= form.fields_for :role_level, include_id: false do |role_level| %>
 							<fieldset>
 								<div class="mt-4 space-y-4">
 									<div class="flex items-center">

@@ -54,8 +54,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def handle_redirect(notice, resource)
     case params[:user][:redirect_to]
-    when "specialization"
-      redirect_to specialization_onboarding_path
+    when "onboarding_candidate"
+      redirect_to candidate_setup_onboarding_path
     when "onboarding_preferences"
       redirect_to preferences_onboarding_path
     when "home"

@@ -46,6 +46,7 @@ class OnboardingsController < ApplicationController
          handle_redirect(flash[:notice])
          format.html { }
        else
+          @skills = Skill.order(:name)
          flash[:alert] = @candidate.errors.full_messages.join(", ")
          format.html { render :candidate_setup, status: :unprocessable_entity }
          format.json { render json: @candidate.errors, status: :unprocessable_entity }
