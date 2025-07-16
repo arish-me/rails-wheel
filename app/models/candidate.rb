@@ -25,11 +25,11 @@ class Candidate < ApplicationRecord
   validate :skills_count_within_bounds, on: :update, if: :validate_for_redirect_target?
 
 
-  validates :headline, presence: true, on: :update, unless: :validate_for_redirect_target?
-  validates :experience, presence: true, on: :update, unless: :validate_for_redirect_target?
-  validates :search_status, presence: true, on: :update, unless: :validate_for_redirect_target?
-  validates :hourly_rate, presence: true, on: :update, unless: :validate_for_redirect_target?
-  validates :bio, presence: true, on: :update, if: :bio_required
+  validates :headline, presence: true, on: :update, if: :validate_for_redirect_target?
+  validates :experience, presence: true, on: :update, if: :validate_for_redirect_target?
+  validates :search_status, presence: true, on: :update, if: :validate_for_redirect_target?
+  validates :hourly_rate, presence: true, on: :update, if: :validate_for_redirect_target?
+  validates :bio, presence: true, on: :update, if: :validate_for_redirect_target?
 
  enum :experience, { # Renamed to experience_level to avoid conflict if you later add an integer 'experience' column
     fresher: 0,

@@ -50,19 +50,25 @@
 						</div>
 						<div class="mt-5 md:mt-0 md:col-span-2">
 							<div class="space-y-6">
-								<%= location.text_field :location_search, placeholder: 'Enter address e.g. San Francisco, California' %>
-								<div
-								     data-controller="multi-select"
-								     data-multi-select-max-items-value="1"
-								     data-multi-select-placeholder-value="Select Country"
-								     data-multi-select-remove-item-button-value="true"
-								     data-multi-select-search-enabled-value="true">
-									<%= location.select :country,
-								        ISO3166::Country.pluck(:iso_short_name),
-								        { include_blank: true, label: 'Select Country' },
-								        { data: { multi_select_target: "select" } }
-								  %>
+
+
+								<div class="form-field pr-0 combobox">
+									<%= location.combobox :location_search, locations_city_suggestions_path, id: "location-search-combobox", label: 'Select Location', placeholder: 'Enter location e.g. San Francisco, California' %>
 								</div>
+								<% if false %>
+									<div
+									     data-controller="multi-select"
+									     data-multi-select-max-items-value="1"
+									     data-multi-select-placeholder-value="Select Country"
+									     data-multi-select-remove-item-button-value="true"
+									     data-multi-select-search-enabled-value="true">
+										<%= location.select :country,
+									        ISO3166::Country.pluck(:iso_short_name),
+									        { include_blank: true, label: 'Select Country' },
+									        { data: { multi_select_target: "select" } }
+									  %>
+									</div>
+								<% end %>
 							</div>
 						</div>
 					</div>

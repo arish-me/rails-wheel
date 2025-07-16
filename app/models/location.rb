@@ -39,8 +39,8 @@ class Location < ApplicationRecord
 
   def location_search
     # Only compose the address if city, state, or country are present (i.e., it's an existing record with data)
-    if city.present? || state.present?
-      [ city, state ].compact.join(", ")
+    if city.present? || state.present? || country.present?
+      [ city, state, country ].compact.join(", ")
     else
       @location_search # Return the value of the accessor if it was set manually
     end
@@ -48,6 +48,12 @@ class Location < ApplicationRecord
 
   def location_search=(value)
     @location_search = value
+    if value.present?
+      parts = value.split(",").map(&:strip)
+      self.city = parts[0]
+      self.state = parts[1]
+      self.country = parts[2]
+    end
   end
 
   private
@@ -84,6 +90,6 @@ class Location < ApplicationRecord
   end
 
   def query
-    [ location_search, country ].join(" ").squish
+    @location_search.presence || [ city, state, country ].compact.join(", ")
   end
 end

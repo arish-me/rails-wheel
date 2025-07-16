@@ -113,8 +113,8 @@ Rails.application.routes.draw do
   #   resources :social_links, module: :candidates
   # end
 
-  resources :candidates do
-  end
+  resources :candidates
+  get "/locations/city_suggestions", to: "locations#city_suggestions"
 
   get "up" => "rails/health#show", as: :rails_health_check
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
