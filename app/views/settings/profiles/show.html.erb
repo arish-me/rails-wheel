@@ -18,12 +18,13 @@
       <div class="w-full">
         <%= form.date_field :date_of_birth,   max: Date.today - 10.years, min: Date.today - 120.years, label: "Date of birth" %>
       </div>
-
+      <% if false %>
       <div class="sm:col-span-2">
         <%= form.label :bio, class: 'block mb-2 text-sm font-medium text-gray-900 theme-dark:text-white' %>
         <%= form.text_area :bio, rows: 4, class: "block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 theme-dark:bg-gray-700 theme-dark:border-gray-600 theme-dark:placeholder-gray-400 theme-dark:text-white theme-dark:focus:ring-blue-500 theme-dark:focus:border-blue-500", placeholder: "Write a short bio about yourself..." %>
         <p class="mt-1 text-xs text-gray-500 theme-dark:text-gray-400">Maximum 500 characters</p>
       </div>
+      <% end %>
     </div>
   </div>
 

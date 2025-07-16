@@ -43,12 +43,15 @@
 					</div>
 					<div class="mt-5 md:mt-0 md:col-span-2">
 						<div class="space-y-6">
-							<%= location.text_field :location_search, placeholder: 'Enter address e.g. San Francisco, California' %>
-							<div class="form-field combobox text-xs">
-								<%= location.combobox :country,  ISO3166::Country.pluck(:iso_short_name) %>
-
+							<div class="form-field pr-0 combobox">
+								<%= location.combobox :location_search, locations_city_suggestions_path, id: "location-search-combobox", label: 'Select Location', placeholder: 'Enter location e.g. San Francisco, California' %>
 							</div>
-
+							<%if Rails.env.development? && false  %>
+								<%= location.text_field :location_search, placeholder: 'Enter address e.g. San Francisco, California' %>
+								<div class="form-field combobox text-xs">
+									<%= location.combobox :country,  ISO3166::Country.pluck(:iso_short_name) %>
+								</div>
+							<% end %>
 							<%if Rails.env.development? && false  %>
 								<div data-controller="places-autocomplete">
 									<div class="mb-4">
@@ -63,13 +66,12 @@
                     places_autocomplete_target: "address"
                   }
                 %>
-									<p class="mt-1 text-xs text-gray-500">Please enter a complete address including city, state, and country</p>
+										<p class="mt-1 text-xs text-gray-500">Please enter a complete address including city, state, and country</p>
 									</div>
 									<!-- Hidden fields that will be populated by autocomplete -->
 									<%= location.hidden_field :city, data: { places_autocomplete_target: "city" } %>
 									<%= location.hidden_field :state, data: { places_autocomplete_target: "state" } %>
 									<%= location.hidden_field :country, data: { places_autocomplete_target: "country" } %>
-
 									<!-- Additional hidden fields for autocomplete -->
 									<input type="hidden" data-places-autocomplete-target="streetNumber" />
 									<input type="hidden" data-places-autocomplete-target="route" />
