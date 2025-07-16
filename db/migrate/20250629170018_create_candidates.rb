@@ -12,6 +12,7 @@ class CreateCandidates < ActiveRecord::Migration[8.0]
       t.decimal :hourly_rate
       t.integer :response_rate, default: 0, null: false
       t.integer :search_score, default: 0, null: false
+      t.text :bio
       t.timestamps
     end
   end

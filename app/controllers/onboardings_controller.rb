@@ -41,7 +41,7 @@ class OnboardingsController < ApplicationController
       @skills = Skill.order(:name)
     else
       respond_to do |format|
-       if @candidate.update(specialization_params)
+       if @candidate.update(candidate_params)
          flash[:notice] = "Profile was successfully updated."
          handle_redirect(flash[:notice])
          format.html { }
@@ -59,7 +59,7 @@ class OnboardingsController < ApplicationController
     if request.get?
     else
       respond_to do |format|
-       if @candidate.update(specialization_params)
+       if @candidate.update(candidate_params)
          flash[:notice] = "Profile was successfully updated."
          handle_redirect(flash[:notice])
          format.html { }
@@ -117,14 +117,14 @@ class OnboardingsController < ApplicationController
       @invitation = Current.family.invitations.accepted.find_by(email: Current.user.email)
     end
 
-    def specialization_params
+    def candidate_params
       params.require(:candidate).permit(:redirect_to, :headline, :experience, :hourly_rate,
-        :search_status,
+        :search_status, :bio, :bio_required,
         skill_ids: [],
         candidate_role_ids: [],
         role_type_attributes: RoleType::TYPES,
         role_level_attributes: RoleLevel::TYPES,
-        social_link_attributes: [ :id, :github, :website, :linked_in, :twitter, :_destroy ],
+        social_link_attributes: [ :id, :github, :website, :linked_in, :twitter, :_destroy ]
       )
     end
 end

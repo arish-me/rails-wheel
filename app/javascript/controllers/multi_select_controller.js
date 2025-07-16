@@ -11,6 +11,7 @@ export default class extends Controller {
     placeholderValue: { type: String, default: 'Select an option' },
     removeItemButton: { type: Boolean, default: false },
     searchEnabled: { type: Boolean, default: true },
+    multiSelect: { type: Boolean, default: true },
     // Add any other Choices.js options you want to expose
     // For example:
     // searchFloor: { type: Number, default: 1 },
@@ -27,6 +28,7 @@ export default class extends Controller {
       placeholderValue: this.placeholderValueValue,
       removeItemButton: this.removeItemButtonValue,
       searchEnabled: this.searchEnabledValue,
+      singleModeForMultiSelect: this.multiSelect,
       searchChoices: true, // Usually desired with searchEnabled
       searchFloor: 1, // Default, can be made a value
       noResultsText: 'No results found', // Default, can be made a value

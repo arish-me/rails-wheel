@@ -1,24 +1,21 @@
 class Candidate < ApplicationRecord
+  include RichText
   include Hashid::Rails
 
   attr_accessor :redirect_to
+  attr_accessor :bio_required
 
   belongs_to :user
-  # belongs_to :candidate_role, optional: true
-  # has_one :profile, class_name: "Candidate::Profile", dependent: :destroy
-  # has_one :work_preference, class_name: "Candidate::WorkPreference", dependent: :destroy
   has_one :role_type, class_name: "RoleType", dependent: :destroy
   has_one :role_level, class_name: "RoleLevel", dependent: :destroy
 
   has_one :social_link, as: :linkable, dependent: :destroy
-  # has_one :location, as: :locatable, dependent: :destroy, autosave: true
-  accepts_nested_attributes_for :user
-  # accepts_nested_attributes_for :work_preference
   has_many :specializations, as: :specializable, dependent: :destroy
   has_many :candidate_roles, through: :specializations
   has_many :candidate_skills
   has_many :skills, through: :candidate_skills
 
+  accepts_nested_attributes_for :user
   accepts_nested_attributes_for :specializations, allow_destroy: true
   accepts_nested_attributes_for :role_level, update_only: true
   accepts_nested_attributes_for :role_type, update_only: true
@@ -32,6 +29,7 @@ class Candidate < ApplicationRecord
   validates :experience, presence: true, on: :update, unless: :validate_for_redirect_target?
   validates :search_status, presence: true, on: :update, unless: :validate_for_redirect_target?
   validates :hourly_rate, presence: true, on: :update, unless: :validate_for_redirect_target?
+  validates :bio, presence: true, on: :update, if: :bio_required
 
  enum :experience, { # Renamed to experience_level to avoid conflict if you later add an integer 'experience' column
     fresher: 0,
@@ -100,11 +98,15 @@ class Candidate < ApplicationRecord
   end
 
   def validate_for_redirect_target?
-    [ "onboarding_candidate" ].include?(redirect_to)
+    [ "onboarding_candidate", "online_presence" ].include?(redirect_to)
   end
 
   def missing_fields
     social_link.valid?
+  end
+
+  def work_preference_missing_fields?
+    headline && experience && hourly_rate && search_status && candidate_roles.length > 0 && skills.length > 0 && role_type && role_level
   end
 
 

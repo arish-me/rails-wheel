@@ -86,6 +86,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_12_124258) do
     t.decimal "hourly_rate"
     t.integer "response_rate", default: 0, null: false
     t.integer "search_score", default: 0, null: false
+    t.text "bio"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["candidate_role_id"], name: "index_candidates_on_candidate_role_id"
@@ -357,7 +358,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_12_124258) do
     t.string "uid"
     t.integer "user_type"
     t.integer "gender"
-    t.text "bio"
     t.string "timezone"
     t.string "first_name"
     t.string "last_name"
