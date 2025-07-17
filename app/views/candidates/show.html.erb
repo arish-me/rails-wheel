@@ -76,18 +76,48 @@
 		</div>
 		<div class="w-full text-start mb-6">
 			<div class="space-y-5 divide-y divide-gray-200">
-				<%= render RenderableComponent.new("space-y-5 pb-4") do %>
-					<%= render RoleTypes::Component.new(@candidate&.role_type) %>
-				<% end %>
-				<%= render RenderableComponent.new("space-y-5 pb-4") do %>
-					<%= render RoleLevels::Component.new(@candidate&.role_level) %>
+				<%= turbo_frame_tag "candidate_profile_personal_info" do %>
+					<div class="flex items-start justify-between mb-4">
+						<div>
+							<%= render RenderableComponent.new("space-y-5 pb-4") do %>
+								<%= render RoleTypes::Component.new(@candidate&.role_type) %>
+							<% end %>
+							<%= render RenderableComponent.new("space-y-5 pb-4") do %>
+								<%= render RoleLevels::Component.new(@candidate&.role_level) %>
+							<% end %>
+						</div>
+						<div>
+							<%= render LinkComponent.new(
+								text: "Edit",
+								variant: :primary,
+								href: candidate_path(@candidate, edit: 'candidate_profile_work_preference'),
+								frame: :modal
+							) %>
+							<% if params[:edit] == "candidate_profile_work_preference" %>
+								<%= render "candidates/work_preference", candidate: @candidate %>
+							<% end %>
+						</div>
+					</div>
 				<% end %>
 				<%= render RenderableComponent.new("space-y-3 pb-4") do %>
-					<h2 class="text-sm font-medium text-gray-500"><%= t(".social_links") %></h2>
-					<%= render ExternalLinkComponent.new(@candidate.social_link.website) %>
-					<%= render SocialLinkComponent.new(@candidate.social_link.github, :github) %>
-					<%= render SocialLinkComponent.new(@candidate.social_link.linked_in, :linkedin) %>
-					<%= render SocialLinkComponent.new(@candidate.social_link.twitter, :twitter) %>
+					<%= turbo_frame_tag "candidate_profile_social_link" do %>
+						<div class="flex  justify-between mb-4">
+							<h2 class="text-sm font-medium text-gray-500"><%= t(".social_links") %></h2>
+							<%= render LinkComponent.new(
+								text: "Edit",
+								variant: :primary,
+								href: candidate_path(@candidate, edit: 'candidate_profile_social_link'),
+								frame: :modal
+							) %>
+							<% if params[:edit] == "candidate_profile_social_link" %>
+								<%= render "candidates/social_link", candidate: @candidate %>
+							<% end %>
+						</div>
+						<%= render ExternalLinkComponent.new(@candidate.social_link.website) %>
+						<%= render SocialLinkComponent.new(@candidate.social_link.github, :github) %>
+						<%= render SocialLinkComponent.new(@candidate.social_link.linked_in, :linkedin) %>
+						<%= render SocialLinkComponent.new(@candidate.social_link.twitter, :twitter) %>
+					<% end %>
 				<% end %>
 				<%= render RenderableComponent.new("space-y-3 pb-4") do %>
 					<%= render Locations::Component.new(@candidate.user.location) %>

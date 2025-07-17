@@ -39,7 +39,9 @@ class CandidatesController < ApplicationController
       user_attributes: [ :id, :first_name, :last_name, :phone_number, :gender, :date_of_birth, :email_required,
       location_attributes: [ :id, :location_search, :city, :state, :country, :_destroy ]
       ],
-
+      role_type_attributes: RoleType::TYPES,
+      role_level_attributes: RoleLevel::TYPES,
+      social_link_attributes: [ :id, :github, :website, :linked_in, :twitter, :_destroy ]
     )
   end
 end

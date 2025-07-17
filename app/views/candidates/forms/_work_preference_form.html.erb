@@ -1,0 +1,87 @@
+<%= styled_form_with model: candidate, url: candidate_path(candidate), method: :patch, class: "space-y-4" do |form| %>
+	<!-- Role Type Section -->
+	<section class="shadow mt-8 px-4 py-5 lg:rounded-lg sm:p-6">
+		<div class="md:grid md:grid-cols-3 md:gap-6">
+			<div class="md:col-span-1">
+				<h2 class="text-lg font-medium leading-6"><%= t("role_type.title") %></h2>
+				<p class="mt-2 text-sm"><%= t("role_type.help_text") %></p>
+			</div>
+			<div class="mt-5 md:mt-0 md:col-span-2">
+				<div class="space-y-6">
+					<%= form.fields_for :role_type, include_id: false do |role_type| %>
+						<fieldset>
+							<div class="mt-4 space-y-4">
+								<div class="flex items-center">
+									<%= role_type.check_box :part_time_contract, class: "focus:ring-gray-500 h-4 w-4 border-gray-300 rounded" %>
+									<%= role_type.label :part_time_contract, class: "ml-3 block text-sm font-medium" %>
+								</div>
+								<div class="flex items-center">
+									<%= role_type.check_box :full_time_contract, class: "focus:ring-gray-500 h-4 w-4 border-gray-300 rounded" %>
+									<%= role_type.label :full_time_contract, class: "ml-3 block text-sm font-medium" %>
+								</div>
+								<div class="flex items-center">
+									<%= role_type.check_box :full_time_employment, class: "focus:ring-gray-500 h-4 w-4 border-gray-300 rounded" %>
+									<%= role_type.label :full_time_employment, class: "ml-3 block text-sm font-medium" %>
+								</div>
+							</div>
+							<% if @candidate.role_type&.errors&.any? %>
+								<div class="mt-2 text-sm text-red-600">
+									<% @candidate.role_type.errors.full_messages.each do |message| %>
+										<p><%= message %></p>
+									<% end %>
+								</div>
+							<% end %>
+						</fieldset>
+					<% end %>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- Role Level Section -->
+	<section class="shadow mt-8 px-4 py-5 lg:rounded-lg sm:p-6">
+		<div class="md:grid md:grid-cols-3 md:gap-6">
+			<div class="md:col-span-1">
+				<h2 class="text-lg font-medium leading-6"><%= t("role_level.title") %></h2>
+				<p class="mt-2 text-sm"><%= t("role_level.help_text") %></p>
+			</div>
+			<div class="mt-5 md:mt-0 md:col-span-2">
+				<div class="space-y-6">
+					<%= form.fields_for :role_level, include_id: false do |role_level| %>
+						<fieldset>
+							<div class="mt-4 space-y-4">
+								<div class="flex items-center">
+									<%= role_level.check_box :junior, class: "focus:ring-gray-500 h-4 w-4  border-gray-300 rounded" %>
+									<%= role_level.label :junior, class: "ml-3 block text-sm font-medium" %>
+								</div>
+								<div class="flex items-center">
+									<%= role_level.check_box :mid, class: "focus:ring-gray-500 h-4 w-4  border-gray-300 rounded" %>
+									<%= role_level.label :mid, class: "ml-3 block text-sm font-medium" %>
+								</div>
+								<div class="flex items-center">
+									<%= role_level.check_box :senior, class: "focus:ring-gray-500 h-4 w-4  border-gray-300 rounded" %>
+									<%= role_level.label :senior, class: "ml-3 block text-sm font-medium" %>
+								</div>
+								<div class="flex items-center">
+									<%= role_level.check_box :principal, class: "focus:ring-gray-500 h-4 w-4  border-gray-300 rounded" %>
+									<%= role_level.label :principal, class: "ml-3 block text-sm font-medium" %>
+								</div>
+								<div class="flex items-center">
+									<%= role_level.check_box :c_level, class: "focus:ring-gray-500 h-4 w-4  border-gray-300 rounded" %>
+									<%= role_level.label :c_level, class: "ml-3 block text-sm font-medium" %>
+								</div>
+							</div>
+							<% if @candidate.role_level&.errors&.any? %>
+								<div class="mt-2 text-sm text-red-600">
+									<% @candidate.role_level.errors.full_messages.each do |message| %>
+										<p><%= message %></p>
+									<% end %>
+								</div>
+							<% end %>
+						</fieldset>
+					<% end %>
+				</div>
+			</div>
+		</div>
+	</section>
+	<%= form.submit 'Submit' %>
+<% end %>

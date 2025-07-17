@@ -1,0 +1,59 @@
+<%= styled_form_with model: candidate, url: candidate_path(candidate), method: :patch, class: "space-y-4" do |form| %>
+	<%= form.fields_for :social_link, include_id: false do |social_link_form| %>
+		<section class="px-4 py-5 lg:rounded-lg sm:p-6">
+			<div class="md:grid md:grid-cols-3 md:gap-6">
+				<div class="md:col-span-1">
+					<h2 class="text-lg font-medium leading-6 "><%= t("online_presence.title") %></h2>
+					<p class="mt-2 text-sm "><%= t("online_presence.help_text") %></p>
+				</div>
+				<div class="mt-5 md:mt-0 md:col-span-2">
+					<div class="space-y-6">
+						<div>
+							<div class="mt-1 flex rounded-md shadow-sm">
+								<span class="inline-flex items-center px-3 rounded-l-md border border-r-0   sm:text-sm">
+									https://
+								</span>
+								<%= social_link_form.text_field :website, label: 'Enter Website' , placeholder: 'yourexample.com' %>
+							</div>
+						</div>
+						<div>
+							<div class="mt-1 flex rounded-md shadow-sm">
+								<span class="inline-flex items-center px-3 rounded-l-md border border-r-0  sm:text-sm">
+									https://
+								</span>
+								<%= social_link_form.text_field :github, label: 'Enter Github Profile Link' , placeholder: 'github.com/username' %>
+							</div>
+							<div class="mt-2 text-sm text-red-600">
+								<% @candidate.social_link.errors[:github].each do |message| %>
+									<p><%= message %></p>
+								<% end %>
+							</div>
+						</div>
+						<div>
+							<div class="mt-1 flex rounded-md shadow-sm">
+								<span class="inline-flex items-center px-3 rounded-l-md border border-r-0   sm:text-sm">
+									https://
+								</span>
+								<%= social_link_form.text_field :linked_in, label: 'Enter LinkedIn Profile Link' , placeholder: 'linkedin.com/in/username' %>
+							</div>
+							<div class="mt-2 text-sm text-red-600">
+								<% @candidate.social_link.errors[:linked_in].each do |message| %>
+									<p><%= message %></p>
+								<% end %>
+							</div>
+						</div>
+						<div>
+							<div class="mt-1 flex rounded-md shadow-sm">
+								<span class="inline-flex items-center px-3 rounded-l-md border border-r-0   sm:text-sm">
+									https://
+								</span>
+								<%= social_link_form.text_field :twitter, label: 'Enter Twitter Profile Link' , placeholder: 'twitter.com/username' %>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	<% end %>
+	<%= form.submit 'Submit' %>
+<% end %>
