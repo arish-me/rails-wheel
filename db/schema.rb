@@ -66,14 +66,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_12_124258) do
     t.index ["skill_id"], name: "index_candidate_skills_on_skill_id"
   end
 
-  create_table "candidate_work_preferences", force: :cascade do |t|
-    t.bigint "candidate_id"
-    t.integer "search_status"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["candidate_id"], name: "index_candidate_work_preferences_on_candidate_id", unique: true
-  end
-
   create_table "candidates", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "candidate_role_id"
@@ -358,18 +350,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_12_124258) do
     t.string "uid"
     t.integer "user_type"
     t.integer "gender"
-    t.string "timezone"
     t.string "first_name"
     t.string "last_name"
-    t.string "country_code", default: "US"
     t.string "phone_number"
     t.date "date_of_birth"
-    t.string "date_format", default: "%d.%m.%Y"
     t.string "locale", default: "en"
-    t.string "location"
-    t.string "website"
-    t.jsonb "social_links", default: {}
-    t.integer "theme", default: 0
     t.boolean "active", default: true, null: false
     t.datetime "onboarded_at"
     t.text "goals", default: [], array: true
@@ -381,7 +366,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_12_124258) do
     t.index ["locale"], name: "index_users_on_locale"
     t.index ["onboarded_at"], name: "index_users_on_onboarded_at"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
-    t.index ["theme"], name: "index_users_on_theme"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
@@ -389,7 +373,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_12_124258) do
   add_foreign_key "candidate_roles", "candidate_role_groups"
   add_foreign_key "candidate_skills", "candidates"
   add_foreign_key "candidate_skills", "skills"
-  add_foreign_key "candidate_work_preferences", "candidates"
   add_foreign_key "candidates", "candidate_roles"
   add_foreign_key "candidates", "users"
   add_foreign_key "categories", "users"

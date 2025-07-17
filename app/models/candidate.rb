@@ -102,7 +102,10 @@ class Candidate < ApplicationRecord
   end
 
   def missing_fields
-    social_link.valid?
+    social_link.github ||
+      social_link.linked_in ||
+      social_link.website ||
+      social_link.twitter
   end
 
   def work_preference_missing_fields?

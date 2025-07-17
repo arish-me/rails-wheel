@@ -44,7 +44,6 @@ class User < ApplicationRecord
                 tsearch: { prefix: true } # Enables partial matches (e.g., "Admin" matches "Administrator")
               }
   enum :gender, [ :he_him, :she_her, :they_them, :other ]
-  enum :theme, { system: 0, light: 1, dark: 2 }, default: :system
   enum :user_type, { company: 0, user: 1, platform_admin: 99 }
 
   GENDER_DISPLAY = {
