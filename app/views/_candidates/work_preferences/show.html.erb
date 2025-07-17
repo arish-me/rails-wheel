@@ -1,9 +1,0 @@
-<% if turbo_frame_request? %>
-  <turbo-frame id="candidate-tab-content">
-  <%= render 'candidates/work_preferences/form' %>
-</turbo-frame>
-<% else %>
-  <%= render 'candidates/tab_container' do %>
-    <%= render 'candidates/work_preferences/form' %>
-  <% end %>
-<% end %>
