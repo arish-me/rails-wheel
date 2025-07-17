@@ -21,8 +21,6 @@ class User < ApplicationRecord
   attr_accessor :delete_profile_image
   attr_accessor :redirect_to, :email_required, :bio_required
 
-
-
   accepts_nested_attributes_for :user_roles, allow_destroy: true
   accepts_nested_attributes_for :location, allow_destroy: true
   accepts_nested_attributes_for :candidate, allow_destroy: true
