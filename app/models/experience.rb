@@ -4,6 +4,7 @@ class Experience < ApplicationRecord
   validates :company_name, presence: true
   validates :job_title, presence: true
   validates :start_date, presence: true
+  validates :description, presence: true
   validate :end_date_after_start_date, unless: :current_job
 
   private

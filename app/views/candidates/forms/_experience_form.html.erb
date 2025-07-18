@@ -1,25 +1,47 @@
 <%= styled_form_with model: experience, url: url, method: method, class: "space-y-4" do |form| %>
-<% if experience.errors.any? %>
-      <%= render "shared/form_errors", model: experience %>
-    <% end %>
-  <section class="shadow mt-8 px-4 py-5 lg:rounded-lg sm:p-6">
-    <div class="space-y-6">
-      <div>
-        <%= form.text_field :company_name, label: 'Enter Company Name', placeholder: 'Wipro Private Ltd.' %>
-      </div>
-      <div>
-        <%= form.text_field :job_title, label: 'Enter Job Title', placeholder: 'Team Lead' %>
-      </div>
-      <div>
-        <%= form.date_field :start_date, label: 'Start Date' %>
-      </div>
-      <div>
-        <%= form.date_field :end_date, label: 'End Date' %>
-      </div>
-      <div>
-        <%= form.text_area :description, rows: 5, class: 'shadow-sm block w-full sm:text-sm border rounded-md', label: 'Description' %>
-      </div>
-    </div>
-  </section>
-  <%= form.submit 'Submit' %>
+	<% if experience.errors.any? %>
+		<%= render "shared/form_errors", model: experience %>
+	<% end %>
+	<section class="shadow mt-8 px-4 py-5 lg:rounded-lg sm:p-6">
+		<div class="space-y-6">
+			<div>
+				<%= form.text_field :company_name, label: 'Enter Company Name', placeholder: 'Wipro Private Ltd.' %>
+			</div>
+			<div>
+				<%= form.text_field :job_title, label: 'Enter Job Title', placeholder: 'Team Lead' %>
+			</div>
+			<div>
+				<%= form.date_field :start_date, label: 'Start Date' %>
+			</div>
+			<div>
+				<%= form.date_field :end_date, label: 'End Date' %>
+			</div>
+			<div>
+				<%= form.label :current_job, t(".current_job"), value: "current_job", class: "text-sm text-primary" %>
+				<%= form.check_box :current_job,
+                           {
+                             checked: experience.current_job,
+                             class: "checkbox checkbox--light"
+                           },
+                           "current_job",
+                           nil %>
+			</div>
+			<div>
+				<%= form.text_area :description, rows: 5, class: 'shadow-sm block w-full sm:text-sm border rounded-md', label: 'Description' %>
+			</div>
+		</div>
+	</section>
+	<div class="flex justify-between mb-4">
+		<% if experience.persisted? %>
+			<%= render ButtonComponent.new(
+        text: t(".delete"),
+        variant: "destructive",
+        href: experience_path(experience),
+        method: :delete,
+        confirm: CustomConfirm.for_resource_deletion("your experience", high_severity: true)
+      ) %>
+			<%= button_to "Delete", experience_path(experience), method: :delete, data: { turbo_confirm: "Are you sure you want to delete this experience?" }, class: "mt-4 btn btn-danger w-full" %>
+		<% end %>
+		<%= render ButtonComponent.new(text: t(".save"), class: "md:w-auto w-full justify-center") %>
+	</div>
 <% end %>
