@@ -5,6 +5,7 @@
 @import "./geist-font.css";
 @import "./geist-mono-font.css";
 
+
 @plugin "@tailwindcss/typography";
 @plugin "@tailwindcss/forms";
 
@@ -170,6 +171,10 @@
   }
 }
 
+.choices__list--multiple .choices__item {
+   @apply bg-black;
+}
+
 /* Google Places Autocomplete Customization */
 .pac-container {
   border: 1px solid #d1d5db !important;
@@ -219,3 +224,4 @@
 .pac-logo:after {
   display: none !important;
 }
+

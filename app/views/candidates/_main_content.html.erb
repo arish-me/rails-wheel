@@ -1,0 +1,64 @@
+<main class="col-span-2 space-y-4">
+	<div>
+		<%= turbo_frame_tag "candidate_profile_bio" do %>
+			<!-- Overview -->
+			<section class="bg-white rounded-2xl shadow-lg p-8">
+				<div class="flex items-center justify-between mb-4">
+					<h3 class="text-lg font-bold text-gray-900 mb-2">Overview</h3>
+					<%= render LinkComponent.new(
+                  text: "Edit",
+                  variant: :primary,
+                  href: edit_candidate_path(@candidate, edit: 'candidate_profile_bio'),
+                  frame: :modal
+              ) %>
+				</div>
+				<div class="prose max-w-prose">
+					<%== @candidate&.rich_text_bio %>
+				</div>
+			</section>
+		<% end %>
+	</div>
+	<!-- Experience -->
+	<section class="bg-white rounded-2xl shadow-lg p-8">
+		<h3 class="text-lg font-bold text-gray-900 mb-6">Experience</h3>
+		<div class="mb-8">
+			<div class="flex items-center mb-1">
+				<span class="inline-flex items-center justify-center w-9 h-9 rounded-full bg-lime-100 text-lime-600 font-bold mr-4 text-lg">T</span>
+				<div>
+					<div class="font-semibold text-gray-900">TechSolutions Inc.</div>
+					<div class="text-xs text-gray-500">Network Engineer &bull; January 2020 - Present</div>
+				</div>
+			</div>
+			<ul class="list-disc list-inside text-gray-700 text-sm ml-14 mt-1">
+				<li>Managed and maintained a network for a large corporate office with over 500 employees.</li>
+				<li>Implemented new security protocols that reduced system vulnerabilities by 40%.</li>
+			</ul>
+		</div>
+		<div>
+			<div class="flex items-center mb-1">
+				<span class="inline-flex items-center justify-center w-9 h-9 rounded-full bg-lime-100 text-lime-600 font-bold mr-4 text-lg">N</span>
+				<div>
+					<div class="font-semibold text-gray-900">NetGrowth Technologies</div>
+					<div class="text-xs text-gray-500">Junior Network Engineer &bull; June 2016 - December 2019</div>
+				</div>
+			</div>
+			<ul class="list-disc list-inside text-gray-700 text-sm ml-14 mt-1">
+				<li>Assisted in the rollout of a new company-wide email system, enhancing communication efficiency.</li>
+				<li>Supported network upgrade projects that improved system uptime and performance.</li>
+			</ul>
+		</div>
+	</section>
+	<!-- Education -->
+	<section class="bg-white rounded-2xl shadow-lg p-8">
+		<h3 class="text-lg font-bold text-gray-900 mb-6">Education</h3>
+		<div class="flex items-center">
+			<span class="inline-flex items-center justify-center w-9 h-9 rounded-full bg-indigo-100 text-indigo-600 font-bold mr-4">
+				<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 14l9-5-9-5-9 5 9 5z"/><path d="M12 14l6.16-3.422A12.083 12.083 0 0 1 21 10.5c0 5.523-4.477 10-10 10S1 16.023 1 10.5c0-.828.08-1.637.234-2.422L12 14z"/></svg>
+			</span>
+			<div>
+				<div class="font-semibold text-gray-900">University of Illinois at Urbana-Champaign</div>
+				<div class="text-xs text-gray-500">B.S. in Computer Science &bull; 2011 - 2015</div>
+			</div>
+		</div>
+	</section>
+</main>

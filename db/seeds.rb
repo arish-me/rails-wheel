@@ -12,3 +12,4 @@ ActsAsTenant.with_tenant(company) do
 end
 SeedData::PlatformUserService.new('serviceuser@wheel.com').call
 SeedData::CandidateRoleService.call
+SeedData::SkillService.call

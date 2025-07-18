@@ -28,6 +28,15 @@ Rails.application.routes.draw do
   resource :onboarding, only: :show do
     collection do
       get :profiles_setup
+      get :specialization
+      post :specialization
+
+      get :candidate_setup
+      post :candidate_setup
+
+      get :online_presence
+      post :online_presence
+
       get :preferences
       get :goals
       get :trial
@@ -98,11 +107,14 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :candidates do
-    resources :profiles, module: :candidates
-    resources :work_preferences, module: :candidates
-    resources :social_links, module: :candidates
-  end
+  # resources :candidates do
+  #   resources :profiles, module: :candidates
+  #   resources :work_preferences, module: :candidates
+  #   resources :social_links, module: :candidates
+  # end
+
+  resources :candidates
+  get "/locations/city_suggestions", to: "locations#city_suggestions"
 
   get "up" => "rails/health#show", as: :rails_health_check
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest

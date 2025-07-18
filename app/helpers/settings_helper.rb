@@ -1,7 +1,6 @@
 module SettingsHelper
   SETTINGS_ORDER = [
     { name: "Profile", path: :settings_profile_path },
-    { name: "Preferences", path: :settings_preferences_path },
     { name: "Account Setting", path: :settings_accounts_path }
 
   ]

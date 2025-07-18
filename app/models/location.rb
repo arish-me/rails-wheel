@@ -1,5 +1,5 @@
 class Location < ApplicationRecord
-  attr_accessor :location_search
+  # attr_accessor :location_search
   belongs_to :locatable, polymorphic: true
 
   scope :top_countries, ->(limit = ENV.fetch("TOP_COUNTRIES", 5)) do
@@ -19,8 +19,8 @@ class Location < ApplicationRecord
       .pluck(:country)
   end
 
-  validates :time_zone, presence: true
-  validates :utc_offset, presence: true
+  # validates :time_zone, presence: true
+  # validates :utc_offset, presence: true
   validate :valid_coordinates
 
   before_validation :geocode,
@@ -38,23 +38,46 @@ class Location < ApplicationRecord
   end
 
   def location_search
-    query
+    # Only compose the address if city, state, or country are present (i.e., it's an existing record with data)
+    if city.present? || state.present? || country.present?
+      [ city, state, country ].compact.join(", ")
+    else
+      @location_search # Return the value of the accessor if it was set manually
+    end
+  end
+
+  def location_search=(value)
+    @location_search = value
+    if value.present?
+      parts = value.split(",").map(&:strip)
+      self.city = parts[0]
+      self.state = parts[1]
+      self.country = parts[2]
+    end
   end
 
   private
 
   def valid_coordinates
     if latitude.blank? || longitude.blank?
-      # i18n-tasks-use t('activerecord.errors.models.location.invalid_coordinates')
-      errors.add(:city, :invalid_coordinates)
+        # i18n-tasks-use t('activerecord.errors.models.location.invalid_coordinates')
+        # errors.add(:city, :invalid_coordinates)
+        errors.add(:base, "Please Enter Correct Location")
+    end
+    if time_zone.blank? || utc_offset.blank?
+      errors.add(:base, "Please Enter Correct Location")
+    end
+
+    if time_zone.blank? || time_zone.blank?
+      errors.add(:base, "Please Enter Correct Location")
     end
   end
 
   def geocode
     if (result = Geocoder.search(query).first)
-      # self.city = result.city || result.city_district
-      # self.state = result.state
-      # self.country = result.country
+      self.city = result.city || result.city_district
+      self.state = result.state
+      self.country = result.country
       self.country_code = result.country_code
       self.latitude = result.latitude
       self.longitude = result.longitude
@@ -67,6 +90,6 @@ class Location < ApplicationRecord
   end
 
   def query
-    [ city, state, country ].join(" ").squish
+    @location_search.presence || [ city, state, country ].compact.join(", ")
   end
 end

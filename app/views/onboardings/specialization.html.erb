@@ -1,0 +1,74 @@
+<%= content_for :previous_path, onboarding_path %>
+<%= content_for :header_nav do %>
+	<%= render "onboardings/onboarding_nav", user: @user %>
+<% end %>
+<%= content_for :cancel_action do %>
+	<%= render "onboardings/logout" %>
+<% end %>
+<div class="space-y-1 mb-6 text-center">
+	<h1 class="text-2xl font-medium md:text-2xl">Let's choose your specialization</h1>
+	<p class="text-secondary text-sm">This will help you to standup in the crowd.</p>
+</div>
+<div class="grow max-w-5xl w-full mx-auto bg-surface flex flex-col justify-center md:py-0 py-6 px-4 md:px-0" data-controller="onboarding">
+	<%= styled_form_with(model: @candidate, url: specialization_onboarding_path, method: :post) do |form| %>
+		<% if @user.candidate && @user.candidate.errors[:candidate_role_ids].any? %>
+			<div class="mb-4 p-3 bg-red-50 border-l-4 border-red-400 text-red-800 rounded">
+				<%= @user.candidate.errors[:candidate_role_ids].first %>
+			</div>
+		<% end %>
+		<%= form.hidden_field :redirect_to, value: "onboarding_candidate" %>
+		<section id="specialties" class="shadow mt-8 px-4 py-5 lg:rounded-lg sm:p-6">
+			<div class="mb-4 p-3 bg-yellow-50 border-l-4 border-yellow-400 text-yellow-800 rounded">
+				<strong>Note:</strong> You can select up to <span class="font-bold">5</span> specializations. and <span class="font-bold">10</span> Skills
+			</div>
+			<div class="md:grid md:grid-cols-3 md:gap-6">
+				<div>
+					<h2 class="text-lg font-medium leading-6">Specialties</h2>
+					<p class="mt-2 text-sm "><%= t(".specialties.description") %></p>
+					<p class="mt-2 text-sm"><%= t(".specialties.new.before") %> <%= link_to t(".specialties.new.cta"), "mailto:joe@railsdevs.com?subject=#{t(".specialties.new.subject")}", class: "font-medium underline" %>.</p>
+					<h4 class="font-medium uppercase tracking-wide text-sm mt-4"><%= t(".specialties.note.title") %></h4>
+					<p class="mt-1 text-sm"><%= t(".specialties.note.description") %></p>
+				</div>
+				<div class="md:col-span-2">
+					<div data-controller="multi-select"
+               data-multi-select-max-items-value="5" <%# <-- Pass maxItems as a Stimulus value %>
+               data-multi-select-placeholder-value="Select up to 3 specializations" <%# <-- Pass placeholder as a Stimulus value %>
+               data-multi-select-remove-item-button-value="true" <%# <-- Pass boolean for remove button %>
+               data-multi-select-search-enabled-value="true" <%# <-- Pass boolean for search %>
+               >
+						<%= form.select :candidate_role_ids,
+                            options_from_collection_for_select(
+                              @candidate_role_groups.flat_map(&:candidate_roles),
+                              :id,
+                              :name,
+                              selected: @user.candidate&.candidate_role_ids
+                            ),
+                            {},
+                            multiple: true,
+                            data: { multi_select_target: "select" }
+
+            %>
+					</div>
+					<div data-controller="multi-select"
+               data-multi-select-max-items-value="10"
+               data-multi-select-placeholder-value="Select up to 10 skills"
+               data-multi-select-remove-item-button-value="true"
+               data-multi-select-search-enabled-value="true">
+						<%= form.select :skill_ids,
+                            options_from_collection_for_select(
+                              @skills,
+                              :id,
+                              :name,
+                              selected: @candidate.skill_ids
+                            ),
+                            {},
+                            multiple: true,
+                            data: { multi_select_target: "select" }
+            %>
+					</div>
+				</div>
+			</div>
+		</section>
+		<%= form.submit "Next" %>
+	<% end %>
+</div>

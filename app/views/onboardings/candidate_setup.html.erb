@@ -1,0 +1,308 @@
+<%= content_for :previous_path, onboarding_path %>
+<%= content_for :header_nav do %>
+	<%= render "onboardings/onboarding_nav", user: @user %>
+<% end %>
+<%= content_for :cancel_action do %>
+	<%= render "onboardings/logout" %>
+<% end %>
+<div class="space-y-1 mb-6 text-center">
+	<h1 class="text-2xl font-medium md:text-2xl">Let's brief your self</h1>
+	<p class="text-secondary text-sm">This will help you to standup in the crowd.</p>
+</div>
+<div class="grow max-w-5xl w-full mx-auto bg-surface flex flex-col justify-center md:py-0 py-6 px-4 md:px-0" data-controller="onboarding">
+	<%= styled_form_with(model: @candidate, url: candidate_setup_onboarding_path, method: :post) do |form| %>
+		<%= form.hidden_field :redirect_to, value: "online_presence" %>
+		<div class="space-y-4 mb-4">
+			<section class=" shadow px-4 py-5 lg:rounded-lg sm:p-6">
+				<div class="md:grid md:grid-cols-3 md:gap-6">
+					<div class="md:col-span-1">
+						<h2 class="text-lg font-medium leading-6">Professional Information</h2>
+						<p class="mt-2 text-sm ">Update your professional details and role information.</p>
+					</div>
+					<div class="mt-5 md:mt-0 md:col-span-2">
+						<div class="space-y-6">
+							<div class="grid grid-cols-1 gap-6">
+								<div>
+									<%= form.text_field :headline, label: 'Title / Headline' , placeholder: 'Enter Title or Headline' %>
+									<p class="mt-2 text-xs ">e.g. Full-stack developer with 6+ years of experience</p>
+									<div class="mt-2 text-sm text-red-600">
+										<% @candidate.errors[:headline].each do |message| %>
+											<p><%= message %></p>
+										<% end %>
+									</div>
+								</div>
+								<div>
+									<%= form.select :experience,  Candidate.experience_options_for_select, { include_blank: "---Select---", label: "Experience" } %>
+									<div class="mt-2 text-sm text-red-600">
+										<% @candidate.errors[:experience].each do |message| %>
+											<p><%= message %></p>
+										<% end %>
+									</div>
+								</div>
+								<div>
+									<%= form.number_field :hourly_rate, step: 0.01, min: 0.00, max: 99999999.99, placeholder: "e.g., 25.50", label: 'Rate/Hour' %>
+									<% if @candidate.errors[:hourly_rate].any? %>
+										<div class="mt-2 text-sm text-red-600">
+											<% @candidate.errors[:hourly_rate].each do |message| %>
+												<p><%= message %></p>
+											<% end %>
+										</div>
+									<% end %>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+			<section class="shadow mt-8 px-4 py-5 lg:rounded-lg sm:p-6">
+				<div class="md:grid md:grid-cols-3 md:gap-6">
+					<div class="md:col-span-1">
+						<h2><%= form.label :bio, class: "text-lg font-medium leading-6" %></h2>
+						<p class="mt-2 text-sm text-gray-500"><%= t("form.bio.description") %></p>
+						<h4 class="font-medium uppercase tracking-wide text-sm mt-4"><%= t("form.bio.examples.title") %></h4>
+						<ul class="text-sm text-gray-500 list-disc list-inside">
+							<li class="mt-1"><%= t("form.bio.examples.origin") %></li>
+							<li class="mt-1"><%= t("form.bio.examples.accomplishment") %></li>
+							<li class="mt-1"><%= t("form.bio.examples.learned") %></li>
+							<li class="mt-1"><%= t("form.bio.examples.passion") %></li>
+							<li class="mt-1"><%= t("form.bio.examples.help") %></li>
+							<li class="mt-1"><%= t("form.bio.examples.unique") %></li>
+						</ul>
+						<p class="mt-4 text-sm text-gray-500"><%= t("form.bio.markdown") %></p>
+					</div>
+					<div class="mt-5 md:mt-0 md:col-span-2">
+						<div class="space-y-6">
+							<div>
+								<%= form.hidden_field :bio_required, value: true %>
+								<%= form.text_area :bio, rows: 20, class: 'shadow-sm block w-full sm:text-sm border rounded-md' %>
+								<p class="mt-2 text-sm text-gray-500"><%= t("form.bio.help_text") %></p>
+							</div>
+							<% if @candidate.errors[:bio].any? %>
+								<div class="mt-2 text-sm text-red-600">
+									<% @candidate.errors[:bio].each do |message| %>
+										<p><%= message %></p>
+									<% end %>
+								</div>
+							<% end %>
+						</div>
+					</div>
+				</div>
+			</section>
+			<section class=" shadow mt-8 px-4 py-5 lg:rounded-lg sm:p-6">
+				<div class="md:grid md:grid-cols-3 md:gap-6">
+					<div class="md:col-span-1">
+						<h2 class="text-lg font-medium leading-6"><%= t("work_preference.title") %></h2>
+						<p class="mt-2 text-sm "><%= t("work_preference.help_text") %></p>
+					</div>
+					<div class="mt-5 md:mt-0 md:col-span-2">
+						<div class="space-y-6">
+							<fieldset>
+								<legend class="text-base font-medium ">
+									<div class="flex">
+										<%= t("work_preference.search_status.title") %>
+									</div>
+								</legend>
+								<% if @candidate.errors[:search_status].any? %>
+									<div class="mt-2 text-sm text-red-600">
+										<% @candidate.errors[:search_status].each do |message| %>
+											<p><%= message %></p>
+										<% end %>
+									</div>
+								<% end %>
+								<div class="mt-4 space-y-4">
+									<div class="flex items-start">
+										<div class="h-5 flex items-center">
+											<%= form.radio_button :search_status, :actively_looking, class: "focus:ring-gray-500 h-4 w-4 border-gray-300" %>
+										</div>
+										<div class="ml-3 text-sm">
+											<%= form.label :search_status, value: :actively_looking, class: "font-medium" %>
+											<p><%= t("work_preference.search_status.actively_looking_help_text") %></p>
+										</div>
+									</div>
+									<div class="flex items-start">
+										<div class="flex items-center h-5">
+											<%= form.radio_button :search_status, :open, class: "focus:ring-gray-500 h-4 w-4 border-gray-300" %>
+										</div>
+										<div class="ml-3 text-sm">
+											<%= form.label :search_status, value: :open, class: "font-medium" %>
+											<p><%= t("work_preference.search_status.open_help_text") %></p>
+										</div>
+									</div>
+									<div class="flex items-start">
+										<div class="flex items-center h-5">
+											<%= form.radio_button :search_status, :not_interested, class: "focus:ring-gray-500 h-4 w-4 border-gray-300" %>
+										</div>
+										<div class="ml-3 text-sm">
+											<%= form.label :search_status, value: :not_interested, class: "font-medium" %>
+											<p ><%= t("work_preference.search_status.not_interested_help_text") %></p>
+										</div>
+									</div>
+									<div class="flex items-start">
+										<div class="flex items-center h-5">
+											<%= form.radio_button :search_status, :invisible, class: "focus:ring-gray-500 h-4 w-4 border-gray-300" %>
+										</div>
+										<div class="ml-3 text-sm">
+											<%= form.label :search_status, value: :invisible, class: "font-medium" %>
+											<p><%= t("work_preference.search_status.invisible_help_text") %></p>
+										</div>
+									</div>
+								</div>
+							</fieldset>
+						</div>
+					</div>
+				</div>
+			</section>
+			<section id="specialties" class="shadow mt-8 px-4 py-5 lg:rounded-lg sm:p-6">
+				<div class="mb-4 p-3 bg-yellow-50 border-l-4 border-yellow-400 text-yellow-800 rounded">
+					<strong>Note:</strong> You can select up to <span class="font-bold">5</span> specializations and <span class="font-bold">10</span> Skills.
+				</div>
+				<div class="md:grid md:grid-cols-3 md:gap-6">
+					<div>
+						<h2 class="text-lg font-medium leading-6">Specialties</h2>
+						<p class="mt-2 text-sm "><%= t(".specialties.description") %></p>
+						<p class="mt-2 text-sm"><%= t(".specialties.new.before") %> <%= link_to t(".specialties.new.cta"), "mailto:joe@railsdevs.com?subject=#{t(".specialties.new.subject")}", class: "font-medium underline" %>.</p>
+						<h4 class="font-medium uppercase tracking-wide text-sm mt-4"><%= t(".specialties.note.title") %></h4>
+						<p class="mt-1 text-sm"><%= t(".specialties.note.description") %></p>
+					</div>
+					<div class="md:col-span-2">
+						<div class="relative" data-controller="multi-select"
+               data-multi-select-max-items-value="5" <%# <-- Pass maxItems as a Stimulus value %>
+               data-multi-select-placeholder-value="Select up to 5 specializations" <%# <-- Pass placeholder as a Stimulus value %>
+               data-multi-select-remove-item-button-value="true" <%# <-- Pass boolean for remove button %>
+               data-multi-select-search-enabled-value="true" <%# <-- Pass boolean for search %>
+               >
+							<%= form.select :candidate_role_ids,
+                            options_from_collection_for_select(
+                              @candidate_role_groups.flat_map(&:candidate_roles),
+                              :id,
+                              :name,
+                              selected: @user.candidate&.candidate_role_ids
+                            ),
+                            {},
+                            multiple: true,
+                            data: { multi_select_target: "select" }
+
+            %>
+							<% if @candidate.errors[:candidate_role_ids].any? %>
+								<div class="mt-2 text-sm text-red-600">
+									<% @candidate.errors[:candidate_role_ids].each do |message| %>
+										<p><%= message %></p>
+									<% end %>
+								</div>
+							<% end %>
+						</div>
+						<div data-controller="multi-select"
+               data-multi-select-max-items-value="10"
+               data-multi-select-placeholder-value="Select up to 10 skills"
+               data-multi-select-remove-item-button-value="true"
+               data-multi-select-search-enabled-value="true">
+							<%= form.select :skill_ids,
+                            options_from_collection_for_select(
+                              @skills || [],
+                              :id,
+                              :name,
+                              selected: @candidate&.skill_ids
+                            ),
+                            {},
+                            multiple: true,
+                            data: { multi_select_target: "select" }
+            %>
+						</div>
+						<% if @candidate.errors[:skill_ids].any? %>
+							<div class="mt-2 text-sm text-red-600">
+								<% @candidate.errors[:skill_ids].each do |message| %>
+									<p><%= message %></p>
+								<% end %>
+							</div>
+						<% end %>
+					</div>
+				</div>
+			</section>
+			<!-- Role Type Section -->
+			<section class="shadow mt-8 px-4 py-5 lg:rounded-lg sm:p-6">
+				<div class="md:grid md:grid-cols-3 md:gap-6">
+					<div class="md:col-span-1">
+						<h2 class="text-lg font-medium leading-6"><%= t("role_type.title") %></h2>
+						<p class="mt-2 text-sm"><%= t("role_type.help_text") %></p>
+					</div>
+					<div class="mt-5 md:mt-0 md:col-span-2">
+						<div class="space-y-6">
+							<%= form.fields_for :role_type, include_id: false do |role_type| %>
+								<fieldset>
+									<div class="mt-4 space-y-4">
+										<div class="flex items-center">
+											<%= role_type.check_box :part_time_contract, class: "focus:ring-gray-500 h-4 w-4 border-gray-300 rounded" %>
+											<%= role_type.label :part_time_contract, class: "ml-3 block text-sm font-medium" %>
+										</div>
+										<div class="flex items-center">
+											<%= role_type.check_box :full_time_contract, class: "focus:ring-gray-500 h-4 w-4 border-gray-300 rounded" %>
+											<%= role_type.label :full_time_contract, class: "ml-3 block text-sm font-medium" %>
+										</div>
+										<div class="flex items-center">
+											<%= role_type.check_box :full_time_employment, class: "focus:ring-gray-500 h-4 w-4 border-gray-300 rounded" %>
+											<%= role_type.label :full_time_employment, class: "ml-3 block text-sm font-medium" %>
+										</div>
+									</div>
+									<% if @candidate.role_type&.errors&.any? %>
+										<div class="mt-2 text-sm text-red-600">
+											<% @candidate.role_type.errors.full_messages.each do |message| %>
+												<p><%= message %></p>
+											<% end %>
+										</div>
+									<% end %>
+								</fieldset>
+							<% end %>
+						</div>
+					</div>
+				</div>
+			</section>
+			<!-- Role Level Section -->
+			<section class="shadow mt-8 px-4 py-5 lg:rounded-lg sm:p-6">
+				<div class="md:grid md:grid-cols-3 md:gap-6">
+					<div class="md:col-span-1">
+						<h2 class="text-lg font-medium leading-6"><%= t("role_level.title") %></h2>
+						<p class="mt-2 text-sm"><%= t("role_level.help_text") %></p>
+					</div>
+					<div class="mt-5 md:mt-0 md:col-span-2">
+						<div class="space-y-6">
+							<%= form.fields_for :role_level, include_id: false do |role_level| %>
+								<fieldset>
+									<div class="mt-4 space-y-4">
+										<div class="flex items-center">
+											<%= role_level.check_box :junior, class: "focus:ring-gray-500 h-4 w-4  border-gray-300 rounded" %>
+											<%= role_level.label :junior, class: "ml-3 block text-sm font-medium" %>
+										</div>
+										<div class="flex items-center">
+											<%= role_level.check_box :mid, class: "focus:ring-gray-500 h-4 w-4  border-gray-300 rounded" %>
+											<%= role_level.label :mid, class: "ml-3 block text-sm font-medium" %>
+										</div>
+										<div class="flex items-center">
+											<%= role_level.check_box :senior, class: "focus:ring-gray-500 h-4 w-4  border-gray-300 rounded" %>
+											<%= role_level.label :senior, class: "ml-3 block text-sm font-medium" %>
+										</div>
+										<div class="flex items-center">
+											<%= role_level.check_box :principal, class: "focus:ring-gray-500 h-4 w-4  border-gray-300 rounded" %>
+											<%= role_level.label :principal, class: "ml-3 block text-sm font-medium" %>
+										</div>
+										<div class="flex items-center">
+											<%= role_level.check_box :c_level, class: "focus:ring-gray-500 h-4 w-4  border-gray-300 rounded" %>
+											<%= role_level.label :c_level, class: "ml-3 block text-sm font-medium" %>
+										</div>
+									</div>
+									<% if @candidate.role_level&.errors&.any? %>
+										<div class="mt-2 text-sm text-red-600">
+											<% @candidate.role_level.errors.full_messages.each do |message| %>
+												<p><%= message %></p>
+											<% end %>
+										</div>
+									<% end %>
+								</fieldset>
+							<% end %>
+						</div>
+					</div>
+				</div>
+			</section>
+		</div>
+		<%= form.submit "Next" %>
+	<% end %>
+</div>

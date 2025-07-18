@@ -1,5 +1,4 @@
 class User < ApplicationRecord
-  include RichText
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -20,10 +19,11 @@ class User < ApplicationRecord
   attr_accessor :skip_password_validation
   attr_accessor :current_sign_in_ip_address
   attr_accessor :delete_profile_image
-
+  attr_accessor :redirect_to, :email_required, :bio_required
 
   accepts_nested_attributes_for :user_roles, allow_destroy: true
   accepts_nested_attributes_for :location, allow_destroy: true
+  accepts_nested_attributes_for :candidate, allow_destroy: true
 
   has_one_attached :profile_image do |attachable|
     attachable.variant :thumbnail, resize_to_fill: [ 300, 300 ], convert: :webp, saver: { quality: 80 }
@@ -34,7 +34,7 @@ class User < ApplicationRecord
   validate :profile_image_size
   validates :first_name, presence: true, on: :update
   validates :last_name, presence: true, on: :update
-  validates :bio, presence: true, on: :update
+
 
   pg_search_scope :search_by_email,
               against: :email,
@@ -42,7 +42,6 @@ class User < ApplicationRecord
                 tsearch: { prefix: true } # Enables partial matches (e.g., "Admin" matches "Administrator")
               }
   enum :gender, [ :he_him, :she_her, :they_them, :other ]
-  enum :theme, { system: 0, light: 1, dark: 2 }, default: :system
   enum :user_type, { company: 0, user: 1, platform_admin: 99 }
 
   GENDER_DISPLAY = {
@@ -119,6 +118,14 @@ class User < ApplicationRecord
     if user?
       create_candidate
     end
+  end
+
+  def email_required?
+    email_required
+  end
+
+  def location
+    super || build_location
   end
 
   protected

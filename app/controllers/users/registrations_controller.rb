@@ -40,30 +40,37 @@ class Users::RegistrationsController < Devise::RegistrationsController
       set_minimum_password_length
       respond_to do |format|
         format.html do
-          flash[:alert] = resource.errors.full_messages.join(", ")
-          redirect_to request.referer || after_update_path_for(resource)
+          flash.now[:alert] = resource.errors.full_messages.join(", ")
+          if request.referrer.split("/").include?("onboarding")
+            render "onboardings/show", status: :unprocessable_entity, layout: "wizard"
+          else
+            redirect_to request.referer || after_update_path_for(resource)
+          end
         end
         format.json { render json: { errors: resource.errors.full_messages }, status: :unprocessable_entity }
       end
     end
   end
 
-    def handle_redirect(notice, resource)
-      case params[:user][:redirect_to]
-      when "onboarding_preferences"
-        redirect_to preferences_onboarding_path
-      when "home"
-        redirect_to root_path
-      when "preferences"
-        redirect_to settings_preferences_path, notice: notice
-      when "goals"
-        redirect_to goals_onboarding_path
-      # when "trial"
-      #   redirect_to trial_onboarding_path
-      else
-        redirect_to settings_profile_path, notice: notice
-      end
+  def handle_redirect(notice, resource)
+    case params[:user][:redirect_to]
+    when "onboarding_candidate"
+      redirect_to candidate_setup_onboarding_path
+    when "onboarding_preferences"
+      redirect_to preferences_onboarding_path
+    when "home"
+      redirect_to root_path
+    when "preferences"
+      redirect_to settings_preferences_path, notice: notice
+    when "goals"
+      redirect_to goals_onboarding_path
+    # when "trial"
+    #   redirect_to trial_onboarding_path
+    else
+      # path = current_user.user? ? : settings_profile_path
+      # redirect_to settings_profile_path, notice: notice
     end
+  end
 
   protected
 
@@ -85,11 +92,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
     devise_parameter_sanitizer.permit(:account_update, keys: [
       :email, :password, :password_confirmation, :current_password, :set_onboarding_goals_at, :onboarded_at, :redirect_to,
       :first_name, :last_name, :country_code, :theme, :set_onboarding_preferences_at, :delete_profile_image, :profile_image,
-      :date_format, :locale, :gender, :phone_number, :date_of_birth, :bio, :timezone, :user_type, goals: [],
-      profile_attributes: [
-        :id, :last_name, :gender, :bio,
-        :phone_number, :date_of_birth, :location, :website, :social_links,
-        :timezone, :postal_code
+      :date_format, :locale, :gender, :phone_number, :date_of_birth, :bio, :timezone, :user_type, :bio_required, goals: [],
+
+      location_attributes: [
+        :id, :location_search, :city, :state, :country, :_destroy
       ]
     ])
   end
@@ -104,7 +110,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def update_resource_without_password(resource, params)
-    resource.update_without_password(params.except(:redirect_to, :delete_profile_image, :redirect_to))
+    resource.update_without_password(params.except(:redirect_to, :delete_profile_image, :redirect_to, :bio_required))
   end
 
   def update_resource(resource, params)

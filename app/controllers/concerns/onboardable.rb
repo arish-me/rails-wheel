@@ -28,6 +28,9 @@ module Onboardable
       return false if path.starts_with?("/onboarding")
       return false if path.starts_with?("/users")
       return false if path.starts_with?("/companies")
+      return false if path.starts_with?("/location")
+
+
 
       [
         new_registration_path(User),

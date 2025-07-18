@@ -1,23 +1,6 @@
-<% if false %>
-<% if false && profile && profile.avatar.attached? %>
-  <%= image_tag profile.avatar.variant(:thumbnail), class: "rounded-full object-cover #{defined?(nav) ? 'h-8 w-8' : 'w-full h-full'}" %>
-<% else %>
-  <div class="flex items-center justify-center p-2 text-gray-500 bg-gray-100 border border-gray-200 rounded-full w-9 h-9 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-200 theme-dark:bg-gray-700 theme-dark:text-gray-300 theme-dark:border-gray-600 theme-dark:hover:bg-gray-600 transition-colors duration-200">
-    <span class="font-medium text-gray-600 theme-dark:text-gray-500">
-      <%= current_user&.initial %>
-    </span>
-</div>
-<% end %>
-<% end %>
-
-
 <%# locals: (avatar_url: nil, initials: "U", lazy: false) %>
-
 <% if avatar_url.present? %>
-  <%= image_tag avatar_url, class: "rounded-full w-full h-full object-cover", loading: lazy ? "lazy" : "eager" %>
+	<%= image_tag avatar_url, class: "h-24 w-24 sm:h-32 sm:w-32 ring-4 ring-white object-cover rounded-full", loading: lazy ? "lazy" : "eager" %>
 <% else %>
-  <div class="w-full h-full bg-surface-inset hover:bg-surface-inset-hover text-secondary rounded-full flex items-center justify-center text-lg uppercase"><%= initials %></div>
+	<div class="w-full h-full bg-surface-inset hover:bg-surface-inset-hover text-secondary rounded-full flex items-center justify-center text-lg uppercase"><%= initials %></div>
 <% end %>
-
-
-
