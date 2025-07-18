@@ -2,7 +2,15 @@
 	<!-- Sidebar -->
 	<aside class="col-span-1 bg-white rounded-2xl shadow-lg p-8 flex flex-col items-center">
 		<!-- Avatar -->
-		<%= render AvatarComponent.new(avatarable: @user, variant: :thumbnail) %>
+		<% if current_user && current_user.id == @candidate.user.id %>
+			<%= styled_form_with model: @candidate, url: candidate_path(@candidate), method: :patch, data: { controller: "auto-submit-form" } do |form| %>
+				<%= form.fields_for :user do |user_form| %>
+					<%= render "settings/user_avatar_field", form: user_form, user: @user %>
+				<% end %>
+			<% end %>
+		<% else %>
+			<%= render AvatarComponent.new(avatarable: @user, variant: :thumbnail) %>
+		<% end %>
 		<!-- Name & Status -->
 		<h2 class="text-2xl font-bold text-gray-900 text-center"><%= @candidate.user.display_name %></h2>
 		<%= render RenderableComponent.new("space-y-3 pb-4") do %>

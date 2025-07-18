@@ -25,13 +25,14 @@ class CandidatesController < ApplicationController
 
   def set_candidate
     @candidate = current_user.candidate
+    @user = @candidate.user
   end
 
   private
   def candidate_params
     params.require(:candidate).permit(
       :bio,
-      user_attributes: [ :id, :first_name, :last_name, :phone_number, :gender, :date_of_birth, :email_required,
+      user_attributes: [ :id, :first_name, :last_name, :phone_number, :gender, :date_of_birth, :email_required, :delete_profile_image, :profile_image,
       location_attributes: [ :id, :location_search, :city, :state, :country, :_destroy ]
       ],
       role_type_attributes: RoleType::TYPES,

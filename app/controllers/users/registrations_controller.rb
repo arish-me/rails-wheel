@@ -68,7 +68,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     #   redirect_to trial_onboarding_path
     else
       # path = current_user.user? ? : settings_profile_path
-      redirect_to settings_profile_path, notice: notice
+      # redirect_to settings_profile_path, notice: notice
     end
   end
 
