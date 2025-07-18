@@ -126,7 +126,7 @@ class Candidate < ApplicationRecord
     count = skill_ids.reject(&:blank?).size
     if count < 1
       errors.add(:skill_ids, "You must select at least one skill.")
-    elsif count > 5
+    elsif count > 10
       errors.add(:skill_ids, "You can select up to 10 skill only.")
     end
   end

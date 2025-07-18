@@ -1,9 +1,9 @@
 // app/javascript/controllers/multi_select_controller.js
-import { Controller } from "@hotwired/stimulus"
-import Choices from "choices.js"
+import { Controller } from '@hotwired/stimulus'
+import Choices from 'choices.js'
 
 export default class extends Controller {
-  static targets = ["select"]
+  static targets = ['select']
 
   // Define Stimulus values and their default types
   static values = {
@@ -11,7 +11,7 @@ export default class extends Controller {
     placeholderValue: { type: String, default: 'Select an option' },
     removeItemButton: { type: Boolean, default: false },
     searchEnabled: { type: Boolean, default: true },
-    multiSelect: { type: Boolean, default: true },
+    multiSelect: { type: Boolean, default: true }
     // Add any other Choices.js options you want to expose
     // For example:
     // searchFloor: { type: Number, default: 1 },
@@ -38,20 +38,27 @@ export default class extends Controller {
       editItems: true,
       allowHTML: false,
       allowHtmlUserInput: false,
-      loadingText: 'Loading...',
+      loadingText: 'Loading...'
       // You can add more options here and make them Stimulus values as needed
-    };
+    }
 
     // If maxItemsValue is 1, Choices.js treats it as single select automatically
     // You might want different defaults or explicitly set `maxItemCount: 1` if it's a single select.
     // For a multi-select specific controller, ensure maxItemsValue is set accordingly in HTML.
 
-    this.choicesInstance = new Choices(this.selectTarget, options);
+    this.choicesInstance = new Choices(this.selectTarget, options)
+    // Prevent modal from closing when interacting with Choices.js dropdown
+    this.selectTarget.closest('.choices').addEventListener('mousedown', (e) => {
+      e.stopPropagation()
+    })
+    this.selectTarget.closest('.choices').addEventListener('click', (e) => {
+      e.stopPropagation()
+    })
   }
 
   disconnect() {
     if (this.choicesInstance) {
-      this.choicesInstance.destroy();
+      this.choicesInstance.destroy()
     }
   }
 }

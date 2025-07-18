@@ -26,15 +26,19 @@ class CandidatesController < ApplicationController
   def set_candidate
     @candidate = current_user.candidate
     @user = @candidate.user
+    @candidate_role_groups = CandidateRoleGroup.includes(:candidate_roles).all
+    @skills = Skill.order(:name)
   end
 
   private
   def candidate_params
     params.require(:candidate).permit(
-      :bio,
+      :bio, :redirect_to,
       user_attributes: [ :id, :first_name, :last_name, :phone_number, :gender, :date_of_birth, :email_required, :delete_profile_image, :profile_image,
       location_attributes: [ :id, :location_search, :city, :state, :country, :_destroy ]
       ],
+      skill_ids: [],
+      candidate_role_ids: [],
       role_type_attributes: RoleType::TYPES,
       role_level_attributes: RoleLevel::TYPES,
       social_link_attributes: [ :id, :github, :website, :linked_in, :twitter, :_destroy ]
