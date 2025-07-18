@@ -1,0 +1,8 @@
+<%= render DialogComponent.new(variant: :modal, width: :lg) do |dialog| %>
+  <% dialog.with_header(title: t("edit_information")) %>
+  <% dialog.with_body do %>
+    <%= turbo_frame_tag "candidate_profile_personal_info" do %>
+      <%= render "candidates/forms/personal_information", candidate: @candidate %>
+    <% end %>
+  <% end %>
+<% end %>

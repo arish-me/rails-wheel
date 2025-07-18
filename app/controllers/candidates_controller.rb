@@ -17,11 +17,6 @@ class CandidatesController < ApplicationController
         format.html { redirect_to candidate_path(@candidate), notice: "Profile was successfully updated." }
       else
         flash.now[:alert] = @candidate.errors.full_messages.join(", ")
-        format.turbo_stream {
-          render turbo_stream: [
-            turbo_stream.replace("candidate_profile_personal_info", partial: "candidates/forms/personal_information", locals: { candidate: @candidate })
-          ], status: :unprocessable_entity
-        }
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @candidate.errors, status: :unprocessable_entity }
       end

@@ -1,4 +1,4 @@
-<%= styled_form_with model: candidate, url: candidate_path(candidate), method: :patch, class: "space-y-4" do |form| %>
+<%= styled_form_with model: candidate, url: candidate_path(candidate, edit: 'personal_info'), method: :patch, class: "space-y-4" do |form| %>
 	<% if candidate.errors.any? %>
 		<%= render "shared/form_errors" , model: candidate %>
 	<% end %>

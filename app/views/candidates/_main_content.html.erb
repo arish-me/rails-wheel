@@ -8,12 +8,9 @@
 					<%= render LinkComponent.new(
                   text: "Edit",
                   variant: :primary,
-                  href: candidate_path(@candidate, edit: 'candidate_profile_bio'),
+                  href: edit_candidate_path(@candidate, edit: 'candidate_profile_bio'),
                   frame: :modal
               ) %>
-					<% if params[:edit] == "candidate_profile_bio" %>
-						<%= render "candidates/bio_form", candidate: @candidate %>
-					<% end %>
 				</div>
 				<div class="prose max-w-prose">
 					<%== @candidate&.rich_text_bio %>

@@ -1,4 +1,4 @@
-<%= styled_form_with model: candidate, url: candidate_path(candidate), method: :patch, class: "space-y-4" do |form| %>
+<%= styled_form_with model: candidate, url: candidate_path(candidate, edit: 'candidate_profile_social_link'), method: :patch, class: "space-y-4" do |form| %>
 	<%= form.fields_for :social_link, include_id: false do |social_link_form| %>
 		<section class="px-4 py-5 lg:rounded-lg sm:p-6">
 			<div class="md:grid md:grid-cols-3 md:gap-6">

@@ -29,7 +29,7 @@ class Candidate < ApplicationRecord
   validates :experience, presence: true, on: :update, if: :validate_for_redirect_target?
   validates :search_status, presence: true, on: :update, if: :validate_for_redirect_target?
   validates :hourly_rate, presence: true, on: :update, if: :validate_for_redirect_target?
-  validates :bio, presence: true, on: :update, if: :validate_for_redirect_target?
+  validates :bio, presence: true, on: :update
 
  enum :experience, { # Renamed to experience_level to avoid conflict if you later add an integer 'experience' column
     fresher: 0,

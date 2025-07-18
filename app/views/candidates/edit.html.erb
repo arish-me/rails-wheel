@@ -1,0 +1,12 @@
+<% if params[:edit] == "personal_info" %>
+	<%= render "candidates/edit/personal_info_form", candidate: @candidate %>
+<% end %>
+<% if params[:edit] == "candidate_profile_work_preference" %>
+	<%= render "candidates/edit/work_preference", candidate: @candidate %>
+<% end %>
+<% if params[:edit] == "candidate_profile_social_link" %>
+	<%= render "candidates/edit/social_link", candidate: @candidate %>
+<% end %>
+<% if params[:edit] == "candidate_profile_bio" %>
+	<%= render "candidates/edit/bio_form", candidate: @candidate %>
+<% end %>
