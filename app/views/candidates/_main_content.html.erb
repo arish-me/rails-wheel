@@ -37,8 +37,9 @@
 					<div class="flex items-center">
 						<span class="inline-flex items-center justify-center w-9 h-9 rounded-full bg-lime-100 text-lime-600 font-bold mr-4 text-lg">T</span>
 						<div>
-							<div class="font-semibold text-gray-900"><%= experience.company_name %></div>
-							<div class="text-xs text-gray-500"><%= experience.job_title %> &bull; <%= experience.start_date %> - <%= experience.end_date %></div>
+							<div class="font-semibold text-gray-900 prose max-w-prose"><%= experience.company_name %></div>
+							<div class="text-xs text-gray-500"><%= experience.job_title %> &bull; <%= experience_date_range(experience) %>
+							</div>
 						</div>
 					</div>
 					<%= render LinkComponent.new(
@@ -48,23 +49,10 @@
 					  frame: :modal
 					) %>
 				</div>
-				<ul class="list-disc list-inside text-gray-700 text-sm ml-14 mt-1">
-					<li><%= experience.description %> </li>
-				</ul>
+				<div class="list-inside text-gray-700 text-sm ml-14 mt-1">
+					<p><%= experience.description %> </p>
+				</div>
 			</div>
 		<% end %>
-	</section>
-	<!-- Education -->
-	<section class="bg-white rounded-2xl shadow-lg p-8">
-		<h3 class="text-lg font-bold text-gray-900 mb-6">Education</h3>
-		<div class="flex items-center">
-			<span class="inline-flex items-center justify-center w-9 h-9 rounded-full bg-indigo-100 text-indigo-600 font-bold mr-4">
-				<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 14l9-5-9-5-9 5 9 5z"/><path d="M12 14l6.16-3.422A12.083 12.083 0 0 1 21 10.5c0 5.523-4.477 10-10 10S1 16.023 1 10.5c0-.828.08-1.637.234-2.422L12 14z"/></svg>
-			</span>
-			<div>
-				<div class="font-semibold text-gray-900">University of Illinois at Urbana-Champaign</div>
-				<div class="text-xs text-gray-500">B.S. in Computer Science &bull; 2011 - 2015</div>
-			</div>
-		</div>
 	</section>
 </main>
