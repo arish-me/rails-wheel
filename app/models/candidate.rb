@@ -14,12 +14,15 @@ class Candidate < ApplicationRecord
   has_many :candidate_roles, through: :specializations
   has_many :candidate_skills
   has_many :skills, through: :candidate_skills
+  has_many :experiences, dependent: :destroy
+  accepts_nested_attributes_for :experiences, allow_destroy: true, reject_if: :all_blank
 
   accepts_nested_attributes_for :user
   accepts_nested_attributes_for :specializations, allow_destroy: true
   accepts_nested_attributes_for :role_level, update_only: true
   accepts_nested_attributes_for :role_type, update_only: true
   accepts_nested_attributes_for :social_link, update_only: true
+  accepts_nested_attributes_for :experiences
 
   validate :specialization_count_within_bounds, on: :update, if: :validate_for_redirect_target?
   validate :skills_count_within_bounds, on: :update, if: :validate_for_redirect_target?
@@ -95,6 +98,10 @@ class Candidate < ApplicationRecord
 
   def social_link
     super || build_social_link
+  end
+
+  def experiences
+    super || build_experiences
   end
 
   def validate_for_redirect_target?

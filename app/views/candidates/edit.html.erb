@@ -13,3 +13,6 @@
 <% if params[:edit] == "candidate_profile_specialities" %>
 	<%= render "candidates/edit/specialities", candidate: @candidate %>
 <% end %>
+<% if params[:edit] == "candidate_experience" %>
+	<%= render "candidates/edit/experience", candidate: @candidate %>
+<% end %>

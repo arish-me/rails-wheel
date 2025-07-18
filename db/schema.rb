@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_12_124258) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_18_085037) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -102,6 +102,19 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_12_124258) do
     t.integer "status", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "experiences", force: :cascade do |t|
+    t.bigint "candidate_id", null: false
+    t.string "company_name"
+    t.string "job_title"
+    t.date "start_date"
+    t.date "end_date"
+    t.boolean "current_job", default: false
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["candidate_id"], name: "index_experiences_on_candidate_id"
   end
 
   create_table "good_job_batches", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -376,6 +389,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_12_124258) do
   add_foreign_key "candidates", "candidate_roles"
   add_foreign_key "candidates", "users"
   add_foreign_key "categories", "users"
+  add_foreign_key "experiences", "candidates"
   add_foreign_key "role_levels", "candidates"
   add_foreign_key "role_permissions", "companies"
   add_foreign_key "role_permissions", "permissions"

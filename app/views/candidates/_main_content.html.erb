@@ -20,33 +20,31 @@
 	</div>
 	<!-- Experience -->
 	<section class="bg-white rounded-2xl shadow-lg p-8">
-		<h3 class="text-lg font-bold text-gray-900 mb-6">Experience</h3>
-		<div class="mb-8">
-			<div class="flex items-center mb-1">
-				<span class="inline-flex items-center justify-center w-9 h-9 rounded-full bg-lime-100 text-lime-600 font-bold mr-4 text-lg">T</span>
-				<div>
-					<div class="font-semibold text-gray-900">TechSolutions Inc.</div>
-					<div class="text-xs text-gray-500">Network Engineer &bull; January 2020 - Present</div>
-				</div>
+		<%= turbo_frame_tag "candidate_experience" do %>
+			<div class="flex items-center justify-between mb-4">
+				<h3 class="text-lg font-bold text-gray-900 mb-6">Experience</h3>
+				<%= render LinkComponent.new(
+                  text: "Edit",
+                  variant: :primary,
+                  href: edit_candidate_path(@candidate, edit: 'candidate_experience'),
+                  frame: :modal
+              ) %>
 			</div>
-			<ul class="list-disc list-inside text-gray-700 text-sm ml-14 mt-1">
-				<li>Managed and maintained a network for a large corporate office with over 500 employees.</li>
-				<li>Implemented new security protocols that reduced system vulnerabilities by 40%.</li>
-			</ul>
-		</div>
-		<div>
-			<div class="flex items-center mb-1">
-				<span class="inline-flex items-center justify-center w-9 h-9 rounded-full bg-lime-100 text-lime-600 font-bold mr-4 text-lg">N</span>
-				<div>
-					<div class="font-semibold text-gray-900">NetGrowth Technologies</div>
-					<div class="text-xs text-gray-500">Junior Network Engineer &bull; June 2016 - December 2019</div>
+		<% end %>
+		<%- @candidate.experiences.each do |experience|  %>
+			<div class="mb-8">
+				<div class="flex items-center mb-1">
+					<span class="inline-flex items-center justify-center w-9 h-9 rounded-full bg-lime-100 text-lime-600 font-bold mr-4 text-lg">T</span>
+					<div>
+						<div class="font-semibold text-gray-900"><%= experience.company_name %></div>
+						<div class="text-xs text-gray-500"><%= experience.job_title %> &bull; <%= experience.start_date %> - <%= experience.end_date %></div>
+					</div>
 				</div>
+				<ul class="list-disc list-inside text-gray-700 text-sm ml-14 mt-1">
+					<li><%= experience.description %> </li>
+				</ul>
 			</div>
-			<ul class="list-disc list-inside text-gray-700 text-sm ml-14 mt-1">
-				<li>Assisted in the rollout of a new company-wide email system, enhancing communication efficiency.</li>
-				<li>Supported network upgrade projects that improved system uptime and performance.</li>
-			</ul>
-		</div>
+		<% end %>
 	</section>
 	<!-- Education -->
 	<section class="bg-white rounded-2xl shadow-lg p-8">

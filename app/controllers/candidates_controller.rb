@@ -6,6 +6,7 @@ class CandidatesController < ApplicationController
   def show
   end
   def edit
+    @candidate.experiences.build
     # @location = current_user.build_location unless current_user.location
   end
 
@@ -37,6 +38,7 @@ class CandidatesController < ApplicationController
       user_attributes: [ :id, :first_name, :last_name, :phone_number, :gender, :date_of_birth, :email_required, :delete_profile_image, :profile_image,
       location_attributes: [ :id, :location_search, :city, :state, :country, :_destroy ]
       ],
+      experiences_attributes: [ :company_name, :job_title, :start_date, :end_date, :current_job, :description, :_destroy ],
       skill_ids: [],
       candidate_role_ids: [],
       role_type_attributes: RoleType::TYPES,
