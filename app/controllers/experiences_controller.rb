@@ -1,6 +1,6 @@
 class ExperiencesController < ApplicationController
   before_action :set_candidate
-  before_action :set_experience, only: [:edit, :update, :destroy]
+  before_action :set_experience, only: [ :edit, :update, :destroy ]
 
   def new
     @experience = @candidate.experiences.build
