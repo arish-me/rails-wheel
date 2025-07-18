@@ -179,7 +179,7 @@ GEM
       stimulus-rails (>= 1.2)
       turbo-rails (>= 1.2)
     htmlbeautifier (1.4.3)
-    i18n (1.14.6)
+    i18n (1.14.7)
       concurrent-ruby (~> 1.0)
     image_processing (1.13.0)
       mini_magick (>= 4.9.5, < 5)
