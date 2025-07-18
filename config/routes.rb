@@ -107,11 +107,14 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :candidates do
-    resources :profiles, module: :candidates
-    resources :work_preferences, module: :candidates
-    resources :social_links, module: :candidates
-  end
+  # resources :candidates do
+  #   resources :profiles, module: :candidates
+  #   resources :work_preferences, module: :candidates
+  #   resources :social_links, module: :candidates
+  # end
+
+  resources :candidates
+  get "/locations/city_suggestions", to: "locations#city_suggestions"
 
   get "up" => "rails/health#show", as: :rails_health_check
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest

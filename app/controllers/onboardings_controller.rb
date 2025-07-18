@@ -13,6 +13,7 @@ class OnboardingsController < ApplicationController
 
   def specialization
     if request.get?
+       @skills = Skill.order(:name)
     else
       respond_to do |format|
        if @candidate.update(specialization_params)
@@ -37,13 +38,15 @@ class OnboardingsController < ApplicationController
 
   def candidate_setup
     if request.get?
+      @skills = Skill.order(:name)
     else
       respond_to do |format|
-       if @candidate.update(specialization_params)
+       if @candidate.update(candidate_params)
          flash[:notice] = "Profile was successfully updated."
          handle_redirect(flash[:notice])
          format.html { }
        else
+         @skills = Skill.order(:name)
          flash[:alert] = @candidate.errors.full_messages.join(", ")
          format.html { render :candidate_setup, status: :unprocessable_entity }
          format.json { render json: @candidate.errors, status: :unprocessable_entity }
@@ -56,7 +59,7 @@ class OnboardingsController < ApplicationController
     if request.get?
     else
       respond_to do |format|
-       if @candidate.update(specialization_params)
+       if @candidate.update(candidate_params)
          flash[:notice] = "Profile was successfully updated."
          handle_redirect(flash[:notice])
          format.html { }
@@ -89,8 +92,7 @@ class OnboardingsController < ApplicationController
     # when "trial"
     #   redirect_to trial_onboarding_path
     else
-      # path = current_user.user? ? : settings_profile_path
-      redirect_to settings_profile_path, notice: notice
+      redirect_to dashboard_path, notice: notice
     end
   end
 
@@ -114,13 +116,14 @@ class OnboardingsController < ApplicationController
       @invitation = Current.family.invitations.accepted.find_by(email: Current.user.email)
     end
 
-    def specialization_params
+    def candidate_params
       params.require(:candidate).permit(:redirect_to, :headline, :experience, :hourly_rate,
-        :search_status,
+        :search_status, :bio, :bio_required,
+        skill_ids: [],
         candidate_role_ids: [],
         role_type_attributes: RoleType::TYPES,
         role_level_attributes: RoleLevel::TYPES,
-        social_link_attributes: [ :id, :github, :website, :linked_in, :twitter, :_destroy ],
+        social_link_attributes: [ :id, :github, :website, :linked_in, :twitter, :_destroy ]
       )
     end
 end

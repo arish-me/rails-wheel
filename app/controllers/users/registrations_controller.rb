@@ -54,8 +54,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def handle_redirect(notice, resource)
     case params[:user][:redirect_to]
-    when "specialization"
-      redirect_to specialization_onboarding_path
+    when "onboarding_candidate"
+      redirect_to candidate_setup_onboarding_path
     when "onboarding_preferences"
       redirect_to preferences_onboarding_path
     when "home"
@@ -68,7 +68,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     #   redirect_to trial_onboarding_path
     else
       # path = current_user.user? ? : settings_profile_path
-      redirect_to settings_profile_path, notice: notice
+      # redirect_to settings_profile_path, notice: notice
     end
   end
 
@@ -92,7 +92,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
     devise_parameter_sanitizer.permit(:account_update, keys: [
       :email, :password, :password_confirmation, :current_password, :set_onboarding_goals_at, :onboarded_at, :redirect_to,
       :first_name, :last_name, :country_code, :theme, :set_onboarding_preferences_at, :delete_profile_image, :profile_image,
-      :date_format, :locale, :gender, :phone_number, :date_of_birth, :bio, :timezone, :user_type, goals: [],
+      :date_format, :locale, :gender, :phone_number, :date_of_birth, :bio, :timezone, :user_type, :bio_required, goals: [],
+
       location_attributes: [
         :id, :location_search, :city, :state, :country, :_destroy
       ]
@@ -109,7 +110,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def update_resource_without_password(resource, params)
-    resource.update_without_password(params.except(:redirect_to, :delete_profile_image, :redirect_to))
+    resource.update_without_password(params.except(:redirect_to, :delete_profile_image, :redirect_to, :bio_required))
   end
 
   def update_resource(resource, params)

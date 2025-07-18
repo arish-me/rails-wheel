@@ -1,0 +1,36 @@
+<%= styled_form_with model: candidate, url: candidate_path(candidate, edit: 'candidate_profile_bio'), method: :patch, class: "space-y-4" do |form| %>
+	<section class="shadow mt-8 px-4 py-5 lg:rounded-lg sm:p-6">
+		<div class="md:grid md:grid-cols-3 md:gap-6">
+			<div class="md:col-span-1">
+				<h2><%= form.label :bio, class: "text-lg font-medium leading-6" %></h2>
+				<p class="mt-2 text-sm text-gray-500"><%= t("form.bio.description") %></p>
+				<h4 class="font-medium uppercase tracking-wide text-sm mt-4"><%= t("form.bio.examples.title") %></h4>
+				<ul class="text-sm text-gray-500 list-disc list-inside">
+					<li class="mt-1"><%= t("form.bio.examples.origin") %></li>
+					<li class="mt-1"><%= t("form.bio.examples.accomplishment") %></li>
+					<li class="mt-1"><%= t("form.bio.examples.learned") %></li>
+					<li class="mt-1"><%= t("form.bio.examples.passion") %></li>
+					<li class="mt-1"><%= t("form.bio.examples.help") %></li>
+					<li class="mt-1"><%= t("form.bio.examples.unique") %></li>
+				</ul>
+				<p class="mt-4 text-sm text-gray-500"><%= t("form.bio.markdown") %></p>
+			</div>
+			<div class="mt-5 md:mt-0 md:col-span-2">
+				<div class="space-y-6">
+					<div>
+						<%= form.text_area :bio, rows: 20, class: 'shadow-sm block w-full sm:text-sm border rounded-md' %>
+						<p class="mt-2 text-sm text-gray-500"><%= t("form.bio.help_text") %></p>
+					</div>
+					<% if @candidate.errors[:bio].any? %>
+						<div class="mt-2 text-sm text-red-600">
+							<% @candidate.errors[:bio].each do |message| %>
+								<p><%= message %></p>
+							<% end %>
+						</div>
+					<% end %>
+				</div>
+			</div>
+		</div>
+	</section>
+	<%= form.submit 'Submit' %>
+<% end %>

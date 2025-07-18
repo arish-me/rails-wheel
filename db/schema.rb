@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_10_145346) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_12_124258) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -56,12 +56,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_10_145346) do
     t.index ["candidate_role_group_id"], name: "index_candidate_roles_on_candidate_role_group_id"
   end
 
-  create_table "candidate_work_preferences", force: :cascade do |t|
-    t.bigint "candidate_id"
-    t.integer "search_status"
+  create_table "candidate_skills", force: :cascade do |t|
+    t.bigint "candidate_id", null: false
+    t.bigint "skill_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["candidate_id"], name: "index_candidate_work_preferences_on_candidate_id", unique: true
+    t.index ["candidate_id", "skill_id"], name: "index_candidate_skills_on_candidate_id_and_skill_id", unique: true
+    t.index ["candidate_id"], name: "index_candidate_skills_on_candidate_id"
+    t.index ["skill_id"], name: "index_candidate_skills_on_skill_id"
   end
 
   create_table "candidates", force: :cascade do |t|
@@ -76,6 +78,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_10_145346) do
     t.decimal "hourly_rate"
     t.integer "response_rate", default: 0, null: false
     t.integer "search_score", default: 0, null: false
+    t.text "bio"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["candidate_role_id"], name: "index_candidates_on_candidate_role_id"
@@ -282,6 +285,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_10_145346) do
     t.index ["company_id"], name: "index_roles_on_company_id"
   end
 
+  create_table "skills", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_skills_on_name", unique: true
+  end
+
   create_table "social_links", force: :cascade do |t|
     t.string "linkable_type", null: false
     t.bigint "linkable_id", null: false
@@ -340,19 +350,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_10_145346) do
     t.string "uid"
     t.integer "user_type"
     t.integer "gender"
-    t.text "bio"
-    t.string "timezone"
     t.string "first_name"
     t.string "last_name"
-    t.string "country_code", default: "US"
     t.string "phone_number"
     t.date "date_of_birth"
-    t.string "date_format", default: "%d.%m.%Y"
     t.string "locale", default: "en"
-    t.string "location"
-    t.string "website"
-    t.jsonb "social_links", default: {}
-    t.integer "theme", default: 0
     t.boolean "active", default: true, null: false
     t.datetime "onboarded_at"
     t.text "goals", default: [], array: true
@@ -364,13 +366,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_10_145346) do
     t.index ["locale"], name: "index_users_on_locale"
     t.index ["onboarded_at"], name: "index_users_on_onboarded_at"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
-    t.index ["theme"], name: "index_users_on_theme"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "candidate_roles", "candidate_role_groups"
-  add_foreign_key "candidate_work_preferences", "candidates"
+  add_foreign_key "candidate_skills", "candidates"
+  add_foreign_key "candidate_skills", "skills"
   add_foreign_key "candidates", "candidate_roles"
   add_foreign_key "candidates", "users"
   add_foreign_key "categories", "users"

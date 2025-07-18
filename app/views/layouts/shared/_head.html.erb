@@ -10,7 +10,7 @@
   <%= combobox_style_tag %>
 
   <%= javascript_importmap_tags %>
-  <%= turbo_refreshes_with method: :morph, scroll: :preserve %>
+  <%= turbo_refreshes_with scroll: :preserve %>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
 
@@ -29,13 +29,6 @@
   <link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.bootstrap5.css" rel="stylesheet">
   <link rel="apple-touch-icon" href="/logo-pwa.png">
   <link rel="apple-touch-icon" sizes="512x512" href="/logo-pwa.png">
-
-  <!-- Google Maps API for Places Autocomplete -->
-  <script
-    src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLE_MAPS_API_KEY'] %>&libraries=places&loading=async"
-    async
-    defer
-  ></script>
 
   <%= yield :head %>
 </head>

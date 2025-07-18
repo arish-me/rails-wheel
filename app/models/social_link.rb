@@ -3,5 +3,5 @@ class SocialLink < ApplicationRecord
 
   belongs_to :linkable, polymorphic: true
 
-  validates :github, :linked_in, presence: true
+  # validates :github, :linked_in, presence: true
 end
