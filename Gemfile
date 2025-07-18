@@ -2,7 +2,7 @@ source "https://rubygems.org"
 
 gem "chartkick"
 gem "groupdate"
-gem "rails", "~> 8.0.1"
+gem "rails", "~> 8.0.2"
 gem "propshaft"
 gem "pg", "~> 1.1"
 gem "puma", ">= 5.0"
