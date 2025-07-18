@@ -1,36 +1,25 @@
-<%= styled_form_with model: candidate, url: candidate_path(candidate, edit: 'candidate_experience'), method: :patch, class: "space-y-4" do |candidate_form| %>
-	<!-- Role Type Section -->
-	<section class="shadow mt-8 px-4 py-5 lg:rounded-lg sm:p-6">
-		<% if candidate.errors.any? %>
-			<%= render "shared/form_errors" , model: candidate %>
-		<% end %>
-		<div class="md:grid md:grid-cols-3 md:gap-6">
-			<div class="md:col-span-1">
-				<h2 class="text-lg font-medium leading-6 "><%= t(".experience") %></h2>
-				<p class="mt-2 text-sm "><%= t("what_others_experiences_you_held") %></p>
-			</div>
-			<div class="mt-5 md:mt-0 md:col-span-2">
-				<%= candidate_form.fields_for :experiences do |form|%>
-					<div class="space-y-6">
-						<div>
-							<%= form.text_field :company_name, label: 'Enter Company Name' , placeholder: 'Wipro Private Ltd.' %>
-						</div>
-						<div>
-							<%= form.text_field :job_title, label: 'Enter Job Title' , placeholder: 'Team Lead' %>
-						</div>
-						<div>
-							<%= form.date_field :start_date, label: 'Start Date' %>
-						</div>
-						<div>
-							<%= form.date_field :end_date, label: 'End Date' %>
-						</div>
-						<div>
-							<%= form.text_area :description, rows: 5, class: 'shadow-sm block w-full sm:text-sm border rounded-md', label: 'Description' %>
-						</div>
-					</div>
-				<% end %>
-			</div>
-		</div>
-	</section>
-	<%= candidate_form.submit 'Submit' %>
+<%= styled_form_with model: experience, url: url, method: method, class: "space-y-4" do |form| %>
+<% if experience.errors.any? %>
+      <%= render "shared/form_errors", model: experience %>
+    <% end %>
+  <section class="shadow mt-8 px-4 py-5 lg:rounded-lg sm:p-6">
+    <div class="space-y-6">
+      <div>
+        <%= form.text_field :company_name, label: 'Enter Company Name', placeholder: 'Wipro Private Ltd.' %>
+      </div>
+      <div>
+        <%= form.text_field :job_title, label: 'Enter Job Title', placeholder: 'Team Lead' %>
+      </div>
+      <div>
+        <%= form.date_field :start_date, label: 'Start Date' %>
+      </div>
+      <div>
+        <%= form.date_field :end_date, label: 'End Date' %>
+      </div>
+      <div>
+        <%= form.text_area :description, rows: 5, class: 'shadow-sm block w-full sm:text-sm border rounded-md', label: 'Description' %>
+      </div>
+    </div>
+  </section>
+  <%= form.submit 'Submit' %>
 <% end %>

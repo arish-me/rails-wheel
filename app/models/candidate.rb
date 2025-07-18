@@ -100,9 +100,9 @@ class Candidate < ApplicationRecord
     super || build_social_link
   end
 
-  def experiences
-    super || build_experiences
-  end
+  # def experiences
+  #   super || build_experiences
+  # end
 
   def validate_for_redirect_target?
     [ "onboarding_candidate", "online_presence" ].include?(redirect_to)
