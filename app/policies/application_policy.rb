@@ -8,12 +8,19 @@ class ApplicationPolicy
     @record = record
   end
 
+  def index?
+  end
+
   def can_view?
     has_permission?(:view)
   end
 
   def can_edit?
     has_permission?(:edit)
+  end
+
+  def record_owner?
+    user == record.user
   end
 
   private

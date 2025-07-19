@@ -1,0 +1,47 @@
+<%= styled_form_with model: experience, url: url, method: method, class: "space-y-4", data: { controller: "experience-form" } do |form| %>
+	<% if experience.errors.any? %>
+		<%= render "shared/form_errors", model: experience %>
+	<% end %>
+	<section class="shadow mt-8 px-4 py-5 lg:rounded-lg sm:p-6">
+		<div class="space-y-6">
+			<div>
+				<%= form.text_field :company_name, label: 'Enter Company Name', placeholder: 'Wipro Private Ltd.', maxlength: 50, data: { experience_form_target: "companyName" } %>
+			</div>
+			<div>
+				<%= form.text_field :job_title, label: 'Enter Job Title', placeholder: 'Team Lead', maxlength: 50 %>
+			</div>
+			<div class="flex gap-2 items-end">
+				<div>
+					<%= form.date_field :start_date, label: 'Start Date', max: Date.today, min: Date.today - 30.years %>
+				</div>
+				<div id="end-date-field" data-experience-form-target="endDateField" style="display: <%= experience.current_job ? 'none' : 'block' %>;">
+					<%= form.date_field :end_date, label: 'End Date', max: Date.today, min: Date.today - 30.years %>
+				</div>
+			</div>
+
+      <div class="flex items-center ml-2">
+          <%= form.label :current_job, 'Current Job', class: "text-sm text-primary mr-2" %>
+          <%= form.check_box :current_job, { checked: experience.current_job, data: { experience_form_target: "currentJobCheckbox" } } %>
+      </div>
+			<div>
+				<%= form.text_area :description, rows: 5, maxlength: 500, class: 'shadow-sm block w-full sm:text-sm border rounded-md', label: 'Description', data: { experience_form_target: "description" } %>
+				<div class="text-xs text-gray-400">
+					Max 500 characters
+					<span data-experience-form-target="descriptionCount"></span>
+				</div>
+			</div>
+		</div>
+	</section>
+	<div class="flex justify-between mb-4">
+		<% if experience.persisted? %>
+			<%= render ButtonComponent.new(
+				text: t(".delete"),
+				variant: "destructive",
+				href: experience_path(experience),
+				method: :delete,
+				confirm: CustomConfirm.for_resource_deletion("your experience", high_severity: true)
+			) %>
+		<% end %>
+		<%= render ButtonComponent.new(text: t(".save"), class: "md:w-auto w-full justify-center") %>
+	</div>
+<% end %>

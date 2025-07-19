@@ -4,7 +4,9 @@ class Platform::UserPolicy < ApplicationPolicy
   # The `record` method refers to the model instance (e.g., @company) or class (e.g., Company) being authorized.
 
   def index?
-    user.platform_admin?
+    if @user
+      user.platform_admin?
+    end
   end
 
   def show?

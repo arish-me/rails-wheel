@@ -1,15 +1,19 @@
 class CandidatesController < ApplicationController
+  before_action :authenticate_user!, only: %i[edit update]
   before_action :set_candidate, only: %i[ show edit update ]
 
   def index
   end
+
   def show
   end
+
   def edit
-    # @location = current_user.build_location unless current_user.location
+    authorize @candidate
   end
 
   def update
+    authorize @candidate
     respond_to do |format|
       if @candidate.update(candidate_params)
         flash[:notice] = "Profile was successfully updated."
@@ -24,19 +28,22 @@ class CandidatesController < ApplicationController
    end
 
   def set_candidate
-    @candidate = current_user.candidate
+    # @candidate = Candidate.find_by_public_profile_key!(params[:id])
+    @candidate = Candidate.find_by_hashid!(params[:id])
     @user = @candidate.user
     @candidate_role_groups = CandidateRoleGroup.includes(:candidate_roles).all
     @skills = Skill.order(:name)
   end
 
   private
+
   def candidate_params
     params.require(:candidate).permit(
       :bio, :redirect_to,
       user_attributes: [ :id, :first_name, :last_name, :phone_number, :gender, :date_of_birth, :email_required, :delete_profile_image, :profile_image,
       location_attributes: [ :id, :location_search, :city, :state, :country, :_destroy ]
       ],
+      experiences_attributes: [ :company_name, :job_title, :start_date, :end_date, :current_job, :description, :_destroy ],
       skill_ids: [],
       candidate_role_ids: [],
       role_type_attributes: RoleType::TYPES,
