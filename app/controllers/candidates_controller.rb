@@ -26,7 +26,8 @@ class CandidatesController < ApplicationController
    end
 
   def set_candidate
-    @candidate = Candidate.find_by_public_profile_key!(params[:id])
+    # @candidate = Candidate.find_by_public_profile_key!(params[:id])
+    @candidate = Candidate.find_by_hashid!(params[:id])
     @user = @candidate.user
     @candidate_role_groups = CandidateRoleGroup.includes(:candidate_roles).all
     @skills = Skill.order(:name)
