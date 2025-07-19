@@ -27,14 +27,16 @@ class Candidate < ApplicationRecord
   validate :specialization_count_within_bounds, on: :update, if: :validate_for_redirect_target?
   validate :skills_count_within_bounds, on: :update, if: :validate_for_redirect_target?
 
-
   validates :headline, presence: true, on: :update, if: :validate_for_redirect_target?
   validates :experience, presence: true, on: :update, if: :validate_for_redirect_target?
   validates :search_status, presence: true, on: :update, if: :validate_for_redirect_target?
   validates :hourly_rate, presence: true, on: :update, if: :validate_for_redirect_target?
   validates :bio, presence: true, on: :update
+  validates :public_profile_key, presence: true, uniqueness: true
 
- enum :experience, { # Renamed to experience_level to avoid conflict if you later add an integer 'experience' column
+  before_create :generate_public_profile_key, unless: :public_profile_key?
+
+  enum :experience, { # Renamed to experience_level to avoid conflict if you later add an integer 'experience' column
     fresher: 0,
     year_1: 1,
     year_2: 2,
@@ -55,6 +57,25 @@ class Candidate < ApplicationRecord
     not_interested: 3,
     invisible: 4
   }
+
+  # Find candidate by public profile key
+  def self.find_by_public_profile_key!(key)
+    find_by!(public_profile_key: key)
+  end
+
+  # Generate a unique public profile key
+  def generate_public_profile_key
+    loop do
+      self.public_profile_key = SecureRandom.alphanumeric(12).downcase
+      break unless Candidate.exists?(public_profile_key: public_profile_key)
+    end
+  end
+
+  # Regenerate public profile key (useful for security)
+  def regenerate_public_profile_key!
+    generate_public_profile_key
+    save!
+  end
 
    def self.experience_options_for_select
     experiences.keys.map do |key|
@@ -134,7 +155,7 @@ class Candidate < ApplicationRecord
     if count < 1
       errors.add(:skill_ids, "You must select at least one skill.")
     elsif count > 10
-      errors.add(:skill_ids, "You can select up to 10 skill only.")
+      errors.add(:skill_ids, "You can select up to 5 skill only.")
     end
   end
 end

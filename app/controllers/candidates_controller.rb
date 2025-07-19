@@ -1,13 +1,14 @@
 class CandidatesController < ApplicationController
+  before_action :authenticate_user!, only: %i[edit update]
   before_action :set_candidate, only: %i[ show edit update ]
 
   def index
   end
+
   def show
   end
+
   def edit
-    # @candidate.experiences.build
-    # @location = current_user.build_location unless current_user.location
   end
 
   def update
@@ -25,13 +26,14 @@ class CandidatesController < ApplicationController
    end
 
   def set_candidate
-    @candidate = current_user.candidate
+    @candidate = Candidate.find_by_public_profile_key!(params[:id])
     @user = @candidate.user
     @candidate_role_groups = CandidateRoleGroup.includes(:candidate_roles).all
     @skills = Skill.order(:name)
   end
 
   private
+
   def candidate_params
     params.require(:candidate).permit(
       :bio, :redirect_to,

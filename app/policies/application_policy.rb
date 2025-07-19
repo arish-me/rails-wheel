@@ -8,6 +8,9 @@ class ApplicationPolicy
     @record = record
   end
 
+  def index?
+  end
+
   def can_view?
     has_permission?(:view)
   end
