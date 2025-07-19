@@ -9,9 +9,11 @@ class CandidatesController < ApplicationController
   end
 
   def edit
+    authorize @candidate
   end
 
   def update
+    authorize @candidate
     respond_to do |format|
       if @candidate.update(candidate_params)
         flash[:notice] = "Profile was successfully updated."

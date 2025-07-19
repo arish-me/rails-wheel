@@ -1,2 +1,1 @@
-<%= render 'candidates/profile/public'%>
-<%= render 'candidates/profile/private'%>
+<%= render 'candidates/profile/private', can_edit: can?(:edit, @candidate)%>

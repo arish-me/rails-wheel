@@ -19,6 +19,10 @@ class ApplicationPolicy
     has_permission?(:edit)
   end
 
+  def record_owner?
+    user == record.user
+  end
+
   private
 
   def has_permission?(action)

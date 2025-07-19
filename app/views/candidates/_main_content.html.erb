@@ -5,12 +5,14 @@
 			<section class="bg-white rounded-2xl shadow-lg p-8">
 				<div class="flex items-center justify-between mb-4">
 					<h3 class="text-lg font-bold text-gray-900 mb-2">Overview</h3>
-					<%= render LinkComponent.new(
+					<% if can_edit %>
+						<%= render LinkComponent.new(
                   text: "Edit",
                   variant: :primary,
                   href: edit_candidate_path(@candidate, edit: 'candidate_profile_bio'),
                   frame: :modal
               ) %>
+					<% end %>
 				</div>
 				<div class="prose max-w-prose">
 					<%== @candidate&.rich_text_bio %>
@@ -23,12 +25,14 @@
 		<%= turbo_frame_tag "candidate_experience" do %>
 			<div class="flex items-center justify-between mb-4">
 				<h3 class="text-lg font-bold text-gray-900 mb-6">Experience</h3>
-				<%= render LinkComponent.new(
+				<% if can_edit %>
+					<%= render LinkComponent.new(
                   text: "Add Experience",
                   variant: :primary,
                   href: new_experience_path,
                   frame: :modal
               ) %>
+				<% end %>
 			</div>
 		<% end %>
 		<%- @candidate.experiences.each do |experience|  %>
@@ -42,12 +46,14 @@
 							</div>
 						</div>
 					</div>
-					<%= render LinkComponent.new(
+					<% if can_edit %>
+						<%= render LinkComponent.new(
 					  text: "Edit",
 					  variant: :secondary,
 					  href: edit_experience_path(experience),
 					  frame: :modal
 					) %>
+					<% end %>
 				</div>
 				<div class="list-inside text-gray-700 text-sm ml-14 mt-1">
 					<p><%= experience.description %> </p>
