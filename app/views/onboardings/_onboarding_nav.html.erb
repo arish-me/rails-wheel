@@ -1,13 +1,17 @@
 <%# locals: (user:) %>
+<% if user.user? %>
 <% steps = [
-  # { name: "Looking for?", path: onboarding_path, is_complete: user.user_type.present?, step_number: 1 },
-
-  { name: "Setup", path: onboarding_path, is_complete: (user.first_name.present? || user.company_id.present?) , step_number: 1 },
+  { name: "Setup", path: onboarding_path, is_complete: (user.company_id.present?) , step_number: 1 },
   { name: "Work Information", path: candidate_setup_onboarding_path, is_complete: user.candidate.work_preference_missing_fields?, step_number: 2 },
   { name: "Online Presence", path: online_presence_onboarding_path, is_complete: user.candidate.missing_fields, step_number: 3 },
   { name: "Goals", path: goals_onboarding_path , is_complete: user.set_onboarding_goals_at.present?, step_number: 4 },
-  # { name: "Start", path: trial_onboarding_path, is_complete: user.onboarded?, step_number: 4 },
 ] %>
+<% elsif user.company? %>
+<% steps = [
+  { name: "Setup", path: onboarding_path, is_complete: (user.company_id.present?) , step_number: 1 },
+  { name: "Goals", path: goals_onboarding_path , is_complete: user.set_onboarding_goals_at.present?, step_number: 2 },
+]%>
+<% end %>
 <ul class="hidden md:flex items-center gap-2">
 	<% steps.each_with_index do |step, idx| %>
 		<li class="flex items-center gap-2 group">

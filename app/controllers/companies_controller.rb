@@ -20,7 +20,7 @@ class CompaniesController < ApplicationController
             company_id: @company.id
           )
           SeedData::UserRoleAssigner.call(current_user, @company)
-          format.html { redirect_to preferences_onboarding_path, notice: "Company was successfully created." }
+          format.html { redirect_to goals_onboarding_path, notice: "Company was successfully created." }
           format.turbo_stream { redirect_to preferences_onboarding_path, notice: "Company was successfully created." }
         else
           format.html { redirect_to @company, notice: "Company was successfully created." }
@@ -70,6 +70,11 @@ class CompaniesController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def company_params
-    params.require(:company).permit(:name, :subdomain, :website)
+    params.require(:company).permit(
+      :name, :subdomain, :website, :redirect_to,
+      users_attributes: [ :id, :first_name, :last_name, :phone_number, :gender, :date_of_birth, :skip_password_validation, :delete_profile_image, :profile_image,
+      location_attributes: [ :id, :location_search, :city, :state, :country, :_destroy ]
+      ],
+    )
   end
 end
