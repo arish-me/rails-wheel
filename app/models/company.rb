@@ -35,5 +35,4 @@ class Company < ApplicationRecord
       Rails.logger.error "Failed to attach avatar: #{e.message}"
     end
   end
-
 end

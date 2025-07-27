@@ -41,7 +41,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
       respond_to do |format|
         format.html do
           flash.now[:alert] = resource.errors.full_messages.join(", ")
-          if request.referrer.split("/").last == 'profile_setup'
+          if request.referrer.split("/").last == "profile_setup"
             render "onboardings/profile_setup", status: :unprocessable_entity, layout: "wizard"
           elsif request.referrer.split("/").include?("onboarding")
             render "onboardings/show", status: :unprocessable_entity, layout: "wizard"
