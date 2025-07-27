@@ -41,7 +41,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
       respond_to do |format|
         format.html do
           flash.now[:alert] = resource.errors.full_messages.join(", ")
-          if request.referrer.split("/").include?("onboarding")
+          if request.referrer.split("/").last == 'profile_setup'
+            render "onboardings/profile_setup", status: :unprocessable_entity, layout: "wizard"
+          elsif request.referrer.split("/").include?("onboarding")
             render "onboardings/show", status: :unprocessable_entity, layout: "wizard"
           else
             redirect_to request.referer || after_update_path_for(resource)
@@ -54,6 +56,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def handle_redirect(notice, resource)
     case params[:user][:redirect_to]
+    when "profile_setup"
+      redirect_to profile_setup_onboarding_path
     when "onboarding_candidate"
       redirect_to candidate_setup_onboarding_path
     when "onboarding_preferences"

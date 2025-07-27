@@ -27,7 +27,8 @@ Rails.application.routes.draw do
   resources :companies
   resource :onboarding, only: :show do
     collection do
-      get :profiles_setup
+      get :profile_setup
+      post :profile_setup
       get :specialization
       post :specialization
 

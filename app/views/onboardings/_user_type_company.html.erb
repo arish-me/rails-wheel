@@ -3,13 +3,13 @@
 		<h2 class="text-xl font-semibold mb-4">Company Information</h2>
 		<p class="text-gray-600 mb-6">Please provide your company details to get started.</p>
 	</div>
+	<% @company = current_user.company if @company.nil? %>
 	<%= styled_form_with model: @company, method: (@company.persisted? ? "put" : "post"), class: "space-y-4" do |f| %>
-		<%= f.hidden_field :redirect_to, value: @invitation ? "home" : "onboarding_preferences" %>
+		<%= f.hidden_field :redirect_to, value: @invitation ? "home" : "profile_setup" %>
 		<% if @company.errors.any? %>
 			<%= render "shared/form_errors", model: @company %>
 		<% end %>
 		<div class="space-y-4 mb-4">
-			<div class="space-y-4 mb-4">
 				<div class="flex flex-col md:flex-row md:justify-between md:items-center md:gap-4 space-y-4 md:space-y-0 mb-4">
 					<section class="shadow px-4 py-5 lg:rounded-lg sm:p-6">
 						<div class="md:grid md:grid-cols-3 md:gap-6">
@@ -36,44 +36,9 @@
 						</div>
 					</section>
 				</div>
-				<%= f.fields_for :users, included_id: false do |user_form|%>
-					<div class="flex flex-col md:flex-row md:justify-between md:items-center md:gap-4 space-y-4 md:space-y-0 mb-4">
-						<section class="shadow px-4 py-5 lg:rounded-lg sm:p-6">
-							<div class="md:grid md:grid-cols-3 md:gap-6">
-								<div class="md:col-span-1">
-									<h2 class="text-lg font-medium leading-6">Your Information</h2>
-									<p class="mt-2 text-sm text-gray-500">Your Information is needed as you are creating the company account</p>
-								</div>
-								<div class="mt-5 md:mt-0 md:col-span-2">
-									<div class="space-y-6">
-										<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-											<div>
-												<%= user_form.text_field :first_name, label: 'First Name' , placeholder: 'Enter First Name' %>
-											</div>
-											<div>
-												<%= user_form.text_field :last_name, label: 'Last Name' , placeholder: 'Enter Last Name' %>
-											</div>
-											<div>
-												<%= user_form.select :gender,  User.genders.map { |key, _| [User::GENDER_DISPLAY[key.to_sym], key] }, { include_blank: "---Select---", label: "Pronounce" } %>
-											</div>
-											<div>
-												<%= user_form.telephone_field :phone_number, placeholder: "+1 (555) 123-4567" , label: "Phone" %>
-											</div>
-											<div>
-												<%= user_form.date_field :date_of_birth,   max: Date.today - 10.years, min: Date.today - 120.years, label: "Date of birth" %>
-											</div>
-											<%= user_form.hidden_field :skip_password_validation, value: false %>
-											<%= user_form.hidden_field :id, value: current_user.id %>
-										</div>
-									</div>
-								</div>
-							</div>
-						</section>
-					</div>
-				<% end %>
 			</div>
 			<section class="pt-4">
-				<%= f.submit 'Continue to Preferences', class: "w-full" %>
+				<%= f.submit 'Continue to Information', class: "w-full" %>
 			</section>
 		<% end %>
 	</div>
