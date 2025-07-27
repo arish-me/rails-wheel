@@ -9,6 +9,7 @@ Rails.application.routes.draw do
     resource :profile, only: [ :show, :destroy ]
     resource :preferences, only: :show
     resource :accounts, only: :show
+    resource :company, only: :show
     get "account", to: "settings#edit_account", as: "edit_account"
   end
 

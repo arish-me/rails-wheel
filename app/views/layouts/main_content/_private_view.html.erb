@@ -41,9 +41,9 @@
       <div class="hidden lg:block">
         <nav class="h-full flex flex-col shrink-0 w-[84px] py-4 mr-3">
           <div class="pl-2 mb-3">
-            <%= link_to root_path, class: "block" do %>
-              <%= image_tag "logomark-color.svg", class: "w-9 h-9 mx-auto" %>
-            <% end %>
+            <div class="w-9 h-9 shrink-0">
+              <%= render "settings/user_avatar", avatar_url: current_user.company.avatar.url %>
+            </div>
           </div>
           <ul class="space-y-0.5">
             <% desktop_nav_items.each do |nav_item| %>
