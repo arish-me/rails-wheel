@@ -1,0 +1,53 @@
+<div class="flex flex-col items-center gap-4" data-controller="avatar-image-preview">
+  <div class="relative">
+    <button type="button"
+            data-avatar-image-preview-target="clearBtn"
+            data-action="click->avatar-image-preview#clearFileInput"
+      class="<%= object.avatar.attached? ? "" : "hidden" %> z-50 cursor-pointer absolute bottom-0 right-0 w-8 h-8 bg-gray-50 rounded-full flex justify-center items-center border border-white border-2">
+      <%= icon "x", size: "sm" %>
+    </button>
+    <div class="relative flex justify-center items-center bg-surface-inset size-26 md:size-24 rounded-full border-primary border border-dashed overflow-hidden">
+      <%# The image preview once user has uploaded a new file  %>
+      <div data-avatar-image-preview-target="previewImage" class="h-full w-full flex justify-center items-center hidden">
+        <img src="" alt="Preview" class="w-full h-full rounded-full object-cover">
+      </div>
+      <%# The placeholder image for empty avatar field  %>
+      <div data-avatar-image-preview-target="placeholderImage"
+         class="h-full w-full flex justify-center  items-center <%= object.avatar.attached? ? "hidden" : "" %>">
+        <div class="h-full w-full flex justify-center items-center bg-surface-inset">
+          <%= icon "image-plus", size: "lg" %>
+        </div>
+      </div>
+      <%# The attached image if user has already uploaded one %>
+      <div data-avatar-image-preview-target="attachedImage"
+         class="h-full w-full flex justify-center items-center <%= object.avatar.attached? ? "" : "hidden" %>">
+        <% if object.avatar.attached? %>
+          <div class="h-full w-full">
+            <%= render "settings/user_avatar", avatar_url: object.avatar.url %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="text-center">
+    <%= form.hidden_field :delete_avatar_image, value: "0", data: { avatar_image_preview_target: "deleteProfileImage" } %>
+    <%= form.label :avatar, class: "px-3 py-2 rounded-lg text-sm hover:bg-surface-hover border border-secondary inline-flex items-center gap-2 cursor-pointer", data: { avatar_image_preview_target: "uploadButton" } do %>
+      <%= icon "camera", data: { avatar_image_preview_target: "cameraIcon" } %>
+      <span data-avatar-image-preview-target="uploadText">
+        <%= t("form.user_avatar_field.choose") %> <span class="text-secondary"><%= t("form.user_avatar_field.choose_label") %></span>
+      </span>
+      <span data-avatar-image-preview-target="changeText" class="hidden" aria-hidden="true">
+        <%= t("form.user_avatar_field.change") %>
+      </span>
+    <% end %>
+    <p class="mt-2 text-xs text-secondary"><%= t("form.user_avatar_field.accepted_formats") %></p>
+    <%= form.file_field :avatar,
+        accept: "image/png, image/jpeg",
+        class: "hidden px-3 py-2 bg-gray-50 text-primary rounded-md text-sm font-medium",
+        data: {
+          avatar_image_preview_target: "input",
+          action: "change->avatar-image-preview#showFileInputPreview",
+          "auto-submit-form-target": "auto"
+        } %>
+  </div>
+</div>

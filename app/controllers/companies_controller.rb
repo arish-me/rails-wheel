@@ -12,7 +12,7 @@ class CompaniesController < ApplicationController
 
   def create
     @company = Company.new(company_params)
-    
+
     respond_to do |format|
       if @company.save
         # Assign the current user to the company without validation
@@ -72,7 +72,7 @@ class CompaniesController < ApplicationController
   # Only allow a list of trusted parameters through.
   def company_params
     params.require(:company).permit(
-      :name, :subdomain, :website, :redirect_to
+      :name, :subdomain, :website, :redirect_to, :delete_avatar_image, :avatar
     )
   end
 end

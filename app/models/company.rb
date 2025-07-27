@@ -1,5 +1,5 @@
 class Company < ApplicationRecord
- attr_accessor :redirect_to
+ attr_accessor :redirect_to, :delete_avatar_image
 
  validates :name, presence: true, uniqueness: { case_sensitive: false }
  validates :subdomain, presence: true, uniqueness: { case_sensitive: false }
@@ -23,4 +23,17 @@ class Company < ApplicationRecord
     SeedData::MainSeeder.new.seed_initial_data
   end
  end
+
+   def attach_avatar(image_url)
+    return if profile_image.attached? # Avoid re-downloading if avatar is already attached
+
+    begin
+      uri = URI.parse(image_url)
+      avatar_file = uri.open
+      profile_image.attach(io: avatar_file, filename: "avatar.jpg", content_type: avatar_file.content_type)
+    rescue StandardError => e
+      Rails.logger.error "Failed to attach avatar: #{e.message}"
+    end
+  end
+
 end
