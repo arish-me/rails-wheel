@@ -98,6 +98,10 @@ class User < ApplicationRecord
     !onboarded?
   end
 
+  def missing_fields?
+    first_name.present? && last_name.present?
+  end
+
   def attach_avatar(image_url)
     return if profile_image.attached? # Avoid re-downloading if avatar is already attached
 

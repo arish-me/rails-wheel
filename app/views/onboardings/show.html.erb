@@ -10,35 +10,7 @@
 		<% if @user.user_type == 'user' %>
 			<%= render partial: 'onboardings/user_user_type', user: @user %>
 		<% else %>
-			<div class="space-y-6">
-				<div>
-					<h2 class="text-xl font-semibold mb-4">Company Information</h2>
-					<p class="text-gray-600 mb-6">Please provide your company details to get started.</p>
-				</div>
-				<%= styled_form_with model: @company, method: (@company.persisted? ? "put" : "post"), class: "space-y-4" do |f| %>
-					<%= f.hidden_field :redirect_to, value: @invitation ? "home" : "onboarding_preferences" %>
-					<% if @company.errors.any? %>
-						<%= render "shared/form_errors", model: @company %>
-					<% end %>
-					<section class="space-y-4">
-						<%= f.text_field :name,
-                label: 'Company Name',
-                placeholder: 'Enter Company Name'
-                 %>
-						<%= f.text_field :subdomain,
-                label: 'Subdomain',
-                placeholder: 'Enter Subdomain (e.g., your-company)',
-                hint: 'This will be used for your company URL' %>
-						<%= f.text_field :website,
-                label: 'Website',
-                placeholder: 'Enter Website (e.g., https://your-company.com)'
-                 %>
-					</section>
-					<section class="pt-4">
-						<%= f.submit 'Continue to Preferences', class: "w-full" %>
-					</section>
-				<% end %>
-			</div>
+			<%= render 'onboardings/user_type_company', company: @company %>
 		<% end %>
 	</div>
 	<%= render "layouts/shared/footer" %>

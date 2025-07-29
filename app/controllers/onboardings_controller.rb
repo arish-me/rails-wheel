@@ -32,8 +32,7 @@ class OnboardingsController < ApplicationController
   def preferences
   end
 
-  def profiles_setup
-    @company = Company.new
+  def profile_setup
   end
 
   def candidate_setup

@@ -32,7 +32,7 @@ class Candidate < ApplicationRecord
   validates :search_status, presence: true, on: :update, if: :validate_for_redirect_target?
   validates :hourly_rate, presence: true, on: :update, if: :validate_for_redirect_target?
   validates :bio, presence: true, on: :update
-  validates :public_profile_key, presence: true, uniqueness: true
+  # validates :public_profile_key, presence: true, uniqueness: true
 
   before_create :generate_public_profile_key, unless: :public_profile_key?
 
