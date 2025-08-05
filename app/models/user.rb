@@ -1,16 +1,20 @@
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  devise :database_authenticatable, :registerable,
+  devise :invitable, :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :lockable,
          :lockable, :timeoutable, :trackable, :confirmable,
          :omniauthable, omniauth_providers: %i[google_oauth2 github]
+
+  # Include DeviseInvitable::Inviter to allow users to send invitations
+  include DeviseInvitable::Inviter
 
   belongs_to :company, optional: true
   has_many :user_roles, dependent: :destroy
   has_many :roles, through: :user_roles
   has_many :categories, dependent: :destroy
   has_many :notifications, as: :recipient, class_name: "Noticed::Notification"
+  has_many :invitations, class_name: 'User', as: :invited_by
 
   has_one :candidate, dependent: :destroy, class_name: "Candidate"
   has_one :location, as: :locatable, dependent: :destroy
@@ -130,6 +134,16 @@ class User < ApplicationRecord
 
   def location
     super || build_location
+  end
+
+  def assign_default_role
+    # Find the default role for the company or create one if it doesn't exist
+    default_role = Role.find_or_create_by(name: 'User', company: company) do |role|
+      role.description = 'Default user role'
+    end
+    
+    # Assign the default role to the user
+    user_roles.build(role: default_role) unless roles.include?(default_role)
   end
 
   protected

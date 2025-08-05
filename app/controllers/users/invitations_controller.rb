@@ -1,0 +1,121 @@
+class Users::InvitationsController < Devise::InvitationsController
+  before_action :authenticate_user!
+  # before_action :authenticate_inviter!
+  before_action :set_inviter, only: [:create]
+
+  # # GET /resource/invitation/new
+  # def new
+  #   self.resource = resource_class.new
+  #   render :new
+  # end
+
+  # # POST /resource/invitation
+  # def create
+  #   self.resource = invite_resource
+  #   resource_invited = resource.errors.empty?
+
+  #   yield resource if block_given?
+
+  #   if resource_invited
+  #     if is_flashing_format? && self.resource.invitation_sent_at
+  #       set_flash_message :notice, :send_instructions, email: self.resource.email
+  #     end
+  #     if self.method(:after_invite_path_for).arity == 1
+  #       respond_with resource, location: after_invite_path_for(self.resource)
+  #     else
+  #       respond_with resource, location: after_invite_path_for(self.resource, self.resource)
+  #     end
+  #   else
+  #     respond_with_navigational(resource) { render :new, status: :unprocessable_entity }
+  #   end
+  # end
+
+  # GET /resource/invitation/accept?invitation_token=abcdef
+  def edit
+    set_minimum_password_length
+    resource.invitation_token = params[:invitation_token]
+    render :edit
+  end
+
+  # PUT /resource/invitation
+  def update
+    raw_invitation_token = update_resource_params[:invitation_token]
+    self.resource = accept_resource
+    invitation_accepted = resource.errors.empty?
+
+    yield resource if block_given?
+
+    if invitation_accepted
+      resource.skip_confirmation!
+      set_flash_message :notice, :updated_not_active
+      sign_in(resource_name, resource)
+      respond_with resource, location: after_accept_path_for(resource)
+    else
+      resource.invitation_token = raw_invitation_token
+      respond_with_navigational(resource) { render :edit, status: :unprocessable_entity }
+    end
+  end
+
+  # GET /resource/invitation/remove?invitation_token=abcdef
+  def destroy
+    resource = resource_class.find_by_invitation_token(params[:invitation_token], true)
+    resource.destroy
+    set_flash_message :notice, :invitation_removed
+    redirect_to after_sign_out_path_for(resource_name)
+  end
+
+  protected
+
+  def invite_resource(&block)
+    resource_class.invite!(invite_params, current_inviter, &block)
+  end
+
+  def accept_resource
+    resource_class.accept_invitation!(update_resource_params)
+  end
+
+  def current_inviter
+    @current_inviter ||= authenticate_inviter!
+  end
+
+  def has_invitations_left?
+    unless current_inviter.respond_to?(:has_invitations_left?) && current_inviter.has_invitations_left?
+      self.resource = resource_class.new
+      resource.errors.add(:base, :no_invitations_remaining)
+      render :new, status: :unprocessable_entity
+      return false
+    end
+    true
+  end
+
+  def invite_params
+    devise_parameter_sanitizer.sanitize(:invite)
+  end
+
+  def update_resource_params
+    devise_parameter_sanitizer.sanitize(:accept_invitation)
+  end
+
+  def set_inviter
+    @inviter = current_user
+  end
+
+  def authenticate_inviter!
+    unless current_user
+      redirect_to root_path, alert: "You don't have permission to invite users."
+    end
+    current_user
+  end
+
+  def after_invite_path_for(resource)
+    if current_user.platform_admin?
+      platform_users_path
+    else
+      admin_users_path
+    end
+  end
+
+  def after_accept_path_for(resource)
+    dashboard_path
+  end
+end

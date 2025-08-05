@@ -12,6 +12,7 @@ class ApplicationController < ActionController::Base
   before_action :set_active_storage_url_options
   before_action :set_tenent
 
+  before_action :configure_permitted_parameters, if: :devise_controller?
 
 
   # Locale switcher action - uses Turbo to avoid page reload
@@ -58,5 +59,12 @@ class ApplicationController < ActionController::Base
   def user_not_authorized
     flash[:alert] = "You are not authorized to perform this action."
     redirect_to(request.referrer || root_path)
+  end
+
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:first_name, :last_name, :user_type, :company_id])
+    devise_parameter_sanitizer.permit(:account_update, keys: [:first_name, :last_name, :user_type, :company_id])
+    devise_parameter_sanitizer.permit(:invite, keys: [:email, :first_name, :last_name, :user_type, :company_id])
+    devise_parameter_sanitizer.permit(:accept_invitation, keys: [:password, :password_confirmation, :first_name, :last_name])
   end
 end

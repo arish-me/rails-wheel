@@ -25,6 +25,15 @@
               frame: :modal,
             ) %>
         <% end %>
+        <% if can?(:invite, 'User') %>
+          <%= render LinkComponent.new(
+              text: "Invite User",
+              variant: :secondary,
+              icon: "mail",
+              href: new_user_invitation_path,
+              frame: :modal,
+            ) %>
+        <% end %>
       </div>
     </header>
     <div class="flex flex-col">

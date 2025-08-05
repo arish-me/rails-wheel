@@ -13,6 +13,7 @@ gem "turbo-rails"
 gem "stimulus-rails"
 gem "jbuilder"
 gem "devise", "~> 4.9", ">= 4.9.4"
+gem "devise_invitable", "~> 2.0.0"
 gem "image_processing", ">= 1.2"
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 gem "solid_cache"
