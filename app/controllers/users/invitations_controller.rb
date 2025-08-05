@@ -9,7 +9,7 @@ class Users::InvitationsController < Devise::InvitationsController
   #   render :new
   # end
 
-  # # POST /resource/invitation
+  # POST /resource/invitation
   # def create
   #   self.resource = invite_resource
   #   resource_invited = resource.errors.empty?
@@ -67,7 +67,33 @@ class Users::InvitationsController < Devise::InvitationsController
   protected
 
   def invite_resource(&block)
-    resource_class.invite!(invite_params, current_inviter, &block)
+    # Set company and user type for the invited user
+    resource = resource_class.invite!(invite_params, current_inviter, &block)
+
+    return resource if resource.errors
+
+    if resource.persisted?
+      # Set the company to the inviter's company using update_columns to avoid validations
+      # Only set company_id if the inviter has a company
+      update_attrs = {
+        user_type: "company",
+        onboarded_at: Time.current, # Skip onboarding for invited users
+        active: false
+      }
+
+      if current_inviter.company_id.present?
+        update_attrs[:company_id] = current_inviter.company_id
+      end
+
+      resource.update_columns(update_attrs)
+
+      # Assign default role for the company if company exists
+      if current_inviter.company_id.present?
+        resource.assign_default_role
+      end
+    end
+
+    resource
   end
 
   def accept_resource

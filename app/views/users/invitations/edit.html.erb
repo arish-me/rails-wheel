@@ -7,6 +7,11 @@
       <p class="mt-2 text-center text-sm text-gray-600">
         Set your password to complete your account
       </p>
+      <% if resource.invited_by.present? && resource.invited_by.company.present? %>
+        <p class="mt-1 text-center text-sm text-gray-500">
+          You're joining: <strong><%= resource.invited_by.company.name %></strong>
+        </p>
+      <% end %>
     </div>
 
     <%= form_for resource, as: resource_name, url: invitation_path(resource_name), html: { method: :put, class: "mt-8 space-y-6" } do |f| %>

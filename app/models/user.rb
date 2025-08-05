@@ -19,6 +19,7 @@ class User < ApplicationRecord
   has_one :candidate, dependent: :destroy, class_name: "Candidate"
   has_one :location, as: :locatable, dependent: :destroy
   after_create :ensure_candidate
+  after_invitation_accepted :setup_invited_user
 
   attr_accessor :skip_password_validation
   attr_accessor :current_sign_in_ip_address
@@ -137,13 +138,32 @@ class User < ApplicationRecord
   end
 
   def assign_default_role
+    # Only assign default role if user has a company
+    return unless company.present?
+
     # Find the default role for the company or create one if it doesn't exist
     default_role = Role.find_or_create_by(name: 'User', company: company) do |role|
       role.description = 'Default user role'
     end
-    
+
     # Assign the default role to the user
     user_roles.build(role: default_role) unless roles.include?(default_role)
+  end
+
+  def setup_invited_user
+    # Set company from the inviter if not already set and inviter has a company
+    if invited_by.present? && company_id.blank? && invited_by.company_id.present?
+      update_columns(company_id: invited_by.company_id, active: true)
+    end
+
+    # Set user type to company for invited users
+    update_columns(user_type: 'company') if user_type.blank?
+
+    # Skip onboarding for invited users
+    update_columns(onboarded_at: Time.current) if onboarded_at.blank?
+
+    # Ensure candidate is created
+    ensure_candidate
   end
 
   protected

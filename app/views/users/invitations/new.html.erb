@@ -10,6 +10,11 @@
       <p class="mt-2 text-center text-sm text-gray-600">
         Send an invitation to join your team
       </p>
+      <% if current_user.company.present? %>
+        <p class="mt-1 text-center text-sm text-gray-500">
+          Inviting to: <strong><%= current_user.company.name %></strong>
+        </p>
+      <% end %>
     </div>
 
     <%= form_for resource, as: resource_name, url: invitation_path(resource_name), html: { method: :post, class: "mt-8 space-y-6" } do |f| %>

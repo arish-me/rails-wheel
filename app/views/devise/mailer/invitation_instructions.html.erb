@@ -1,0 +1,17 @@
+<p>Hello <%= @resource.email %>!</p>
+
+<% if @resource.invited_by.present? && @resource.invited_by.company.present? %>
+  <p>You have been invited to join <strong><%= @resource.invited_by.company.name %></strong> on our platform.</p>
+<% else %>
+  <p>You have been invited to join our platform.</p>
+<% end %>
+
+<p>You can accept this invitation through the link below:</p>
+
+<p><%= link_to 'Accept invitation', accept_invitation_url(@resource, invitation_token: @token) %></p>
+
+<% if @resource.invited_by.present? && @resource.invited_by.company.present? %>
+  <p>This invitation was sent by <%= @resource.invited_by.display_name %> from <%= @resource.invited_by.company.name %>.</p>
+<% end %>
+
+<p>If you don't want to accept this invitation, please ignore this email. Your account won't be created until you access the link above and set your password.</p> 
