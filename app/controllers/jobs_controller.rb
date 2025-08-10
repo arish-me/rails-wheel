@@ -45,10 +45,10 @@ class JobsController < ApplicationController
     respond_to do |format|
       if @job.update(job_params)
         format.html { redirect_to @job, notice: 'Job was successfully updated.' }
-        format.turbo_stream { render turbo_stream: turbo_stream.redirect(@job) }
+        # format.turbo_stream { render turbo_stream: turbo_stream.redirect(@job) }
       else
         format.html { render :edit, status: :unprocessable_entity }
-        format.turbo_stream { render turbo_stream: turbo_stream.replace('job_form', partial: 'form') }
+        # format.turbo_stream { render turbo_stream: turbo_stream.replace('job_form', partial: 'form') }
       end
     end
   end

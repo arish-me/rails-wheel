@@ -85,12 +85,12 @@
 
                   <%= link_to edit_job_path(job),
                       class: "text-blue-600 hover:text-blue-800 text-sm font-medium",
-                      data: { turbo_frame: :modal } do %>
+                      data: {  } do %>
                     Edit
 
                 <% end %>
 
-                <% if job.draft? && can?(:publish, job) %>
+                <% if job.draft? %>
                   <%= link_to publish_job_path(job),
                       method: :patch,
                       class: "text-green-600 hover:text-green-800 text-sm font-medium",
@@ -99,7 +99,7 @@
                   <% end %>
                 <% end %>
 
-                <% if job.published? && can?(:close, job) %>
+                <% if job.published? %>
                   <%= link_to close_job_path(job),
                       method: :patch,
                       class: "text-red-600 hover:text-red-800 text-sm font-medium",

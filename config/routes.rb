@@ -75,6 +75,13 @@ Rails.application.routes.draw do
       patch :publish
       patch :close
     end
+    
+    resources :job_applications, only: [:index, :show, :new, :create, :edit, :update] do
+      member do
+        patch :withdraw
+        patch :update_status
+      end
+    end
   end
 
   resources :notifications, only: [ :index ] do

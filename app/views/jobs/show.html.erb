@@ -81,6 +81,14 @@
             Close
           <% end %>
         <% end %>
+        
+        <% if current_user.company == @job.company %>
+          <%= link_to job_job_applications_path(@job), 
+              class: "inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50" do %>
+            <%= lucide_icon('users', class: 'w-4 h-4 mr-2') %>
+            View Applications (<%= @job.applications_count %>)
+          <% end %>
+        <% end %>
       <% else %>
         <% if @job.can_be_applied_to? && current_user.candidate.present? %>
           <%= link_to new_job_job_application_path(@job), 
