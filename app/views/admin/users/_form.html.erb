@@ -15,16 +15,26 @@
                     { label: 'Gender' }
         %>
   </section>
-  <section class="space-y-2 overflow-hidden mt-2">
+  <section class="space-y-2  mt-2">
     <h2 class="text-lg font-bold text-gray-700">Roles</h2>
-    <%= f.select :role_ids,
+    <div data-controller="multi-select"
+         data-multi-select-max-items-value="3"
+         data-multi-select-placeholder-value="Select up to 10 skills"
+         data-multi-select-remove-item-button-value="true"
+         data-multi-select-search-enabled-value="true">
+
+          <%= f.select :role_ids,
                     Role.pluck(:name, :id),
                     {
                       include_blank: false,
                       multiple: true,
-                      label: "Select Roles (Use shift to select multiple)",
-                    }
+                      label: "Select Roles (max is 3)",
+
+                    },
+                    data: { multi_select_target: "select" }
                    %>
+      </div>
+
   </section>
   <!-- Actions Section -->
   <section class="space-y-4 overflow-hidden">
