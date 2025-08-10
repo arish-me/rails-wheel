@@ -15,7 +15,7 @@
       <div class="flex">
         <%= render partial: "shared/common/search_bar", locals: { resource_path: admin_users_path, resource_id: 'users-search', placeholder: 'Search users by email' } %>
       </div>
-      <div class="flex">
+      <div class="flex space-x-4">
         <% if can?(:create, User) %>
           <%= render LinkComponent.new(
               text: "Add User",
