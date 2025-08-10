@@ -89,14 +89,20 @@ Rails.application.routes.draw do
       post :mark_as_read
     end
     # collection do
-    #   get :users_list
-    #   post :send_to_user
-    #   get :send, action: :app_sender
+    #   post :mark_all_as_read
     # end
   end
 
-  resources :experiences
+  # Public job board
+  namespace :public do
+    resources :jobs, only: [:index, :show] do
+      collection do
+        get :search
+      end
+    end
+  end
 
+  # Platform admin routes
   namespace :admin do
     resources :users do
       member do

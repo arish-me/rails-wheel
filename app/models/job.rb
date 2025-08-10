@@ -58,6 +58,7 @@ class Job < ApplicationRecord
   scope :featured, -> { where(featured: true) }
   scope :expired, -> { where('expires_at <= ?', Time.current) }
   scope :by_company, ->(company) { where(company: company) }
+  scope :by_company_id, ->(company_id) { where(company_id: company_id) }
   scope :recent, -> { order(created_at: :desc) }
   scope :by_location, ->(location) { where('location ILIKE ?', "%#{location}%") }
   scope :by_job_type, ->(type) { where(job_type: type) }
