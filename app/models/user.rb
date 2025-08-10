@@ -1,20 +1,25 @@
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  devise :database_authenticatable, :registerable,
+  devise :invitable, :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :lockable,
          :lockable, :timeoutable, :trackable, :confirmable,
          :omniauthable, omniauth_providers: %i[google_oauth2 github]
+
+  # Include DeviseInvitable::Inviter to allow users to send invitations
+  include DeviseInvitable::Inviter
 
   belongs_to :company, optional: true
   has_many :user_roles, dependent: :destroy
   has_many :roles, through: :user_roles
   has_many :categories, dependent: :destroy
   has_many :notifications, as: :recipient, class_name: "Noticed::Notification"
+  has_many :invitations, class_name: "User", as: :invited_by
 
   has_one :candidate, dependent: :destroy, class_name: "Candidate"
   has_one :location, as: :locatable, dependent: :destroy
   after_create :ensure_candidate
+  after_invitation_accepted :setup_invited_user
 
   attr_accessor :skip_password_validation
   attr_accessor :current_sign_in_ip_address
@@ -34,7 +39,6 @@ class User < ApplicationRecord
   validate :profile_image_size
   validates :first_name, presence: true, on: :update
   validates :last_name, presence: true, on: :update
-
 
   pg_search_scope :search_by_email,
               against: :email,
@@ -68,6 +72,7 @@ class User < ApplicationRecord
   end
 
   def can?(action, resource)
+    ActsAsTenant.current_tenant = Company.find(company_id)
     roles.joins(:role_permissions)
          .joins("INNER JOIN permissions ON permissions.id = role_permissions.permission_id")
          .where("permissions.name = ? AND permissions.resource = ?", action, resource)
@@ -130,6 +135,64 @@ class User < ApplicationRecord
 
   def location
     super || build_location
+  end
+
+  def assign_default_role
+    # Only assign default role if user has a company
+    return unless company.present?
+    ActsAsTenant.current_tenant = company
+    default_role = company.roles.fetch_default_role
+    # Find the default role for the company or create one if it doesn't exist
+    # default_role = Role.find_or_create_by(name: 'User', company: company) do |role|
+    #   role.description = 'Default user role'
+    # end
+
+    # Assign the default role to the user
+    user_roles.create(role: default_role) unless roles.include?(default_role)
+  end
+
+  def setup_invited_user
+    # Set company from the inviter if not already set and inviter has a company
+    if invited_by.present? && company_id.blank? && invited_by.company_id.present?
+      update_columns(company_id: invited_by.company_id, active: true)
+    end
+
+    # Set user type to company for invited users
+    update_columns(user_type: "company") if user_type.blank?
+
+    # Skip onboarding for invited users
+    update_columns(onboarded_at: Time.current) if onboarded_at.blank?
+
+    # Ensure candidate is created
+    ensure_candidate
+  end
+
+  def can_be_invited?
+    # Platform admins cannot be invited
+    return false if platform_admin?
+
+    # Users with pending invitations cannot be invited again
+    return false if invitation_sent_at.present? && invitation_accepted_at.blank?
+
+    # Users who have already accepted invitations cannot be invited again
+    return false if invitation_accepted_at.present?
+
+    # Users who are already active members cannot be invited
+    return false if active? && company_id.present?
+
+    true
+  end
+
+  def invitation_status
+    if invitation_accepted_at.present?
+      "accepted"
+    elsif invitation_sent_at.present?
+      "pending"
+    elsif active?
+      "active"
+    else
+      "created"
+    end
   end
 
   protected

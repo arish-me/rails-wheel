@@ -1,0 +1,40 @@
+en:
+  devise:
+    failure:
+      invited: "You have a pending invitation, accept it to finish creating your account."
+    invitations:
+      send_instructions: "An invitation email has been sent to %{email}."
+      invitation_token_invalid: "The invitation token provided is not valid!"
+      updated: "Your password was set successfully. You are now signed in."
+      updated_not_active: "Your password was set successfully."
+      no_invitations_remaining: "No invitations remaining"
+      invitation_removed: "Your invitation was removed."
+      new:
+        header: "Send invitation"
+        submit_button: "Send an invitation"
+        invite_user: "Invite New User"
+      edit:
+        header: "Set your password"
+        submit_button: "Set my password"
+    mailer:
+      invitation_instructions:
+        subject: "Invitation instructions"
+        hello: "Hello %{email}"
+        someone_invited_you: "Someone has invited you to %{url}, you can accept it through the link below."
+        accept: "Accept invitation"
+        accept_until: "This invitation will be due in %{due_date}."
+        ignore: "If you don't want to accept the invitation, please ignore this email. Your account won't be created until you access the link above and set your password."
+  errors:
+    messages:
+      duplicate_invitation: "This email is already registered in our system."
+      platform_admin_exists: "This email belongs to a platform administrator and cannot be invited."
+      already_invited: "This user has already been invited and is waiting to accept the invitation."
+      already_accepted: "This user has already accepted an invitation and has an active account."
+      same_company_member: "This user is already a member of your company."
+      other_company_member: "This user is already a member of another company."
+  time:
+    formats:
+      devise:
+        mailer:
+          invitation_instructions:
+            accept_until_format: "%B %d, %Y %I:%M %p"

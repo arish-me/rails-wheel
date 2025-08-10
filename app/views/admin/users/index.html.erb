@@ -15,13 +15,22 @@
       <div class="flex">
         <%= render partial: "shared/common/search_bar", locals: { resource_path: admin_users_path, resource_id: 'users-search', placeholder: 'Search users by email' } %>
       </div>
-      <div class="flex">
+      <div class="flex space-x-4">
         <% if can?(:create, User) %>
           <%= render LinkComponent.new(
               text: "Add User",
               variant: :primary,
               icon: "plus",
               href: new_admin_user_path,
+              frame: :modal,
+            ) %>
+        <% end %>
+        <% if can?(:invite, User) %>
+          <%= render LinkComponent.new(
+              text: "Invite User",
+              variant: :secondary,
+              icon: "mail",
+              href: new_user_invitation_path,
               frame: :modal,
             ) %>
         <% end %>
@@ -45,6 +54,9 @@
                   <% end %>
                   <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase theme-dark:text-gray-400">
                     Email
+                  </th>
+                  <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase theme-dark:text-gray-400">
+                    Status
                   </th>
                   <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase theme-dark:text-gray-400">
                     Created At
@@ -73,6 +85,26 @@
                     <% end %>
                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap theme-dark:text-white">
                       <%= record.email %>
+                    </td>
+                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap theme-dark:text-white">
+                      <% case record.invitation_status %>
+                      <% when 'accepted' %>
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                          Active
+                        </span>
+                      <% when 'pending' %>
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                          Invited
+                        </span>
+                      <% when 'active' %>
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                          Active
+                        </span>
+                      <% else %>
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                          Created
+                        </span>
+                      <% end %>
                     </td>
                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap theme-dark:text-white">
                       <%= record.created_at %>

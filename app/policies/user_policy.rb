@@ -11,6 +11,10 @@ class UserPolicy < ApplicationPolicy
     can_edit?
   end
 
+  def invite?
+    can_edit?
+  end
+
   def create?
     can_edit?
   end
