@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_10_083006) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_10_084522) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -270,7 +270,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_10_083006) do
 
   create_table "job_board_sync_logs", force: :cascade do |t|
     t.bigint "job_board_integration_id", null: false
-    t.bigint "job_id", null: false
+    t.bigint "job_id"
     t.string "action"
     t.string "status"
     t.text "message"
@@ -534,7 +534,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_10_083006) do
   add_foreign_key "job_applications", "users", column: "reviewed_by_id"
   add_foreign_key "job_board_integrations", "companies"
   add_foreign_key "job_board_sync_logs", "job_board_integrations"
-  add_foreign_key "job_board_sync_logs", "jobs"
+  add_foreign_key "job_board_sync_logs", "jobs", on_delete: :cascade
   add_foreign_key "jobs", "companies"
   add_foreign_key "jobs", "users", column: "created_by_id"
   add_foreign_key "role_levels", "candidates"

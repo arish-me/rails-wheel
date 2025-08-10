@@ -16,3 +16,22 @@ SeedData::SkillService.call
 
 # Seed job board providers
 load(Rails.root.join('db', 'seeds', 'job_board_providers.rb'))
+
+# Seed job portal data
+puts "🌐 Seeding job portal data..."
+company = Company.find_by(name: "TTC Service")
+if company
+  # Seed jobs first
+  puts "📋 Seeding jobs..."
+  SeedData::JobSeeder.new(company, 15).call
+  
+  # Seed job applications
+  puts "📝 Seeding job applications..."
+  SeedData::JobApplicationSeeder.new(company, 30).call
+  
+  # Seed job board integrations and sync logs
+  puts "🔗 Seeding job board integrations..."
+  SeedData::JobPortalSeeder.new(company, 0).call # Only integrations and logs, no jobs
+else
+  puts "⚠️ Company 'TTC Service' not found, skipping job portal seeding"
+end
