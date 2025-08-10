@@ -57,7 +57,7 @@ class StyledFormBuilder < ActionView::Helpers::FormBuilder
       ButtonComponent.new(
         text: value,
         data: (options[:data] || {}).merge({ turbo_submits_with: "Submitting..." }),
-        full_width: true
+        full_width: options[:data][:full_width]
       )
     )
   end
