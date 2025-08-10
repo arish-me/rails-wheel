@@ -10,6 +10,7 @@ class Company < ApplicationRecord
  has_many :categories, dependent: :destroy
  has_many :jobs, dependent: :destroy
  has_many :job_applications, through: :jobs
+ has_many :job_board_integrations, dependent: :destroy
 
   has_one_attached :avatar do |attachable|
       attachable.variant :thumbnail, resize_to_fill: [ 300, 300 ], convert: :webp, saver: { quality: 80 }

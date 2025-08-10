@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_05_140001) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_10_083006) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -240,6 +240,45 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_05_140001) do
     t.index ["status"], name: "index_job_applications_on_status"
     t.index ["user_id", "status"], name: "index_job_applications_on_user_id_and_status"
     t.index ["user_id"], name: "index_job_applications_on_user_id"
+  end
+
+  create_table "job_board_integrations", force: :cascade do |t|
+    t.bigint "company_id", null: false
+    t.string "name"
+    t.string "provider"
+    t.string "api_key"
+    t.string "api_secret"
+    t.string "webhook_url"
+    t.jsonb "settings"
+    t.string "status"
+    t.datetime "last_sync_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["company_id"], name: "index_job_board_integrations_on_company_id"
+  end
+
+  create_table "job_board_providers", force: :cascade do |t|
+    t.string "name"
+    t.string "slug"
+    t.text "description"
+    t.string "api_documentation_url"
+    t.string "logo_url"
+    t.boolean "is_active"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "job_board_sync_logs", force: :cascade do |t|
+    t.bigint "job_board_integration_id", null: false
+    t.bigint "job_id", null: false
+    t.string "action"
+    t.string "status"
+    t.text "message"
+    t.jsonb "metadata"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["job_board_integration_id"], name: "index_job_board_sync_logs_on_job_board_integration_id"
+    t.index ["job_id"], name: "index_job_board_sync_logs_on_job_id"
   end
 
   create_table "jobs", force: :cascade do |t|
@@ -493,6 +532,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_05_140001) do
   add_foreign_key "job_applications", "jobs"
   add_foreign_key "job_applications", "users"
   add_foreign_key "job_applications", "users", column: "reviewed_by_id"
+  add_foreign_key "job_board_integrations", "companies"
+  add_foreign_key "job_board_sync_logs", "job_board_integrations"
+  add_foreign_key "job_board_sync_logs", "jobs"
   add_foreign_key "jobs", "companies"
   add_foreign_key "jobs", "users", column: "created_by_id"
   add_foreign_key "role_levels", "candidates"

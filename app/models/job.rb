@@ -1,9 +1,12 @@
 class Job < ApplicationRecord
+  include RichText
+  
   belongs_to :company
   belongs_to :created_by, class_name: 'User'
   has_many :job_applications, dependent: :destroy
   has_many :applicants, through: :job_applications, source: :candidate
   has_many :application_users, through: :job_applications, source: :user
+  has_many :job_board_sync_logs, dependent: :destroy
 
   # Validations
   validates :title, presence: true, length: { minimum: 5, maximum: 200 }
@@ -207,5 +210,43 @@ class Job < ApplicationRecord
     # This could be used for analytics or caching
     # For now, we'll just ensure the company has the job
     company.touch if company.present?
+  end
+
+  # Rich text methods for job content
+  def rich_text_description
+    return nil unless description
+
+    @rich_text_description ||= markdown.render(description).strip
+  end
+
+  def requirements_rich_text
+    return nil unless requirements
+
+    @requirements_rich_text ||= markdown.render(requirements).strip
+  end
+
+  def benefits_rich_text
+    return nil unless benefits
+
+    @benefits_rich_text ||= markdown.render(benefits).strip
+  end
+
+  private
+
+  def markdown
+    @markdown ||= Redcarpet::Markdown.new(Redcarpet::Render::HTML.new(
+      filter_html: true,
+      hard_wrap: true,
+      no_images: true,
+      no_links: true,
+      no_styles: true
+    ), {
+      disable_indented_code_blocks: true,
+      fenced_code_blocks: true,
+      highlight: false,
+      strikethrough: true,
+      superscript: true,
+      underline: true
+    })
   end
 end

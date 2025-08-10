@@ -1,0 +1,192 @@
+<%= content_for :header_nav do %>
+  <%= render "layouts/navs/private_nav" %>
+<% end %>
+
+<div class="min-h-screen bg-gray-50">
+  <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="px-4 py-6 sm:px-0">
+      <div class="flex items-center justify-between">
+        <div>
+          <h1 class="text-2xl font-bold text-gray-900"><%= @integration.name %></h1>
+          <p class="mt-1 text-sm text-gray-600">
+            <%= @integration.job_board_provider&.name || @integration.provider %> Integration
+          </p>
+        </div>
+        <div class="flex items-center space-x-3">
+          <%= link_to "Edit", edit_job_board_integration_path(@integration), 
+              class: "inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+          
+          <%= button_to "Test Connection", test_connection_job_board_integration_path(@integration), 
+              method: :post,
+              class: "inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" %>
+          
+          <%= link_to job_board_integrations_path, 
+              class: "text-gray-600 hover:text-gray-800 text-sm font-medium" do %>
+            ← Back to Integrations
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- Integration Details -->
+      <div class="lg:col-span-2 space-y-6">
+        <!-- Status Card -->
+        <div class="bg-white shadow rounded-lg">
+          <div class="px-4 py-5 sm:p-6">
+            <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Integration Status</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div class="text-center">
+                <div class="text-2xl font-bold text-gray-900">
+                  <span class="<%= @integration.active? ? 'text-green-600' : 'text-gray-400' %>">
+                    <%= @integration.status.titleize %>
+                  </span>
+                </div>
+                <div class="text-sm text-gray-500">Status</div>
+              </div>
+              <div class="text-center">
+                <div class="text-2xl font-bold text-gray-900">
+                  <%= @integration.last_sync_at ? time_ago_in_words(@integration.last_sync_at) : 'Never' %>
+                </div>
+                <div class="text-sm text-gray-500">Last Sync</div>
+              </div>
+              <div class="text-center">
+                <div class="text-2xl font-bold text-gray-900">
+                  <%= @sync_logs.count %>
+                </div>
+                <div class="text-sm text-gray-500">Total Logs</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Configuration -->
+        <div class="bg-white shadow rounded-lg">
+          <div class="px-4 py-5 sm:p-6">
+            <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Configuration</h3>
+            <dl class="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2">
+              <div>
+                <dt class="text-sm font-medium text-gray-500">Provider</dt>
+                <dd class="mt-1 text-sm text-gray-900"><%= @integration.job_board_provider&.name || @integration.provider %></dd>
+              </div>
+              <div>
+                <dt class="text-sm font-medium text-gray-500">API Key</dt>
+                <dd class="mt-1 text-sm text-gray-900">
+                  <code class="bg-gray-100 px-2 py-1 rounded"><%= @integration.api_key.truncate(20) %></code>
+                </dd>
+              </div>
+              <div>
+                <dt class="text-sm font-medium text-gray-500">Webhook URL</dt>
+                <dd class="mt-1 text-sm text-gray-900">
+                  <%= @integration.webhook_url.presence || 'Not configured' %>
+                </dd>
+              </div>
+              <div>
+                <dt class="text-sm font-medium text-gray-500">Auto Sync</dt>
+                <dd class="mt-1 text-sm text-gray-900">
+                  <%= @integration.settings&.dig('auto_sync') ? 'Enabled' : 'Disabled' %>
+                </dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+
+        <!-- Recent Sync Logs -->
+        <div class="bg-white shadow rounded-lg">
+          <div class="px-4 py-5 sm:p-6">
+            <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Recent Sync Logs</h3>
+            
+            <% if @sync_logs.any? %>
+              <div class="flow-root">
+                <ul class="-mb-8">
+                  <% @sync_logs.each_with_index do |log, index| %>
+                    <li>
+                      <div class="relative pb-8">
+                        <% unless index == @sync_logs.length - 1 %>
+                          <span class="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200" aria-hidden="true"></span>
+                        <% end %>
+                        <div class="relative flex space-x-3">
+                          <div>
+                            <span class="h-8 w-8 rounded-full flex items-center justify-center ring-8 ring-white
+                              <%= log.status == 'success' ? 'bg-green-500' : log.status == 'error' ? 'bg-red-500' : 'bg-yellow-500' %>">
+                              <%= lucide_icon(log.status == 'success' ? 'check' : log.status == 'error' ? 'x' : 'clock', class: 'h-5 w-5 text-white') %>
+                            </span>
+                          </div>
+                          <div class="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
+                            <div>
+                              <p class="text-sm text-gray-500">
+                                <%= log.display_action %> 
+                                <% if log.job.present? %>
+                                  for <span class="font-medium text-gray-900"><%= log.job.title %></span>
+                                <% end %>
+                              </p>
+                              <p class="text-sm text-gray-900"><%= log.short_message %></p>
+                            </div>
+                            <div class="text-right text-sm whitespace-nowrap text-gray-500">
+                              <time datetime="<%= log.created_at.iso8601 %>"><%= time_ago_in_words(log.created_at) %> ago</time>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  <% end %>
+                </ul>
+              </div>
+            <% else %>
+              <div class="text-center py-8">
+                <div class="mx-auto h-12 w-12 text-gray-400">
+                  <%= lucide_icon('activity', class: 'w-12 h-12') %>
+                </div>
+                <h3 class="mt-2 text-sm font-medium text-gray-900">No sync logs</h3>
+                <p class="mt-1 text-sm text-gray-500">Sync activity will appear here once you start using this integration.</p>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <div class="space-y-6">
+        <!-- Quick Actions -->
+        <div class="bg-white shadow rounded-lg">
+          <div class="px-4 py-5 sm:p-6">
+            <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Quick Actions</h3>
+            <div class="space-y-3">
+              <%= button_to "Test Connection", test_connection_job_board_integration_path(@integration), 
+                  method: :post,
+                  class: "w-full inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" %>
+              
+              <%= link_to "View All Logs", "#", 
+                  class: "w-full inline-flex justify-center items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+            </div>
+          </div>
+        </div>
+
+        <!-- Provider Info -->
+        <div class="bg-white shadow rounded-lg">
+          <div class="px-4 py-5 sm:p-6">
+            <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Provider Information</h3>
+            <div class="space-y-3">
+              <div>
+                <dt class="text-sm font-medium text-gray-500">Name</dt>
+                <dd class="mt-1 text-sm text-gray-900"><%= @integration.job_board_provider&.name %></dd>
+              </div>
+              <div>
+                <dt class="text-sm font-medium text-gray-500">Description</dt>
+                <dd class="mt-1 text-sm text-gray-900"><%= @integration.job_board_provider&.description %></dd>
+              </div>
+              <% if @integration.job_board_provider&.api_documentation_url.present? %>
+                <div>
+                  <%= link_to "View API Documentation", @integration.job_board_provider.api_documentation_url, 
+                      target: "_blank",
+                      class: "text-blue-600 hover:text-blue-800 text-sm font-medium" %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
