@@ -1,6 +1,6 @@
 class JobBoardProvidersController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_tenant
+  # before_action :set_tenant
 
   def index
     @providers = JobBoardProvider.active.ordered

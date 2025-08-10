@@ -45,6 +45,7 @@ gem "inline_svg"
 gem "redcarpet"
 gem "hashid-rails"
 gem "phony_rails"
+gem "httparty"
 
 
 group :development, :test do

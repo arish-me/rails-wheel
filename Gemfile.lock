@@ -193,6 +193,10 @@ GEM
       stimulus-rails (>= 1.2)
       turbo-rails (>= 1.2)
     htmlbeautifier (1.4.3)
+    httparty (0.23.1)
+      csv
+      mini_mime (>= 1.0.0)
+      multi_xml (>= 0.5.2)
     i18n (1.14.6)
       concurrent-ruby (~> 1.0)
     image_processing (1.13.0)
@@ -593,6 +597,7 @@ DEPENDENCIES
   hotwire-livereload
   hotwire_combobox
   htmlbeautifier
+  httparty
   i18n
   image_processing (>= 1.2)
   importmap-rails

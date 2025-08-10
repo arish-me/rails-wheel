@@ -21,9 +21,13 @@ load(Rails.root.join('db', 'seeds', 'job_board_providers.rb'))
 puts "🌐 Seeding job portal data..."
 company = Company.find_by(name: "TTC Service")
 if company
-  # Seed jobs first
-  puts "📋 Seeding jobs..."
-  SeedData::JobSeeder.new(company, 15).call
+  # Seed real job data first
+  puts "📋 Seeding real job data..."
+  SeedData::RealJobDataSeeder.new(company, 20).call
+  
+  # Import external job data
+  puts "🌐 Importing external job data..."
+  SeedData::RealJobImportService.new(company, keywords: 'developer', location: 'San Francisco', limit: 5).call
   
   # Seed job applications
   puts "📝 Seeding job applications..."
