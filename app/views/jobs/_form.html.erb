@@ -7,39 +7,39 @@
     <!-- Basic Information -->
     <div class="space-y-4">
       <h3 class="text-lg font-medium text-gray-900">Basic Information</h3>
-      
+
       <%= f.text_field :title, label: 'Job Title', placeholder: 'e.g. Senior Ruby Developer' %>
-      
-      <%= f.text_area :description, label: 'Job Description', 
+
+      <%= f.text_area :description, label: 'Job Description',
           placeholder: 'Describe the role, responsibilities, and what makes this position exciting...',
-          rows: 8 %>
+          rows: 8, class: 'shadow-sm block w-full sm:text-sm border rounded-md'  %>
       <p class="text-sm text-gray-500 mt-1">Markdown is supported for formatting. Use **bold**, *italic*, lists, and more.</p>
-      
-      <%= f.text_area :requirements, label: 'Requirements', 
+
+      <%= f.text_area :requirements, label: 'Requirements',
           placeholder: 'List the skills, experience, and qualifications required...',
-          rows: 6 %>
+          rows: 6, class: 'shadow-sm block w-full sm:text-sm border rounded-md'  %>
       <p class="text-sm text-gray-500 mt-1">Markdown is supported for formatting.</p>
-      
-      <%= f.text_area :benefits, label: 'Benefits & Perks', 
+
+      <%= f.text_area :benefits, label: 'Benefits & Perks',
           placeholder: 'What benefits and perks do you offer?',
-          rows: 4 %>
+          rows: 4, class: 'shadow-sm block w-full sm:text-sm border rounded-md'  %>
       <p class="text-sm text-gray-500 mt-1">Markdown is supported for formatting.</p>
     </div>
 
     <!-- Job Details -->
     <div class="space-y-4">
       <h3 class="text-lg font-medium text-gray-900">Job Details</h3>
-      
+
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <%= f.select :job_type, 
+        <%= f.select :job_type,
             Job::JOB_TYPES.map { |type| [type.titleize, type] },
             { label: 'Job Type' } %>
-        
-        <%= f.select :experience_level, 
+
+        <%= f.select :experience_level,
             Job::EXPERIENCE_LEVELS.map { |level| [level.titleize, level] },
             { label: 'Experience Level' } %>
-        
-        <%= f.select :remote_policy, 
+
+        <%= f.select :remote_policy,
             Job::REMOTE_POLICIES.map { |policy| [policy.titleize, policy] },
             { label: 'Remote Policy' } %>
       </div>
@@ -47,19 +47,19 @@
       <!-- Salary Information -->
       <div class="space-y-4">
         <h4 class="text-md font-medium text-gray-700">Salary Information</h4>
-        
+
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <%= f.number_field :salary_min, label: 'Minimum Salary', 
+          <%= f.number_field :salary_min, label: 'Minimum Salary',
               placeholder: '50000', step: '0.01' %>
-          
-          <%= f.number_field :salary_max, label: 'Maximum Salary', 
+
+          <%= f.number_field :salary_max, label: 'Maximum Salary',
               placeholder: '80000', step: '0.01' %>
-          
-          <%= f.select :salary_currency, 
+
+          <%= f.select :salary_currency,
               [['USD', 'USD'], ['EUR', 'EUR'], ['GBP', 'GBP'], ['CAD', 'CAD']],
               { label: 'Currency' } %>
-          
-          <%= f.select :salary_period, 
+
+          <%= f.select :salary_period,
               Job::SALARY_PERIODS.map { |period| [period.titleize, period] },
               { label: 'Period' } %>
         </div>
@@ -69,55 +69,55 @@
     <!-- Location -->
     <div class="space-y-4">
       <h3 class="text-lg font-medium text-gray-900">Location</h3>
-      
+
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <%= f.text_field :city, label: 'City', placeholder: 'San Francisco' %>
         <%= f.text_field :state, label: 'State/Province', placeholder: 'CA' %>
       </div>
-      
+
       <%= f.text_field :country, label: 'Country', placeholder: 'United States' %>
-      <%= f.text_field :location, label: 'Full Location (optional)', 
+      <%= f.text_field :location, label: 'Full Location (optional)',
           placeholder: 'San Francisco, CA, United States' %>
     </div>
 
     <!-- Application Settings -->
     <div class="space-y-4">
       <h3 class="text-lg font-medium text-gray-900">Application Settings</h3>
-      
+
       <div class="space-y-4">
         <%= f.check_box :allow_cover_letter, label: 'Allow cover letters' %>
         <%= f.check_box :require_portfolio, label: 'Require portfolio URL' %>
-        
-        <%= f.text_area :application_instructions, label: 'Application Instructions', 
+
+        <%= f.text_area :application_instructions, label: 'Application Instructions',
             placeholder: 'Any specific instructions for applicants...',
-            rows: 3 %>
+            rows: 3, class: 'shadow-sm block w-full sm:text-sm border rounded-md'  %>
       </div>
     </div>
 
     <!-- Publishing -->
     <div class="space-y-4">
       <h3 class="text-lg font-medium text-gray-900">Publishing</h3>
-      
+
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <%= f.select :status, 
+        <%= f.select :status,
             Job::STATUSES.map { |status| [status.titleize, status] },
             { label: 'Status' } %>
-        
+
         <%= f.datetime_field :expires_at, label: 'Expires At' %>
       </div>
-      
+
       <%= f.check_box :featured, label: 'Feature this job' %>
     </div>
 
     <!-- External Integration -->
     <div class="space-y-4">
       <h3 class="text-lg font-medium text-gray-900">External Integration (Optional)</h3>
-      
+
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <%= f.text_field :external_id, label: 'External ID', 
+        <%= f.text_field :external_id, label: 'External ID',
             placeholder: 'For external job board integration' %>
-        
-        <%= f.select :external_source, 
+
+        <%= f.select :external_source,
             [['LinkedIn', 'linkedin'], ['Indeed', 'indeed'], ['Glassdoor', 'glassdoor']],
             { include_blank: 'Select source', label: 'External Source' } %>
       </div>
@@ -125,10 +125,10 @@
 
     <!-- Submit -->
     <div class="flex justify-end space-x-3 pt-6 border-t border-gray-200">
-      <%= link_to 'Cancel', jobs_path, 
+      <%= link_to 'Cancel', jobs_path,
           class: "px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50" %>
-      
-      <%= f.submit @job.new_record? ? 'Create Job' : 'Update Job', 
+
+      <%= f.submit @job.new_record? ? 'Create Job' : 'Update Job',
           class: "px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700" %>
     </div>
   </div>
