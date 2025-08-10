@@ -175,6 +175,10 @@
    @apply bg-black;
 }
 
+.custom-submit-button {
+  width: auto !important;
+}
+
 /* Google Places Autocomplete Customization */
 .pac-container {
   border: 1px solid #d1d5db !important;

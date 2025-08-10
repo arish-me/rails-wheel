@@ -1,6 +1,10 @@
 class Job < ApplicationRecord
   # include RichText
 
+  has_rich_text :description
+  has_rich_text :requirements
+  has_rich_text :benefits
+
   belongs_to :company
   belongs_to :created_by, class_name: 'User'
   has_many :job_applications, dependent: :destroy
@@ -213,23 +217,23 @@ class Job < ApplicationRecord
   end
 
   # Rich text methods for job content
-  def rich_text_description
-    return nil unless description
+  # def rich_text_description
+  #   return nil unless description
 
-    @rich_text_description ||= markdown.render(description).strip
-  end
+  #   @rich_text_description ||= markdown.render(description).strip
+  # end
 
-  def requirements_rich_text
-    return nil unless requirements
+  # def requirements_rich_text
+  #   return nil unless requirements
 
-    @requirements_rich_text ||= markdown.render(requirements).strip
-  end
+  #   @requirements_rich_text ||= markdown.render(requirements).strip
+  # end
 
-  def benefits_rich_text
-    return nil unless benefits
+  # def benefits_rich_text
+  #   return nil unless benefits
 
-    @benefits_rich_text ||= markdown.render(benefits).strip
-  end
+  #   @benefits_rich_text ||= markdown.render(benefits).strip
+  # end
 
   private
 

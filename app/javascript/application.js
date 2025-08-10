@@ -17,3 +17,6 @@ Turbo.StreamActions.redirect = function () {
   Turbo.visit(this.target);
 };
 
+
+import "trix"
+import "@rails/actiontext"
