@@ -1,7 +1,3 @@
-<%= content_for :header_nav do %>
-  <%= render "layouts/navs/private_nav" %>
-<% end %>
-
 <div class="min-h-screen bg-gray-50">
   <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
     <!-- Header -->
@@ -11,7 +7,7 @@
           <h1 class="text-2xl font-bold text-gray-900">Job Board Integrations</h1>
           <p class="mt-1 text-sm text-gray-600">Connect your jobs to external job boards and platforms</p>
         </div>
-        <%= link_to new_job_board_integration_path, 
+        <%= link_to new_job_board_integration_path,
             class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" do %>
           <%= lucide_icon('plus', class: 'w-4 h-4 mr-2') %>
           Add Integration
@@ -36,9 +32,9 @@
             </div>
             <p class="text-sm text-gray-600 mb-4"><%= truncate(provider.description, length: 80) %></p>
             <div class="flex space-x-2">
-              <%= link_to "Learn More", job_board_provider_path(provider), 
+              <%= link_to "Learn More", job_board_provider_path(provider),
                   class: "text-sm text-blue-600 hover:text-blue-800" %>
-              <%= link_to "Connect", new_job_board_integration_path(provider: provider.slug), 
+              <%= link_to "Connect", new_job_board_integration_path(provider: provider.slug),
                   class: "text-sm text-green-600 hover:text-green-800" %>
             </div>
           </div>
@@ -49,7 +45,7 @@
     <!-- Your Integrations -->
     <div class="px-4 py-6 sm:px-0">
       <h2 class="text-lg font-medium text-gray-900 mb-4">Your Integrations</h2>
-      
+
       <% if @integrations.any? %>
         <div class="bg-white shadow overflow-hidden sm:rounded-md">
           <ul class="divide-y divide-gray-200">
@@ -75,11 +71,11 @@
                       </div>
                     </div>
                     <div class="flex items-center space-x-2">
-                      <%= link_to "View", integration, 
+                      <%= link_to "View", integration,
                           class: "text-blue-600 hover:text-blue-900 text-sm font-medium" %>
-                      <%= link_to "Edit", edit_job_board_integration_path(integration), 
+                      <%= link_to "Edit", edit_job_board_integration_path(integration),
                           class: "text-gray-600 hover:text-gray-900 text-sm font-medium" %>
-                      <%= link_to "Delete", integration, 
+                      <%= link_to "Delete", integration,
                           method: :delete,
                           data: { turbo_confirm: "Are you sure you want to delete this integration?" },
                           class: "text-red-600 hover:text-red-900 text-sm font-medium" %>
@@ -111,7 +107,7 @@
           <h3 class="mt-2 text-sm font-medium text-gray-900">No integrations</h3>
           <p class="mt-1 text-sm text-gray-500">Get started by connecting to a job board.</p>
           <div class="mt-6">
-            <%= link_to new_job_board_integration_path, 
+            <%= link_to new_job_board_integration_path,
                 class: "inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" do %>
               <%= lucide_icon('plus', class: 'w-4 h-4 mr-2') %>
               Add Integration

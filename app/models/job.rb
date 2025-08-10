@@ -1,6 +1,6 @@
 class Job < ApplicationRecord
   include RichText
-  
+
   belongs_to :company
   belongs_to :created_by, class_name: 'User'
   has_many :job_applications, dependent: :destroy
@@ -15,7 +15,7 @@ class Job < ApplicationRecord
   validates :salary_min, numericality: { greater_than: 0 }, allow_nil: true
   validates :salary_max, numericality: { greater_than: 0 }, allow_nil: true
   validates :expires_at, presence: true, if: :published?
-  
+
   # Enums
   enum :job_type, {
     full_time: 'full_time',
@@ -24,7 +24,7 @@ class Job < ApplicationRecord
     freelance: 'freelance',
     internship: 'internship'
   }
-  
+
   enum :experience_level, {
     entry: 'entry',
     junior: 'junior',
@@ -33,20 +33,20 @@ class Job < ApplicationRecord
     lead: 'lead',
     executive: 'executive'
   }
-  
+
   enum :remote_policy, {
     on_site: 'on_site',
     remote: 'remote',
     hybrid: 'hybrid'
   }
-  
+
   enum :status, {
     draft: 'draft',
     published: 'published',
     closed: 'closed',
     archived: 'archived'
   }
-  
+
   enum :salary_period, {
     hourly: 'hourly',
     daily: 'daily',
@@ -90,7 +90,7 @@ class Job < ApplicationRecord
   # Display methods
   def display_salary
     return 'Salary not specified' if salary_min.blank? && salary_max.blank?
-    
+
     if salary_min.present? && salary_max.present?
       "#{salary_currency} #{salary_min} - #{salary_max} #{salary_period}"
     elsif salary_min.present?
@@ -169,7 +169,7 @@ class Job < ApplicationRecord
   # External integration methods
   def external_url
     return nil unless external_id.present? && external_source.present?
-    
+
     case external_source
     when 'linkedin'
       "https://www.linkedin.com/jobs/view/#{external_id}"
@@ -180,14 +180,14 @@ class Job < ApplicationRecord
     end
   end
 
-  private
+
 
   def generate_slug
     return if slug.present?
-    
+
     base_slug = title.parameterize
     counter = 0
-    
+
     loop do
       candidate_slug = counter.zero? ? base_slug : "#{base_slug}-#{counter}"
       unless Job.exists?(slug: candidate_slug)

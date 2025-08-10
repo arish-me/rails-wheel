@@ -1,7 +1,3 @@
-<%= content_for :header_nav do %>
-  <%= render "layouts/navs/private_nav" %>
-<% end %>
-
 <div class="min-h-screen bg-gray-50">
   <div class="max-w-3xl mx-auto py-6 sm:px-6 lg:px-8">
     <!-- Header -->
@@ -11,7 +7,7 @@
           <h1 class="text-2xl font-bold text-gray-900">Add Job Board Integration</h1>
           <p class="mt-1 text-sm text-gray-600">Connect your jobs to external job boards and platforms</p>
         </div>
-        <%= link_to job_board_integrations_path, 
+        <%= link_to job_board_integrations_path,
             class: "text-blue-600 hover:text-blue-800 text-sm font-medium" do %>
           ← Back to Integrations
         <% end %>

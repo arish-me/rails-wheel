@@ -1,7 +1,3 @@
-<%= content_for :header_nav do %>
-  <%= render "layouts/navs/private_nav" %>
-<% end %>
-
 <div class="min-h-screen bg-gray-50">
   <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
     <!-- Header -->
@@ -14,14 +10,14 @@
           </p>
         </div>
         <div class="flex items-center space-x-3">
-          <%= link_to "Edit", edit_job_board_integration_path(@integration), 
+          <%= link_to "Edit", edit_job_board_integration_path(@integration),
               class: "inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
-          
-          <%= button_to "Test Connection", test_connection_job_board_integration_path(@integration), 
+
+          <%= button_to "Test Connection", test_connection_job_board_integration_path(@integration),
               method: :post,
               class: "inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" %>
-          
-          <%= link_to job_board_integrations_path, 
+
+          <%= link_to job_board_integrations_path,
               class: "text-gray-600 hover:text-gray-800 text-sm font-medium" do %>
             ← Back to Integrations
           <% end %>
@@ -96,7 +92,7 @@
         <div class="bg-white shadow rounded-lg">
           <div class="px-4 py-5 sm:p-6">
             <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Recent Sync Logs</h3>
-            
+
             <% if @sync_logs.any? %>
               <div class="flow-root">
                 <ul class="-mb-8">
@@ -116,7 +112,7 @@
                           <div class="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
                             <div>
                               <p class="text-sm text-gray-500">
-                                <%= log.display_action %> 
+                                <%= log.display_action %>
                                 <% if log.job.present? %>
                                   for <span class="font-medium text-gray-900"><%= log.job.title %></span>
                                 <% end %>
@@ -153,11 +149,11 @@
           <div class="px-4 py-5 sm:p-6">
             <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Quick Actions</h3>
             <div class="space-y-3">
-              <%= button_to "Test Connection", test_connection_job_board_integration_path(@integration), 
+              <%= button_to "Test Connection", test_connection_job_board_integration_path(@integration),
                   method: :post,
                   class: "w-full inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" %>
-              
-              <%= link_to "View All Logs", "#", 
+
+              <%= link_to "View All Logs", "#",
                   class: "w-full inline-flex justify-center items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
             </div>
           </div>
@@ -178,7 +174,7 @@
               </div>
               <% if @integration.job_board_provider&.api_documentation_url.present? %>
                 <div>
-                  <%= link_to "View API Documentation", @integration.job_board_provider.api_documentation_url, 
+                  <%= link_to "View API Documentation", @integration.job_board_provider.api_documentation_url,
                       target: "_blank",
                       class: "text-blue-600 hover:text-blue-800 text-sm font-medium" %>
                 </div>

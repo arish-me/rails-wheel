@@ -23,7 +23,7 @@
         </div>
         <div class="ml-4">
           <p class="text-sm font-medium text-gray-500">Total Applications</p>
-          <p class="text-2xl font-semibold text-gray-900"><%= @applications.total_count %></p>
+
         </div>
       </div>
     </div>
@@ -76,7 +76,7 @@
     <div class="px-6 py-4 border-b border-gray-200">
       <h3 class="text-lg font-medium text-gray-900">All Applications</h3>
     </div>
-    
+
     <div class="divide-y divide-gray-200">
       <% @applications.each do |application| %>
         <div class="px-6 py-4 hover:bg-gray-50">
@@ -91,7 +91,7 @@
                   </div>
                 <% end %>
               </div>
-              
+
               <div>
                 <h4 class="text-sm font-medium text-gray-900">
                   <%= link_to application.user.display_name, job_job_application_path(@job, application), class: "hover:text-blue-600" %>
@@ -100,7 +100,7 @@
                 <p class="text-xs text-gray-400">Applied <%= time_ago_in_words(application.applied_at) %> ago</p>
               </div>
             </div>
-            
+
             <div class="flex items-center space-x-3">
               <!-- Status Badge -->
               <% case application.status %>
@@ -133,14 +133,14 @@
                   Withdrawn
                 </span>
               <% end %>
-              
+
               <!-- Quick Apply Badge -->
               <% if application.is_quick_apply %>
                 <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
                   Quick Apply
                 </span>
               <% end %>
-              
+
               <!-- View Count -->
               <span class="text-xs text-gray-500">
                 <%= pluralize(application.view_count, 'view') %>
