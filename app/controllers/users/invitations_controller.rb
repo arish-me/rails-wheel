@@ -97,7 +97,6 @@ class Users::InvitationsController < Devise::InvitationsController
       end
 
       resource.update_columns(update_attrs)
-      debugger
       # Assign default role for the company if company exists
       if current_inviter.company_id.present?
         resource.assign_default_role
