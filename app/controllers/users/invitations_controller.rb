@@ -1,7 +1,7 @@
 class Users::InvitationsController < Devise::InvitationsController
   before_action :authenticate_user!
   # before_action :authenticate_inviter!
-  before_action :set_inviter, only: [:create]
+  before_action :set_inviter, only: [ :create ]
 
   # # GET /resource/invitation/new
   # def new
@@ -10,25 +10,36 @@ class Users::InvitationsController < Devise::InvitationsController
   # end
 
   # POST /resource/invitation
-  # def create
-  #   self.resource = invite_resource
-  #   resource_invited = resource.errors.empty?
+  def create
+    # Check for existing user before sending invitation
+    existing_user = User.find_by(email: invite_params[:email])
 
-  #   yield resource if block_given?
+    if existing_user
+      error_message = get_existing_user_error(existing_user)
+      self.resource = resource_class.new(invite_params)
+      resource.errors.add(:email, error_message)
+      render :new, status: :unprocessable_entity
+      return
+    end
 
-  #   if resource_invited
-  #     if is_flashing_format? && self.resource.invitation_sent_at
-  #       set_flash_message :notice, :send_instructions, email: self.resource.email
-  #     end
-  #     if self.method(:after_invite_path_for).arity == 1
-  #       respond_with resource, location: after_invite_path_for(self.resource)
-  #     else
-  #       respond_with resource, location: after_invite_path_for(self.resource, self.resource)
-  #     end
-  #   else
-  #     respond_with_navigational(resource) { render :new, status: :unprocessable_entity }
-  #   end
-  # end
+    self.resource = invite_resource
+    resource_invited = resource.errors.empty?
+
+    yield resource if block_given?
+
+    if resource_invited
+      if is_flashing_format? && self.resource.invitation_sent_at
+        set_flash_message :notice, :send_instructions, email: self.resource.email
+      end
+      if self.method(:after_invite_path_for).arity == 1
+        respond_with resource, location: after_invite_path_for(self.resource)
+      else
+        respond_with resource, location: after_invite_path_for(self.resource, self.resource)
+      end
+    else
+      respond_with_navigational(resource) { render :new, status: :unprocessable_entity }
+    end
+  end
 
   # GET /resource/invitation/accept?invitation_token=abcdef
   def edit
@@ -70,7 +81,7 @@ class Users::InvitationsController < Devise::InvitationsController
     # Set company and user type for the invited user
     resource = resource_class.invite!(invite_params, current_inviter, &block)
 
-    return resource if resource.errors
+    return resource unless resource.errors.blank?
 
     if resource.persisted?
       # Set the company to the inviter's company using update_columns to avoid validations
@@ -86,7 +97,7 @@ class Users::InvitationsController < Devise::InvitationsController
       end
 
       resource.update_columns(update_attrs)
-
+      debugger
       # Assign default role for the company if company exists
       if current_inviter.company_id.present?
         resource.assign_default_role
@@ -143,5 +154,25 @@ class Users::InvitationsController < Devise::InvitationsController
 
   def after_accept_path_for(resource)
     dashboard_path
+  end
+
+  private
+
+  def get_existing_user_error(existing_user)
+    if existing_user.platform_admin?
+      "This email belongs to a platform administrator and cannot be invited."
+    elsif existing_user.invitation_sent_at.present? && existing_user.invitation_accepted_at.blank?
+      "This user has already been invited and is waiting to accept the invitation."
+    elsif existing_user.invitation_accepted_at.present?
+      "This user has already accepted an invitation and has an active account."
+    elsif existing_user.company_id.present?
+      if current_inviter.company_id == existing_user.company_id
+        "This user is already a member of your company."
+      else
+        "This user is already a member of another company (#{existing_user.company.name})."
+      end
+    else
+      "This email is already registered in our system."
+    end
   end
 end

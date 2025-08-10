@@ -15,6 +15,9 @@
           Inviting to: <strong><%= current_user.company.name %></strong>
         </p>
       <% end %>
+      <p class="mt-2 text-center text-xs text-gray-400">
+        The invited user will receive an email with a link to set their password and join your company.
+      </p>
     </div>
 
     <%= form_for resource, as: resource_name, url: invitation_path(resource_name), html: { method: :post, class: "mt-8 space-y-6" } do |f| %>

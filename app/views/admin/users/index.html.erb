@@ -87,17 +87,22 @@
                       <%= record.email %>
                     </td>
                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap theme-dark:text-white">
-                      <% if record.invitation_accepted_at.present? %>
+                      <% case record.invitation_status %>
+                      <% when 'accepted' %>
                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                          Accept Invitation
+                          Active
                         </span>
-                      <% elsif record.invitation_sent_at.present? %>
+                      <% when 'pending' %>
                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
                           Invited
                         </span>
-                      <% elsif record.active? %>
-                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                      <% when 'active' %>
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
                           Active
+                        </span>
+                      <% else %>
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                          Created
                         </span>
                       <% end %>
                     </td>
