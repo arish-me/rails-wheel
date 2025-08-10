@@ -70,6 +70,13 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :jobs do
+    member do
+      patch :publish
+      patch :close
+    end
+  end
+
   resources :notifications, only: [ :index ] do
     member do
       post :mark_as_read

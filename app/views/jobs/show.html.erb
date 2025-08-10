@@ -1,0 +1,197 @@
+<div class="max-w-4xl mx-auto">
+  <!-- Job Header -->
+  <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+    <div class="flex justify-between items-start mb-4">
+      <div class="flex-1">
+        <h1 class="text-3xl font-bold text-gray-900 mb-2"><%= @job.title %></h1>
+        <p class="text-lg text-gray-600"><%= @job.company.name %></p>
+      </div>
+      
+      <div class="flex space-x-2">
+        <% case @job.status %>
+        <% when 'published' %>
+          <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+            Published
+          </span>
+        <% when 'draft' %>
+          <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800">
+            Draft
+          </span>
+        <% when 'closed' %>
+          <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800">
+            Closed
+          </span>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Job Meta -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+      <div class="flex items-center text-gray-600">
+        <%= lucide_icon('briefcase', class: 'w-5 h-5 mr-2') %>
+        <span><%= @job.display_job_type %></span>
+      </div>
+      
+      <div class="flex items-center text-gray-600">
+        <%= lucide_icon('map-pin', class: 'w-5 h-5 mr-2') %>
+        <span><%= @job.display_location.presence || 'Remote' %></span>
+      </div>
+      
+      <div class="flex items-center text-gray-600">
+        <%= lucide_icon('users', class: 'w-5 h-5 mr-2') %>
+        <span><%= @job.display_experience_level %></span>
+      </div>
+      
+      <% if @job.salary_min.present? || @job.salary_max.present? %>
+        <div class="flex items-center text-gray-600">
+          <%= lucide_icon('dollar-sign', class: 'w-5 h-5 mr-2') %>
+          <span><%= @job.display_salary %></span>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="flex space-x-3">
+      <% if current_user.company == @job.company %>
+        <% if can?(:update, @job) %>
+          <%= link_to edit_job_path(@job), 
+              class: "inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50",
+              data: { turbo_frame: :modal } do %>
+            <%= lucide_icon('edit', class: 'w-4 h-4 mr-2') %>
+            Edit
+          <% end %>
+        <% end %>
+        
+        <% if @job.draft? && can?(:publish, @job) %>
+          <%= link_to publish_job_path(@job), 
+              method: :patch,
+              class: "inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700",
+              data: { turbo_method: :patch } do %>
+            <%= lucide_icon('send', class: 'w-4 h-4 mr-2') %>
+            Publish
+          <% end %>
+        <% end %>
+        
+        <% if @job.published? && can?(:close, @job) %>
+          <%= link_to close_job_path(@job), 
+              method: :patch,
+              class: "inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700",
+              data: { turbo_method: :patch } do %>
+            <%= lucide_icon('x-circle', class: 'w-4 h-4 mr-2') %>
+            Close
+          <% end %>
+        <% end %>
+      <% else %>
+        <% if @job.can_be_applied_to? && current_user.candidate.present? %>
+          <%= link_to new_job_job_application_path(@job), 
+              class: "inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700" do %>
+            <%= lucide_icon('send', class: 'w-4 h-4 mr-2') %>
+            Apply Now
+          <% end %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Job Content -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- Main Content -->
+    <div class="lg:col-span-2 space-y-6">
+      <!-- Description -->
+      <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <h2 class="text-xl font-semibold text-gray-900 mb-4">Job Description</h2>
+        <div class="prose max-w-none">
+          <%= simple_format(@job.description) %>
+        </div>
+      </div>
+
+      <!-- Requirements -->
+      <% if @job.requirements.present? %>
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <h2 class="text-xl font-semibold text-gray-900 mb-4">Requirements</h2>
+          <div class="prose max-w-none">
+            <%= simple_format(@job.requirements) %>
+          </div>
+        </div>
+      <% end %>
+
+      <!-- Benefits -->
+      <% if @job.benefits.present? %>
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <h2 class="text-xl font-semibold text-gray-900 mb-4">Benefits & Perks</h2>
+          <div class="prose max-w-none">
+            <%= simple_format(@job.benefits) %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="space-y-6">
+      <!-- Company Info -->
+      <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <h3 class="text-lg font-semibold text-gray-900 mb-4">Company</h3>
+        <div class="flex items-center space-x-3">
+          <% if @job.company.avatar.attached? %>
+            <%= image_tag @job.company.avatar, class: "w-12 h-12 rounded-full" %>
+          <% else %>
+            <div class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center">
+              <span class="text-gray-500 font-semibold"><%= @job.company.name.first %></span>
+            </div>
+          <% end %>
+          <div>
+            <p class="font-medium text-gray-900"><%= @job.company.name %></p>
+            <p class="text-sm text-gray-600"><%= @job.company.website %></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Job Stats -->
+      <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <h3 class="text-lg font-semibold text-gray-900 mb-4">Job Stats</h3>
+        <div class="space-y-3">
+          <div class="flex justify-between">
+            <span class="text-gray-600">Applications</span>
+            <span class="font-medium"><%= @job.applications_count %></span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-600">Views</span>
+            <span class="font-medium"><%= @job.views_count %></span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-600">Posted</span>
+            <span class="font-medium"><%= time_ago_in_words(@job.created_at) %> ago</span>
+          </div>
+          <% if @job.expires_at.present? %>
+            <div class="flex justify-between">
+              <span class="text-gray-600">Expires</span>
+              <span class="font-medium"><%= @job.expires_at.strftime('%B %d, %Y') %></span>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Recent Applications (for company users) -->
+      <% if current_user.company == @job.company && @recent_applications.any? %>
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <h3 class="text-lg font-semibold text-gray-900 mb-4">Recent Applications</h3>
+          <div class="space-y-3">
+            <% @recent_applications.each do |application| %>
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="font-medium text-gray-900"><%= application.user.display_name %></p>
+                  <p class="text-sm text-gray-600"><%= application.display_applied_date %></p>
+                </div>
+                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                  <%= application.display_status %>
+                </span>
+              </div>
+            <% end %>
+          </div>
+          <%= link_to "View All Applications", job_job_applications_path(@job), 
+              class: "mt-4 text-sm text-blue-600 hover:text-blue-800 font-medium" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

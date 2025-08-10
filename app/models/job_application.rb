@@ -1,0 +1,159 @@
+class JobApplication < ApplicationRecord
+  belongs_to :job
+  belongs_to :candidate
+  belongs_to :user
+  belongs_to :reviewed_by, class_name: 'User', optional: true
+
+  # Active Storage
+  has_one_attached :resume
+
+  # Validations
+  validates :job_id, uniqueness: { scope: :candidate_id, message: 'You have already applied to this job' }
+  validates :cover_letter, presence: true, length: { minimum: 50 }, unless: :is_quick_apply
+  validates :portfolio_url, presence: true, if: :require_portfolio?
+  validates :resume, presence: true, unless: :is_quick_apply
+
+  # Enums
+  enum :status, {
+    applied: 'applied',
+    reviewing: 'reviewing',
+    shortlisted: 'shortlisted',
+    interviewed: 'interviewed',
+    offered: 'offered',
+    rejected: 'rejected',
+    withdrawn: 'withdrawn'
+  }
+
+  # Scopes
+  scope :recent, -> { order(applied_at: :desc) }
+  scope :by_status, ->(status) { where(status: status) }
+  scope :by_job, ->(job) { where(job: job) }
+  scope :by_candidate, ->(candidate) { where(candidate: candidate) }
+  scope :by_user, ->(user) { where(user: user) }
+  scope :reviewed, -> { where.not(reviewed_at: nil) }
+  scope :unreviewed, -> { where(reviewed_at: nil) }
+  scope :quick_applies, -> { where(is_quick_apply: true) }
+  scope :with_cover_letter, -> { where(is_quick_apply: false) }
+
+  # Callbacks
+  before_create :set_applied_at
+  after_create :increment_job_applications_count
+  after_update :set_reviewed_at, if: :status_changed?
+
+  # Search
+  pg_search_scope :search_by_content,
+                  against: [:cover_letter, :additional_notes],
+                  using: {
+                    tsearch: { prefix: true }
+                  }
+
+  # Constants
+  STATUSES = statuses.keys.freeze
+
+  # Status methods
+  def applied?
+    status == 'applied'
+  end
+
+  def reviewing?
+    status == 'reviewing'
+  end
+
+  def shortlisted?
+    status == 'shortlisted'
+  end
+
+  def interviewed?
+    status == 'interviewed'
+  end
+
+  def offered?
+    status == 'offered'
+  end
+
+  def rejected?
+    status == 'rejected'
+  end
+
+  def withdrawn?
+    status == 'withdrawn'
+  end
+
+  def reviewed?
+    reviewed_at.present?
+  end
+
+  def can_be_withdrawn?
+    %w[applied reviewing shortlisted].include?(status)
+  end
+
+  def can_be_reviewed?
+    !reviewed? && !withdrawn?
+  end
+
+  # Display methods
+  def display_status
+    status&.titleize
+  end
+
+  def display_applied_date
+    applied_at&.strftime('%B %d, %Y')
+  end
+
+  def display_reviewed_date
+    reviewed_at&.strftime('%B %d, %Y')
+  end
+
+  # Action methods
+  def mark_as_reviewed!(reviewer)
+    update!(
+      reviewed_at: Time.current,
+      reviewed_by: reviewer
+    )
+  end
+
+  def withdraw!
+    update!(status: 'withdrawn') if can_be_withdrawn?
+  end
+
+  def increment_view_count!
+    increment!(:view_count)
+    update!(last_viewed_at: Time.current)
+  end
+
+  # External integration methods
+  def external_url
+    return nil unless external_id.present? && external_source.present?
+    
+    case external_source
+    when 'linkedin'
+      "https://www.linkedin.com/jobs/view/#{external_id}"
+    when 'indeed'
+      "https://www.indeed.com/viewjob?jk=#{external_id}"
+    else
+      nil
+    end
+  end
+
+  private
+
+  def set_applied_at
+    self.applied_at = Time.current
+  end
+
+  def increment_job_applications_count
+    job.increment_applications!
+  end
+
+  def set_reviewed_at
+    return if reviewed_at.present?
+    
+    if %w[shortlisted interviewed offered rejected].include?(status)
+      self.reviewed_at = Time.current
+    end
+  end
+
+  def require_portfolio?
+    job.require_portfolio
+  end
+end

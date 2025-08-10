@@ -5,7 +5,11 @@ class Company < ApplicationRecord
  validates :subdomain, presence: true, uniqueness: { case_sensitive: false }
  after_create :assign_default_roles
  has_many :users
- has_many :roles
+ has_many :user_roles, dependent: :destroy
+ has_many :roles, through: :user_roles
+ has_many :categories, dependent: :destroy
+ has_many :jobs, dependent: :destroy
+ has_many :job_applications, through: :jobs
 
   has_one_attached :avatar do |attachable|
       attachable.variant :thumbnail, resize_to_fill: [ 300, 300 ], convert: :webp, saver: { quality: 80 }

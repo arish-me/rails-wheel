@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_05_134004) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_05_140001) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -204,6 +204,94 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_05_134004) do
     t.index ["priority", "scheduled_at"], name: "index_good_jobs_on_priority_scheduled_at_unfinished_unlocked", where: "((finished_at IS NULL) AND (locked_by_id IS NULL))"
     t.index ["queue_name", "scheduled_at"], name: "index_good_jobs_on_queue_name_and_scheduled_at", where: "(finished_at IS NULL)"
     t.index ["scheduled_at"], name: "index_good_jobs_on_scheduled_at", where: "(finished_at IS NULL)"
+  end
+
+  create_table "job_applications", force: :cascade do |t|
+    t.bigint "job_id", null: false
+    t.bigint "candidate_id", null: false
+    t.bigint "user_id", null: false
+    t.string "status", default: "applied"
+    t.text "status_notes"
+    t.text "cover_letter"
+    t.text "portfolio_url"
+    t.text "additional_notes"
+    t.boolean "is_quick_apply", default: false
+    t.datetime "applied_at"
+    t.datetime "reviewed_at"
+    t.bigint "reviewed_by_id"
+    t.string "external_id"
+    t.string "external_source"
+    t.jsonb "external_data"
+    t.integer "view_count", default: 0
+    t.datetime "last_viewed_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["applied_at"], name: "index_job_applications_on_applied_at"
+    t.index ["candidate_id", "status"], name: "index_job_applications_on_candidate_id_and_status"
+    t.index ["candidate_id"], name: "index_job_applications_on_candidate_id"
+    t.index ["external_data"], name: "index_job_applications_on_external_data", using: :gin
+    t.index ["external_id"], name: "index_job_applications_on_external_id"
+    t.index ["external_source"], name: "index_job_applications_on_external_source"
+    t.index ["job_id", "candidate_id"], name: "index_job_applications_on_job_and_candidate", unique: true
+    t.index ["job_id", "status"], name: "index_job_applications_on_job_id_and_status"
+    t.index ["job_id"], name: "index_job_applications_on_job_id"
+    t.index ["reviewed_at"], name: "index_job_applications_on_reviewed_at"
+    t.index ["reviewed_by_id"], name: "index_job_applications_on_reviewed_by_id"
+    t.index ["status"], name: "index_job_applications_on_status"
+    t.index ["user_id", "status"], name: "index_job_applications_on_user_id_and_status"
+    t.index ["user_id"], name: "index_job_applications_on_user_id"
+  end
+
+  create_table "jobs", force: :cascade do |t|
+    t.bigint "company_id", null: false
+    t.bigint "created_by_id", null: false
+    t.string "title", null: false
+    t.text "description"
+    t.text "requirements"
+    t.text "benefits"
+    t.string "job_type"
+    t.string "experience_level"
+    t.string "remote_policy"
+    t.decimal "salary_min", precision: 10, scale: 2
+    t.decimal "salary_max", precision: 10, scale: 2
+    t.string "salary_currency", default: "USD"
+    t.string "salary_period"
+    t.string "location"
+    t.string "city"
+    t.string "state"
+    t.string "country"
+    t.decimal "latitude", precision: 10, scale: 7
+    t.decimal "longitude", precision: 10, scale: 7
+    t.string "status", default: "draft"
+    t.boolean "featured", default: false
+    t.datetime "published_at"
+    t.datetime "expires_at"
+    t.boolean "allow_cover_letter", default: true
+    t.boolean "require_portfolio", default: false
+    t.text "application_instructions"
+    t.string "slug"
+    t.string "external_id"
+    t.string "external_source"
+    t.jsonb "external_data"
+    t.integer "views_count", default: 0
+    t.integer "applications_count", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["company_id", "status"], name: "index_jobs_on_company_id_and_status"
+    t.index ["company_id"], name: "index_jobs_on_company_id"
+    t.index ["created_by_id"], name: "index_jobs_on_created_by_id"
+    t.index ["experience_level"], name: "index_jobs_on_experience_level"
+    t.index ["expires_at"], name: "index_jobs_on_expires_at"
+    t.index ["external_data"], name: "index_jobs_on_external_data", using: :gin
+    t.index ["external_id"], name: "index_jobs_on_external_id"
+    t.index ["external_source"], name: "index_jobs_on_external_source"
+    t.index ["featured"], name: "index_jobs_on_featured"
+    t.index ["job_type"], name: "index_jobs_on_job_type"
+    t.index ["published_at"], name: "index_jobs_on_published_at"
+    t.index ["remote_policy"], name: "index_jobs_on_remote_policy"
+    t.index ["slug"], name: "index_jobs_on_slug"
+    t.index ["status", "published_at"], name: "index_jobs_on_status_and_published_at"
+    t.index ["status"], name: "index_jobs_on_status"
   end
 
   create_table "locations", force: :cascade do |t|
@@ -401,6 +489,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_05_134004) do
   add_foreign_key "candidates", "users"
   add_foreign_key "categories", "users"
   add_foreign_key "experiences", "candidates"
+  add_foreign_key "job_applications", "candidates"
+  add_foreign_key "job_applications", "jobs"
+  add_foreign_key "job_applications", "users"
+  add_foreign_key "job_applications", "users", column: "reviewed_by_id"
+  add_foreign_key "jobs", "companies"
+  add_foreign_key "jobs", "users", column: "created_by_id"
   add_foreign_key "role_levels", "candidates"
   add_foreign_key "role_permissions", "companies"
   add_foreign_key "role_permissions", "permissions"
