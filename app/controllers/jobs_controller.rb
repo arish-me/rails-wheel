@@ -1,7 +1,7 @@
 class JobsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_tenant
-  before_action :set_job, only: [:show, :edit, :update, :destroy]
+  before_action :set_job, only: [ :show, :edit, :update, :destroy ]
   # before_action :authorize_job, only: [:show, :edit, :update, :destroy]
 
   def index
@@ -29,11 +29,11 @@ class JobsController < ApplicationController
 
     respond_to do |format|
       if @job.save
-        format.html { redirect_to @job, notice: 'Job was successfully created.' }
-        format.turbo_stream { render turbo_stream: turbo_stream.redirect(@job) }
+        format.html { redirect_to @job, notice: "Job was successfully created." }
+        # format.turbo_stream { render turbo_stream: turbo_stream.redirect(@job) }
       else
         format.html { render :new, status: :unprocessable_entity }
-        format.turbo_stream { render turbo_stream: turbo_stream.replace('job_form', partial: 'form') }
+        # format.turbo_stream { render turbo_stream: turbo_stream.replace('job_form', partial: 'form') }
       end
     end
   end
@@ -44,7 +44,7 @@ class JobsController < ApplicationController
   def update
     respond_to do |format|
       if @job.update(job_params)
-        format.html { redirect_to @job, notice: 'Job was successfully updated.' }
+        format.html { redirect_to @job, notice: "Job was successfully updated." }
         # format.turbo_stream { render turbo_stream: turbo_stream.redirect(@job) }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -57,7 +57,7 @@ class JobsController < ApplicationController
     @job.destroy!
 
     respond_to do |format|
-      format.html { redirect_to jobs_path, notice: 'Job was successfully deleted.' }
+      format.html { redirect_to jobs_path, notice: "Job was successfully deleted." }
       format.turbo_stream { render turbo_stream: turbo_stream.redirect(jobs_path) }
     end
   end
@@ -66,10 +66,10 @@ class JobsController < ApplicationController
     @job = current_user.company.jobs.find(params[:id])
     authorize @job
 
-    if @job.update(status: 'published', published_at: Time.current)
-      redirect_to @job, notice: 'Job was successfully published.'
+    if @job.update(status: "published", published_at: Time.current)
+      redirect_to @job, notice: "Job was successfully published."
     else
-      redirect_to @job, alert: 'Failed to publish job.'
+      redirect_to @job, alert: "Failed to publish job."
     end
   end
 
@@ -77,10 +77,10 @@ class JobsController < ApplicationController
     @job = current_user.company.jobs.find(params[:id])
     authorize @job
 
-    if @job.update(status: 'closed')
-      redirect_to @job, notice: 'Job was successfully closed.'
+    if @job.update(status: "closed")
+      redirect_to @job, notice: "Job was successfully closed."
     else
-      redirect_to @job, alert: 'Failed to close job.'
+      redirect_to @job, alert: "Failed to close job."
     end
   end
 
@@ -103,10 +103,12 @@ class JobsController < ApplicationController
       :title, :description, :requirements, :benefits,
       :job_type, :experience_level, :remote_policy,
       :salary_min, :salary_max, :salary_currency, :salary_period,
-      :location, :city, :state, :country,
       :status, :featured, :expires_at,
       :allow_cover_letter, :require_portfolio, :application_instructions,
-      :external_id, :external_source, external_data: {}
+      :external_id, :external_source, external_data: {},
+      location_attributes: [
+        :id, :location_search, :city, :state, :country, :_destroy
+      ]
     )
   end
 end

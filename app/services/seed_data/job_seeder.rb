@@ -18,7 +18,7 @@ module SeedData
 
     def seed_jobs
       puts "🌐 Seeding #{faker_count} jobs for #{company.name}..."
-      
+
       job_data = [
         {
           title: "Senior Ruby on Rails Developer",
@@ -84,25 +84,25 @@ module SeedData
 
       faker_count.times do |i|
         job_info = job_data[i % job_data.length]
-        
+
         job_type = Job::JOB_TYPES.sample
         experience_level = Job::EXPERIENCE_LEVELS.sample
         remote_policy = Job::REMOTE_POLICIES.sample
-        status = ['draft', 'published', 'published', 'published', 'closed'].sample # More published jobs
-        featured = [true, false, false, false].sample # 25% chance of being featured
-        
+        status = [ "draft", "published", "published", "published", "closed" ].sample # More published jobs
+        featured = [ true, false, false, false ].sample # 25% chance of being featured
+
         salary_min = case experience_level
-        when 'entry'
+        when "entry"
           rand(40000..60000)
-        when 'junior'
+        when "junior"
           rand(50000..80000)
-        when 'mid'
+        when "mid"
           rand(70000..120000)
-        when 'senior'
+        when "senior"
           rand(100000..160000)
-        when 'lead'
+        when "lead"
           rand(130000..200000)
-        when 'executive'
+        when "executive"
           rand(180000..300000)
         end
 
@@ -122,26 +122,26 @@ module SeedData
           featured: featured,
           salary_min: salary_min,
           salary_max: salary_max,
-          salary_currency: 'USD',
-          salary_period: 'yearly',
-          city: ['San Francisco', 'New York', 'Austin', 'Seattle', 'Boston', 'Denver', 'Chicago', 'Los Angeles'].sample,
-          state: ['CA', 'NY', 'TX', 'WA', 'MA', 'CO', 'IL', 'CA'].sample,
-          country: 'United States',
-          location: "#{['San Francisco', 'New York', 'Austin', 'Seattle', 'Boston', 'Denver', 'Chicago', 'Los Angeles'].sample}, #{['CA', 'NY', 'TX', 'WA', 'MA', 'CO', 'IL', 'CA'].sample}, United States",
-          allow_cover_letter: [true, false].sample,
-          require_portfolio: [true, false, false].sample,
+          salary_currency: "USD",
+          salary_period: "yearly",
+          city: [ "San Francisco", "New York", "Austin", "Seattle", "Boston", "Denver", "Chicago", "Los Angeles" ].sample,
+          state: [ "CA", "NY", "TX", "WA", "MA", "CO", "IL", "CA" ].sample,
+          country: "United States",
+          location: "#{[ 'San Francisco', 'New York', 'Austin', 'Seattle', 'Boston', 'Denver', 'Chicago', 'Los Angeles' ].sample}, #{[ 'CA', 'NY', 'TX', 'WA', 'MA', 'CO', 'IL', 'CA' ].sample}, United States",
+          allow_cover_letter: [ true, false ].sample,
+          require_portfolio: [ true, false, false ].sample,
           application_instructions: "Please submit your resume and a brief cover letter explaining why you're interested in this position.",
-          expires_at: status == 'published' ? rand(30..90).days.from_now : nil,
-          published_at: status == 'published' ? rand(1..30).days.ago : nil,
-          views_count: status == 'published' ? rand(10..500) : 0,
-          applications_count: status == 'published' ? rand(0..20) : 0
+          expires_at: status == "published" ? rand(30..90).days.from_now : nil,
+          published_at: status == "published" ? rand(1..30).days.ago : nil,
+          views_count: status == "published" ? rand(10..500) : 0,
+          applications_count: status == "published" ? rand(0..20) : 0
         )
 
         # Set external data for some jobs to simulate external integrations
         if rand < 0.3 # 30% chance
           job.update!(
             external_id: "ext_#{job.id}_#{Time.current.to_i}",
-            external_source: ['linkedin', 'indeed', 'glassdoor'].sample,
+            external_source: [ "linkedin", "indeed", "glassdoor" ].sample,
             external_data: {
               posted_at: job.published_at,
               external_url: "https://#{job.external_source}.com/jobs/#{job.external_id}",

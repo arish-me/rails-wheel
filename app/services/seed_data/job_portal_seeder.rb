@@ -21,10 +21,10 @@ module SeedData
 
     def seed_jobs
       puts "🌐 Seeding jobs for #{company.name}..."
-      
+
       job_titles = [
         "Senior Ruby on Rails Developer",
-        "Frontend React Developer", 
+        "Frontend React Developer",
         "Full Stack Developer",
         "DevOps Engineer",
         "Product Manager",
@@ -78,21 +78,21 @@ module SeedData
         job_type = Job::JOB_TYPES.sample
         experience_level = Job::EXPERIENCE_LEVELS.sample
         remote_policy = Job::REMOTE_POLICIES.sample
-        status = ['draft', 'published', 'published', 'published', 'closed'].sample # More published jobs
-        featured = [true, false, false, false].sample # 25% chance of being featured
-        
+        status = [ "draft", "published", "published", "published", "closed" ].sample # More published jobs
+        featured = [ true, false, false, false ].sample # 25% chance of being featured
+
         salary_min = case experience_level
-        when 'entry'
+        when "entry"
           rand(40000..60000)
-        when 'junior'
+        when "junior"
           rand(50000..80000)
-        when 'mid'
+        when "mid"
           rand(70000..120000)
-        when 'senior'
+        when "senior"
           rand(100000..160000)
-        when 'lead'
+        when "lead"
           rand(130000..200000)
-        when 'executive'
+        when "executive"
           rand(180000..300000)
         end
 
@@ -112,26 +112,26 @@ module SeedData
           featured: featured,
           salary_min: salary_min,
           salary_max: salary_max,
-          salary_currency: 'USD',
-          salary_period: 'yearly',
-          city: ['San Francisco', 'New York', 'Austin', 'Seattle', 'Boston', 'Denver', 'Chicago', 'Los Angeles'].sample,
-          state: ['CA', 'NY', 'TX', 'WA', 'MA', 'CO', 'IL', 'CA'].sample,
-          country: 'United States',
-          location: "#{['San Francisco', 'New York', 'Austin', 'Seattle', 'Boston', 'Denver', 'Chicago', 'Los Angeles'].sample}, #{['CA', 'NY', 'TX', 'WA', 'MA', 'CO', 'IL', 'CA'].sample}, United States",
-          allow_cover_letter: [true, false].sample,
-          require_portfolio: [true, false, false].sample,
+          salary_currency: "USD",
+          salary_period: "yearly",
+          city: [ "San Francisco", "New York", "Austin", "Seattle", "Boston", "Denver", "Chicago", "Los Angeles" ].sample,
+          state: [ "CA", "NY", "TX", "WA", "MA", "CO", "IL", "CA" ].sample,
+          country: "United States",
+          location: "#{[ 'San Francisco', 'New York', 'Austin', 'Seattle', 'Boston', 'Denver', 'Chicago', 'Los Angeles' ].sample}, #{[ 'CA', 'NY', 'TX', 'WA', 'MA', 'CO', 'IL', 'CA' ].sample}, United States",
+          allow_cover_letter: [ true, false ].sample,
+          require_portfolio: [ true, false, false ].sample,
           application_instructions: "Please submit your resume and a brief cover letter explaining why you're interested in this position.",
-          expires_at: status == 'published' ? rand(30..90).days.from_now : nil,
-          published_at: status == 'published' ? rand(1..30).days.ago : nil,
-          views_count: status == 'published' ? rand(10..500) : 0,
-          applications_count: status == 'published' ? rand(0..20) : 0
+          expires_at: status == "published" ? rand(30..90).days.from_now : nil,
+          published_at: status == "published" ? rand(1..30).days.ago : nil,
+          views_count: status == "published" ? rand(10..500) : 0,
+          applications_count: status == "published" ? rand(0..20) : 0
         )
 
         # Set external data for some jobs to simulate external integrations
         if rand < 0.3 # 30% chance
           job.update!(
             external_id: "ext_#{job.id}_#{Time.current.to_i}",
-            external_source: ['linkedin', 'indeed', 'glassdoor'].sample,
+            external_source: [ "linkedin", "indeed", "glassdoor" ].sample,
             external_data: {
               posted_at: job.published_at,
               external_url: "https://#{job.external_source}.com/jobs/#{job.external_id}",
@@ -147,7 +147,7 @@ module SeedData
 
     def seed_job_applications
       puts "📝 Seeding job applications..."
-      
+
       published_jobs = company.jobs.published
       return puts "⚠️ No published jobs found for applications" if published_jobs.empty?
 
@@ -156,15 +156,15 @@ module SeedData
       return puts "⚠️ No candidates found for applications" if all_candidates.empty?
 
       application_count = 0
-      
+
       published_jobs.each do |job|
         # Create 1-5 applications per job
         rand(1..5).times do
           candidate = all_candidates.sample
           next if job.has_applicant?(candidate) # Avoid duplicate applications
-          
-          status = ['applied', 'applied', 'reviewing', 'shortlisted', 'interviewed', 'offered', 'rejected'].sample
-          
+
+          status = [ "applied", "applied", "reviewing", "shortlisted", "interviewed", "offered", "rejected" ].sample
+
           application = JobApplication.create!(
             job: job,
             candidate: candidate,
@@ -174,7 +174,7 @@ module SeedData
             portfolio_url: rand < 0.7 ? "https://#{candidate.user.first_name.downcase}#{candidate.user.last_name.downcase}.com" : nil,
             additional_notes: rand < 0.3 ? "I'm very excited about this opportunity and believe my skills align perfectly with your requirements." : nil,
             applied_at: rand(1..30).days.ago,
-            reviewed_at: ['reviewing', 'shortlisted', 'interviewed', 'offered', 'rejected'].include?(status) ? rand(1..7).days.ago : nil,
+            reviewed_at: [ "reviewing", "shortlisted", "interviewed", "offered", "rejected" ].include?(status) ? rand(1..7).days.ago : nil,
             reviewed_by: job.company.users.sample,
             view_count: rand(1..10)
           )
@@ -190,14 +190,14 @@ module SeedData
 
     def seed_job_board_integrations
       puts "🔗 Seeding job board integrations..."
-      
+
       providers = JobBoardProvider.active
       return puts "⚠️ No job board providers found" if providers.empty?
 
       # Create 1-3 integrations per company
       rand(1..3).times do
         provider = providers.sample
-        
+
         integration = JobBoardIntegration.create!(
           company: company,
           name: "#{provider.name} Integration",
@@ -205,13 +205,13 @@ module SeedData
           api_key: "api_key_#{SecureRandom.hex(16)}",
           api_secret: "api_secret_#{SecureRandom.hex(16)}",
           webhook_url: rand < 0.5 ? "https://#{company.subdomain}.com/webhooks/#{provider.slug}" : nil,
-          status: ['active', 'active', 'inactive'].sample,
+          status: [ "active", "active", "inactive" ].sample,
           settings: {
-            auto_sync: [true, false].sample,
-            sync_interval: [1800, 3600, 7200].sample, # 30min, 1hr, 2hr
-            post_new_jobs: [true, false].sample,
-            update_existing_jobs: [true, false].sample,
-            delete_closed_jobs: [true, false, false].sample,
+            auto_sync: [ true, false ].sample,
+            sync_interval: [ 1800, 3600, 7200 ].sample, # 30min, 1hr, 2hr
+            post_new_jobs: [ true, false ].sample,
+            update_existing_jobs: [ true, false ].sample,
+            delete_closed_jobs: [ true, false, false ].sample,
             custom_fields: {}
           },
           last_sync_at: rand < 0.7 ? rand(1..7).days.ago : nil
@@ -223,7 +223,7 @@ module SeedData
 
     def seed_job_board_sync_logs
       puts "📊 Seeding job board sync logs..."
-      
+
       integrations = company.job_board_integrations
       return puts "⚠️ No integrations found for sync logs" if integrations.empty?
 
@@ -231,15 +231,15 @@ module SeedData
       return puts "⚠️ No published jobs found for sync logs" if jobs.empty?
 
       log_count = 0
-      
+
       integrations.each do |integration|
         # Create sync logs for this integration
         rand(5..15).times do
-          action = ['sync_job', 'test_connection', 'integration_created', 'integration_updated'].sample
-          status = ['success', 'success', 'success', 'error'].sample
-          
-          job = action == 'sync_job' ? jobs.sample : nil
-          
+          action = [ "sync_job", "test_connection", "integration_created", "integration_updated" ].sample
+          status = [ "success", "success", "success", "error" ].sample
+
+          job = action == "sync_job" ? jobs.sample : nil
+
           log = JobBoardSyncLog.create!(
             job_board_integration: integration,
             job: job,
@@ -250,7 +250,7 @@ module SeedData
             created_at: rand(1..30).days.ago,
             updated_at: rand(1..30).days.ago
           )
-          
+
           log_count += 1
         end
       end
@@ -263,32 +263,32 @@ module SeedData
     def generate_cover_letter(job, candidate)
       templates = [
         "Dear Hiring Manager,\n\nI am writing to express my strong interest in the #{job.title} position at #{job.company.name}. With my background in #{candidate.candidate_roles.first&.name || 'software development'}, I believe I would be a valuable addition to your team.\n\nI am particularly drawn to this opportunity because of #{job.company.name}'s reputation for innovation and the chance to work on challenging projects. My experience aligns well with the requirements you've outlined, and I am excited about the possibility of contributing to your team's success.\n\nThank you for considering my application. I look forward to discussing how my skills and experience can benefit #{job.company.name}.\n\nBest regards,\n#{candidate.user.display_name}",
-        
-        "Hello,\n\nI'm excited to apply for the #{job.title} role. My experience in #{candidate.candidate_roles.first&.name || 'development'} makes me a great fit for this position.\n\nI've been following #{job.company.name}'s work and am impressed by your commitment to #{['innovation', 'quality', 'user experience', 'growth'].sample}. I'm eager to contribute to your continued success.\n\nLooking forward to discussing this opportunity further.\n\nRegards,\n#{candidate.user.display_name}",
-        
-        "Dear #{job.company.name} Team,\n\nI'm applying for the #{job.title} position. With #{candidate.experience} years of experience in #{candidate.candidate_roles.first&.name || 'software development'}, I'm confident I can make meaningful contributions to your team.\n\nWhat excites me most about this role is the opportunity to work on #{['cutting-edge technology', 'impactful projects', 'innovative solutions', 'scalable systems'].sample} while collaborating with talented professionals.\n\nI'm available for an interview at your convenience and look forward to learning more about this opportunity.\n\nSincerely,\n#{candidate.user.display_name}"
+
+        "Hello,\n\nI'm excited to apply for the #{job.title} role. My experience in #{candidate.candidate_roles.first&.name || 'development'} makes me a great fit for this position.\n\nI've been following #{job.company.name}'s work and am impressed by your commitment to #{[ 'innovation', 'quality', 'user experience', 'growth' ].sample}. I'm eager to contribute to your continued success.\n\nLooking forward to discussing this opportunity further.\n\nRegards,\n#{candidate.user.display_name}",
+
+        "Dear #{job.company.name} Team,\n\nI'm applying for the #{job.title} position. With #{candidate.experience} years of experience in #{candidate.candidate_roles.first&.name || 'software development'}, I'm confident I can make meaningful contributions to your team.\n\nWhat excites me most about this role is the opportunity to work on #{[ 'cutting-edge technology', 'impactful projects', 'innovative solutions', 'scalable systems' ].sample} while collaborating with talented professionals.\n\nI'm available for an interview at your convenience and look forward to learning more about this opportunity.\n\nSincerely,\n#{candidate.user.display_name}"
       ]
-      
+
       templates.sample
     end
 
     def generate_sync_message(action, status, job, integration)
       case action
-      when 'sync_job'
-        if status == 'success'
+      when "sync_job"
+        if status == "success"
           "Job '#{job.title}' successfully synced to #{integration.provider}"
         else
           "Failed to sync job '#{job.title}' to #{integration.provider}: API rate limit exceeded"
         end
-      when 'test_connection'
-        if status == 'success'
+      when "test_connection"
+        if status == "success"
           "Successfully connected to #{integration.provider} API"
         else
           "Connection test failed for #{integration.provider}: Invalid API credentials"
         end
-      when 'integration_created'
+      when "integration_created"
         "Integration '#{integration.name}' created for #{integration.provider}"
-      when 'integration_updated'
+      when "integration_updated"
         "Integration '#{integration.name}' settings updated"
       else
         "Action completed for #{integration.provider}"
@@ -297,8 +297,8 @@ module SeedData
 
     def generate_sync_metadata(action, status, job, integration)
       case action
-      when 'sync_job'
-        if status == 'success'
+      when "sync_job"
+        if status == "success"
           {
             external_id: "ext_#{job.id}_#{Time.current.to_i}",
             provider: integration.provider,
@@ -309,11 +309,11 @@ module SeedData
           {
             provider: integration.provider,
             job_id: job.id,
-            error: 'rate_limit_exceeded',
+            error: "rate_limit_exceeded",
             retry_after: 3600
           }
         end
-      when 'test_connection'
+      when "test_connection"
         {
           provider: integration.provider,
           timestamp: Time.current,

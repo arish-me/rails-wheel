@@ -3,13 +3,13 @@ class CreateJobs < ActiveRecord::Migration[8.0]
     create_table :jobs do |t|
       t.references :company, null: false, foreign_key: true
       t.references :created_by, null: false, foreign_key: { to_table: :users }
-      
+
       # Basic Job Information
       t.string :title, null: false
       t.text :description
       t.text :requirements
       t.text :benefits
-      
+
       # Job Details
       t.string :job_type # full_time, part_time, contract, freelance, internship
       t.string :experience_level # entry, junior, mid, senior, lead, executive
@@ -18,7 +18,7 @@ class CreateJobs < ActiveRecord::Migration[8.0]
       t.decimal :salary_max, precision: 10, scale: 2
       t.string :salary_currency, default: 'USD'
       t.string :salary_period # hourly, daily, weekly, monthly, yearly
-      
+
       # Location
       t.string :location
       t.string :city
@@ -26,31 +26,31 @@ class CreateJobs < ActiveRecord::Migration[8.0]
       t.string :country
       t.decimal :latitude, precision: 10, scale: 7
       t.decimal :longitude, precision: 10, scale: 7
-      
+
       # Status and Visibility
       t.string :status, default: 'draft' # draft, published, closed, archived
       t.boolean :featured, default: false
       t.datetime :published_at
       t.datetime :expires_at
-      
+
       # Application Settings
       t.boolean :allow_cover_letter, default: true
       t.boolean :require_portfolio, default: false
       t.text :application_instructions
-      
+
       # SEO and External Integration
       t.string :slug
       t.string :external_id # For external job board integration
       t.string :external_source # linkedin, indeed, etc.
       t.jsonb :external_data # Store external job board specific data
-      
+
       # Analytics
       t.integer :views_count, default: 0
       t.integer :applications_count, default: 0
-      
+
       t.timestamps
     end
-    
+
     add_index :jobs, :status
     add_index :jobs, :job_type
     add_index :jobs, :experience_level
@@ -62,7 +62,7 @@ class CreateJobs < ActiveRecord::Migration[8.0]
     add_index :jobs, :external_id
     add_index :jobs, :external_source
     add_index :jobs, :external_data, using: :gin
-    add_index :jobs, [:company_id, :status]
-    add_index :jobs, [:status, :published_at]
+    add_index :jobs, [ :company_id, :status ]
+    add_index :jobs, [ :status, :published_at ]
   end
 end

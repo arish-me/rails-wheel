@@ -6,7 +6,7 @@
         <h1 class="text-3xl font-bold text-gray-900 mb-2"><%= @job.title %></h1>
         <p class="text-lg text-gray-600"><%= @job.company.name %></p>
       </div>
-      
+
       <div class="flex space-x-2">
         <% case @job.status %>
         <% when 'published' %>
@@ -31,17 +31,17 @@
         <%= lucide_icon('briefcase', class: 'w-5 h-5 mr-2') %>
         <span><%= @job.display_job_type %></span>
       </div>
-      
+
       <div class="flex items-center text-gray-600">
         <%= lucide_icon('map-pin', class: 'w-5 h-5 mr-2') %>
-        <span><%= @job.display_location.presence || 'Remote' %></span>
+        <span><%= @job.location.job_location.presence || 'Remote' %></span>
       </div>
-      
+
       <div class="flex items-center text-gray-600">
         <%= lucide_icon('users', class: 'w-5 h-5 mr-2') %>
         <span><%= @job.display_experience_level %></span>
       </div>
-      
+
       <% if @job.salary_min.present? || @job.salary_max.present? %>
         <div class="flex items-center text-gray-600">
           <%= lucide_icon('dollar-sign', class: 'w-5 h-5 mr-2') %>
@@ -54,16 +54,16 @@
     <div class="flex space-x-3">
       <% if current_user.company == @job.company %>
         <% if can?(:update, @job) %>
-          <%= link_to edit_job_path(@job), 
+          <%= link_to edit_job_path(@job),
               class: "inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50",
               data: { turbo_frame: :modal } do %>
             <%= lucide_icon('edit', class: 'w-4 h-4 mr-2') %>
             Edit
           <% end %>
         <% end %>
-        
+
         <% if @job.draft? && can?(:publish, @job) %>
-          <%= link_to publish_job_path(@job), 
+          <%= link_to publish_job_path(@job),
               method: :patch,
               class: "inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700",
               data: { turbo_method: :patch } do %>
@@ -71,9 +71,9 @@
             Publish
           <% end %>
         <% end %>
-        
+
         <% if @job.published? && can?(:close, @job) %>
-          <%= link_to close_job_path(@job), 
+          <%= link_to close_job_path(@job),
               method: :patch,
               class: "inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700",
               data: { turbo_method: :patch } do %>
@@ -81,9 +81,9 @@
             Close
           <% end %>
         <% end %>
-        
+
         <% if current_user.company == @job.company %>
-          <%= link_to job_job_applications_path(@job), 
+          <%= link_to job_job_applications_path(@job),
               class: "inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50" do %>
             <%= lucide_icon('users', class: 'w-4 h-4 mr-2') %>
             View Applications (<%= @job.applications_count %>)
@@ -91,7 +91,7 @@
         <% end %>
       <% else %>
         <% if @job.can_be_applied_to? && current_user.candidate.present? %>
-          <%= link_to new_job_job_application_path(@job), 
+          <%= link_to new_job_job_application_path(@job),
               class: "inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700" do %>
             <%= lucide_icon('send', class: 'w-4 h-4 mr-2') %>
             Apply Now
@@ -109,7 +109,7 @@
       <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
         <h2 class="text-xl font-semibold text-gray-900 mb-4">Job Description</h2>
         <div class="prose max-w-none">
-          <%== @job.rich_text_description %>
+          <%== @job.description %>
         </div>
       </div>
 
@@ -118,7 +118,7 @@
         <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
           <h2 class="text-xl font-semibold text-gray-900 mb-4">Requirements</h2>
           <div class="prose max-w-none">
-            <%== @job.requirements_rich_text %>
+            <%== @job.requirements %>
           </div>
         </div>
       <% end %>
@@ -128,7 +128,7 @@
         <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
           <h2 class="text-xl font-semibold text-gray-900 mb-4">Benefits & Perks</h2>
           <div class="prose max-w-none">
-            <%== @job.benefits_rich_text %>
+            <%== @job.benefits %>
           </div>
         </div>
       <% end %>
@@ -196,7 +196,7 @@
               </div>
             <% end %>
           </div>
-          <%= link_to "View All Applications", job_job_applications_path(@job), 
+          <%= link_to "View All Applications", job_job_applications_path(@job),
               class: "mt-4 text-sm text-blue-600 hover:text-blue-800 font-medium" %>
         </div>
       <% end %>

@@ -24,15 +24,15 @@ if company
   # Seed real job data first
   puts "📋 Seeding real job data..."
   SeedData::RealJobDataSeeder.new(company, 20).call
-  
+
   # Import external job data
   puts "🌐 Importing external job data..."
   SeedData::RealJobImportService.new(company, keywords: 'developer', location: 'San Francisco', limit: 5).call
-  
+
   # Seed job applications
   puts "📝 Seeding job applications..."
   SeedData::JobApplicationSeeder.new(company, 30).call
-  
+
   # Seed job board integrations and sync logs
   puts "🔗 Seeding job board integrations..."
   SeedData::JobPortalSeeder.new(company, 0).call # Only integrations and logs, no jobs

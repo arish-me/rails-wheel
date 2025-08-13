@@ -6,11 +6,13 @@ class Job < ApplicationRecord
   has_rich_text :benefits
 
   belongs_to :company
-  belongs_to :created_by, class_name: 'User'
+  belongs_to :created_by, class_name: "User"
   has_many :job_applications, dependent: :destroy
   has_many :applicants, through: :job_applications, source: :candidate
   has_many :application_users, through: :job_applications, source: :user
   has_many :job_board_sync_logs, dependent: :destroy
+
+  has_one :location, as: :locatable, dependent: :destroy
 
   # Validations
   validates :title, presence: true, length: { minimum: 5, maximum: 200 }
@@ -20,54 +22,56 @@ class Job < ApplicationRecord
   validates :salary_max, numericality: { greater_than: 0 }, allow_nil: true
   validates :expires_at, presence: true, if: :published?
 
+  accepts_nested_attributes_for :location, allow_destroy: true
+
   # Enums
   enum :job_type, {
-    full_time: 'full_time',
-    part_time: 'part_time',
-    contract: 'contract',
-    freelance: 'freelance',
-    internship: 'internship'
+    full_time: "full_time",
+    part_time: "part_time",
+    contract: "contract",
+    freelance: "freelance",
+    internship: "internship"
   }
 
   enum :experience_level, {
-    entry: 'entry',
-    junior: 'junior',
-    mid: 'mid',
-    senior: 'senior',
-    lead: 'lead',
-    executive: 'executive'
+    entry: "entry",
+    junior: "junior",
+    mid: "mid",
+    senior: "senior",
+    lead: "lead",
+    executive: "executive"
   }
 
   enum :remote_policy, {
-    on_site: 'on_site',
-    remote: 'remote',
-    hybrid: 'hybrid'
+    on_site: "on_site",
+    remote: "remote",
+    hybrid: "hybrid"
   }
 
   enum :status, {
-    draft: 'draft',
-    published: 'published',
-    closed: 'closed',
-    archived: 'archived'
+    draft: "draft",
+    published: "published",
+    closed: "closed",
+    archived: "archived"
   }
 
   enum :salary_period, {
-    hourly: 'hourly',
-    daily: 'daily',
-    weekly: 'weekly',
-    monthly: 'monthly',
-    yearly: 'yearly'
+    hourly: "hourly",
+    daily: "daily",
+    weekly: "weekly",
+    monthly: "monthly",
+    yearly: "yearly"
   }
 
   # Scopes
-  scope :published, -> { where(status: 'published') }
-  scope :active, -> { published.where('expires_at > ?', Time.current) }
+  scope :published, -> { where(status: "published") }
+  scope :active, -> { published.where("expires_at > ?", Time.current) }
   scope :featured, -> { where(featured: true) }
-  scope :expired, -> { where('expires_at <= ?', Time.current) }
+  scope :expired, -> { where("expires_at <= ?", Time.current) }
   scope :by_company, ->(company) { where(company: company) }
   scope :by_company_id, ->(company_id) { where(company_id: company_id) }
   scope :recent, -> { order(created_at: :desc) }
-  scope :by_location, ->(location) { where('location ILIKE ?', "%#{location}%") }
+  scope :by_location, ->(location) { where("location ILIKE ?", "%#{location}%") }
   scope :by_job_type, ->(type) { where(job_type: type) }
   scope :by_experience_level, ->(level) { where(experience_level: level) }
   scope :by_remote_policy, ->(policy) { where(remote_policy: policy) }
@@ -79,7 +83,7 @@ class Job < ApplicationRecord
 
   # Search
   pg_search_scope :search_by_title_and_description,
-                  against: [:title, :description, :requirements],
+                  against: [ :title, :description, :requirements ],
                   using: {
                     tsearch: { prefix: true }
                   }
@@ -93,7 +97,7 @@ class Job < ApplicationRecord
 
   # Display methods
   def display_salary
-    return 'Salary not specified' if salary_min.blank? && salary_max.blank?
+    return "Salary not specified" if salary_min.blank? && salary_max.blank?
 
     if salary_min.present? && salary_max.present?
       "#{salary_currency} #{salary_min} - #{salary_max} #{salary_period}"
@@ -105,7 +109,7 @@ class Job < ApplicationRecord
   end
 
   def display_location
-    [city, state, country].compact.join(', ')
+    [ city, state, country ].compact.join(", ")
   end
 
   def display_job_type
@@ -126,19 +130,19 @@ class Job < ApplicationRecord
 
   # Status methods
   def published?
-    status == 'published'
+    status == "published"
   end
 
   def draft?
-    status == 'draft'
+    status == "draft"
   end
 
   def closed?
-    status == 'closed'
+    status == "closed"
   end
 
   def archived?
-    status == 'archived'
+    status == "archived"
   end
 
   def expired?
@@ -175,14 +179,19 @@ class Job < ApplicationRecord
     return nil unless external_id.present? && external_source.present?
 
     case external_source
-    when 'linkedin'
+    when "linkedin"
       "https://www.linkedin.com/jobs/view/#{external_id}"
-    when 'indeed'
+    when "indeed"
       "https://www.indeed.com/viewjob?jk=#{external_id}"
     else
       nil
     end
   end
+
+  def location
+    super || build_location
+  end
+
 
 
 
@@ -207,7 +216,7 @@ class Job < ApplicationRecord
   end
 
   def status_changed_to_published?
-    status_changed? && status == 'published'
+    status_changed? && status == "published"
   end
 
   def update_company_job_count

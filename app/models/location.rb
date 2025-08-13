@@ -56,6 +56,14 @@ class Location < ApplicationRecord
     end
   end
 
+  def job_location
+    [ city, country ].compact.join(", ")
+  end
+
+  def query
+    @location_search.presence || [ city, state, country ].compact.join(", ")
+  end
+
   private
 
   def valid_coordinates
@@ -89,7 +97,4 @@ class Location < ApplicationRecord
     end
   end
 
-  def query
-    @location_search.presence || [ city, state, country ].compact.join(", ")
-  end
 end

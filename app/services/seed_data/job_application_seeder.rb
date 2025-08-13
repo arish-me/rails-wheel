@@ -18,7 +18,7 @@ module SeedData
 
     def seed_job_applications
       puts "📝 Seeding #{faker_count} job applications for #{company.name}..."
-      
+
       published_jobs = company.jobs.published
       return puts "⚠️ No published jobs found for applications" if published_jobs.empty?
 
@@ -27,16 +27,16 @@ module SeedData
       return puts "⚠️ No candidates found for applications" if all_candidates.empty?
 
       application_count = 0
-      
+
       # Create applications for each published job
       published_jobs.each do |job|
         # Create 2-8 applications per job
         rand(2..8).times do
           candidate = all_candidates.sample
           next if job.has_applicant?(candidate) # Avoid duplicate applications
-          
+
           status = weighted_status_sample
-          
+
           application = JobApplication.create!(
             job: job,
             candidate: candidate,
@@ -54,10 +54,10 @@ module SeedData
           # Update job application count
           job.increment!(:applications_count)
           application_count += 1
-          
+
           break if application_count >= faker_count
         end
-        
+
         break if application_count >= faker_count
       end
 
@@ -69,24 +69,24 @@ module SeedData
     def weighted_status_sample
       # Weighted distribution for more realistic status distribution
       weights = {
-        'applied' => 40,      # 40% - Most applications are just applied
-        'reviewing' => 25,    # 25% - Under review
-        'shortlisted' => 15,  # 15% - Shortlisted
-        'interviewed' => 10,  # 10% - Interviewed
-        'offered' => 5,       # 5% - Offered
-        'rejected' => 5       # 5% - Rejected
+        "applied" => 40,      # 40% - Most applications are just applied
+        "reviewing" => 25,    # 25% - Under review
+        "shortlisted" => 15,  # 15% - Shortlisted
+        "interviewed" => 10,  # 10% - Interviewed
+        "offered" => 5,       # 5% - Offered
+        "rejected" => 5       # 5% - Rejected
       }
-      
+
       total_weight = weights.values.sum
       random = rand(total_weight)
-      
+
       current_weight = 0
       weights.each do |status, weight|
         current_weight += weight
         return status if random < current_weight
       end
-      
-      'applied' # fallback
+
+      "applied" # fallback
     end
 
     def generate_cover_letter(job, candidate)
@@ -98,12 +98,12 @@ module SeedData
         },
         {
           intro: "Hello,",
-          body: "I'm excited to apply for the **#{job.title}** role. My experience in #{candidate.candidate_roles.first&.name || 'development'} makes me a great fit for this position.\n\nI've been following #{job.company.name}'s work and am impressed by your commitment to #{['innovation', 'quality', 'user experience', 'growth', 'excellence'].sample}. I'm eager to contribute to your continued success and bring my expertise in #{candidate.candidate_roles.first&.name || 'software development'} to your team.",
+          body: "I'm excited to apply for the **#{job.title}** role. My experience in #{candidate.candidate_roles.first&.name || 'development'} makes me a great fit for this position.\n\nI've been following #{job.company.name}'s work and am impressed by your commitment to #{[ 'innovation', 'quality', 'user experience', 'growth', 'excellence' ].sample}. I'm eager to contribute to your continued success and bring my expertise in #{candidate.candidate_roles.first&.name || 'software development'} to your team.",
           closing: "Looking forward to discussing this opportunity further.\n\nRegards,\n#{candidate.user.display_name}"
         },
         {
           intro: "Dear #{job.company.name} Team,",
-          body: "I'm applying for the **#{job.title}** position. With #{candidate.experience} years of experience in #{candidate.candidate_roles.first&.name || 'software development'}, I'm confident I can make meaningful contributions to your team.\n\nWhat excites me most about this role is the opportunity to work on #{['cutting-edge technology', 'impactful projects', 'innovative solutions', 'scalable systems', 'user-centric products'].sample} while collaborating with talented professionals. I'm particularly interested in #{job.company.name}'s approach to #{['problem-solving', 'team collaboration', 'technical excellence', 'user experience'].sample}.",
+          body: "I'm applying for the **#{job.title}** position. With #{candidate.experience} years of experience in #{candidate.candidate_roles.first&.name || 'software development'}, I'm confident I can make meaningful contributions to your team.\n\nWhat excites me most about this role is the opportunity to work on #{[ 'cutting-edge technology', 'impactful projects', 'innovative solutions', 'scalable systems', 'user-centric products' ].sample} while collaborating with talented professionals. I'm particularly interested in #{job.company.name}'s approach to #{[ 'problem-solving', 'team collaboration', 'technical excellence', 'user experience' ].sample}.",
           closing: "I'm available for an interview at your convenience and look forward to learning more about this opportunity.\n\nSincerely,\n#{candidate.user.display_name}"
         },
         {
@@ -113,38 +113,38 @@ module SeedData
         },
         {
           intro: "Hello Hiring Manager,",
-          body: "I'm writing to express my interest in the **#{job.title}** position. With my experience in #{candidate.candidate_roles.first&.name || 'software development'}, I believe I can bring valuable insights and skills to your team.\n\nI'm impressed by #{job.company.name}'s commitment to #{['excellence', 'innovation', 'quality', 'growth'].sample} and would love to be part of your mission. My background in #{candidate.candidate_roles.first&.name || 'development'} aligns perfectly with your requirements, and I'm excited about the opportunity to contribute to your success.",
+          body: "I'm writing to express my interest in the **#{job.title}** position. With my experience in #{candidate.candidate_roles.first&.name || 'software development'}, I believe I can bring valuable insights and skills to your team.\n\nI'm impressed by #{job.company.name}'s commitment to #{[ 'excellence', 'innovation', 'quality', 'growth' ].sample} and would love to be part of your mission. My background in #{candidate.candidate_roles.first&.name || 'development'} aligns perfectly with your requirements, and I'm excited about the opportunity to contribute to your success.",
           closing: "I look forward to discussing how I can help #{job.company.name} achieve its goals.\n\nRegards,\n#{candidate.user.display_name}"
         }
       ]
-      
+
       template = templates.sample
       "#{template[:intro]}\n\n#{template[:body]}\n\n#{template[:closing]}"
     end
 
     def generate_portfolio_url(candidate)
       return nil if rand < 0.3 # 30% chance of no portfolio
-      
-      domains = ['github.com', 'portfolio.com', 'dev.to', 'dribbble.com', 'behance.net']
+
+      domains = [ "github.com", "portfolio.com", "dev.to", "dribbble.com", "behance.net" ]
       domain = domains.sample
-      
+
       case domain
-      when 'github.com'
+      when "github.com"
         "https://github.com/#{candidate.user.first_name.downcase}#{candidate.user.last_name.downcase}"
-      when 'portfolio.com'
+      when "portfolio.com"
         "https://#{candidate.user.first_name.downcase}#{candidate.user.last_name.downcase}.portfolio.com"
-      when 'dev.to'
+      when "dev.to"
         "https://dev.to/#{candidate.user.first_name.downcase}#{candidate.user.last_name.downcase}"
-      when 'dribbble.com'
+      when "dribbble.com"
         "https://dribbble.com/#{candidate.user.first_name.downcase}#{candidate.user.last_name.downcase}"
-      when 'behance.net'
+      when "behance.net"
         "https://behance.net/#{candidate.user.first_name.downcase}#{candidate.user.last_name.downcase}"
       end
     end
 
     def generate_additional_notes
       return nil if rand < 0.7 # 70% chance of no additional notes
-      
+
       notes = [
         "I'm very excited about this opportunity and believe my skills align perfectly with your requirements.",
         "I'm available to start immediately and can work flexible hours.",
@@ -155,7 +155,7 @@ module SeedData
         "I have experience leading small teams and would be interested in growth opportunities.",
         "I'm excited about the possibility of working on cutting-edge projects with your team."
       ]
-      
+
       notes.sample
     end
 
@@ -165,8 +165,8 @@ module SeedData
     end
 
     def generate_reviewed_date(status)
-      return nil unless ['reviewing', 'shortlisted', 'interviewed', 'offered', 'rejected'].include?(status)
-      
+      return nil unless [ "reviewing", "shortlisted", "interviewed", "offered", "rejected" ].include?(status)
+
       # Reviewed 1-7 days after application
       rand(1..7).days.ago
     end
@@ -174,7 +174,7 @@ module SeedData
     def generate_reviewer(job)
       # 80% chance of having a reviewer for reviewed applications
       return nil if rand < 0.2
-      
+
       job.company.users.sample
     end
   end

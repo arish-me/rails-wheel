@@ -18,7 +18,7 @@ module SeedData
 
     def seed_real_job_data
       puts "🌐 Seeding real job data for #{company.name}..."
-      
+
       # Real job data from various sources
       real_jobs = [
         # Tech Jobs
@@ -166,7 +166,7 @@ module SeedData
 
       faker_count.times do |i|
         job_info = real_jobs[i % real_jobs.length]
-        
+
         # Add some variation to make jobs unique
         title_variations = [
           job_info[:title],
@@ -176,9 +176,9 @@ module SeedData
           job_info[:title] + " (Full Stack)",
           job_info[:title] + " - Backend Focus"
         ]
-        
-        status = ['draft', 'published', 'published', 'published', 'closed'].sample
-        
+
+        status = [ "draft", "published", "published", "published", "closed" ].sample
+
         job = Job.create!(
           company: company,
           created_by: company.users.sample,
@@ -193,24 +193,24 @@ module SeedData
           featured: job_info[:featured],
           salary_min: job_info[:salary_min] + rand(-10000..10000),
           salary_max: job_info[:salary_max] + rand(-15000..15000),
-          salary_currency: 'USD',
-          salary_period: 'yearly',
+          salary_currency: "USD",
+          salary_period: "yearly",
           city: job_info[:city],
           state: job_info[:state],
-          country: 'United States',
+          country: "United States",
           location: "#{job_info[:city]}, #{job_info[:state]}, United States",
-          allow_cover_letter: [true, false].sample,
-          require_portfolio: [true, false, false].sample,
+          allow_cover_letter: [ true, false ].sample,
+          require_portfolio: [ true, false, false ].sample,
           application_instructions: "Please submit your resume and a brief cover letter explaining why you're interested in this position. Include any relevant projects or portfolio links.",
-          expires_at: status == 'published' ? rand(30..90).days.from_now : nil,
-          published_at: status == 'published' ? rand(1..30).days.ago : nil,
-          views_count: status == 'published' ? rand(10..500) : 0,
-          applications_count: status == 'published' ? rand(0..20) : 0
+          expires_at: status == "published" ? rand(30..90).days.from_now : nil,
+          published_at: status == "published" ? rand(1..30).days.ago : nil,
+          views_count: status == "published" ? rand(10..500) : 0,
+          applications_count: status == "published" ? rand(0..20) : 0
         )
 
         # Set external data for some jobs to simulate external integrations
         if rand < 0.4 # 40% chance
-          external_sources = ['linkedin', 'indeed', 'glassdoor', 'ziprecruiter']
+          external_sources = [ "linkedin", "indeed", "glassdoor", "ziprecruiter" ]
           job.update!(
             external_id: "ext_#{job.id}_#{Time.current.to_i}",
             external_source: external_sources.sample,

@@ -1,7 +1,7 @@
 class JobApplicationsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_job
-  before_action :set_application, only: [:show, :edit, :update, :destroy, :withdraw, :update_status]
+  before_action :set_application, only: [ :show, :edit, :update, :destroy, :withdraw, :update_status ]
 
   def index
     # For company users - show all applications for their job
@@ -55,11 +55,11 @@ class JobApplicationsController < ApplicationController
 
     respond_to do |format|
       if @application.save
-        format.html { redirect_to @job, notice: 'Your application was submitted successfully!' }
+        format.html { redirect_to @job, notice: "Your application was submitted successfully!" }
         format.turbo_stream { render turbo_stream: turbo_stream.redirect(@job) }
       else
         format.html { render :new, status: :unprocessable_entity }
-        format.turbo_stream { render turbo_stream: turbo_stream.replace('application_form', partial: 'form') }
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("application_form", partial: "form") }
       end
     end
   end
@@ -68,7 +68,7 @@ class JobApplicationsController < ApplicationController
     # Only allow editing if it's the user's own application and it's still in early stages
     unless @application.user == current_user && @application.can_be_withdrawn?
       redirect_to @application, alert: "You can't edit this application."
-      return
+      nil
     end
   end
 
@@ -81,11 +81,11 @@ class JobApplicationsController < ApplicationController
 
     respond_to do |format|
       if @application.update(application_params)
-        format.html { redirect_to @application, notice: 'Application was successfully updated.' }
+        format.html { redirect_to @application, notice: "Application was successfully updated." }
         format.turbo_stream { render turbo_stream: turbo_stream.redirect(@application) }
       else
         format.html { render :edit, status: :unprocessable_entity }
-        format.turbo_stream { render turbo_stream: turbo_stream.replace('application_form', partial: 'form') }
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("application_form", partial: "form") }
       end
     end
   end
@@ -93,7 +93,7 @@ class JobApplicationsController < ApplicationController
   def withdraw
     if @application.user == current_user && @application.can_be_withdrawn?
       @application.withdraw!
-      redirect_to @job, notice: 'Your application has been withdrawn.'
+      redirect_to @job, notice: "Your application has been withdrawn."
     else
       redirect_to @application, alert: "You can't withdraw this application."
     end

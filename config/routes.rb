@@ -86,8 +86,8 @@ Rails.application.routes.draw do
       patch :publish
       patch :close
     end
-    
-    resources :job_applications, only: [:index, :show, :new, :create, :edit, :update] do
+
+    resources :job_applications, only: [ :index, :show, :new, :create, :edit, :update ] do
       member do
         patch :withdraw
         patch :update_status
@@ -102,8 +102,8 @@ Rails.application.routes.draw do
       post :sync_job
     end
   end
-  
-  resources :job_board_providers, only: [:index, :show]
+
+  resources :job_board_providers, only: [ :index, :show ]
 
   resources :notifications, only: [ :index ] do
     member do
@@ -116,7 +116,7 @@ Rails.application.routes.draw do
 
   # Public job board
   namespace :public do
-    resources :jobs, only: [:index, :show] do
+    resources :jobs, only: [ :index, :show ] do
       collection do
         get :search
       end

@@ -14,23 +14,23 @@ class JobPolicy < ApplicationPolicy
   end
 
   def create?
-    user.company.present? && user.can?(:create, 'Job')
+    user.company.present? && user.can?(:create, "Job")
   end
 
   def update?
-    user.company == record.company && user.can?(:update, 'Job')
+    user.company == record.company && user.can?(:update, "Job")
   end
 
   def destroy?
-    user.company == record.company && user.can?(:destroy, 'Job')
+    user.company == record.company && user.can?(:destroy, "Job")
   end
 
   def publish?
-    user.company == record.company && user.can?(:publish, 'Job')
+    user.company == record.company && user.can?(:publish, "Job")
   end
 
   def close?
-    user.company == record.company && user.can?(:close, 'Job')
+    user.company == record.company && user.can?(:close, "Job")
   end
 
   class Scope < Scope
