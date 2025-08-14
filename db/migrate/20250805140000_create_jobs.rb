@@ -11,8 +11,8 @@ class CreateJobs < ActiveRecord::Migration[8.0]
       t.text :benefits
 
       # Job Details
-      t.string :job_type # full_time, part_time, contract, freelance, internship
-      t.string :experience_level # entry, junior, mid, senior, lead, executive
+      t.string :role_type
+      t.string :role_level
       t.string :remote_policy # on_site, remote, hybrid
       t.decimal :salary_min, precision: 10, scale: 2
       t.decimal :salary_max, precision: 10, scale: 2
@@ -52,8 +52,8 @@ class CreateJobs < ActiveRecord::Migration[8.0]
     end
 
     add_index :jobs, :status
-    add_index :jobs, :job_type
-    add_index :jobs, :experience_level
+    add_index :jobs, :role_type
+    add_index :jobs, :role_level
     add_index :jobs, :remote_policy
     add_index :jobs, :featured
     add_index :jobs, :published_at

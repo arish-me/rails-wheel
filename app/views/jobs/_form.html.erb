@@ -66,12 +66,12 @@
             </div>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <%= f.select :job_type,
-              Job::JOB_TYPES.map { |type| [type.titleize, type] },
+          <%= f.select :role_type,
+              RoleType::TYPES.map { |type| [type.to_s.titleize, type] },
               { label: 'Job Type' } %>
 
-          <%= f.select :experience_level,
-              Job::EXPERIENCE_LEVELS.map { |level| [level.titleize, level] },
+          <%= f.select :role_level,
+              RoleLevel::TYPES.map { |level| [level.to_s.titleize, level] },
               { label: 'Experience Level' } %>
 
           <%= f.select :remote_policy,

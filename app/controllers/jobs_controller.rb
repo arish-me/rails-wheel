@@ -103,7 +103,7 @@ class JobsController < ApplicationController
   def job_params
     params.require(:job).permit(
       :title, :description, :requirements, :benefits,
-      :job_type, :experience_level, :remote_policy,
+      :role_type, :role_level, :remote_policy,
       :salary_min, :salary_max, :salary_currency, :salary_period,
       :status, :featured, :expires_at,
       :allow_cover_letter, :require_portfolio, :application_instructions,

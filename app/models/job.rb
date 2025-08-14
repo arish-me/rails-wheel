@@ -2,11 +2,12 @@ class Job < ApplicationRecord
   # include RichText
 
   has_rich_text :description
-  has_rich_text :requirements
-  has_rich_text :benefits
-
   belongs_to :company
   belongs_to :created_by, class_name: "User"
+
+  # has_one :role_type, class_name: "RoleType", dependent: :destroy
+  # has_one :role_level, class_name: "RoleLevel", dependent: :destroy
+
   has_many :job_applications, dependent: :destroy
   has_many :applicants, through: :job_applications, source: :candidate
   has_many :application_users, through: :job_applications, source: :user
@@ -28,24 +29,6 @@ class Job < ApplicationRecord
   validates :expires_at, presence: true, if: :published?
 
   accepts_nested_attributes_for :location, allow_destroy: true
-
-  # Enums
-  enum :job_type, {
-    full_time: "full_time",
-    part_time: "part_time",
-    contract: "contract",
-    freelance: "freelance",
-    internship: "internship"
-  }
-
-  enum :experience_level, {
-    entry: "entry",
-    junior: "junior",
-    mid: "mid",
-    senior: "senior",
-    lead: "lead",
-    executive: "executive"
-  }
 
   enum :remote_policy, {
     on_site: "on_site",
@@ -93,9 +76,6 @@ class Job < ApplicationRecord
                     tsearch: { prefix: true }
                   }
 
-  # Constants
-  JOB_TYPES = job_types.keys.freeze
-  EXPERIENCE_LEVELS = experience_levels.keys.freeze
   REMOTE_POLICIES = remote_policies.keys.freeze
   STATUSES = statuses.keys.freeze
   SALARY_PERIODS = salary_periods.keys.freeze
@@ -118,11 +98,11 @@ class Job < ApplicationRecord
   end
 
   def display_job_type
-    job_type&.titleize
+    role_type&.titleize
   end
 
   def display_experience_level
-    experience_level&.titleize
+    role_level&.titleize
   end
 
   def display_remote_policy

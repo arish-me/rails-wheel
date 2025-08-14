@@ -308,8 +308,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_14_021250) do
     t.text "description"
     t.text "requirements"
     t.text "benefits"
-    t.string "job_type"
-    t.string "experience_level"
+    t.string "role_type"
+    t.string "role_level"
     t.string "remote_policy"
     t.decimal "salary_min", precision: 10, scale: 2
     t.decimal "salary_max", precision: 10, scale: 2
@@ -341,15 +341,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_14_021250) do
     t.index ["company_id", "status"], name: "index_jobs_on_company_id_and_status"
     t.index ["company_id"], name: "index_jobs_on_company_id"
     t.index ["created_by_id"], name: "index_jobs_on_created_by_id"
-    t.index ["experience_level"], name: "index_jobs_on_experience_level"
     t.index ["expires_at"], name: "index_jobs_on_expires_at"
     t.index ["external_data"], name: "index_jobs_on_external_data", using: :gin
     t.index ["external_id"], name: "index_jobs_on_external_id"
     t.index ["external_source"], name: "index_jobs_on_external_source"
     t.index ["featured"], name: "index_jobs_on_featured"
-    t.index ["job_type"], name: "index_jobs_on_job_type"
     t.index ["published_at"], name: "index_jobs_on_published_at"
     t.index ["remote_policy"], name: "index_jobs_on_remote_policy"
+    t.index ["role_level"], name: "index_jobs_on_role_level"
+    t.index ["role_type"], name: "index_jobs_on_role_type"
     t.index ["slug"], name: "index_jobs_on_slug"
     t.index ["status", "published_at"], name: "index_jobs_on_status_and_published_at"
     t.index ["status"], name: "index_jobs_on_status"
