@@ -1,0 +1,120 @@
+<div class="min-h-screen bg-gray-50">
+  <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="px-4 py-6 sm:px-0">
+      <div class="flex items-center justify-between">
+        <div>
+          <h1 class="text-2xl font-bold text-gray-900">Job Board Integrations</h1>
+          <p class="mt-1 text-sm text-gray-600">Connect your jobs to external job boards and platforms</p>
+        </div>
+        <%= link_to new_job_board_integration_path,
+            class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" do %>
+          <%= lucide_icon('plus', class: 'w-4 h-4 mr-2') %>
+          Add Integration
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Available Providers -->
+    <div class="px-4 py-6 sm:px-0">
+      <h2 class="text-lg font-medium text-gray-900 mb-4">Available Job Boards</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <% @providers.each do |provider| %>
+          <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+            <div class="flex items-center space-x-3 mb-3">
+              <div class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
+                <span class="text-gray-600 font-semibold"><%= provider.name.first %></span>
+              </div>
+              <div>
+                <h3 class="font-medium text-gray-900"><%= provider.name %></h3>
+                <p class="text-sm text-gray-500"><%= provider.slug.titleize %></p>
+              </div>
+            </div>
+            <p class="text-sm text-gray-600 mb-4"><%= truncate(provider.description, length: 80) %></p>
+            <div class="flex space-x-2">
+              <%= link_to "Learn More", job_board_provider_path(provider),
+                  class: "text-sm text-blue-600 hover:text-blue-800" %>
+              <%= link_to "Connect", new_job_board_integration_path(provider: provider.slug),
+                  class: "text-sm text-green-600 hover:text-green-800" %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Your Integrations -->
+    <div class="px-4 py-6 sm:px-0">
+      <h2 class="text-lg font-medium text-gray-900 mb-4">Your Integrations</h2>
+
+      <% if @integrations.any? %>
+        <div class="bg-white shadow overflow-hidden sm:rounded-md">
+          <ul class="divide-y divide-gray-200">
+            <% @integrations.each do |integration| %>
+              <li>
+                <div class="px-4 py-4 sm:px-6">
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                      <div class="flex-shrink-0">
+                        <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                          <span class="text-blue-600 font-semibold text-sm"><%= integration.provider.first.upcase %></span>
+                        </div>
+                      </div>
+                      <div class="ml-4">
+                        <div class="flex items-center">
+                          <p class="text-sm font-medium text-gray-900"><%= integration.name %></p>
+                          <span class="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium
+                            <%= integration.active? ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800' %>">
+                            <%= integration.status.titleize %>
+                          </span>
+                        </div>
+                        <p class="text-sm text-gray-500"><%= integration.job_board_provider&.name || integration.provider %></p>
+                      </div>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                      <%= link_to "View", integration,
+                          class: "text-blue-600 hover:text-blue-900 text-sm font-medium" %>
+                      <%= link_to "Edit", edit_job_board_integration_path(integration),
+                          class: "text-gray-600 hover:text-gray-900 text-sm font-medium" %>
+                      <%= link_to "Delete", integration,
+                          method: :delete,
+                          data: { turbo_confirm: "Are you sure you want to delete this integration?" },
+                          class: "text-red-600 hover:text-red-900 text-sm font-medium" %>
+                    </div>
+                  </div>
+                  <div class="mt-2 sm:flex sm:justify-between">
+                    <div class="sm:flex">
+                      <p class="flex items-center text-sm text-gray-500">
+                        <%= lucide_icon('clock', class: 'w-4 h-4 mr-1') %>
+                        Last sync: <%= integration.last_sync_at ? time_ago_in_words(integration.last_sync_at) + ' ago' : 'Never' %>
+                      </p>
+                    </div>
+                    <div class="mt-2 flex items-center text-sm text-gray-500 sm:mt-0">
+                      <p>
+                        Status: <%= integration.last_sync_status.titleize %>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      <% else %>
+        <div class="text-center py-12">
+          <div class="mx-auto h-12 w-12 text-gray-400">
+            <%= lucide_icon('link', class: 'w-12 h-12') %>
+          </div>
+          <h3 class="mt-2 text-sm font-medium text-gray-900">No integrations</h3>
+          <p class="mt-1 text-sm text-gray-500">Get started by connecting to a job board.</p>
+          <div class="mt-6">
+            <%= link_to new_job_board_integration_path,
+                class: "inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" do %>
+              <%= lucide_icon('plus', class: 'w-4 h-4 mr-2') %>
+              Add Integration
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

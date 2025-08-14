@@ -1,0 +1,26 @@
+<div class="min-h-screen bg-gray-50">
+  <div class="max-w-3xl mx-auto py-6 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="px-4 py-6 sm:px-0">
+      <div class="flex items-center justify-between">
+        <div>
+          <h1 class="text-2xl font-bold text-gray-900">Edit Integration</h1>
+          <p class="mt-1 text-sm text-gray-600">Update your job board integration settings</p>
+        </div>
+        <%= link_to @integration,
+            class: "text-blue-600 hover:text-blue-800 text-sm font-medium" do %>
+          ← Back to Integration
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Form -->
+    <div class="px-4 py-6 sm:px-0">
+      <div class="bg-white shadow rounded-lg">
+        <div class="px-4 py-5 sm:p-6">
+          <%= render "form", integration: @integration %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

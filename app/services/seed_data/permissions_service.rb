@@ -7,7 +7,12 @@ module SeedData
       { name: "Roles", resource: "Role" },
       { name: "RolePermissions", resource: "RolePermission" },
       { name: "Permissions", resource: "Permission" },
-      { name: "Categories", resource: "Category" }
+      { name: "Categories", resource: "Category" },
+      { name: "Job", resource: "Job" },
+      { name: "JobApplication", resource: "JobApplication" },
+      { name: "JobBoardIntegration", resource: "JobBoardIntegration" },
+      { name: "JobBoardProvider", resource: "JobBoardProvider" },
+      { name: "JobBoardSyncLog", resource: "JobBoardSyncLog" }
     ].freeze
 
     def call

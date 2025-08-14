@@ -27,3 +27,5 @@ pin_all_from "app/javascript/controllers", under: "controllers"
 pin_all_from "app/components", under: "controllers", to: ""
 pin_all_from "app/javascript/channels", under: "channels" # This is important for ActionCable channels
 pin "stimulus-autocomplete" # @3.1.0
+pin "trix"
+pin "@rails/actiontext", to: "actiontext.esm.js"

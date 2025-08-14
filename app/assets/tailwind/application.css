@@ -48,7 +48,7 @@
   }
 
   .hw-combobox__listbox {
-    @apply absolute top-[160%] right-0 w-full bg-transparent rounded z-30;
+    @apply relative top-[160%] right-0 w-full bg-transparent rounded z-30;
   }
 
   .hw-combobox__label {
@@ -173,6 +173,10 @@
 
 .choices__list--multiple .choices__item {
    @apply bg-black;
+}
+
+.custom-submit-button {
+  width: auto !important;
 }
 
 /* Google Places Autocomplete Customization */

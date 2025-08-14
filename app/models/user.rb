@@ -15,6 +15,9 @@ class User < ApplicationRecord
   has_many :categories, dependent: :destroy
   has_many :notifications, as: :recipient, class_name: "Noticed::Notification"
   has_many :invitations, class_name: "User", as: :invited_by
+  has_many :created_jobs, class_name: "Job", foreign_key: "created_by_id", dependent: :destroy
+  has_many :job_applications, dependent: :destroy
+  has_many :reviewed_applications, class_name: "JobApplication", foreign_key: "reviewed_by_id"
 
   has_one :candidate, dependent: :destroy, class_name: "Candidate"
   has_one :location, as: :locatable, dependent: :destroy

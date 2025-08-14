@@ -1,0 +1,76 @@
+<%= styled_form_with model: [@job, @application], class: "space-y-6" do |f| %>
+  <% if @application.errors.any? %>
+    <%= render "shared/form_errors", model: @application %>
+  <% end %>
+
+  <div id="application_form">
+    <!-- Job Information -->
+    <div class="bg-gray-50 rounded-lg p-4 mb-6">
+      <h3 class="text-lg font-medium text-gray-900 mb-2">Applying to: <%= @job.title %></h3>
+      <p class="text-sm text-gray-600"><%= @job.company.name %></p>
+    </div>
+
+    <!-- Quick Apply Option -->
+    <div class="space-y-4">
+      <div class="flex items-center">
+        <%= f.check_box :is_quick_apply, class: "mr-2" %>
+        <%= f.label :is_quick_apply, "Quick Apply (skip cover letter and resume)", class: "text-sm font-medium text-gray-700" %>
+      </div>
+    </div>
+
+    <!-- Cover Letter -->
+    <% unless @application.is_quick_apply %>
+      <div class="space-y-4">
+        <h3 class="text-lg font-medium text-gray-900">Cover Letter</h3>
+        
+        <%= f.text_area :cover_letter, 
+            label: 'Cover Letter',
+            placeholder: 'Tell us why you\'re interested in this position and why you\'d be a great fit...',
+            rows: 8 %>
+      </div>
+
+      <!-- Resume Upload -->
+      <div class="space-y-4">
+        <h3 class="text-lg font-medium text-gray-900">Resume/CV</h3>
+        
+        <div class="space-y-2">
+          <%= f.label :resume, "Upload Resume (PDF, DOC, DOCX)", class: "block text-sm font-medium text-gray-700" %>
+          <%= f.file_field :resume, 
+              accept: ".pdf,.doc,.docx",
+              class: "block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" %>
+          <p class="text-xs text-gray-500">Maximum file size: 10MB</p>
+        </div>
+      </div>
+    <% end %>
+
+    <!-- Portfolio URL -->
+    <% if @job.require_portfolio %>
+      <div class="space-y-4">
+        <h3 class="text-lg font-medium text-gray-900">Portfolio</h3>
+        
+        <%= f.text_field :portfolio_url, 
+            label: 'Portfolio URL',
+            placeholder: 'https://your-portfolio.com' %>
+      </div>
+    <% end %>
+
+    <!-- Additional Notes -->
+    <div class="space-y-4">
+      <h3 class="text-lg font-medium text-gray-900">Additional Information</h3>
+      
+      <%= f.text_area :additional_notes, 
+          label: 'Additional Notes (Optional)',
+          placeholder: 'Any additional information you\'d like to share...',
+          rows: 4 %>
+    </div>
+
+    <!-- Submit -->
+    <div class="flex justify-end space-x-3 pt-6 border-t border-gray-200">
+      <%= link_to 'Cancel', @job, 
+          class: "px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50" %>
+      
+      <%= f.submit @application.new_record? ? 'Submit Application' : 'Update Application', 
+          class: "px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700" %>
+    </div>
+  </div>
+<% end %>

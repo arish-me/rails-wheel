@@ -12,8 +12,10 @@ class Candidate < ApplicationRecord
   has_one :social_link, as: :linkable, dependent: :destroy
   has_many :specializations, as: :specializable, dependent: :destroy
   has_many :candidate_roles, through: :specializations
-  has_many :candidate_skills
+  has_many :candidate_skills, dependent: :destroy
   has_many :skills, through: :candidate_skills
+  has_many :job_applications, dependent: :destroy
+  has_many :applied_jobs, through: :job_applications, source: :job
   has_many :experiences, dependent: :destroy
   accepts_nested_attributes_for :experiences, allow_destroy: true, reject_if: :all_blank
 

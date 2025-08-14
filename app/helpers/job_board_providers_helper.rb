@@ -1,0 +1,2 @@
+module JobBoardProvidersHelper
+end
