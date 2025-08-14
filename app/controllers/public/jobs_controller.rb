@@ -3,12 +3,12 @@ class Public::JobsController < ApplicationController
   before_action :set_job, only: [ :show ]
 
   def index
-    @jobs = Job.published.active.includes(:company, :created_by)
+    @jobs = Job.published.active.includes(:company)
 
     # Apply filters
     @jobs = @jobs.search_by_title_and_description(@filters[:search]) if @filters[:search].present?
-    @jobs = @jobs.by_job_type(@filters[:role_type]) if @filters[:job_type].present?
-    @jobs = @jobs.by_experience_level(@filters[:role_level]) if @filters[:experience_level].present?
+    @jobs = @jobs.by_job_type(@filters[:role_type]) if @filters[:role_type].present?
+    @jobs = @jobs.by_experience_level(@filters[:role_level]) if @filters[:role_level].present?
     @jobs = @jobs.by_remote_policy(@filters[:remote_policy]) if @filters[:remote_policy].present?
     @jobs = @jobs.by_location(@filters[:location]) if @filters[:location].present?
     @jobs = @jobs.by_company_id(@filters[:company_id]) if @filters[:company_id].present?

@@ -6,8 +6,7 @@ class JobsController < ApplicationController
 
   def index
     @pagy, @jobs = pagy(
-      current_user.company.jobs.includes(:created_by, :job_applications)
-                   .order(created_at: :desc),
+      current_user.company.jobs.order(created_at: :desc),
       items: 10
     )
   end

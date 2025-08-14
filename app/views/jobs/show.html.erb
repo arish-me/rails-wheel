@@ -58,17 +58,17 @@
       <!-- Job Meta -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <div class="flex items-center p-4 bg-gray-50 rounded-lg">
-          <div class="flex-shrink-0 w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
+          <div class="flex-shrink-0 w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-2">
             <%= lucide_icon('briefcase', class: 'w-5 h-5 text-blue-600') %>
           </div>
           <div>
             <p class="text-sm font-medium text-gray-500">Job Type</p>
-            <p class="text-base font-semibold text-gray-900"><%= @job.display_job_type %></p>
+            <p class="text-base font-semibold text-gray-900"><%= @job.role_type&.titleize || 'Not specified' %></p>
           </div>
         </div>
 
         <div class="flex items-center p-4 bg-gray-50 rounded-lg">
-          <div class="flex-shrink-0 w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mr-3">
+          <div class="flex-shrink-0 w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mr-2">
             <%= lucide_icon('map-pin', class: 'w-5 h-5 text-green-600') %>
           </div>
           <div>
@@ -78,7 +78,7 @@
         </div>
 
         <div class="flex items-center p-4 bg-gray-50 rounded-lg">
-          <div class="flex-shrink-0 w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center mr-3">
+          <div class="flex-shrink-0 w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center mr-2">
             <%= lucide_icon('users', class: 'w-5 h-5 text-purple-600') %>
           </div>
           <div>
@@ -87,9 +87,19 @@
           </div>
         </div>
 
+        <div class="flex items-center p-4 bg-gray-50 rounded-lg">
+          <div class="flex-shrink-0 w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center mr-2">
+            <%= lucide_icon('wifi', class: 'w-5 h-5 text-indigo-600') %>
+          </div>
+          <div>
+            <p class="text-sm font-medium text-gray-500">Remote Policy</p>
+            <p class="text-base font-semibold text-gray-900"><%= @job.remote_policy&.titleize || 'Not specified' %></p>
+          </div>
+        </div>
+
         <% if @job.salary_min.present? || @job.salary_max.present? %>
           <div class="flex items-center p-4 bg-gray-50 rounded-lg">
-            <div class="flex-shrink-0 w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center mr-3">
+            <div class="flex-shrink-0 w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center mr-2">
               <%= lucide_icon('dollar-sign', class: 'w-5 h-5 text-yellow-600') %>
             </div>
             <div>
@@ -363,7 +373,7 @@
               <h3 class="text-lg font-semibold text-gray-900">Application Instructions</h3>
             </div>
             <div class="p-6">
-              <div class="prose prose-sm max-w-none">
+              <div class="prose prose-sm max-w-none break-words">
                 <%== @job.application_instructions %>
               </div>
             </div>
