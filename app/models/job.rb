@@ -29,6 +29,7 @@ class Job < ApplicationRecord
   validates :salary_min, numericality: { greater_than: 0 }, allow_nil: true
   validates :salary_max, numericality: { greater_than: 0 }, allow_nil: true
   validates :expires_at, presence: true, if: :published?
+  validate :location_required_unless_worldwide
 
   accepts_nested_attributes_for :location, allow_destroy: true
 
@@ -65,6 +66,8 @@ class Job < ApplicationRecord
   scope :by_job_type, ->(type) { where(job_type: type) }
   scope :by_experience_level, ->(level) { where(experience_level: level) }
   scope :by_remote_policy, ->(policy) { where(remote_policy: policy) }
+  scope :worldwide, -> { where(worldwide: true) }
+  scope :not_worldwide, -> { where(worldwide: false) }
 
   # Callbacks
   # before_validation :generate_slug, on: :create
@@ -113,6 +116,18 @@ class Job < ApplicationRecord
 
   def display_status
     status&.titleize
+  end
+
+  def worldwide?
+    worldwide == true
+  end
+
+  def display_location_or_worldwide
+    if worldwide?
+      "Worldwide"
+    else
+      display_location.presence || "Location not specified"
+    end
   end
 
   # Status methods
@@ -243,6 +258,20 @@ class Job < ApplicationRecord
   # end
 
   private
+
+  def location_required_unless_worldwide
+    return if worldwide?
+
+    # Check if location is present
+    location_present = location&.location_search.present? ||
+                      city.present? ||
+                      state.present? ||
+                      country.present?
+
+    unless location_present
+      errors.add(:base, "Location is required unless the job is marked as worldwide")
+    end
+  end
 
   def markdown
     @markdown ||= Redcarpet::Markdown.new(Redcarpet::Render::HTML.new(

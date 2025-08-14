@@ -77,7 +77,16 @@
           </div>
           <div>
             <p class="text-sm font-medium text-gray-500">Location</p>
-            <p class="text-base font-semibold text-gray-900"><%= @job.location.job_location.presence || 'Remote' %></p>
+            <p class="text-base font-semibold text-gray-900">
+              <% if @job.worldwide? %>
+                <span class="inline-flex items-center">
+                  <%= lucide_icon('globe', class: 'w-4 h-4 mr-1 text-blue-600') %>
+                  Worldwide
+                </span>
+              <% else %>
+                <%= @job.location.job_location.presence || 'Remote' %>
+              <% end %>
+            </p>
           </div>
         </div>
 

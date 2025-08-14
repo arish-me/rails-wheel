@@ -24,7 +24,7 @@
       </div>
     </div>
 
-    <%= styled_form_with model: @job, class: "space-y-6" do |f| %>
+    <%= styled_form_with model: @job, class: "space-y-6", data: { controller: "job-location" } do |f| %>
       <% if @job.errors.any? %>
         <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
           <%= render "shared/form_errors", model: @job %>
@@ -203,37 +203,57 @@
       </div>
 
       <!-- Location Section -->
-      <%= f.fields_for :location, include_id: false do |location| %>
-        <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-          <div class="px-6 py-4 bg-gradient-to-r from-purple-50 to-pink-50 border-b border-gray-200">
-            <div class="flex items-center">
-              <div class="flex-shrink-0">
-                <div class="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center">
-                  <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                  </svg>
-                </div>
-              </div>
-              <div class="ml-4">
-                <h3 class="text-lg font-semibold text-gray-900">Location</h3>
-                <p class="text-sm text-gray-600">Where is this position located?</p>
+      <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+        <div class="px-6 py-4 bg-gradient-to-r from-purple-50 to-pink-50 border-b border-gray-200">
+          <div class="flex items-center">
+            <div class="flex-shrink-0">
+              <div class="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center">
+                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                </svg>
               </div>
             </div>
-          </div>
-
-          <div class="p-6">
-            <div class="form-field pr-0 combobox">
-              <%= location.combobox :location_search,
-                  locations_city_suggestions_path,
-                  id: "location-search-combobox",
-                  label: 'Job Location',
-                  placeholder: 'Enter location e.g. San Francisco, California, United States' %>
-              <p class="mt-1 text-sm text-gray-500">Be specific to help candidates understand the work location</p>
+            <div class="ml-4">
+              <h3 class="text-lg font-semibold text-gray-900">Location</h3>
+              <p class="text-sm text-gray-600">Where is this position located?</p>
             </div>
           </div>
         </div>
-      <% end %>
+
+        <div class="p-6 space-y-6">
+          <!-- Worldwide Checkbox -->
+          <div class="flex items-center p-4 bg-blue-50 rounded-lg border border-blue-200">
+            <%= f.check_box :worldwide,
+                class: "h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded",
+                data: { 
+                  job_location_target: "worldwideCheckbox",
+                  action: "change->job-location#worldwideChanged"
+                } %>
+            <div class="ml-3">
+              <%= f.label :worldwide, class: "text-sm font-medium text-gray-900" do %>
+                <span class="font-semibold">Worldwide Position</span>
+                <p class="text-sm text-gray-600 mt-1">This job can be performed from anywhere in the world</p>
+              <% end %>
+            </div>
+          </div>
+
+          <!-- Location Field -->
+          <%= f.fields_for :location, include_id: false do |location| %>
+            <div data-job-location-target="locationSection" class="transition-all duration-200">
+              <div class="form-field pr-0 combobox">
+                <%= location.combobox :location_search,
+                    locations_city_suggestions_path,
+                    id: "location-search-combobox",
+                    label: 'Job Location',
+                    placeholder: 'Enter location e.g. San Francisco, California, United States',
+                    data: { job_location_target: "locationField" } %>
+                <p class="mt-1 text-sm text-gray-500">Be specific to help candidates understand the work location</p>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
 
       <!-- Application Settings Section -->
       <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">

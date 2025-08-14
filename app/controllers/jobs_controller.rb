@@ -106,7 +106,7 @@ class JobsController < ApplicationController
       :title, :description, :requirements, :benefits,
       :role_type, :role_level, :remote_policy,
       :salary_min, :salary_max, :salary_currency, :salary_period,
-      :status, :featured, :expires_at,
+      :status, :featured, :expires_at, :worldwide,
       :allow_cover_letter, :require_portfolio, :application_instructions,
       :external_id, :external_source, external_data: {},
       candidate_role_ids: [],
