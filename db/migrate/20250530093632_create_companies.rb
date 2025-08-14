@@ -4,6 +4,7 @@ class CreateCompanies < ActiveRecord::Migration[8.0]
       t.string :name
       t.string :subdomain
       t.string :website
+      t.text :description
       t.integer :status, default: 0
 
       t.timestamps

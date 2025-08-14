@@ -1,8 +1,10 @@
 class Company < ApplicationRecord
+ include Candidates::HasOnlineProfiles
  attr_accessor :redirect_to, :delete_avatar_image
 
  validates :name, presence: true, uniqueness: { case_sensitive: false }
  validates :subdomain, presence: true, uniqueness: { case_sensitive: false }
+ validates :website, presence: true, uniqueness: { case_sensitive: false }
  after_create :assign_default_roles
  has_many :users
  has_many :user_roles, dependent: :destroy

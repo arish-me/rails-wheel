@@ -14,7 +14,8 @@
         <div class="sm:col-span-2">
           <%= form.text_field :name,
                       label: 'Company Name',
-                      placeholder: 'Enter Company Name'
+                      placeholder: 'Enter Company Name',
+                      required: true
                        %>
         </div>
         <div class="sm:col-span-2">
@@ -29,6 +30,9 @@
                     placeholder: 'Enter Website (e.g., https://your-company.com)'
                      %>
         </div>
+
+        <div class="sm:col-span-2">
+          <%= form.text_area :description, placeholder: 'About your company(optional)', rows: 4, class: 'shadow-sm block w-full sm:text-sm border rounded-md' %>
       </div>
 
   <div class="flex justify-end mt-4">
