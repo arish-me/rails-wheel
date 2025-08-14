@@ -18,24 +18,53 @@
             placeholder: 'Describe the role, responsibilities, and what makes this position exciting...',
             rows: 8 %>
         </div>
-        <div>
-        <%= f.rich_textarea :requirements, label: 'Requirements',
-            placeholder: 'List the skills, experience, and qualifications required...',
-            rows: 6  %>
-        </div>
-
-        <div>
-
-        <%= f.rich_textarea :benefits, label: 'Benefits & Perks',
-            placeholder: 'What benefits and perks do you offer?',
-            rows: 4 %>
-        </div>
       </section>
 
+      <section class="md:col-span-2">
+
+      </section>
       <!-- Job Details -->
       <section class=" space-y-4 mb-4  px-4 py-5  sm:p-6">
         <h3 class="text-lg font-medium text-gray-900">Job Details</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="relative" data-controller="multi-select"
+               data-multi-select-max-items-value="5" <%# <-- Pass maxItems as a Stimulus value %>
+               data-multi-select-placeholder-value="Select up to 5 specializations" <%# <-- Pass placeholder as a Stimulus value %>
+               data-multi-select-remove-item-button-value="true" <%# <-- Pass boolean for remove button %>
+               data-multi-select-search-enabled-value="true" <%# <-- Pass boolean for search %>
+               >
+              <%= f.select :candidate_role_ids,
+                            options_from_collection_for_select(
+                              @candidate_role_groups.flat_map(&:candidate_roles),
+                              :id,
+                              :name,
+                              selected: @job&.candidate_role_ids
+                            ),
+                            {},
+                            multiple: true,
+                            data: { multi_select_target: "select" }
 
+            %>
+            </div>
+
+              <div data-controller="multi-select"
+               data-multi-select-max-items-value="10"
+               data-multi-select-placeholder-value="Select up to 10 skills"
+               data-multi-select-remove-item-button-value="true"
+               data-multi-select-search-enabled-value="true">
+              <%= f.select :skill_ids,
+                            options_from_collection_for_select(
+                              @skills || [],
+                              :id,
+                              :name,
+                              selected: @job&.skill_ids
+                            ),
+                            {},
+                            multiple: true,
+                            data: { multi_select_target: "select" }
+            %>
+            </div>
+        </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
           <%= f.select :job_type,
               Job::JOB_TYPES.map { |type| [type.titleize, type] },

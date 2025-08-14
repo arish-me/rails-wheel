@@ -1,7 +1,7 @@
 class JobsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_tenant
   before_action :set_job, only: [ :show, :edit, :update, :destroy ]
+  before_action :load_skills
   # before_action :authorize_job, only: [:show, :edit, :update, :destroy]
 
   def index
@@ -19,7 +19,6 @@ class JobsController < ApplicationController
 
   def new
     @job = current_user.company.jobs.build
-    # authorize @job
   end
 
   def create
@@ -30,10 +29,8 @@ class JobsController < ApplicationController
     respond_to do |format|
       if @job.save
         format.html { redirect_to @job, notice: "Job was successfully created." }
-        # format.turbo_stream { render turbo_stream: turbo_stream.redirect(@job) }
       else
         format.html { render :new, status: :unprocessable_entity }
-        # format.turbo_stream { render turbo_stream: turbo_stream.replace('job_form', partial: 'form') }
       end
     end
   end
@@ -94,6 +91,11 @@ class JobsController < ApplicationController
     authorize @job
   end
 
+  def load_skills
+    @skills = Skill.order(:name)
+    @candidate_role_groups = CandidateRoleGroup.includes(:candidate_roles).all
+  end
+
   def set_tenant
     ActsAsTenant.current_tenant = current_user.company
   end
@@ -106,6 +108,8 @@ class JobsController < ApplicationController
       :status, :featured, :expires_at,
       :allow_cover_letter, :require_portfolio, :application_instructions,
       :external_id, :external_source, external_data: {},
+      candidate_role_ids: [],
+      skill_ids: [],
       location_attributes: [
         :id, :location_search, :city, :state, :country, :_destroy
       ]

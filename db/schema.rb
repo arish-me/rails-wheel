@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_10_131141) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_14_021250) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -291,6 +291,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_10_131141) do
     t.index ["job_id"], name: "index_job_board_sync_logs_on_job_id"
   end
 
+  create_table "job_skills", force: :cascade do |t|
+    t.bigint "job_id", null: false
+    t.bigint "skill_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["job_id", "skill_id"], name: "index_job_skills_on_job_id_and_skill_id", unique: true
+    t.index ["job_id"], name: "index_job_skills_on_job_id"
+    t.index ["skill_id"], name: "index_job_skills_on_skill_id"
+  end
+
   create_table "jobs", force: :cascade do |t|
     t.bigint "company_id", null: false
     t.bigint "created_by_id", null: false
@@ -326,6 +336,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_10_131141) do
     t.integer "applications_count", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "candidate_role_id"
+    t.index ["candidate_role_id"], name: "index_jobs_on_candidate_role_id"
     t.index ["company_id", "status"], name: "index_jobs_on_company_id_and_status"
     t.index ["company_id"], name: "index_jobs_on_company_id"
     t.index ["created_by_id"], name: "index_jobs_on_created_by_id"
@@ -545,6 +557,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_10_131141) do
   add_foreign_key "job_board_integrations", "companies"
   add_foreign_key "job_board_sync_logs", "job_board_integrations"
   add_foreign_key "job_board_sync_logs", "jobs", on_delete: :cascade
+  add_foreign_key "job_skills", "jobs"
+  add_foreign_key "job_skills", "skills"
+  add_foreign_key "jobs", "candidate_roles"
   add_foreign_key "jobs", "companies"
   add_foreign_key "jobs", "users", column: "created_by_id"
   add_foreign_key "role_levels", "candidates"
