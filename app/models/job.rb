@@ -2,7 +2,7 @@ class Job < ApplicationRecord
   # include RichText
   extend FriendlyId
 
-  friendly_id :title, use: :slugged
+  friendly_id :slug_candidates, use: :slugged
   has_rich_text :description
   belongs_to :company
   belongs_to :created_by, class_name: "User"
@@ -67,7 +67,7 @@ class Job < ApplicationRecord
   scope :by_remote_policy, ->(policy) { where(remote_policy: policy) }
 
   # Callbacks
-  before_validation :generate_slug, on: :create
+  # before_validation :generate_slug, on: :create
   before_save :set_published_at, if: :status_changed_to_published?
   after_save :update_company_job_count, if: :saved_change_to_status?
 
@@ -182,10 +182,21 @@ class Job < ApplicationRecord
 
 
 
+  def slug_candidates
+    [
+      [:title, :company_name, :id]
+    ]
+  end
+
+  def company_name
+    company&.name&.parameterize || 'company'
+  end
+
   def generate_slug
     return if slug.present?
 
-    base_slug = title.parameterize
+    # Create a unique slug with company name to avoid conflicts
+    base_slug = "#{title.parameterize}-#{company_name}"
     counter = 0
 
     loop do

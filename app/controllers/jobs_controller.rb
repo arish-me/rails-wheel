@@ -59,18 +59,20 @@ class JobsController < ApplicationController
   end
 
   def publish
-    @job = current_user.company.jobs.find(params[:id])
+    @job = current_user.company.jobs.friendly.find(params[:id])
     authorize @job
-
-    if @job.update(status: "published", published_at: Time.current)
-      redirect_to @job, notice: "Job was successfully published."
-    else
-      redirect_to @job, alert: "Failed to publish job."
+    respond_to do |format|
+      if @job.update(status: "published", published_at: Time.current)
+        format.html {  redirect_to @job, notice: "Job was successfully published." }
+      else
+        # format.html { redirect_to @job, alert: "Failed to publish job." }
+        format.html { render :edit, status: :unprocessable_entity }
+      end
     end
   end
 
   def close
-    @job = current_user.company.jobs.find(params[:id])
+    @job = current_user.company.jobs.friendly.find(params[:id])
     authorize @job
 
     if @job.update(status: "closed")

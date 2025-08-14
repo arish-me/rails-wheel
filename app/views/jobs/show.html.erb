@@ -2,6 +2,10 @@
   <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
     <!-- Job Header -->
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8 mb-8">
+      <% if @job.errors.any? %>
+        <%= render "shared/form_errors" , model: @job %>
+      <% end %>
+
       <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between mb-6">
         <div class="flex-1 mb-6 lg:mb-0">
           <div class="flex items-center mb-4">
@@ -114,10 +118,10 @@
       <div class="flex flex-col sm:flex-row items-start sm:items-center space-y-3 sm:space-y-0 sm:space-x-4">
         <% if current_user.company == @job.company %>
           <div class="flex flex-wrap items-center space-x-3">
-            <% if can?(:update, @job) %>
+            <% if can?(:edit, Job) %>
               <%= link_to edit_job_path(@job),
                   class: "inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200",
-                  data: { turbo_frame: :modal } do %>
+                  data: { } do %>
                 <%= lucide_icon('edit', class: 'w-4 h-4 mr-2') %>
                 Edit Job
               <% end %>
