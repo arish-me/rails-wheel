@@ -220,6 +220,20 @@
           </div>
         <% end %>
 
+              <!-- Application Instructions -->
+        <% if @job.application_instructions.present? %>
+          <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+            <div class="px-6 py-4 bg-gradient-to-r from-orange-50 to-red-50 border-b border-gray-200">
+              <h3 class="text-lg font-semibold text-gray-900">Application Instructions</h3>
+            </div>
+            <div class="p-6">
+              <div class="prose prose-sm max-w-none break-words">
+                <%== @job.application_instructions %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+
         <!-- Skills and Specializations -->
         <% if @job.skills.any? || @job.candidate_roles.any? %>
           <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
@@ -362,20 +376,6 @@
                 View All Applications
                 <%= lucide_icon('arrow-right', class: 'w-4 h-4 ml-1') %>
               <% end %>
-            </div>
-          </div>
-        <% end %>
-
-        <!-- Application Instructions -->
-        <% if @job.application_instructions.present? %>
-          <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-            <div class="px-6 py-4 bg-gradient-to-r from-orange-50 to-red-50 border-b border-gray-200">
-              <h3 class="text-lg font-semibold text-gray-900">Application Instructions</h3>
-            </div>
-            <div class="p-6">
-              <div class="prose prose-sm max-w-none break-words">
-                <%== @job.application_instructions %>
-              </div>
             </div>
           </div>
         <% end %>
