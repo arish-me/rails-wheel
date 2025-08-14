@@ -39,7 +39,6 @@ class CreateJobs < ActiveRecord::Migration[8.0]
       t.text :application_instructions
 
       # SEO and External Integration
-      t.string :slug
       t.string :external_id # For external job board integration
       t.string :external_source # linkedin, indeed, etc.
       t.jsonb :external_data # Store external job board specific data
@@ -58,7 +57,6 @@ class CreateJobs < ActiveRecord::Migration[8.0]
     add_index :jobs, :featured
     add_index :jobs, :published_at
     add_index :jobs, :expires_at
-    add_index :jobs, :slug
     add_index :jobs, :external_id
     add_index :jobs, :external_source
     add_index :jobs, :external_data, using: :gin

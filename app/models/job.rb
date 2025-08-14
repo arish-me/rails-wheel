@@ -1,6 +1,8 @@
 class Job < ApplicationRecord
   # include RichText
+  extend FriendlyId
 
+  friendly_id :title, use: :slugged
   has_rich_text :description
   belongs_to :company
   belongs_to :created_by, class_name: "User"

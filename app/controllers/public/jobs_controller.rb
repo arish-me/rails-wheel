@@ -53,7 +53,7 @@ class Public::JobsController < ApplicationController
   private
 
   def set_job
-    @job = Job.published.active.find(params[:id])
+    @job = Job.published.active.friendly.find(params[:id])
   end
 
   def set_filters

@@ -96,5 +96,4 @@ class Location < ApplicationRecord
       self.latitude = nil # Invalidate record via #valid_coordinates.
     end
   end
-
 end

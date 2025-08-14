@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_14_021250) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_14_064713) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -125,6 +125,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_14_021250) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["candidate_id"], name: "index_experiences_on_candidate_id"
+  end
+
+  create_table "friendly_id_slugs", force: :cascade do |t|
+    t.string "slug", null: false
+    t.integer "sluggable_id", null: false
+    t.string "sluggable_type", limit: 50
+    t.string "scope"
+    t.datetime "created_at"
+    t.index ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true
+    t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
+    t.index ["sluggable_type", "sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_type_and_sluggable_id"
   end
 
   create_table "good_job_batches", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -328,7 +339,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_14_021250) do
     t.boolean "allow_cover_letter", default: true
     t.boolean "require_portfolio", default: false
     t.text "application_instructions"
-    t.string "slug"
     t.string "external_id"
     t.string "external_source"
     t.jsonb "external_data"
@@ -337,6 +347,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_14_021250) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "candidate_role_id"
+    t.string "slug"
     t.index ["candidate_role_id"], name: "index_jobs_on_candidate_role_id"
     t.index ["company_id", "status"], name: "index_jobs_on_company_id_and_status"
     t.index ["company_id"], name: "index_jobs_on_company_id"
@@ -350,7 +361,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_14_021250) do
     t.index ["remote_policy"], name: "index_jobs_on_remote_policy"
     t.index ["role_level"], name: "index_jobs_on_role_level"
     t.index ["role_type"], name: "index_jobs_on_role_type"
-    t.index ["slug"], name: "index_jobs_on_slug"
+    t.index ["slug"], name: "index_jobs_on_slug", unique: true
     t.index ["status", "published_at"], name: "index_jobs_on_status_and_published_at"
     t.index ["status"], name: "index_jobs_on_status"
   end
