@@ -7,8 +7,8 @@ class Public::JobsController < ApplicationController
 
     # Apply filters
     @jobs = @jobs.search_by_title_and_description(@filters[:search]) if @filters[:search].present?
-    @jobs = @jobs.by_job_type(@filters[:job_type]) if @filters[:job_type].present?
-    @jobs = @jobs.by_experience_level(@filters[:experience_level]) if @filters[:experience_level].present?
+    @jobs = @jobs.by_job_type(@filters[:role_type]) if @filters[:job_type].present?
+    @jobs = @jobs.by_experience_level(@filters[:role_level]) if @filters[:experience_level].present?
     @jobs = @jobs.by_remote_policy(@filters[:remote_policy]) if @filters[:remote_policy].present?
     @jobs = @jobs.by_location(@filters[:location]) if @filters[:location].present?
     @jobs = @jobs.by_company_id(@filters[:company_id]) if @filters[:company_id].present?
@@ -42,7 +42,7 @@ class Public::JobsController < ApplicationController
     @related_jobs = Job.published.active
                        .where.not(id: @job.id)
                        .where(company: @job.company)
-                       .or(Job.published.active.where(job_type: @job.job_type))
+                       .or(Job.published.active.where(role_type: @job.role_type))
                        .limit(3)
   end
 
