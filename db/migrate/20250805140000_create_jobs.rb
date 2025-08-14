@@ -47,6 +47,8 @@ class CreateJobs < ActiveRecord::Migration[8.0]
       t.integer :views_count, default: 0
       t.integer :applications_count, default: 0
 
+      t.boolean :worldwide, default: true
+
       t.timestamps
     end
 

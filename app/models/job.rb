@@ -184,12 +184,12 @@ class Job < ApplicationRecord
 
   def slug_candidates
     [
-      [:title, :company_name, :id]
+      [ :title, :company_name, :id ]
     ]
   end
 
   def company_name
-    company&.name&.parameterize || 'company'
+    company&.name&.parameterize || "company"
   end
 
   def generate_slug

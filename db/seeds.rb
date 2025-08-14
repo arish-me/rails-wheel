@@ -6,7 +6,7 @@ faker_count = ENV['FAKER_COUNT'] ? ENV['FAKER_COUNT'].to_i : nil
 # faker_count = 100
 # Call the main seeder service with the faker count
 
-company = Company.find_or_create_by!(name: "TTC Service", subdomain: 'wheel.in')
+company = Company.find_or_create_by!(name: "TTC Service", subdomain: 'wheel.in', website: 'www.wheel.in')
 ActsAsTenant.with_tenant(company) do
   SeedData::MainSeeder.new(faker_count, false, true, company).call
 end
@@ -14,28 +14,28 @@ SeedData::PlatformUserService.new('serviceuser@wheel.com').call
 SeedData::CandidateRoleService.call
 SeedData::SkillService.call
 
-# # Seed job board providers
-# load(Rails.root.join('db', 'seeds', 'job_board_providers.rb'))
+# Seed job board providers
+load(Rails.root.join('db', 'seeds', 'job_board_providers.rb'))
 
-# # Seed job portal data
-# puts "🌐 Seeding job portal data..."
-# company = Company.find_by(name: "TTC Service")
-# if company
-#   # Seed real job data first
-#   puts "📋 Seeding real job data..."
-#   SeedData::RealJobDataSeeder.new(company, 20).call
+# Seed job portal data
+puts "🌐 Seeding job portal data..."
+company = Company.find_by(name: "TTC Service")
+if company
+  # Seed real job data first
+  puts "📋 Seeding real job data..."
+  SeedData::RealJobDataSeeder.new(company, 20).call
 
-#   # Import external job data
-#   puts "🌐 Importing external job data..."
-#   SeedData::RealJobImportService.new(company, keywords: 'developer', location: 'San Francisco', limit: 5).call
+  # Import external job data
+  puts "🌐 Importing external job data..."
+  SeedData::RealJobImportService.new(company, keywords: 'developer', location: 'San Francisco', limit: 5).call
 
-#   # Seed job applications
-#   puts "📝 Seeding job applications..."
-#   SeedData::JobApplicationSeeder.new(company, 30).call
+  # Seed job applications
+  puts "📝 Seeding job applications..."
+  SeedData::JobApplicationSeeder.new(company, 30).call
 
-#   # Seed job board integrations and sync logs
-#   puts "🔗 Seeding job board integrations..."
-#   SeedData::JobPortalSeeder.new(company, 0).call # Only integrations and logs, no jobs
-# else
-#   puts "⚠️ Company 'TTC Service' not found, skipping job portal seeding"
-# end
+  # Seed job board integrations and sync logs
+  puts "🔗 Seeding job board integrations..."
+  SeedData::JobPortalSeeder.new(company, 0).call # Only integrations and logs, no jobs
+else
+  puts "⚠️ Company 'TTC Service' not found, skipping job portal seeding"
+end

@@ -345,6 +345,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_14_064713) do
     t.jsonb "external_data"
     t.integer "views_count", default: 0
     t.integer "applications_count", default: 0
+    t.boolean "worldwide", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "candidate_role_id"

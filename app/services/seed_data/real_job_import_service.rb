@@ -46,10 +46,8 @@ module SeedData
           created_by: external_company.users.first || company.users.first,
           title: job_data[:title],
           description: format_external_description(job_data),
-          requirements: generate_requirements_from_description(job_data[:description]),
-          benefits: generate_benefits_from_job_type(job_data[:job_type]),
-          job_type: job_data[:job_type],
-          experience_level: job_data[:experience_level],
+          role_type: job_data[:job_type],
+          role_level: job_data[:experience_level],
           remote_policy: job_data[:remote_policy],
           status: "published",
           featured: rand < 0.2, # 20% chance of being featured
@@ -57,10 +55,6 @@ module SeedData
           salary_max: job_data[:salary_max],
           salary_currency: job_data[:salary_currency] || "USD",
           salary_period: "yearly",
-          city: extract_city(job_data[:location]),
-          state: extract_state(job_data[:location]),
-          country: extract_country(job_data[:location]),
-          location: job_data[:location],
           allow_cover_letter: [ true, false ].sample,
           require_portfolio: [ true, false, false ].sample,
           application_instructions: "Please apply through our platform or visit the original posting for more details.",
@@ -70,7 +64,12 @@ module SeedData
           applications_count: rand(0..20),
           external_id: job_data[:external_id],
           external_source: job_data[:external_source],
-          external_data: job_data[:external_data]
+          external_data: job_data[:external_data],
+          location_attributes: {
+            city: extract_city(job_data[:location]),
+            state: extract_state(job_data[:location]),
+            country: extract_country(job_data[:location])
+          }
         )
 
         imported_count += 1
@@ -176,25 +175,6 @@ module SeedData
       requirements
     end
 
-    def generate_benefits_from_job_type(job_type)
-      base_benefits = "**Benefits:**\n• Competitive salary\n• Health insurance\n• Professional development opportunities"
-
-      case job_type
-      when "full_time"
-        base_benefits += "\n• 401(k) matching\n• Paid time off\n• Flexible work arrangements"
-      when "part_time"
-        base_benefits += "\n• Flexible schedule\n• Pro-rated benefits\n• Growth opportunities"
-      when "contract"
-        base_benefits += "\n• Competitive hourly rates\n• Flexible project timelines\n• Remote work options"
-      when "freelance"
-        base_benefits += "\n• Project-based compensation\n• Flexible working hours\n• Remote work opportunities"
-      else
-        base_benefits += "\n• Flexible benefits package\n• Work-life balance\n• Career growth opportunities"
-      end
-
-      base_benefits
-    end
-
     def extract_city(location)
       return "Remote" if location.include?("Remote")
 
@@ -234,8 +214,8 @@ module SeedData
           salary_min: 120000,
           salary_max: 180000,
           salary_currency: "USD",
-          job_type: "full_time",
-          experience_level: "senior",
+          role_type: RoleType::TYPES.sample.to_s,
+          role_level: RoleLevel::TYPES.sample.to_s,
           remote_policy: "remote",
           external_id: "sim_#{SecureRandom.hex(8)}",
           external_source: "simulated",
@@ -250,8 +230,8 @@ module SeedData
           salary_min: 60000,
           salary_max: 90000,
           salary_currency: "GBP",
-          job_type: "full_time",
-          experience_level: "mid",
+          role_type: RoleType::TYPES.sample.to_s,
+          role_level: RoleLevel::TYPES.sample.to_s,
           remote_policy: "hybrid",
           external_id: "sim_#{SecureRandom.hex(8)}",
           external_source: "simulated",
@@ -266,8 +246,8 @@ module SeedData
           salary_min: 100000,
           salary_max: 160000,
           salary_currency: "USD",
-          job_type: "full_time",
-          experience_level: "senior",
+          role_type: RoleType::TYPES.sample.to_s,
+          role_level: RoleLevel::TYPES.sample.to_s,
           remote_policy: "hybrid",
           external_id: "sim_#{SecureRandom.hex(8)}",
           external_source: "simulated",
