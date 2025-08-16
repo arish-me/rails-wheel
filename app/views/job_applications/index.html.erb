@@ -23,7 +23,7 @@
         </div>
         <div class="ml-4">
           <p class="text-sm font-medium text-gray-500">Total Applications</p>
-
+          <p class="text-2xl font-semibold text-gray-900"><%= @applications.count %></p>
         </div>
       </div>
     </div>
@@ -83,8 +83,8 @@
           <div class="flex items-center justify-between">
             <div class="flex items-center space-x-4">
               <div class="flex-shrink-0">
-                <% if application.user.profile_image.attached? %>
-                  <%= image_tag application.user.profile_image.variant(:small), class: "w-10 h-10 rounded-full" %>
+                <% if application.user.avatar.attached? %>
+                  <%= image_tag application.user.avatar.variant(:small), class: "w-10 h-10 rounded-full" %>
                 <% else %>
                   <div class="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center">
                     <span class="text-gray-500 font-semibold"><%= application.user.initials %></span>

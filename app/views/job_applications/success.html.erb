@@ -1,0 +1,93 @@
+<div class="min-h-screen bg-gray-50 py-8">
+  <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Success Card -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8 text-center">
+      <!-- Success Icon -->
+      <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100 mb-6">
+        <%= lucide_icon('check-circle', class: 'h-8 w-8 text-green-600') %>
+      </div>
+
+      <!-- Success Message -->
+      <h1 class="text-3xl font-bold text-gray-900 mb-4">Application Submitted!</h1>
+      <p class="text-lg text-gray-600 mb-6">
+        Your application for <strong><%= @job.title %></strong> at <strong><%= @job.company.name %></strong> has been successfully submitted.
+      </p>
+
+      <!-- Application Details -->
+      <div class="bg-gray-50 rounded-lg p-6 mb-8">
+        <h3 class="text-lg font-semibold text-gray-900 mb-4">Application Details</h3>
+        <div class="space-y-3 text-left">
+          <div class="flex justify-between">
+            <span class="text-gray-600">Application ID:</span>
+            <span class="font-medium text-gray-900">#<%= @application.id %></span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-600">Submitted:</span>
+            <span class="font-medium text-gray-900"><%= @application.display_applied_date %></span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-600">Type:</span>
+            <span class="font-medium text-gray-900"><%= @application.display_application_type %></span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-600">Status:</span>
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+              Applied
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Next Steps -->
+      <div class="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8">
+        <h3 class="text-lg font-semibold text-blue-900 mb-4">What happens next?</h3>
+        <div class="space-y-3 text-left text-blue-800">
+          <div class="flex items-start">
+            <div class="flex-shrink-0 w-6 h-6 bg-blue-200 rounded-full flex items-center justify-center mr-3 mt-0.5">
+              <span class="text-xs font-bold text-blue-600">1</span>
+            </div>
+            <p class="text-sm">Your application will be reviewed by the hiring team</p>
+          </div>
+          <div class="flex items-start">
+            <div class="flex-shrink-0 w-6 h-6 bg-blue-200 rounded-full flex items-center justify-center mr-3 mt-0.5">
+              <span class="text-xs font-bold text-blue-600">2</span>
+            </div>
+            <p class="text-sm">You'll receive email updates about your application status</p>
+          </div>
+          <div class="flex items-start">
+            <div class="flex-shrink-0 w-6 h-6 bg-blue-200 rounded-full flex items-center justify-center mr-3 mt-0.5">
+              <span class="text-xs font-bold text-blue-600">3</span>
+            </div>
+            <p class="text-sm">If selected, you'll be contacted for next steps</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex flex-col sm:flex-row items-center justify-center space-y-3 sm:space-y-0 sm:space-x-4">
+        <%= link_to public_job_path(@job),
+            class: "inline-flex items-center px-6 py-3 border border-gray-300 rounded-lg shadow-sm text-base font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200" do %>
+          <%= lucide_icon('arrow-left', class: 'w-4 h-4 mr-2') %>
+          Back to Job
+        <% end %>
+        
+        <%= link_to public_jobs_path,
+            class: "inline-flex items-center px-6 py-3 border border-transparent rounded-lg shadow-sm text-base font-semibold text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200" do %>
+          <%= lucide_icon('search', class: 'w-4 h-4 mr-2') %>
+          Browse More Jobs
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Additional Information -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mt-8">
+      <h3 class="text-lg font-semibold text-gray-900 mb-4">Need help?</h3>
+      <div class="space-y-3 text-sm text-gray-600">
+        <p>• You can withdraw your application at any time before it's reviewed</p>
+        <p>• Make sure your contact information is up to date</p>
+        <p>• Check your email regularly for application updates</p>
+        <p>• Contact the company directly if you have specific questions</p>
+      </div>
+    </div>
+  </div>
+</div>

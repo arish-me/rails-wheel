@@ -18,13 +18,13 @@ class AvatarComponent < ViewComponent::Base
   end
 
   def avatar_image_url
-    return image_path(DEFAULT_AVATAR) unless avatarable&.profile_image&.attached?
-    url_for variant ? avatarable.profile_image.variant(variant) : avatarable.profile_image
+    return image_path(DEFAULT_AVATAR) unless avatarable&.avatar&.attached?
+    url_for variant ? avatarable.avatar.variant(variant) : avatarable.avatar
   end
 
   def avatar_image_2x_url
-    return image_path(DEFAULT_AVATAR) unless avatarable&.profile_image&.attached?
-    url_for variant ? avatarable.profile_image.variant("#{variant}".to_sym) : avatarable.profile_image
+    return image_path(DEFAULT_AVATAR) unless avatarable&.avatar&.attached?
+    url_for variant ? avatarable.avatar.variant("#{variant}".to_sym) : avatarable.avatar
   end
 
   def name

@@ -8,6 +8,7 @@ class Candidate < ApplicationRecord
   belongs_to :user
   has_one :role_type, class_name: "RoleType", dependent: :destroy
   has_one :role_level, class_name: "RoleLevel", dependent: :destroy
+  has_one :location, as: :locatable, dependent: :destroy
 
   has_one :social_link, as: :linkable, dependent: :destroy
   has_many :specializations, as: :specializable, dependent: :destroy

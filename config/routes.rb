@@ -91,6 +91,7 @@ Rails.application.routes.draw do
       member do
         patch :withdraw
         patch :update_status
+        get :success
       end
     end
   end

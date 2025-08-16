@@ -44,7 +44,7 @@
       <div class="hidden lg:block">
         <nav class="h-full flex flex-col shrink-0 w-[84px] py-4 mr-3">
           <div class="pl-2 mb-3">
-            <%= render "settings/user_avatar", avatar_url: current_user.company.avatar.variant(:small) %>
+            <%= render "settings/user_avatar", avatar_url: avatar_for_view %>
           </div>
           <ul class="space-y-0.5">
             <% desktop_nav_items.each do |nav_item| %>

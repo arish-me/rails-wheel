@@ -55,8 +55,8 @@ class JobApplicationsController < ApplicationController
 
     respond_to do |format|
       if @application.save
-        format.html { redirect_to @job, notice: "Your application was submitted successfully!" }
-        format.turbo_stream { render turbo_stream: turbo_stream.redirect(@job) }
+        format.html { redirect_to success_job_job_application_path(@job, @application), notice: "Your application was submitted successfully!" }
+        format.turbo_stream { render turbo_stream: turbo_stream.redirect(success_job_job_application_path(@job, @application)) }
       else
         format.html { render :new, status: :unprocessable_entity }
         format.turbo_stream { render turbo_stream: turbo_stream.replace("application_form", partial: "form") }
@@ -122,10 +122,14 @@ class JobApplicationsController < ApplicationController
   def destroy
   end
 
+  def success
+    # This action will be handled by the view
+  end
+
   private
 
   def set_job
-    @job = Job.find(params[:job_id])
+    @job = Job.friendly.find(params[:job_id])
   end
 
   def set_application
