@@ -11,11 +11,11 @@ class JobApplication < ApplicationRecord
   validates :job_id, uniqueness: { scope: :candidate_id, message: "You have already applied to this job" }
   validates :cover_letter, presence: true, length: { minimum: 50 }, unless: :is_quick_apply
   validates :portfolio_url, presence: true, if: :require_portfolio?
-  validates :portfolio_url, format: { with: URI::regexp(%w[http https]), message: "must be a valid URL" }, allow_blank: true
+  validates :portfolio_url, format: { with: URI.regexp(%w[http https]), message: "must be a valid URL" }, allow_blank: true
   validates :resume, presence: true, unless: :is_quick_apply
 
   # validates :resume, content_type: { in: ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'], message: 'must be a PDF, DOC, or DOCX file' }, if: :resume_attached?
-  #validates :resume, size: { less_than: 10.megabytes, message: 'must be less than 10MB' }, if: :resume_attached?
+  # validates :resume, size: { less_than: 10.megabytes, message: 'must be less than 10MB' }, if: :resume_attached?
 
   # Enums
   enum :status, {

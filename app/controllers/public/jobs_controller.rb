@@ -40,6 +40,7 @@ class Public::JobsController < ApplicationController
   def show
     @job.increment_views!
     @related_jobs = Job.published.active
+                       .includes(:company)
                        .where.not(id: @job.id)
                        .where(company: @job.company)
                        .or(Job.published.active.where(role_type: @job.role_type))
@@ -53,7 +54,7 @@ class Public::JobsController < ApplicationController
   private
 
   def set_job
-    @job = Job.published.active.friendly.find(params[:id])
+    @job = Job.published.active.includes(:company).friendly.find(params[:id])
   end
 
   def set_filters
