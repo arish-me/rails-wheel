@@ -6,7 +6,7 @@
       <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100 mb-6">
         <%= lucide_icon('check-circle', class: 'h-8 w-8 text-green-600') %>
       </div>
-
+      <% debugger %>
       <!-- Success Message -->
       <h1 class="text-3xl font-bold text-gray-900 mb-4">Application Submitted!</h1>
       <p class="text-lg text-gray-600 mb-6">
@@ -70,7 +70,7 @@
           <%= lucide_icon('arrow-left', class: 'w-4 h-4 mr-2') %>
           Back to Job
         <% end %>
-        
+
         <%= link_to public_jobs_path,
             class: "inline-flex items-center px-6 py-3 border border-transparent rounded-lg shadow-sm text-base font-semibold text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200" do %>
           <%= lucide_icon('search', class: 'w-4 h-4 mr-2') %>

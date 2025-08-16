@@ -161,7 +161,11 @@ class Job < ApplicationRecord
 
   # Application methods
   def has_applicant?(candidate)
-    job_applications.exists?(candidate: candidate)
+    job_applications_candidate(candidate).present?
+  end
+
+  def job_applications_candidate(candidate)
+    job_applications.find_by(candidate_id: candidate.id)
   end
 
   def application_for(candidate)

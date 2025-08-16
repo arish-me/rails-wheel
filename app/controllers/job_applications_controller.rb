@@ -1,7 +1,7 @@
 class JobApplicationsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_job
-  before_action :set_application, only: [ :show, :edit, :update, :destroy, :withdraw, :update_status ]
+  before_action :set_application, only: [ :show, :edit, :update, :destroy, :withdraw, :update_status, :success ]
 
   def index
     # For company users - show all applications for their job
@@ -52,14 +52,13 @@ class JobApplicationsController < ApplicationController
     @application = @job.job_applications.build(application_params)
     @application.candidate = current_user.candidate
     @application.user = current_user
-
     respond_to do |format|
       if @application.save
         format.html { redirect_to success_job_job_application_path(@job, @application), notice: "Your application was submitted successfully!" }
-        format.turbo_stream { render turbo_stream: turbo_stream.redirect(success_job_job_application_path(@job, @application)) }
+        # format.turbo_stream { render turbo_stream: turbo_stream.redirect(success_job_job_application_path(@job, @application)) }
       else
         format.html { render :new, status: :unprocessable_entity }
-        format.turbo_stream { render turbo_stream: turbo_stream.replace("application_form", partial: "form") }
+        # format.turbo_stream { render turbo_stream: turbo_stream.replace("application_form", partial: "form") }
       end
     end
   end

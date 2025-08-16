@@ -138,6 +138,10 @@ class JobApplication < ApplicationRecord
     end
   end
 
+  def display_application_type
+    is_quick_apply? ? "Quick Apply" : "Standard Application"
+  end
+
   private
 
   def set_applied_at
@@ -162,10 +166,6 @@ class JobApplication < ApplicationRecord
 
   def resume_attached?
     resume.attached?
-  end
-
-  def display_application_type
-    is_quick_apply? ? "Quick Apply" : "Standard Application"
   end
 
   def has_cover_letter?

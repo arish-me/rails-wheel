@@ -103,6 +103,12 @@
               <%= lucide_icon('check', class: 'w-5 h-5 mr-2') %>
               Already Applied
             </span>
+
+            <%= link_to job_job_application_path(@job,  @job.job_applications_candidate(current_user.candidate)),
+                class: "inline-flex items-center px-6 py-3 border border-transparent rounded-lg shadow-sm text-base font-semibold text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200" do %>
+              <%= lucide_icon('send', class: 'w-5 h-5 mr-2') %>
+              View Your Application
+            <% end %>
           <% elsif @job.can_be_applied_to? %>
             <%= link_to new_job_job_application_path(@job),
                 class: "inline-flex items-center px-6 py-3 border border-transparent rounded-lg shadow-sm text-base font-semibold text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200" do %>
