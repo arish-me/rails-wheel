@@ -13,6 +13,7 @@ class JobApplication < ApplicationRecord
   validates :portfolio_url, presence: true, if: :require_portfolio?
   validates :portfolio_url, format: { with: URI::regexp(%w[http https]), message: "must be a valid URL" }, allow_blank: true
   validates :resume, presence: true, unless: :is_quick_apply
+
   # validates :resume, content_type: { in: ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'], message: 'must be a PDF, DOC, or DOCX file' }, if: :resume_attached?
   #validates :resume, size: { less_than: 10.megabytes, message: 'must be less than 10MB' }, if: :resume_attached?
 
@@ -88,6 +89,10 @@ class JobApplication < ApplicationRecord
 
   def can_be_withdrawn?
     %w[applied reviewing shortlisted].include?(status)
+  end
+
+  def can_be_re_apply?
+    %w[withdrawn].include?(status)
   end
 
   def can_be_reviewed?

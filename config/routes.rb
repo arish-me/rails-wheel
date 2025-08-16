@@ -90,6 +90,7 @@ Rails.application.routes.draw do
     resources :job_applications, only: [ :index, :show, :new, :create, :edit, :update ] do
       member do
         patch :withdraw
+        patch :re_apply
         patch :update_status
         get :success
       end

@@ -1,7 +1,7 @@
 class JobApplicationsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_job
-  before_action :set_application, only: [ :show, :edit, :update, :destroy, :withdraw, :update_status, :success ]
+  before_action :set_application, only: [ :show, :edit, :update, :destroy, :withdraw, :update_status, :success, :re_apply ]
 
   def index
     # For company users - show all applications for their job
@@ -92,9 +92,18 @@ class JobApplicationsController < ApplicationController
   def withdraw
     if @application.user == current_user && @application.can_be_withdrawn?
       @application.withdraw!
-      redirect_to @job, notice: "Your application has been withdrawn."
+      redirect_to public_job_path(@job), notice: "Your application has been withdrawn."
     else
       redirect_to @application, alert: "You can't withdraw this application."
+    end
+  end
+
+  def re_apply
+    if @application.user == current_user && @application.can_be_re_apply?
+      @application.applied!
+      redirect_to public_job_path(@job), notice: "Your application has been resume."
+    else
+      redirect_to @application, alert: "You can't re-apply this application."
     end
   end
 
