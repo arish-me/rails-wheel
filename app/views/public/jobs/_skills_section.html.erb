@@ -1,0 +1,34 @@
+<% if @job.skills.any? || @job.candidate_roles.any? %>
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    <div class="px-4 py-3 bg-gradient-to-r from-purple-50 to-pink-50 border-b border-gray-200">
+      <h2 class="text-lg font-semibold text-gray-900">Skills & Specializations</h2>
+    </div>
+    <div class="p-4">
+      <% if @job.skills.any? %>
+        <div class="mb-4">
+          <h3 class="text-base font-semibold text-gray-900 mb-2">Required Skills</h3>
+          <div class="flex flex-wrap gap-2">
+            <% @job.skills.each do |skill| %>
+              <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                <%= skill.name %>
+              </span>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+
+      <% if @job.candidate_roles.any? %>
+        <div>
+          <h3 class="text-base font-semibold text-gray-900 mb-2">Role Specializations</h3>
+          <div class="flex flex-wrap gap-2">
+            <% @job.candidate_roles.each do |role| %>
+              <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                <%= role.name %>
+              </span>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>
