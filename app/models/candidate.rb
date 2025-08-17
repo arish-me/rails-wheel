@@ -139,6 +139,10 @@ class Candidate < ApplicationRecord
       social_link.twitter
   end
 
+  def full_name
+    [ user.first_name, user.last_name ].compact.join(" ").presence || user.email
+  end
+
   def work_preference_missing_fields?
     headline && experience && hourly_rate && search_status && candidate_roles.length > 0 && skills.length > 0 && role_type && role_level
   end
