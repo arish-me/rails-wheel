@@ -1,5 +1,5 @@
 <div class="min-h-screen bg-gray-50 py-8">
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <!-- Job Header -->
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8 mb-8">
       <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between mb-6">
@@ -9,12 +9,12 @@
               <%= image_tag @job.company.avatar, class: "w-16 h-16 rounded-xl mr-4 shadow-sm" %>
             <% else %>
               <div class="w-16 h-16 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-sm mr-4">
-                <span class="text-white text-xl font-bold"><%= @job.company.name.first %></span>
+                <span class="text-white text-md font-bold"><%= @job.company.name.first %></span>
               </div>
             <% end %>
             <div>
-              <h1 class="text-3xl font-bold text-gray-900 mb-2"><%= @job.title %></h1>
-              <p class="text-xl text-gray-600 font-medium"><%= @job.company.name %></p>
+              <h1 class="text-xl font-bold text-gray-900 mb-2"><%= @job.title %></h1>
+              <p class="text-md text-gray-600 font-medium"><%= @job.company.name %></p>
             </div>
           </div>
         </div>

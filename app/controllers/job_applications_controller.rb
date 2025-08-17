@@ -113,7 +113,6 @@ class JobApplicationsController < ApplicationController
       redirect_to @application, alert: "You don't have permission to update this application."
       return
     end
-
     new_status = params[:status]
     if JobApplication::STATUSES.include?(new_status)
       @application.update!(
@@ -121,7 +120,7 @@ class JobApplicationsController < ApplicationController
         status_notes: params[:status_notes],
         reviewed_by: current_user
       )
-      redirect_to @application, notice: "Application status updated to #{new_status.titleize}."
+      redirect_to job_job_application_path(@job, @application), notice: "Application status updated to #{new_status.titleize}."
     else
       redirect_to @application, alert: "Invalid status."
     end
