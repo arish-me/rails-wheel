@@ -1,5 +1,4 @@
 class Job < ApplicationRecord
-  # include RichText
   extend FriendlyId
 
   friendly_id :slug_candidates, use: :slugged
@@ -7,32 +6,20 @@ class Job < ApplicationRecord
   belongs_to :company
   belongs_to :created_by, class_name: "User"
 
-  # has_one :role_type, class_name: "RoleType", dependent: :destroy
-  # has_one :role_level, class_name: "RoleLevel", dependent: :destroy
-
+  # Associations
   has_many :job_applications, dependent: :destroy
   has_many :applicants, through: :job_applications, source: :candidate
   has_many :application_users, through: :job_applications, source: :user
   has_many :job_board_sync_logs, dependent: :destroy
-
-  has_one :location, as: :locatable, dependent: :destroy
-
   has_many :specializations, as: :specializable, dependent: :destroy
   has_many :candidate_roles, through: :specializations
   has_many :job_skills, dependent: :destroy
   has_many :skills, through: :job_skills
-
-  # Validations
-  validates :title, presence: true, length: { minimum: 5, maximum: 200 }
-  validates :description, presence: true, length: { minimum: 50 }
-  validates :slug, presence: true, uniqueness: true
-  validates :salary_min, numericality: { greater_than: 0 }, allow_nil: true
-  validates :salary_max, numericality: { greater_than: 0 }, allow_nil: true
-  validates :expires_at, presence: true, if: :published?
-  validate :location_required_unless_worldwide
+  has_one :location, as: :locatable, dependent: :destroy
 
   accepts_nested_attributes_for :location, allow_destroy: true
 
+  # Enums
   enum :remote_policy, {
     on_site: "on_site",
     remote: "remote",
@@ -54,38 +41,121 @@ class Job < ApplicationRecord
     yearly: "yearly"
   }
 
-  # Scopes
-  scope :published, -> { where(status: "published") }
-  scope :active, -> { published.where("expires_at > ?", Time.current) }
-  scope :featured, -> { where(featured: true) }
-  scope :expired, -> { where("expires_at <= ?", Time.current) }
-  scope :by_company, ->(company) { where(company: company) }
-  scope :by_company_id, ->(company_id) { where(company_id: company_id) }
-  scope :recent, -> { order(created_at: :desc) }
-  scope :by_location, ->(location) { where("location ILIKE ?", "%#{location}%") }
-  scope :by_job_type, ->(type) { where(job_type: type) }
-  scope :by_experience_level, ->(level) { where(experience_level: level) }
-  scope :by_remote_policy, ->(policy) { where(remote_policy: policy) }
-  scope :worldwide, -> { where(worldwide: true) }
-  scope :not_worldwide, -> { where(worldwide: false) }
+  # Validations
+  validates :title, presence: true, length: { minimum: 5, maximum: 200 }
+  validates :description, presence: true, length: { minimum: 50 }
+  validates :slug, presence: true, uniqueness: true
+  validates :salary_min, numericality: { greater_than: 0 }, allow_nil: true
+  validates :salary_max, numericality: { greater_than: 0 }, allow_nil: true
+  validates :expires_at, presence: true, if: :published?
+  validate :salary_range_validity
+  validate :location_required_unless_worldwide
 
   # Callbacks
-  # before_validation :generate_slug, on: :create
   before_save :set_published_at, if: :status_changed_to_published?
   after_save :update_company_job_count, if: :saved_change_to_status?
 
   # Search
   pg_search_scope :search_by_title_and_description,
-                  against: [ :title, :description, :requirements ],
-                  using: {
-                    tsearch: { prefix: true }
-                  }
+                  against: [:title, :description, :requirements],
+                  using: { tsearch: { prefix: true } }
 
+  # Constants
   REMOTE_POLICIES = remote_policies.keys.freeze
   STATUSES = statuses.keys.freeze
   SALARY_PERIODS = salary_periods.keys.freeze
+  MAX_APPLICATIONS = 1000
 
-  # Display methods
+  # ============================================================================
+  # SCOPES
+  # ============================================================================
+
+  # Status scopes
+  scope :published, -> { where(status: "published") }
+  scope :active, -> { published.where("expires_at > ?", Time.current) }
+  scope :expired, -> { where("expires_at <= ?", Time.current) }
+  scope :draft, -> { where(status: "draft") }
+  scope :closed, -> { where(status: "closed") }
+  scope :archived, -> { where(status: "archived") }
+
+  # Feature scopes
+  scope :featured, -> { where(featured: true) }
+  scope :not_featured, -> { where(featured: false) }
+
+  # Company scopes
+  scope :by_company, ->(company) { where(company: company) }
+  scope :by_company_id, ->(company_id) { where(company_id: company_id) }
+
+  # Location scopes
+  scope :by_location, ->(location) { where("location ILIKE ?", "%#{location}%") }
+  scope :worldwide, -> { where(worldwide: true) }
+  scope :not_worldwide, -> { where(worldwide: false) }
+
+  # Job type scopes
+  scope :by_job_type, ->(type) { where(job_type: type) }
+  scope :by_experience_level, ->(level) { where(experience_level: level) }
+  scope :by_remote_policy, ->(policy) { where(remote_policy: policy) }
+
+  # Ordering scopes
+  scope :recent, -> { order(created_at: :desc) }
+  scope :newest_first, -> { order(published_at: :desc) }
+  scope :oldest_first, -> { order(published_at: :asc) }
+  scope :salary_high_to_low, -> { order(salary_max: :desc) }
+  scope :salary_low_to_high, -> { order(salary_min: :asc) }
+  scope :most_applications, -> { order(applications_count: :desc) }
+  scope :most_views, -> { order(views_count: :desc) }
+
+  # Performance scopes
+  scope :with_company, -> { includes(:company) }
+  scope :with_applications, -> { includes(:job_applications) }
+  scope :with_location, -> { includes(:location) }
+  scope :with_skills, -> { includes(:skills) }
+  scope :with_candidate_roles, -> { includes(:candidate_roles) }
+
+  # ============================================================================
+  # STATUS METHODS
+  # ============================================================================
+
+  def published?
+    status == "published"
+  end
+
+  def draft?
+    status == "draft"
+  end
+
+  def closed?
+    status == "closed"
+  end
+
+  def archived?
+    status == "archived"
+  end
+
+  def expired?
+    expires_at.present? && expires_at <= Time.current
+  end
+
+  def active?
+    published? && !expired?
+  end
+
+  def can_be_applied_to?
+    active? && applications_count < MAX_APPLICATIONS
+  end
+
+  def can_be_published?
+    draft? && valid_for_publication?
+  end
+
+  def can_be_closed?
+    published? || draft?
+  end
+
+  # ============================================================================
+  # DISPLAY METHODS
+  # ============================================================================
+
   def display_salary
     return "Salary not specified" if salary_min.blank? && salary_max.blank?
 
@@ -99,7 +169,7 @@ class Job < ApplicationRecord
   end
 
   def display_location
-    [ city, state, country ].compact.join(", ")
+    [city, state, country].compact.join(", ")
   end
 
   def display_job_type
@@ -130,47 +200,29 @@ class Job < ApplicationRecord
     end
   end
 
-  # Status methods
-  def published?
-    status == "published"
-  end
+  # ============================================================================
+  # APPLICATION METHODS
+  # ============================================================================
 
-  def draft?
-    status == "draft"
-  end
-
-  def closed?
-    status == "closed"
-  end
-
-  def archived?
-    status == "archived"
-  end
-
-  def expired?
-    expires_at.present? && expires_at <= Time.current
-  end
-
-  def active?
-    published? && !expired?
-  end
-
-  def can_be_applied_to?
-    active? && applications_count < 1000 # Reasonable limit
-  end
-
-  # Application methods
   def has_applicant?(candidate)
-    job_applications_candidate(candidate).present?
-  end
-
-  def job_applications_candidate(candidate)
-    job_applications.find_by(candidate_id: candidate.id)
+    job_applications.exists?(candidate_id: candidate.id)
   end
 
   def application_for(candidate)
     job_applications.find_by(candidate: candidate)
   end
+
+  def applications_count
+    job_applications.count
+  end
+
+  def recent_applications(limit: 5)
+    job_applications.includes(:candidate, :user).recent.limit(limit)
+  end
+
+  # ============================================================================
+  # COUNTER METHODS
+  # ============================================================================
 
   def increment_views!
     increment!(:views_count)
@@ -180,7 +232,10 @@ class Job < ApplicationRecord
     increment!(:applications_count)
   end
 
-  # External integration methods
+  # ============================================================================
+  # EXTERNAL INTEGRATION METHODS
+  # ============================================================================
+
   def external_url
     return nil unless external_id.present? && external_source.present?
 
@@ -194,17 +249,16 @@ class Job < ApplicationRecord
     end
   end
 
-  def location
-    super || build_location
+  def has_external_source?
+    external_id.present? && external_source.present?
   end
 
-
-
+  # ============================================================================
+  # SLUG METHODS
+  # ============================================================================
 
   def slug_candidates
-    [
-      [ :title, :company_name, :id ]
-    ]
+    [[:title, :company_name, :id]]
   end
 
   def company_name
@@ -214,7 +268,6 @@ class Job < ApplicationRecord
   def generate_slug
     return if slug.present?
 
-    # Create a unique slug with company name to avoid conflicts
     base_slug = "#{title.parameterize}-#{company_name}"
     counter = 0
 
@@ -228,6 +281,25 @@ class Job < ApplicationRecord
     end
   end
 
+  # ============================================================================
+  # RELATED JOBS METHODS
+  # ============================================================================
+
+  def related_jobs(limit: 3)
+    Job.published.active
+       .with_company
+       .where.not(id: id)
+       .where(company: company)
+       .or(Job.published.active.where(role_type: role_type))
+       .limit(limit)
+  end
+
+  # ============================================================================
+  # PRIVATE METHODS
+  # ============================================================================
+
+  private
+
   def set_published_at
     self.published_at = Time.current
   end
@@ -237,36 +309,20 @@ class Job < ApplicationRecord
   end
 
   def update_company_job_count
-    # This could be used for analytics or caching
-    # For now, we'll just ensure the company has the job
     company.touch if company.present?
   end
 
-  # Rich text methods for job content
-  # def rich_text_description
-  #   return nil unless description
+  def salary_range_validity
+    return if salary_min.blank? || salary_max.blank?
 
-  #   @rich_text_description ||= markdown.render(description).strip
-  # end
-
-  # def requirements_rich_text
-  #   return nil unless requirements
-
-  #   @requirements_rich_text ||= markdown.render(requirements).strip
-  # end
-
-  # def benefits_rich_text
-  #   return nil unless benefits
-
-  #   @benefits_rich_text ||= markdown.render(benefits).strip
-  # end
-
-  private
+    if salary_min > salary_max
+      errors.add(:salary_max, "must be greater than minimum salary")
+    end
+  end
 
   def location_required_unless_worldwide
     return if worldwide?
 
-    # Check if location is present
     location_present = location&.location_search.present? ||
                       city.present? ||
                       state.present? ||
@@ -277,20 +333,18 @@ class Job < ApplicationRecord
     end
   end
 
-  def markdown
-    @markdown ||= Redcarpet::Markdown.new(Redcarpet::Render::HTML.new(
-      filter_html: true,
-      hard_wrap: true,
-      no_images: true,
-      no_links: true,
-      no_styles: true
-    ), {
-      disable_indented_code_blocks: true,
-      fenced_code_blocks: true,
-      highlight: false,
-      strikethrough: true,
-      superscript: true,
-      underline: true
-    })
+  def valid_for_publication?
+    title.present? && 
+    description.present? && 
+    expires_at.present? && 
+    expires_at > Time.current &&
+    (worldwide? || location_present?)
+  end
+
+  def location_present?
+    location&.location_search.present? ||
+    city.present? ||
+    state.present? ||
+    country.present?
   end
 end
