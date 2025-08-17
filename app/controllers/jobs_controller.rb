@@ -3,6 +3,7 @@ class JobsController < ApplicationController
 
   before_action :authenticate_user!
   before_action :set_job, only: [:show, :edit, :update, :destroy, :publish, :close]
+  before_action :authorize_job_access, only: [:show, :edit, :update, :destroy, :publish, :close]
   before_action :load_skills, only: [:new, :edit, :create, :update]
   before_action :authorize_job_creation, only: [:new, :create]
 
@@ -12,7 +13,7 @@ class JobsController < ApplicationController
 
   def index
     @pagy, @jobs = pagy(
-      current_user.company.jobs.with_company.recent,
+      current_user.company.jobs.recent,
       items: 10
     )
   end

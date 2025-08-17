@@ -8,32 +8,32 @@
       <!-- Main Content -->
       <div class="lg:col-span-2 space-y-6">
         <!-- Description -->
-        <%= render 'job_content_section', 
-            title: 'Job Description', 
-            color: 'blue', 
+        <%= render 'job_content_section',
+            title: 'Job Description',
+            color: 'blue',
             content: @job.description %>
 
         <!-- Requirements -->
         <% if @job.requirements.present? %>
-          <%= render 'job_content_section', 
-              title: 'Requirements', 
-              color: 'green', 
+          <%= render 'job_content_section',
+              title: 'Requirements',
+              color: 'green',
               content: @job.requirements %>
         <% end %>
 
         <!-- Benefits -->
         <% if @job.benefits.present? %>
-          <%= render 'job_content_section', 
-              title: 'Benefits & Perks', 
-              color: 'yellow', 
+          <%= render 'job_content_section',
+              title: 'Benefits & Perks',
+              color: 'yellow',
               content: @job.benefits %>
         <% end %>
 
         <!-- Application Instructions -->
         <% if @job.application_instructions.present? %>
-          <%= render 'job_content_section', 
-              title: 'Application Instructions', 
-              color: 'orange', 
+          <%= render 'job_content_section',
+              title: 'Application Instructions',
+              color: 'orange',
               content: @job.application_instructions %>
         <% end %>
 
@@ -106,7 +106,7 @@
         <%= render 'job_statistics' %>
 
         <!-- Applications Section (for company users) -->
-        <% if current_user.company == @job.company && @job.job_applications.any? %>
+        <% if current_user.company == @job.company && @job.applications_count > 0 %>
           <%= render 'applications_section' %>
         <% end %>
       </div>

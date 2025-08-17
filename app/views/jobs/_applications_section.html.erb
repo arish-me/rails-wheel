@@ -1,7 +1,7 @@
 <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
   <div class="px-4 py-3 bg-gradient-to-r from-emerald-50 to-teal-50 border-b border-gray-200">
     <div class="flex justify-between items-center">
-      <h3 class="text-base font-semibold text-gray-900">Applications (<%= @job.job_applications.count %>)</h3>
+      <h3 class="text-base font-semibold text-gray-900">Applications (<%= @job.applications_count %>)</h3>
       <%= link_to job_job_applications_path(@job),
           class: "text-xs text-blue-600 hover:text-blue-800 font-medium" do %>
         View All Applications
@@ -9,9 +9,9 @@
     </div>
   </div>
   <div class="p-4">
-    <% if @job.job_applications.any? %>
+    <% if @job.applications_count > 0 %>
       <div class="space-y-3">
-        <% @job.job_applications.includes(:candidate, :user).limit(3).each do |application| %>
+        <% @job.recent_applications(limit: 3).each do |application| %>
           <div class="border border-gray-200 rounded-lg p-2 hover:bg-gray-50 transition-colors duration-200">
             <div class="flex justify-between items-start">
               <div class="flex-1 min-w-0">

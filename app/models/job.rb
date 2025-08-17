@@ -7,7 +7,7 @@ class Job < ApplicationRecord
   belongs_to :created_by, class_name: "User"
 
   # Associations
-  has_many :job_applications, dependent: :destroy
+  has_many :job_applications, dependent: :destroy, counter_cache: true
   has_many :applicants, through: :job_applications, source: :candidate
   has_many :application_users, through: :job_applications, source: :user
   has_many :job_board_sync_logs, dependent: :destroy
@@ -213,7 +213,7 @@ class Job < ApplicationRecord
   end
 
   def applications_count
-    job_applications.count
+    job_applications_count || 0
   end
 
   def recent_applications(limit: 5)

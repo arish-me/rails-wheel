@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_14_064713) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_17_050233) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -350,6 +350,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_14_064713) do
     t.datetime "updated_at", null: false
     t.bigint "candidate_role_id"
     t.string "slug"
+    t.integer "job_applications_count", default: 0, null: false
     t.index ["candidate_role_id"], name: "index_jobs_on_candidate_role_id"
     t.index ["company_id", "status"], name: "index_jobs_on_company_id_and_status"
     t.index ["company_id"], name: "index_jobs_on_company_id"
@@ -359,6 +360,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_14_064713) do
     t.index ["external_id"], name: "index_jobs_on_external_id"
     t.index ["external_source"], name: "index_jobs_on_external_source"
     t.index ["featured"], name: "index_jobs_on_featured"
+    t.index ["job_applications_count"], name: "index_jobs_on_job_applications_count"
     t.index ["published_at"], name: "index_jobs_on_published_at"
     t.index ["remote_policy"], name: "index_jobs_on_remote_policy"
     t.index ["role_level"], name: "index_jobs_on_role_level"
