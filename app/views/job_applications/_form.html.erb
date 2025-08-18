@@ -1,76 +1,294 @@
-<%= styled_form_with model: [@job, @application], class: "space-y-6" do |f| %>
+<%= styled_form_with model: [@job, @application], class: "space-y-8", data: { controller: "job-application-form" } do |f| %>
   <% if @application.errors.any? %>
-    <%= render "shared/form_errors", model: @application %>
+    <div class="bg-red-50 border border-red-200 rounded-xl p-6 mb-8">
+      <%= render "shared/form_errors", model: @application %>
+    </div>
   <% end %>
 
   <div id="application_form">
-    <!-- Job Information -->
-    <div class="bg-gray-50 rounded-lg p-4 mb-6">
-      <h3 class="text-lg font-medium text-gray-900 mb-2">Applying to: <%= @job.title %></h3>
-      <p class="text-sm text-gray-600"><%= @job.company.name %></p>
-    </div>
+    <!-- Application Type Selection -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+      <div class="px-6 py-4 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-200">
+        <div class="flex items-center">
+          <div class="flex-shrink-0">
+            <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
+              <%= lucide_icon('zap', class: 'w-5 h-5 text-white') %>
+            </div>
+          </div>
+          <div class="ml-4">
+            <h3 class="text-lg font-semibold text-gray-900">Application Type</h3>
+            <p class="text-sm text-gray-600">Choose how you'd like to apply</p>
+          </div>
+        </div>
+      </div>
 
-    <!-- Quick Apply Option -->
-    <div class="space-y-4">
-      <div class="flex items-center">
-        <%= f.check_box :is_quick_apply, class: "mr-2" %>
-        <%= f.label :is_quick_apply, "Quick Apply (skip cover letter and resume)", class: "text-sm font-medium text-gray-700" %>
+      <div class="p-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Standard Application -->
+          <div class="relative">
+            <div class="flex items-center p-4 border-2 border-gray-200 rounded-lg hover:border-blue-300 transition-colors duration-200 cursor-pointer"
+                 data-action="click->job-application-form#selectApplicationType"
+                 data-application-type="standard">
+              <div class="flex items-center h-5">
+                <%= f.radio_button :is_quick_apply, false,
+                    class: "h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300",
+                    data: { job_application_form_target: "standardRadio" } %>
+              </div>
+              <div class="ml-3 flex-1">
+                <label class="text-sm font-medium text-gray-900 cursor-pointer">
+                  Standard Application
+                </label>
+                <p class="text-sm text-gray-500">Include cover letter and resume for a complete application</p>
+              </div>
+              <div class="flex-shrink-0">
+                <%= lucide_icon('file-text', class: 'w-6 h-6 text-gray-400') %>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Apply -->
+          <div class="relative">
+            <div class="flex items-center p-4 border-2 border-gray-200 rounded-lg hover:border-blue-300 transition-colors duration-200 cursor-pointer"
+                 data-action="click->job-application-form#selectApplicationType"
+                 data-application-type="quick">
+              <div class="flex items-center h-5">
+                <%= f.radio_button :is_quick_apply, true,
+                    class: "h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300",
+                    data: { job_application_form_target: "quickRadio" } %>
+              </div>
+              <div class="ml-3 flex-1">
+                <label class="text-sm font-medium text-gray-900 cursor-pointer">
+                  Quick Apply
+                </label>
+                <p class="text-sm text-gray-500">Apply quickly with just your basic information</p>
+              </div>
+              <div class="flex-shrink-0">
+                <%= lucide_icon('zap', class: 'w-6 h-6 text-gray-400') %>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- Cover Letter -->
-    <% unless @application.is_quick_apply %>
-      <div class="space-y-4">
-        <h3 class="text-lg font-medium text-gray-900">Cover Letter</h3>
-        
-        <%= f.text_area :cover_letter, 
-            label: 'Cover Letter',
-            placeholder: 'Tell us why you\'re interested in this position and why you\'d be a great fit...',
-            rows: 8 %>
+    <!-- Standard Application Fields -->
+    <div data-job-application-form-target="standardFields" class="space-y-8">
+      <!-- Cover Letter Section -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+        <div class="px-6 py-4 bg-gradient-to-r from-green-50 to-emerald-50 border-b border-gray-200">
+          <div class="flex items-center">
+            <div class="flex-shrink-0">
+              <div class="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center">
+                <%= lucide_icon('message-square', class: 'w-5 h-5 text-white') %>
+              </div>
+            </div>
+            <div class="ml-4">
+              <h3 class="text-lg font-semibold text-gray-900">Cover Letter</h3>
+              <p class="text-sm text-gray-600">Tell us why you're the perfect fit for this role</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-6">
+          <% if @job.application_instructions.present? %>
+            <div class="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+              <div class="flex">
+                <div class="flex-shrink-0">
+                  <%= lucide_icon('info', class: 'w-5 h-5 text-blue-400') %>
+                </div>
+                <div class="ml-3">
+                  <h4 class="text-sm font-medium text-blue-800">Application Instructions</h4>
+                  <div class="mt-1 text-sm text-blue-700">
+                    <%= simple_format(@job.application_instructions) %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% end %>
+
+          <%= f.rich_textarea :cover_letter,
+              label: 'Cover Letter',
+              placeholder: 'Tell us why you\'re interested in this position, your relevant experience, and why you\'d be a great fit for the team. Be specific about how your skills and background align with the job requirements...',
+              rows: 8 %>
+
+          <div class="mt-4 flex items-center text-sm text-gray-500">
+            <%= lucide_icon('lightbulb', class: 'w-4 h-4 mr-2 text-yellow-500') %>
+            <span>Tip: Customize your cover letter for this specific role and company</span>
+          </div>
+        </div>
       </div>
 
-      <!-- Resume Upload -->
-      <div class="space-y-4">
-        <h3 class="text-lg font-medium text-gray-900">Resume/CV</h3>
-        
-        <div class="space-y-2">
-          <%= f.label :resume, "Upload Resume (PDF, DOC, DOCX)", class: "block text-sm font-medium text-gray-700" %>
-          <%= f.file_field :resume, 
-              accept: ".pdf,.doc,.docx",
-              class: "block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" %>
-          <p class="text-xs text-gray-500">Maximum file size: 10MB</p>
+      <!-- Resume Upload Section -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+        <div class="px-6 py-4 bg-gradient-to-r from-purple-50 to-pink-50 border-b border-gray-200">
+          <div class="flex items-center">
+            <div class="flex-shrink-0">
+              <div class="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center">
+                <%= lucide_icon('file-text', class: 'w-5 h-5 text-white') %>
+              </div>
+            </div>
+            <div class="ml-4">
+              <h3 class="text-lg font-semibold text-gray-900">Resume/CV</h3>
+              <p class="text-sm text-gray-600">Upload your professional resume or CV</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-6">
+          <div class="space-y-4">
+            <!-- Current Resume (if editing) -->
+            <% if @application.resume.attached? %>
+              <div class="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center">
+                    <%= lucide_icon('file-text', class: 'w-5 h-5 text-blue-500 mr-2') %>
+                    <div>
+                      <p class="text-sm font-medium text-blue-900"><%= @application.resume.filename %></p>
+                      <p class="text-xs text-blue-700"><%= number_to_human_size(@application.resume.byte_size) %></p>
+                    </div>
+                  </div>
+                  <%= link_to rails_blob_path(@application.resume, disposition: 'attachment'),
+                      class: "text-xs text-blue-600 hover:text-blue-800 underline" do %>
+                    Download
+                  <% end %>
+                </div>
+                <p class="text-xs text-blue-600 mt-2">Upload a new file to replace the current resume</p>
+              </div>
+            <% end %>
+
+            <div>
+              <%= f.label :resume, "Upload Resume", class: "block text-sm font-medium text-gray-700 mb-2" %>
+              <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg hover:border-gray-400 transition-colors duration-200">
+                <div class="space-y-1 text-center">
+                  <%= lucide_icon('upload', class: 'mx-auto h-12 w-12 text-gray-400') %>
+                  <div class="flex text-sm text-gray-600">
+                    <label for="job_application_resume" class="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500">
+                      <span>Upload a file</span>
+                      <%= f.file_field :resume,
+                          accept: ".pdf,.doc,.docx",
+                          class: "sr-only",
+                          data: {
+                            job_application_form_target: "resumeFile",
+                            action: "change->job-application-form#updateFileName"
+                          } %>
+                    </label>
+                    <p class="pl-1">or drag and drop</p>
+                  </div>
+                  <p class="text-xs text-gray-500">PDF, DOC, or DOCX up to 10MB</p>
+                </div>
+              </div>
+            </div>
+
+            <div data-job-application-form-target="fileInfo" class="hidden">
+              <div class="flex items-center p-3 bg-green-50 border border-green-200 rounded-lg">
+                <%= lucide_icon('check-circle', class: 'w-5 h-5 text-green-500 mr-2') %>
+                <span class="text-sm text-green-700" data-job-application-form-target="fileName"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Portfolio Section (if required) -->
+    <% if @job.require_portfolio %>
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+        <div class="px-6 py-4 bg-gradient-to-r from-yellow-50 to-amber-50 border-b border-gray-200">
+          <div class="flex items-center">
+            <div class="flex-shrink-0">
+              <div class="w-8 h-8 bg-yellow-600 rounded-full flex items-center justify-center">
+                <%= lucide_icon('globe', class: 'w-5 h-5 text-white') %>
+              </div>
+            </div>
+            <div class="ml-4">
+              <h3 class="text-lg font-semibold text-gray-900">Portfolio</h3>
+              <p class="text-sm text-gray-600">Share your work portfolio or website</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-6">
+          <%= f.text_field :portfolio_url,
+              label: 'Portfolio URL',
+              placeholder: 'https://your-portfolio.com or https://github.com/yourusername',
+              class: 'block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500' %>
+
+          <div class="mt-4 flex items-center text-sm text-gray-500">
+            <%= lucide_icon('link', class: 'w-4 h-4 mr-2 text-blue-500') %>
+            <span>Make sure your portfolio is up to date and showcases your best work</span>
+          </div>
         </div>
       </div>
     <% end %>
 
-    <!-- Portfolio URL -->
-    <% if @job.require_portfolio %>
-      <div class="space-y-4">
-        <h3 class="text-lg font-medium text-gray-900">Portfolio</h3>
-        
-        <%= f.text_field :portfolio_url, 
-            label: 'Portfolio URL',
-            placeholder: 'https://your-portfolio.com' %>
+    <!-- Additional Information Section -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+      <div class="px-6 py-4 bg-gradient-to-r from-indigo-50 to-blue-50 border-b border-gray-200">
+        <div class="flex items-center">
+          <div class="flex-shrink-0">
+            <div class="w-8 h-8 bg-indigo-600 rounded-full flex items-center justify-center">
+              <%= lucide_icon('plus-circle', class: 'w-5 h-5 text-white') %>
+            </div>
+          </div>
+          <div class="ml-4">
+            <h3 class="text-lg font-semibold text-gray-900">Additional Information</h3>
+            <p class="text-sm text-gray-600">Any other details you'd like to share (optional)</p>
+          </div>
+        </div>
       </div>
-    <% end %>
 
-    <!-- Additional Notes -->
-    <div class="space-y-4">
-      <h3 class="text-lg font-medium text-gray-900">Additional Information</h3>
-      
-      <%= f.text_area :additional_notes, 
-          label: 'Additional Notes (Optional)',
-          placeholder: 'Any additional information you\'d like to share...',
-          rows: 4 %>
+      <div class="p-6">
+        <%= f.rich_textarea :additional_notes,
+            label: 'Additional Notes',
+            placeholder: 'Share any additional information that might be relevant to your application, such as availability, relocation preferences, or special circumstances...',
+            rows: 4 %>
+      </div>
     </div>
 
-    <!-- Submit -->
-    <div class="flex justify-end space-x-3 pt-6 border-t border-gray-200">
-      <%= link_to 'Cancel', @job, 
-          class: "px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50" %>
-      
-      <%= f.submit @application.new_record? ? 'Submit Application' : 'Update Application', 
-          class: "px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700" %>
+    <!-- Application Summary -->
+    <div class="bg-blue-50 border border-blue-200 rounded-xl p-6">
+      <div class="flex items-start">
+        <div class="flex-shrink-0">
+          <%= lucide_icon('info', class: 'w-5 h-5 text-blue-400 mt-0.5') %>
+        </div>
+        <div class="ml-3">
+          <h4 class="text-sm font-medium text-blue-800">Application Summary</h4>
+          <div class="mt-2 text-sm text-blue-700">
+            <ul class="list-disc list-inside space-y-1">
+              <li>Your application will be reviewed by the hiring team</li>
+              <li>You'll receive email updates about your application status</li>
+              <li>You can withdraw your application at any time before it's reviewed</li>
+              <li>Make sure all information is accurate and up to date</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Submit Section -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <div class="flex flex-col sm:flex-row items-center justify-between space-y-4 sm:space-y-0 sm:space-x-4">
+        <div class="flex items-center text-sm text-gray-500">
+          <%= lucide_icon('shield-check', class: 'w-4 h-4 mr-2 text-green-500') %>
+          <span>Your information is secure and will only be shared with the hiring team</span>
+        </div>
+
+        <div class="flex items-center space-x-3">
+          <%= render LinkComponent.new(
+              text: "Cancel",
+              variant: :outline,
+              icon: "x",
+              href: public_job_path(@job)
+            ) %>
+
+          <%= f.submit @application.new_record? ? 'Submit Application' : 'Update Application',
+              class: "inline-flex items-center px-8 py-3 border border-transparent rounded-lg shadow-sm text-base font-semibold text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200",
+              data: {
+                job_application_form_target: "submitButton",
+                action: "click->job-application-form#validateForm"
+              } %>
+        </div>
+      </div>
     </div>
   </div>
 <% end %>

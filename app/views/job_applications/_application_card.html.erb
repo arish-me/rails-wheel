@@ -1,0 +1,40 @@
+<div class="px-4 py-3 hover:bg-gray-50 transition-colors duration-150">
+  <div class="flex items-center justify-between">
+    <div class="flex items-center space-x-4">
+      <div class="flex-shrink-0">
+        <% if application.user.avatar.attached? %>
+          <%= image_tag application.user.avatar.variant(:small), class: "w-10 h-10 rounded-full" %>
+        <% else %>
+          <div class="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center">
+            <span class="text-gray-500 font-semibold"><%= application.user.initials %></span>
+          </div>
+        <% end %>
+      </div>
+
+      <div>
+        <h4 class="text-sm font-medium text-gray-900">
+          <%= link_to application.user.display_name, job_job_application_path(@job, application), class: "hover:text-blue-600" %>
+        </h4>
+        <p class="text-sm text-gray-500"><%= application.user.email %></p>
+        <p class="text-xs text-gray-400">Applied <%= time_ago_in_words(application.applied_at) %> ago</p>
+      </div>
+    </div>
+
+    <div class="flex items-center space-x-3">
+      <!-- Status Badge -->
+      <%= render 'status_badge', status: application.status %>
+
+      <!-- Quick Apply Badge -->
+      <% if application.is_quick_apply %>
+        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
+          Quick Apply
+        </span>
+      <% end %>
+
+      <!-- View Count -->
+      <span class="text-xs text-gray-500">
+        <%= pluralize(application.view_count, 'view') %>
+      </span>
+    </div>
+  </div>
+</div>

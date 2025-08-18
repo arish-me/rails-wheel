@@ -1,142 +1,26 @@
-<div class="space-y-6">
+<div class="space-y-4">
   <div class="flex justify-between items-center">
-    <h1 class="text-2xl font-bold text-gray-900">Jobs</h1>
+    <h1 class="text-xl font-bold text-gray-900">Jobs</h1>
 
-      <%= render LinkComponent.new(
-        text: "Post New Job",
-        variant: :primary,
-        icon: "plus",
-        href: new_job_path
-      ) %>
-
+    <%= render LinkComponent.new(
+      text: "Post New Job",
+      variant: :primary,
+      icon: "plus",
+      href: new_job_path
+    ) %>
   </div>
 
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
     <% @jobs.each do |job| %>
-      <div class="bg-white rounded-lg shadow-md border border-gray-200 hover:shadow-lg transition-shadow">
-        <div class="p-6">
-          <div class="flex justify-between items-start mb-4">
-            <h3 class="text-lg font-semibold text-gray-900 line-clamp-2">
-              <%= link_to job.title, job_path(job), class: "hover:text-blue-600" %>
-            </h3>
-            <div class="flex space-x-2">
-              <% case job.status %>
-              <% when 'published' %>
-                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                  Published
-                </span>
-              <% when 'draft' %>
-                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                  Draft
-                </span>
-              <% when 'closed' %>
-                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                  Closed
-                </span>
-              <% when 'archived' %>
-                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                  Archived
-                </span>
-              <% end %>
-            </div>
-          </div>
-
-          <div class="space-y-3">
-            <div class="flex items-center text-sm text-gray-600">
-              <%= lucide_icon('briefcase', class: 'w-4 h-4 mr-2') %>
-              <%= job.display_job_type %>
-            </div>
-
-            <div class="flex items-center text-sm text-gray-600">
-              <%= lucide_icon('map-pin', class: 'w-4 h-4 mr-2') %>
-              <%= job.display_location.presence || 'Remote' %>
-            </div>
-
-            <div class="flex items-center text-sm text-gray-600">
-              <%= lucide_icon('users', class: 'w-4 h-4 mr-2') %>
-              <%= job.display_experience_level %>
-            </div>
-
-            <% if job.salary_min.present? || job.salary_max.present? %>
-              <div class="flex items-center text-sm text-gray-600">
-                <%= lucide_icon('dollar-sign', class: 'w-4 h-4 mr-2') %>
-                <%= job.display_salary %>
-              </div>
-            <% end %>
-
-            <div class="flex items-center text-sm text-gray-600">
-              <%= lucide_icon('users', class: 'w-4 h-4 mr-2') %>
-              <%= pluralize(job.applications_count, 'application') %>
-            </div>
-
-            <div class="flex items-center text-sm text-gray-600">
-              <%= lucide_icon('eye', class: 'w-4 h-4 mr-2') %>
-              <%= pluralize(job.views_count, 'view') %>
-            </div>
-          </div>
-
-          <div class="mt-4 pt-4 border-t border-gray-200">
-            <div class="flex justify-between items-center">
-              <span class="text-xs text-gray-500">
-                Posted <%= time_ago_in_words(job.created_at) %> ago
-              </span>
-
-              <div class="flex space-x-2">
-
-                  <%= link_to edit_job_path(job),
-                      class: "text-blue-600 hover:text-blue-800 text-sm font-medium",
-                      data: {  } do %>
-                    Edit
-
-                <% end %>
-
-                <% if job.draft? %>
-                  <%= link_to publish_job_path(job),
-                      method: :patch,
-                      class: "text-green-600 hover:text-green-800 text-sm font-medium",
-                      data: { turbo_method: :patch } do %>
-                    Publish
-                  <% end %>
-                <% end %>
-
-                <% if job.published? %>
-                  <%= link_to close_job_path(job),
-                      method: :patch,
-                      class: "text-red-600 hover:text-red-800 text-sm font-medium",
-                      data: { turbo_method: :patch } do %>
-                    Close
-                  <% end %>
-                <% end %>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <%= render 'job_card', job: job %>
     <% end %>
   </div>
 
   <% if @jobs.empty? %>
-    <div class="text-center py-12">
-      <div class="mx-auto h-12 w-12 text-gray-400">
-        <%= lucide_icon('briefcase', class: 'h-12 w-12') %>
-      </div>
-      <h3 class="mt-2 text-sm font-medium text-gray-900">No jobs yet</h3>
-      <p class="mt-1 text-sm text-gray-500">Get started by posting your first job.</p>
-
-        <div class="mt-6">
-          <%= render LinkComponent.new(
-            text: "Post New Job",
-            variant: :primary,
-            icon: "plus",
-            href: new_job_path
-
-          ) %>
-        </div>
-
-    </div>
+    <%= render 'empty_state' %>
   <% end %>
 
-  <div class="mt-8">
+  <div class="mt-6">
     <%= render "shared/pagination", pagy: @pagy %>
   </div>
 </div>

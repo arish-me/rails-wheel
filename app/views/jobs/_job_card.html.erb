@@ -1,0 +1,96 @@
+<div class="bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+  <div class="p-4">
+    <div class="flex justify-between items-start mb-3">
+      <h3 class="text-base font-semibold text-gray-900 line-clamp-2">
+        <%= link_to job.title, job_path(job), class: "hover:text-blue-600" %>
+      </h3>
+      <div class="flex space-x-2">
+        <% case job.status %>
+        <% when 'published' %>
+          <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+            Published
+          </span>
+        <% when 'draft' %>
+          <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+            Draft
+          </span>
+        <% when 'closed' %>
+          <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+            Closed
+          </span>
+        <% when 'archived' %>
+          <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+            Archived
+          </span>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="space-y-2 mb-3">
+      <div class="flex items-center text-xs text-gray-600">
+        <%= lucide_icon('briefcase', class: 'w-3 h-3 mr-1') %>
+        <%= job.display_job_type %>
+      </div>
+
+      <div class="flex items-center text-xs text-gray-600">
+        <%= lucide_icon('map-pin', class: 'w-3 h-3 mr-1') %>
+        <%= job.display_location.presence || 'Remote' %>
+      </div>
+
+      <div class="flex items-center text-xs text-gray-600">
+        <%= lucide_icon('users', class: 'w-3 h-3 mr-1') %>
+        <%= job.display_experience_level %>
+      </div>
+
+      <% if job.salary_min.present? || job.salary_max.present? %>
+        <div class="flex items-center text-xs text-gray-600">
+          <%= lucide_icon('dollar-sign', class: 'w-3 h-3 mr-1') %>
+          <%= job.display_salary %>
+        </div>
+      <% end %>
+
+      <div class="flex items-center text-xs text-gray-600">
+        <%= lucide_icon('users', class: 'w-3 h-3 mr-1') %>
+        <%= pluralize(job.applications_count, 'application') %>
+      </div>
+
+      <div class="flex items-center text-xs text-gray-600">
+        <%= lucide_icon('eye', class: 'w-3 h-3 mr-1') %>
+        <%= pluralize(job.views_count, 'view') %>
+      </div>
+    </div>
+
+    <div class="pt-3 border-t border-gray-200">
+      <div class="flex justify-between items-center">
+        <span class="text-xs text-gray-500">
+          Posted <%= time_ago_in_words(job.created_at) %> ago
+        </span>
+
+        <div class="flex space-x-2">
+          <%= link_to edit_job_path(job),
+              class: "text-blue-600 hover:text-blue-800 text-xs font-medium" do %>
+            Edit
+          <% end %>
+
+          <% if job.draft? %>
+            <%= link_to publish_job_path(job),
+                method: :patch,
+                class: "text-green-600 hover:text-green-800 text-xs font-medium",
+                data: { turbo_method: :patch } do %>
+              Publish
+            <% end %>
+          <% end %>
+
+          <% if job.published? %>
+            <%= link_to close_job_path(job),
+                method: :patch,
+                class: "text-red-600 hover:text-red-800 text-xs font-medium",
+                data: { turbo_method: :patch } do %>
+              Close
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

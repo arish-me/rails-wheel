@@ -1,0 +1,17 @@
+<% if @application.resume.attached? %>
+  <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-5">
+    <h2 class="text-lg font-semibold text-gray-900 mb-4">Resume/CV</h2>
+    <div class="flex items-center space-x-3">
+      <%= lucide_icon('file-text', class: 'w-8 h-8 text-gray-400') %>
+      <div>
+        <p class="font-medium text-gray-900"><%= @application.resume.filename %></p>
+        <p class="text-sm text-gray-500"><%= number_to_human_size(@application.resume.byte_size) %></p>
+      </div>
+      <%= link_to rails_blob_path(@application.resume, disposition: 'attachment'),
+          class: "ml-auto inline-flex items-center px-3 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50" do %>
+        <%= lucide_icon('download', class: 'w-4 h-4 mr-2') %>
+        Download
+      <% end %>
+    </div>
+  </div>
+<% end %>

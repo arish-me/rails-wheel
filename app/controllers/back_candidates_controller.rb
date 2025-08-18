@@ -40,14 +40,14 @@ class CandidatesController < ApplicationController
   def candidate_params
     params.require(:candidate).permit(
       :redirect_to, :onboarding_preferences,
-      user_attributes: [ :id, :first_name, :last_name, :gender, :phone_number, :date_of_birth, :bio, :profile_image, :delete_profile_image, :cover_image, location_attributes: [ :location_search, :city, :state, :country, :id ] ]
+      user_attributes: [ :id, :first_name, :last_name, :gender, :phone_number, :date_of_birth, :bio, :avatar, :delete_profile_image, :cover_image, location_attributes: [ :location_search, :city, :state, :country, :id ] ]
     )
   end
 
   # def candidate_params
   #   params.require(:candidate).permit(
   #     profile_attributes: [ :id, :headline, :candidate_role_id, :experience, :_destroy ],
-  #     user_attributes: [ :id, :first_name, :last_name, :gender, :phone_number, :date_of_birth, :bio, :profile_image, :delete_profile_image, :cover_image ],
+  #     user_attributes: [ :id, :first_name, :last_name, :gender, :phone_number, :date_of_birth, :bio, :avatar, :delete_profile_image, :cover_image ],
   #     work_preference_attributes: [ :id, :search_status ],
   #     social_link_attributes: [ :id, :github, :website, :linked_in, :twitter, :_destroy ],
   #     location_attributes: [ :city, :state, :country_code ]

@@ -22,7 +22,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     else
                         update_resource_without_password(resource, account_update_params)
     end
-    resource.profile_image.purge if should_purge_profile_image?
+    resource.avatar.purge if should_purge_profile_image?
     yield resource if block_given?
     if resource_updated
       set_flash_message_for_update(resource, prev_unconfirmed_email)
@@ -80,7 +80,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def should_purge_profile_image?
     account_update_params[:delete_profile_image] == "1" &&
-      account_update_params[:profile_image].blank?
+      account_update_params[:avatar].blank?
   end
 
   # If you have extra params to permit, append them to the sanitizer.
@@ -95,7 +95,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def configure_account_update_params
     devise_parameter_sanitizer.permit(:account_update, keys: [
       :email, :password, :password_confirmation, :current_password, :set_onboarding_goals_at, :onboarded_at, :redirect_to,
-      :first_name, :last_name, :country_code, :theme, :set_onboarding_preferences_at, :delete_profile_image, :profile_image,
+      :first_name, :last_name, :country_code, :theme, :set_onboarding_preferences_at, :delete_profile_image, :avatar,
       :date_format, :locale, :gender, :phone_number, :date_of_birth, :bio, :timezone, :user_type, :bio_required, goals: [],
 
       location_attributes: [

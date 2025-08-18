@@ -1,0 +1,17 @@
+<div class="flex items-center space-x-3 mb-3">
+  <% if @job.company.avatar.attached? %>
+    <%= image_tag @job.company.avatar, class: "w-12 h-12 rounded-lg shadow-sm" %>
+  <% else %>
+    <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg flex items-center justify-center shadow-sm">
+      <span class="text-white text-lg font-bold"><%= @job.company.name.first %></span>
+    </div>
+  <% end %>
+  <div>
+    <p class="font-semibold text-gray-900 text-base"><%= @job.company.name %></p>
+    <% if @job.company.website.present? %>
+      <a href="<%= @job.company.website %>" target="_blank" class="text-blue-600 hover:text-blue-800 text-xs transition-colors duration-200">
+        <%= @job.company.website %>
+      </a>
+    <% end %>
+  </div>
+</div>

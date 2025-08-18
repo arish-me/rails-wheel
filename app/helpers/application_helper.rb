@@ -24,6 +24,11 @@ module ApplicationHelper
     root_path
   end
 
+  def avatar_for_view
+    user = current_user.company? ? current_user.company : current_user
+    user.avatar.variant(:small)
+  end
+
   def title(page_title)
     content_for(:title) { page_title }
   end

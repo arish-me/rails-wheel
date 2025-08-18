@@ -1,11 +1,11 @@
 <%# locals: (user:, placement: "right-start", offset: 16) %>
 
 <div data-testid="user-menu">
-  <%= render MenuComponent.new(variant: "avatar", avatar_url: user.profile_image&.variant(:small), initials: user.initials, placement: placement, offset: offset) do |menu| %>
+  <%= render MenuComponent.new(variant: "avatar", avatar_url: avatar_for_view, initials: user.initials, placement: placement, offset: offset) do |menu| %>
     <%= menu.with_header do %>
       <div class="px-4 py-3 flex items-center gap-3">
         <div class="w-9 h-9 shrink-0">
-          <%= render "settings/user_avatar", avatar_url: user.profile_image.url %>
+          <%= render "settings/user_avatar", avatar_url: avatar_for_view %>
         </div>
 
         <div class="overflow-hidden text-ellipsis text-sm">

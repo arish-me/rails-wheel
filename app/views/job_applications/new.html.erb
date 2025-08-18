@@ -1,8 +1,63 @@
-<div class="max-w-4xl mx-auto">
-  <div class="mb-6">
-    <h1 class="text-2xl font-bold text-gray-900">Apply for Job</h1>
-    <p class="text-gray-600">Complete your application below</p>
-  </div>
+<div class="min-h-screen bg-gray-50 py-6">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5 mb-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <h1 class="text-xl font-bold text-gray-900">Apply for Position</h1>
+          <p class="mt-1 text-sm text-gray-600">Complete your application below</p>
+        </div>
+        <div class="flex items-center space-x-3">
+          <%= link_to public_job_path(@job), 
+              class: "inline-flex items-center px-3 py-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200" do %>
+            <%= lucide_icon('arrow-left', class: 'w-4 h-4 mr-2') %>
+            Back to Job
+          <% end %>
+        </div>
+      </div>
+    </div>
 
-  <%= render "form" %>
+    <!-- Job Summary Card -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5 mb-6">
+      <div class="flex items-start space-x-4">
+        <% if @job.company.avatar.attached? %>
+          <%= image_tag @job.company.avatar, class: "w-12 h-12 rounded-lg shadow-sm" %>
+        <% else %>
+          <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg flex items-center justify-center shadow-sm">
+            <span class="text-white text-base font-bold"><%= @job.company.name.first %></span>
+          </div>
+        <% end %>
+        
+        <div class="flex-1">
+          <h2 class="text-lg font-bold text-gray-900 mb-1"><%= @job.title %></h2>
+          <p class="text-sm text-gray-600 mb-2"><%= @job.company.name %></p>
+          
+          <div class="flex flex-wrap items-center gap-3 text-xs text-gray-500">
+            <span class="flex items-center">
+              <%= lucide_icon('map-pin', class: 'w-3 h-3 mr-1') %>
+              <% if @job.worldwide? %>
+                <span class="inline-flex items-center">
+                  <%= lucide_icon('globe', class: 'w-3 h-3 mr-1 text-blue-600') %>
+                  Worldwide
+                </span>
+              <% else %>
+                <%= @job.display_location.presence || 'Remote' %>
+              <% end %>
+            </span>
+            <span class="flex items-center">
+              <%= lucide_icon('briefcase', class: 'w-3 h-3 mr-1') %>
+              <%= @job.role_type&.titleize || 'Not specified' %>
+            </span>
+            <span class="flex items-center">
+              <%= lucide_icon('users', class: 'w-3 h-3 mr-1') %>
+              <%= @job.display_experience_level %>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Application Form -->
+    <%= render "form" %>
+  </div>
 </div>

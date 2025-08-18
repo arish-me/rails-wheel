@@ -33,7 +33,7 @@ class User < ApplicationRecord
   accepts_nested_attributes_for :location, allow_destroy: true
   accepts_nested_attributes_for :candidate, allow_destroy: true
 
-  has_one_attached :profile_image do |attachable|
+  has_one_attached :avatar do |attachable|
     attachable.variant :thumbnail, resize_to_fill: [ 300, 300 ], convert: :webp, saver: { quality: 80 }
     attachable.variant :small, resize_to_fill: [ 72, 72 ], convert: :webp, saver: { quality: 80 }, preprocessed: true
   end
@@ -111,12 +111,12 @@ class User < ApplicationRecord
   end
 
   def attach_avatar(image_url)
-    return if profile_image.attached? # Avoid re-downloading if avatar is already attached
+    return if avatar.attached? # Avoid re-downloading if avatar is already attached
 
     begin
       uri = URI.parse(image_url)
       avatar_file = uri.open
-      profile_image.attach(io: avatar_file, filename: "avatar.jpg", content_type: avatar_file.content_type)
+      avatar.attach(io: avatar_file, filename: "avatar.jpg", content_type: avatar_file.content_type)
     rescue StandardError => e
       Rails.logger.error "Failed to attach avatar: #{e.message}"
     end
@@ -208,8 +208,8 @@ class User < ApplicationRecord
   private
 
     def profile_image_size
-      if profile_image.attached? && profile_image.byte_size > 10.megabytes
-        errors.add(:profile_image, :invalid_file_size, max_megabytes: 10)
+      if avatar.attached? && avatar.byte_size > 10.megabytes
+        errors.add(:avatar, :invalid_file_size, max_megabytes: 10)
       end
     end
 end

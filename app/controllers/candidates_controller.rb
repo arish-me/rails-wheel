@@ -40,7 +40,7 @@ class CandidatesController < ApplicationController
   def candidate_params
     params.require(:candidate).permit(
       :bio, :redirect_to,
-      user_attributes: [ :id, :first_name, :last_name, :phone_number, :gender, :date_of_birth, :email_required, :delete_profile_image, :profile_image,
+      user_attributes: [ :id, :first_name, :last_name, :phone_number, :gender, :date_of_birth, :email_required, :delete_profile_image, :avatar,
       location_attributes: [ :id, :location_search, :city, :state, :country, :_destroy ]
       ],
       experiences_attributes: [ :company_name, :job_title, :start_date, :end_date, :current_job, :description, :_destroy ],

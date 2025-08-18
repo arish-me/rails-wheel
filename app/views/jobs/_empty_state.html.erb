@@ -1,0 +1,16 @@
+<div class="text-center py-8">
+  <div class="mx-auto h-10 w-10 text-gray-400">
+    <%= lucide_icon('briefcase', class: 'h-10 w-10') %>
+  </div>
+  <h3 class="mt-2 text-sm font-medium text-gray-900">No jobs yet</h3>
+  <p class="mt-1 text-xs text-gray-500">Get started by posting your first job.</p>
+
+  <div class="mt-4">
+    <%= render LinkComponent.new(
+      text: "Post New Job",
+      variant: :primary,
+      icon: "plus",
+      href: new_job_path
+    ) %>
+  </div>
+</div>

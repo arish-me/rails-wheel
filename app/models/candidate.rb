@@ -8,6 +8,7 @@ class Candidate < ApplicationRecord
   belongs_to :user
   has_one :role_type, class_name: "RoleType", dependent: :destroy
   has_one :role_level, class_name: "RoleLevel", dependent: :destroy
+  has_one :location, as: :locatable, dependent: :destroy
 
   has_one :social_link, as: :linkable, dependent: :destroy
   has_many :specializations, as: :specializable, dependent: :destroy
@@ -136,6 +137,10 @@ class Candidate < ApplicationRecord
       social_link.linked_in ||
       social_link.website ||
       social_link.twitter
+  end
+
+  def full_name
+    [ user.first_name, user.last_name ].compact.join(" ").presence || user.email
   end
 
   def work_preference_missing_fields?
