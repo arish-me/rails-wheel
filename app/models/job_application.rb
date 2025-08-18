@@ -59,7 +59,6 @@ class JobApplication < ApplicationRecord
   # ============================================================================
   
   before_create :set_applied_at
-  after_create :increment_job_applications_count
   after_update :set_reviewed_at, if: :status_changed?
 
   # ============================================================================
@@ -193,9 +192,7 @@ class JobApplication < ApplicationRecord
     self.applied_at = Time.current
   end
 
-  def increment_job_applications_count
-    job.increment_applications!
-  end
+
 
   def set_reviewed_at
     return if reviewed_at.present?

@@ -11,7 +11,7 @@ class JobApplicationsController < ApplicationController
 
   def index
     @pagy, @applications = pagy(
-      @job.job_applications.with_applicant_details.recent,
+      @job.job_applications.includes(:user, :candidate).recent,
       items: 20
     )
   end
@@ -115,7 +115,7 @@ class JobApplicationsController < ApplicationController
   end
 
   def set_application
-    @application = @job.job_applications.with_applicant_details.find(params[:id])
+    @application = @job.job_applications.includes(:user, :candidate).find(params[:id])
   end
 
   def authorize_application_access

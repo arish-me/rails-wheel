@@ -233,7 +233,7 @@ class Job < ApplicationRecord
   end
 
   def increment_applications!
-    increment!(:applications_count)
+    increment!(:job_applications_count)
   end
 
   # ============================================================================
