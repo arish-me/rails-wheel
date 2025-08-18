@@ -8,7 +8,7 @@ class CompanyCandidatesController < ApplicationController
 
   def index
     # Base query - get job applications for company's jobs with candidate details
-    @job_applications = JobApplication.includes(:job, candidate: [ :user, :location, :role_level, :role_type ])
+    @job_applications = JobApplication.includes(:job, candidate: [ :user, :role_level, :role_type ])
                                     .joins(:job)
                                     .where(jobs: { company: current_user.company })
 
@@ -27,16 +27,12 @@ class CompanyCandidatesController < ApplicationController
     # For filters
     @jobs = current_user.company.jobs.published
 
-    # Get unique locations from candidates
-    candidate_ids = @job_applications.map(&:candidate_id).uniq
-    if candidate_ids.any?
-      @locations = Location.where(locatable_type: "Candidate", locatable_id: candidate_ids)
-                          .select("DISTINCT city, state, country")
-                          .where.not(city: [ nil, "" ])
-                          .order(:city)
-    else
-      @locations = Location.none
-    end
+    # Get unique locations from jobs (not candidates) - standard ATS approach
+    job_ids = current_user.company.jobs.pluck(:id)
+    @locations = Location.where(locatable_type: 'Job', locatable_id: job_ids)
+                        .select('DISTINCT city, state, country')
+                        .where.not(city: [nil, ''])
+                        .order(:city)
   end
 
   def bulk_actions
@@ -69,7 +65,7 @@ class CompanyCandidatesController < ApplicationController
   end
 
   def show
-    @job_application = JobApplication.includes(:job, candidate: [ :user, :location, :candidate_roles ])
+    @job_application = JobApplication.includes(:job, candidate: [ :user, :candidate_roles ])
                                    .joins(:job)
                                    .where(jobs: { company: current_user.company })
                                    .where(id: params[:id])
@@ -122,7 +118,14 @@ class CompanyCandidatesController < ApplicationController
 
   def apply_filters(job_applications)
     job_applications = job_applications.where(job_id: params[:job_id]) if params[:job_id].present?
-    job_applications = job_applications.joins(candidate: :location).where(locations: { city: params[:location] }) if params[:location].present?
+    
+    # Filter by job location
+    if params[:location].present?
+      job_applications = job_applications.joins(:job)
+                                       .joins("INNER JOIN locations ON locations.locatable_type = 'Job' AND locations.locatable_id = jobs.id")
+                                       .where(locations: { city: params[:location] })
+    end
+    
     job_applications = job_applications.where(status: params[:status]) if params[:status].present?
     
     # Filter by RoleLevel (experience level)

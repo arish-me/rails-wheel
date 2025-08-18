@@ -39,6 +39,7 @@ gem "timezone_finder"                                           # For geocoding 
 gem "countries"                                          # For country data and codes
 # Background Jobs
 gem "good_job"
+gem "whenever", require: false
 gem "hotwire_combobox"
 gem "classy-yaml"
 gem "inline_svg"

@@ -30,6 +30,7 @@ class Job < ApplicationRecord
     draft: "draft",
     published: "published",
     closed: "closed",
+    expired: "expired",
     archived: "archived"
   }
 
@@ -55,6 +56,7 @@ class Job < ApplicationRecord
   before_save :set_published_at, if: :status_changed_to_published?
   after_save :update_company_job_count, if: :saved_change_to_status?
 
+
   # Search
   pg_search_scope :search_by_title_and_description,
                   against: [ :title, :description, :requirements ],
@@ -73,7 +75,8 @@ class Job < ApplicationRecord
   # Status scopes
   scope :published, -> { where(status: "published") }
   scope :active, -> { published.where("expires_at > ?", Time.current) }
-  scope :expired, -> { where("expires_at <= ?", Time.current) }
+  scope :expired, -> { where(status: "expired") }
+  scope :expired_by_date, -> { where("expires_at <= ?", Time.current) }
   scope :draft, -> { where(status: "draft") }
   scope :closed, -> { where(status: "closed") }
   scope :archived, -> { where(status: "archived") }
@@ -128,16 +131,20 @@ class Job < ApplicationRecord
     status == "closed"
   end
 
+  def expired?
+    status == "expired"
+  end
+
   def archived?
     status == "archived"
   end
 
-  def expired?
+  def past_expiration_date?
     expires_at.present? && expires_at <= Time.current
   end
 
   def active?
-    published? && !expired?
+    published? && !past_expiration_date?
   end
 
   def can_be_applied_to?
@@ -296,6 +303,21 @@ class Job < ApplicationRecord
        .where(company: company)
        .or(Job.published.active.where(role_type: role_type))
        .limit(limit)
+  end
+
+  # ============================================================================
+  # CLASS METHODS
+  # ============================================================================
+
+  def self.expire_expired_jobs
+    expired_jobs = published.where('expires_at <= ?', Time.current)
+    
+    if expired_jobs.any?
+      expired_jobs.update_all(status: 'expired', updated_at: Time.current)
+      Rails.logger.info "Expired #{expired_jobs.count} jobs"
+    end
+    
+    expired_jobs.count
   end
 
   # ============================================================================

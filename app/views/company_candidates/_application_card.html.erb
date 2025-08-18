@@ -10,9 +10,13 @@
       <!-- Location -->
       <div class="flex items-center text-sm text-gray-600 mb-2">
         <%= lucide_icon('map-pin', class: 'w-4 h-4 mr-2 text-gray-400') %>
-        <% if job_application.candidate.location.present? %>
-          <%= [job_application.candidate.location.city, job_application.candidate.location.state, job_application.candidate.location.country].compact.join(', ') %>
-        <% else %>
+        <% begin %>
+          <% if job_application.candidate.location.present? %>
+            <%= [job_application.candidate.location.city, job_application.candidate.location.state, job_application.candidate.location.country].compact.join(', ') %>
+          <% else %>
+            <span class="text-blue-600 font-medium">Remote</span>
+          <% end %>
+        <% rescue => e %>
           <span class="text-blue-600 font-medium">Remote</span>
         <% end %>
       </div>
