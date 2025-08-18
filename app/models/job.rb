@@ -152,7 +152,7 @@ class Job < ApplicationRecord
   end
 
   def can_be_published?
-    draft? && valid_for_publication?
+    (draft? || closed?) && valid_for_publication?
   end
 
   def can_be_closed?
@@ -311,12 +311,12 @@ class Job < ApplicationRecord
 
   def self.expire_expired_jobs
     expired_jobs = published.where('expires_at <= ?', Time.current)
-    
+
     if expired_jobs.any?
       expired_jobs.update_all(status: 'expired', updated_at: Time.current)
       Rails.logger.info "Expired #{expired_jobs.count} jobs"
     end
-    
+
     expired_jobs.count
   end
 

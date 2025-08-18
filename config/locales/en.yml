@@ -195,7 +195,7 @@ en:
     user_avatar_field:
       accepted_formats: JPG or PNG. 5MB max.
       choose: Upload photo
-      choose_label: (optional)
+      choose_label: (required)
       change: Change photo
   utc_offsets:
     component:
