@@ -1,7 +1,7 @@
 <div class="min-h-screen bg-gray-50" data-controller="bulk-actions candidate-actions">
   <!-- Header -->
   <div class="bg-white shadow-sm border-b border-gray-200">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="mx-auto px-4 sm:px-6 lg:px-8">
       <div class="py-6">
         <div class="flex justify-between items-center">
           <div>
@@ -9,32 +9,32 @@
             <p class="text-sm text-gray-600">Manage and review all candidates</p>
           </div>
           <div class="flex space-x-3">
-            <button type="button" 
+            <button type="button"
                     class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                     data-action="click->bulk-actions#toggleSelectAll">
               <span data-bulk-actions-target="selectAllText">Select All</span>
             </button>
             <div class="relative" data-controller="dropdown">
-              <button type="button" 
+              <button type="button"
                       class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                       data-action="click->dropdown#toggle">
                 Actions
                 <%= lucide_icon('chevron-down', class: 'ml-2 h-4 w-4') %>
               </button>
-              <div data-dropdown-target="menu" 
+              <div data-dropdown-target="menu"
                    class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 z-10">
                 <div class="py-1">
-                  <button type="button" 
+                  <button type="button"
                           class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                           data-action="click->bulk-actions#addNote">
                     Add Note
                   </button>
-                  <button type="button" 
+                  <button type="button"
                           class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                           data-action="click->bulk-actions#updateStatus">
                     Update Status
                   </button>
-                  <button type="button" 
+                  <button type="button"
                           class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                           data-action="click->bulk-actions#export">
                     Export
@@ -48,7 +48,7 @@
     </div>
   </div>
 
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+  <div class="mx-auto px-4 sm:px-6 lg:px-8 py-6">
     <div class="flex gap-6">
       <!-- Filters Sidebar -->
       <div class="w-80 flex-shrink-0">
@@ -63,7 +63,7 @@
             <div class="flex-1 max-w-lg">
               <%= form_with url: company_candidates_path, method: :get, local: true, class: "flex" do |f| %>
                 <div class="relative flex-1">
-                  <%= f.text_field :search, 
+                  <%= f.text_field :search,
                       value: params[:search],
                       placeholder: "Search candidates...",
                       class: "block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm" %>
@@ -77,7 +77,7 @@
             <div class="ml-4">
               <%= form_with url: company_candidates_path, method: :get, local: true, class: "flex items-center" do |f| %>
                 <%= f.label :sort, "Sort by:", class: "text-sm font-medium text-gray-700 mr-2" %>
-                <%= f.select :sort, 
+                <%= f.select :sort,
                     options_for_select([
                       ['Most Recent', 'recent'],
                       ['Name', 'name'],
