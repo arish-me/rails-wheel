@@ -7,7 +7,7 @@ class Job < ApplicationRecord
   belongs_to :created_by, class_name: "User"
 
   # Associations
-  has_many :job_applications, dependent: :destroy, counter_cache: true
+  has_many :job_applications, dependent: :destroy, counter_cache: :job_applications_count
   has_many :applicants, through: :job_applications, source: :candidate
   has_many :application_users, through: :job_applications, source: :user
   has_many :job_board_sync_logs, dependent: :destroy
@@ -105,7 +105,7 @@ class Job < ApplicationRecord
   scope :oldest_first, -> { order(published_at: :asc) }
   scope :salary_high_to_low, -> { order(salary_max: :desc) }
   scope :salary_low_to_high, -> { order(salary_min: :asc) }
-  scope :most_applications, -> { order(applications_count: :desc) }
+  scope :most_applications, -> { order(job_applications_count: :desc) }
   scope :most_views, -> { order(views_count: :desc) }
 
   # Performance scopes
@@ -224,7 +224,7 @@ class Job < ApplicationRecord
   end
 
   def applications_count
-    job_applications_count || 0
+    job_applications_count
   end
 
   def recent_applications(limit: 5)

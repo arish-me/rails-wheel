@@ -61,7 +61,7 @@ module SeedData
           expires_at: rand(30..90).days.from_now,
           published_at: job_data[:posted_at] ? Time.parse(job_data[:posted_at]) : rand(1..30).days.ago,
           views_count: rand(10..500),
-          applications_count: rand(0..20),
+          job_applications_count: rand(0..20),
           external_id: job_data[:external_id],
           external_source: job_data[:external_source],
           external_data: job_data[:external_data],

@@ -3,7 +3,7 @@ class JobApplication < ApplicationRecord
   # ASSOCIATIONS
   # ============================================================================
 
-  belongs_to :job
+  belongs_to :job, counter_cache: :job_applications_count
   belongs_to :candidate
   belongs_to :user
   belongs_to :reviewed_by, class_name: "User", optional: true

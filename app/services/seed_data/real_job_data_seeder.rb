@@ -156,7 +156,7 @@ module SeedData
           expires_at: status == "published" ? rand(30..90).days.from_now : nil,
           published_at: status == "published" ? rand(1..30).days.ago : nil,
           views_count: status == "published" ? rand(10..500) : 0,
-          applications_count: status == "published" ? rand(0..20) : 0,
+                      job_applications_count: status == "published" ? rand(0..20) : 0,
           location_attributes: {
             city: job_info[:city],
             state: job_info[:state],

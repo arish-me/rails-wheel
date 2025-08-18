@@ -52,7 +52,7 @@ module SeedData
           )
 
           # Update job application count
-          job.increment!(:applications_count)
+          job.increment!(:job_applications_count)
           application_count += 1
 
           break if application_count >= faker_count
