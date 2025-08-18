@@ -1,4 +1,4 @@
-require 'ostruct'
+require "ostruct"
 
 class JobApplicationService
   attr_reader :application, :user
@@ -182,9 +182,9 @@ class JobApplicationService
 
   def self.filter_by_type(job, type)
     case type
-    when 'quick_apply'
+    when "quick_apply"
       job.job_applications.with_applicant_details.quick_applies
-    when 'standard'
+    when "standard"
       job.job_applications.with_applicant_details.with_cover_letter
     else
       job.job_applications.with_applicant_details

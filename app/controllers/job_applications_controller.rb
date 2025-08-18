@@ -46,7 +46,7 @@ class JobApplicationsController < ApplicationController
     @application = @job.job_applications.build
     @service = JobApplicationService.new(@application, current_user)
     result = @service.create_application(application_params)
-    
+
     respond_to do |format|
       if result.success?
         format.html { redirect_to success_job_job_application_path(@job, @application), notice: result.message }
@@ -60,7 +60,7 @@ class JobApplicationsController < ApplicationController
     # Only allow editing if it's the user's own application and it's still in early stages
     unless @application.user == current_user && @application.can_be_withdrawn?
       redirect_to @application, alert: "You can't edit this application."
-      return
+      nil
     end
   end
 

@@ -2,7 +2,7 @@ class JobApplication < ApplicationRecord
   # ============================================================================
   # ASSOCIATIONS
   # ============================================================================
-  
+
   belongs_to :job
   belongs_to :candidate
   belongs_to :user
@@ -14,7 +14,7 @@ class JobApplication < ApplicationRecord
   # ============================================================================
   # VALIDATIONS
   # ============================================================================
-  
+
   validates :job_id, uniqueness: { scope: :candidate_id, message: "You have already applied to this job" }
   validates :cover_letter, presence: true, length: { minimum: 50 }, unless: :is_quick_apply
   validates :portfolio_url, presence: true, if: :require_portfolio?
@@ -27,7 +27,7 @@ class JobApplication < ApplicationRecord
   # ============================================================================
   # ENUMS
   # ============================================================================
-  
+
   enum :status, {
     applied: "applied",
     reviewing: "reviewing",
@@ -41,7 +41,7 @@ class JobApplication < ApplicationRecord
   # ============================================================================
   # SCOPES
   # ============================================================================
-  
+
   scope :recent, -> { order(applied_at: :desc) }
   scope :by_status, ->(status) { where(status: status) }
   scope :by_job, ->(job) { where(job: job) }
@@ -57,14 +57,14 @@ class JobApplication < ApplicationRecord
   # ============================================================================
   # CALLBACKS
   # ============================================================================
-  
+
   before_create :set_applied_at
   after_update :set_reviewed_at, if: :status_changed?
 
   # ============================================================================
   # SEARCH
   # ============================================================================
-  
+
   pg_search_scope :search_by_content,
                   against: [ :cover_letter, :additional_notes ],
                   using: {
@@ -74,13 +74,13 @@ class JobApplication < ApplicationRecord
   # ============================================================================
   # CONSTANTS
   # ============================================================================
-  
+
   STATUSES = statuses.keys.freeze
 
   # ============================================================================
   # STATUS METHODS
   # ============================================================================
-  
+
   def applied?
     status == "applied"
   end
@@ -128,7 +128,7 @@ class JobApplication < ApplicationRecord
   # ============================================================================
   # DISPLAY METHODS
   # ============================================================================
-  
+
   def display_status
     status&.titleize
   end
@@ -148,7 +148,7 @@ class JobApplication < ApplicationRecord
   # ============================================================================
   # ACTION METHODS
   # ============================================================================
-  
+
   def mark_as_reviewed!(reviewer)
     update!(
       reviewed_at: Time.current,
@@ -168,7 +168,7 @@ class JobApplication < ApplicationRecord
   # ============================================================================
   # EXTERNAL INTEGRATION METHODS
   # ============================================================================
-  
+
   def external_url
     return nil unless external_id.present? && external_source.present?
 

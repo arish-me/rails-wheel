@@ -1,6 +1,7 @@
 <% nav_items = [
   { name: "Dashboard", path: root_path, icon: "pie-chart", icon_custom: false, active: page_active?(root_path), condition: true, mobile_only: true },
   { name: "Jobs", path: jobs_path, icon: "briefcase", icon_custom: false, active: page_active?(jobs_path), condition: can?(:index, Job), mobile_only: true },
+  { name: "Candidates", path: company_candidates_path, icon: "users", icon_custom: false, active: page_active?(company_candidates_path), condition: current_user.company.present?, mobile_only: true },
   { name: "Browse Jobs", path: public_jobs_path, icon: "search", icon_custom: false, active: page_active?(public_jobs_path), condition: true, mobile_only: true },
   { name: "Job Board Integrations", path: job_board_integrations_path, icon: "link", icon_custom: false, active: page_active?(job_board_integrations_path), condition: true, mobile_only: true },
   { name: "Management", path: admin_users_path, icon: "users", icon_custom: false, active: page_active?(admin_users_path), condition: can?(:index, User), mobile_only: true },
