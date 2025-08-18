@@ -74,6 +74,10 @@ en:
         principal: Principal / staff
         c_level: C-level
     errors:
+      messages:
+        attached: is not attached
+        content_type_invalid: image format not supported
+        max_file_size_invalid: image over %{size}
       models:
         user:
           attributes:

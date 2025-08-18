@@ -46,9 +46,8 @@ class JobApplicationsController < ApplicationController
     @application = @job.job_applications.build
     @service = JobApplicationService.new(@application, current_user)
     result = @service.create_application(application_params)
-
     respond_to do |format|
-      if result.success?
+      if result.success
         format.html { redirect_to success_job_job_application_path(@job, @application), notice: result.message }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -69,9 +68,9 @@ class JobApplicationsController < ApplicationController
     result = @service.update_application(application_params)
 
     respond_to do |format|
-      if result.success?
-        format.html { redirect_to @application, notice: result.message }
-        format.turbo_stream { render turbo_stream: turbo_stream.redirect(@application) }
+      if result.success
+        format.html { redirect_to [@job, @application], notice: result.message }
+        # format.turbo_stream { render turbo_stream: turbo_stream.redirect([@job, @application]) }
       else
         format.html { render :edit, status: :unprocessable_entity }
         format.turbo_stream { render turbo_stream: turbo_stream.replace("application_form", partial: "form") }
