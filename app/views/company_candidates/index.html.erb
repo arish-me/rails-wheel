@@ -107,7 +107,21 @@
 
           <div class="divide-y divide-gray-200">
             <% @job_applications.each do |job_application| %>
-              <%= render 'application_card', job_application: job_application %>
+              <div class="flex items-start p-6 hover:bg-gray-50 transition-colors duration-150">
+                <!-- Checkbox -->
+                <div class="flex-shrink-0 pt-1 mr-4">
+                  <input type="checkbox" 
+                         value="<%= job_application.id %>"
+                         class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                         data-bulk-actions-target="checkbox"
+                         data-action="change->bulk-actions#toggleSelection">
+                </div>
+                
+                <!-- Application Card -->
+                <div class="flex-1">
+                  <%= render 'application_card', job_application: job_application %>
+                </div>
+              </div>
             <% end %>
           </div>
 

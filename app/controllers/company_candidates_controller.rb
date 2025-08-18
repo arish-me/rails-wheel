@@ -124,7 +124,7 @@ class CompanyCandidatesController < ApplicationController
     job_applications = job_applications.where(job_id: params[:job_id]) if params[:job_id].present?
     job_applications = job_applications.joins(candidate: :location).where(locations: { city: params[:location] }) if params[:location].present?
     job_applications = job_applications.where(status: params[:status]) if params[:status].present?
-    job_applications = job_applications.joins(:candidate).where(candidates: { experience: params[:experience_level] }) if params[:experience_level].present?
+    job_applications = job_applications.joins(:candidate).where(candidates: { role_level: params[:experience_level] }) if params[:experience_level].present?
     job_applications = job_applications.joins(:candidate).where(candidates: { role_types: params[:role_type] }) if params[:role_type].present?
 
     job_applications
