@@ -1,0 +1,36 @@
+<div class="bg-white rounded-lg shadow-sm border border-gray-200 p-5">
+  <h3 class="text-lg font-semibold text-gray-900 mb-4">Application Details</h3>
+
+  <div class="space-y-3">
+    <div class="flex justify-between">
+      <span class="text-gray-600">Application Date</span>
+      <span class="font-medium"><%= @application.display_applied_date %></span>
+    </div>
+
+    <% if @application.reviewed_at.present? %>
+      <div class="flex justify-between">
+        <span class="text-gray-600">Last Reviewed</span>
+        <span class="font-medium"><%= @application.display_reviewed_date %></span>
+      </div>
+
+      <% if @application.reviewed_by.present? %>
+        <div class="flex justify-between">
+          <span class="text-gray-600">Reviewed By</span>
+          <span class="font-medium"><%= @application.reviewed_by.display_name %></span>
+        </div>
+      <% end %>
+    <% end %>
+
+    <div class="flex justify-between">
+      <span class="text-gray-600">Views</span>
+      <span class="font-medium"><%= @application.view_count %></span>
+    </div>
+
+    <% if @application.is_quick_apply %>
+      <div class="flex justify-between">
+        <span class="text-gray-600">Application Type</span>
+        <span class="font-medium text-orange-600">Quick Apply</span>
+      </div>
+    <% end %>
+  </div>
+</div>

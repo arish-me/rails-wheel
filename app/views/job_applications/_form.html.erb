@@ -136,6 +136,26 @@
 
         <div class="p-6">
           <div class="space-y-4">
+            <!-- Current Resume (if editing) -->
+            <% if @application.resume.attached? %>
+              <div class="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center">
+                    <%= lucide_icon('file-text', class: 'w-5 h-5 text-blue-500 mr-2') %>
+                    <div>
+                      <p class="text-sm font-medium text-blue-900"><%= @application.resume.filename %></p>
+                      <p class="text-xs text-blue-700"><%= number_to_human_size(@application.resume.byte_size) %></p>
+                    </div>
+                  </div>
+                  <%= link_to rails_blob_path(@application.resume, disposition: 'attachment'),
+                      class: "text-xs text-blue-600 hover:text-blue-800 underline" do %>
+                    Download
+                  <% end %>
+                </div>
+                <p class="text-xs text-blue-600 mt-2">Upload a new file to replace the current resume</p>
+              </div>
+            <% end %>
+
             <div>
               <%= f.label :resume, "Upload Resume", class: "block text-sm font-medium text-gray-700 mb-2" %>
               <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg hover:border-gray-400 transition-colors duration-200">

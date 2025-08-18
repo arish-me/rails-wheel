@@ -1,4 +1,8 @@
 class JobApplication < ApplicationRecord
+  # ============================================================================
+  # ASSOCIATIONS
+  # ============================================================================
+  
   belongs_to :job
   belongs_to :candidate
   belongs_to :user
@@ -7,7 +11,10 @@ class JobApplication < ApplicationRecord
   # Active Storage
   has_one_attached :resume
 
-  # Validations
+  # ============================================================================
+  # VALIDATIONS
+  # ============================================================================
+  
   validates :job_id, uniqueness: { scope: :candidate_id, message: "You have already applied to this job" }
   validates :cover_letter, presence: true, length: { minimum: 50 }, unless: :is_quick_apply
   validates :portfolio_url, presence: true, if: :require_portfolio?
@@ -17,7 +24,10 @@ class JobApplication < ApplicationRecord
   # validates :resume, content_type: { in: ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'], message: 'must be a PDF, DOC, or DOCX file' }, if: :resume_attached?
   # validates :resume, size: { less_than: 10.megabytes, message: 'must be less than 10MB' }, if: :resume_attached?
 
-  # Enums
+  # ============================================================================
+  # ENUMS
+  # ============================================================================
+  
   enum :status, {
     applied: "applied",
     reviewing: "reviewing",
@@ -28,7 +38,10 @@ class JobApplication < ApplicationRecord
     withdrawn: "withdrawn"
   }
 
-  # Scopes
+  # ============================================================================
+  # SCOPES
+  # ============================================================================
+  
   scope :recent, -> { order(applied_at: :desc) }
   scope :by_status, ->(status) { where(status: status) }
   scope :by_job, ->(job) { where(job: job) }
@@ -38,23 +51,37 @@ class JobApplication < ApplicationRecord
   scope :unreviewed, -> { where(reviewed_at: nil) }
   scope :quick_applies, -> { where(is_quick_apply: true) }
   scope :with_cover_letter, -> { where(is_quick_apply: false) }
+  scope :with_applicant_details, -> { includes(:user, :candidate, :reviewed_by) }
+  scope :with_job_details, -> { includes(:job) }
 
-  # Callbacks
+  # ============================================================================
+  # CALLBACKS
+  # ============================================================================
+  
   before_create :set_applied_at
   after_create :increment_job_applications_count
   after_update :set_reviewed_at, if: :status_changed?
 
-  # Search
+  # ============================================================================
+  # SEARCH
+  # ============================================================================
+  
   pg_search_scope :search_by_content,
                   against: [ :cover_letter, :additional_notes ],
                   using: {
                     tsearch: { prefix: true }
                   }
 
-  # Constants
+  # ============================================================================
+  # CONSTANTS
+  # ============================================================================
+  
   STATUSES = statuses.keys.freeze
 
-  # Status methods
+  # ============================================================================
+  # STATUS METHODS
+  # ============================================================================
+  
   def applied?
     status == "applied"
   end
@@ -99,7 +126,10 @@ class JobApplication < ApplicationRecord
     !reviewed? && !withdrawn?
   end
 
-  # Display methods
+  # ============================================================================
+  # DISPLAY METHODS
+  # ============================================================================
+  
   def display_status
     status&.titleize
   end
@@ -112,7 +142,14 @@ class JobApplication < ApplicationRecord
     reviewed_at&.strftime("%B %d, %Y")
   end
 
-  # Action methods
+  def display_application_type
+    is_quick_apply? ? "Quick Apply" : "Standard Application"
+  end
+
+  # ============================================================================
+  # ACTION METHODS
+  # ============================================================================
+  
   def mark_as_reviewed!(reviewer)
     update!(
       reviewed_at: Time.current,
@@ -129,7 +166,10 @@ class JobApplication < ApplicationRecord
     update!(last_viewed_at: Time.current)
   end
 
-  # External integration methods
+  # ============================================================================
+  # EXTERNAL INTEGRATION METHODS
+  # ============================================================================
+  
   def external_url
     return nil unless external_id.present? && external_source.present?
 
@@ -143,9 +183,9 @@ class JobApplication < ApplicationRecord
     end
   end
 
-  def display_application_type
-    is_quick_apply? ? "Quick Apply" : "Standard Application"
-  end
+  # ============================================================================
+  # PRIVATE METHODS
+  # ============================================================================
 
   private
 

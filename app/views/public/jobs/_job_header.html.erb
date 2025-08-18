@@ -101,7 +101,7 @@
           Already Applied
         </span>
 
-        <%= link_to job_job_application_path(@job, @job.job_applications_candidate(current_user.candidate)),
+        <%= link_to job_job_application_path(@job, @job.application_for(current_user.candidate)),
             class: "inline-flex items-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200" do %>
           <%= lucide_icon('send', class: 'w-4 h-4 mr-2') %>
           View Your Application

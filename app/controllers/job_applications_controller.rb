@@ -2,18 +2,18 @@ class JobApplicationsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_job
   before_action :set_application, only: [ :show, :edit, :update, :destroy, :withdraw, :update_status, :success, :re_apply ]
+  before_action :authorize_application_access, only: [ :show, :edit, :update, :withdraw, :re_apply ]
+  before_action :authorize_company_access, only: [ :index, :update_status ]
+
+  # ============================================================================
+  # ACTIONS
+  # ============================================================================
 
   def index
-    # For company users - show all applications for their job
-    if current_user.company == @job.company
-      @pagy, @applications = pagy(
-        @job.job_applications.includes(:candidate, :user, :reviewed_by)
-             .order(applied_at: :desc),
-        items: 20
-      )
-    else
-      redirect_to root_path, alert: "You don't have permission to view these applications."
-    end
+    @pagy, @applications = pagy(
+      @job.job_applications.with_applicant_details.recent,
+      items: 20
+    )
   end
 
   def show
@@ -43,22 +43,15 @@ class JobApplicationsController < ApplicationController
   end
 
   def create
-    # Check if user already applied
-    if @job.has_applicant?(current_user.candidate)
-      redirect_to @job, alert: "You have already applied to this job."
-      return
-    end
-
-    @application = @job.job_applications.build(application_params)
-    @application.candidate = current_user.candidate
-    @application.user = current_user
+    @application = @job.job_applications.build
+    @service = JobApplicationService.new(@application, current_user)
+    result = @service.create_application(application_params)
+    
     respond_to do |format|
-      if @application.save
-        format.html { redirect_to success_job_job_application_path(@job, @application), notice: "Your application was submitted successfully!" }
-        # format.turbo_stream { render turbo_stream: turbo_stream.redirect(success_job_job_application_path(@job, @application)) }
+      if result.success?
+        format.html { redirect_to success_job_job_application_path(@job, @application), notice: result.message }
       else
         format.html { render :new, status: :unprocessable_entity }
-        # format.turbo_stream { render turbo_stream: turbo_stream.replace("application_form", partial: "form") }
       end
     end
   end
@@ -67,20 +60,17 @@ class JobApplicationsController < ApplicationController
     # Only allow editing if it's the user's own application and it's still in early stages
     unless @application.user == current_user && @application.can_be_withdrawn?
       redirect_to @application, alert: "You can't edit this application."
-      nil
+      return
     end
   end
 
   def update
-    # Only allow updating if it's the user's own application and it's still in early stages
-    unless @application.user == current_user && @application.can_be_withdrawn?
-      redirect_to @application, alert: "You can't update this application."
-      return
-    end
+    @service = JobApplicationService.new(@application, current_user)
+    result = @service.update_application(application_params)
 
     respond_to do |format|
-      if @application.update(application_params)
-        format.html { redirect_to @application, notice: "Application was successfully updated." }
+      if result.success?
+        format.html { redirect_to @application, notice: result.message }
         format.turbo_stream { render turbo_stream: turbo_stream.redirect(@application) }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -90,40 +80,21 @@ class JobApplicationsController < ApplicationController
   end
 
   def withdraw
-    if @application.user == current_user && @application.can_be_withdrawn?
-      @application.withdraw!
-      redirect_to public_job_path(@job), notice: "Your application has been withdrawn."
-    else
-      redirect_to @application, alert: "You can't withdraw this application."
-    end
+    @service = JobApplicationService.new(@application, current_user)
+    result = @service.withdraw_application
+    redirect_to public_job_path(@job), notice: result.message
   end
 
   def re_apply
-    if @application.user == current_user && @application.can_be_re_apply?
-      @application.applied!
-      redirect_to public_job_path(@job), notice: "Your application has been resume."
-    else
-      redirect_to @application, alert: "You can't re-apply this application."
-    end
+    @service = JobApplicationService.new(@application, current_user)
+    result = @service.re_apply
+    redirect_to public_job_path(@job), notice: result.message
   end
 
   def update_status
-    # Only company users can update application status
-    unless current_user.company == @job.company
-      redirect_to @application, alert: "You don't have permission to update this application."
-      return
-    end
-    new_status = params[:status]
-    if JobApplication::STATUSES.include?(new_status)
-      @application.update!(
-        status: new_status,
-        status_notes: params[:status_notes],
-        reviewed_by: current_user
-      )
-      redirect_to job_job_application_path(@job, @application), notice: "Application status updated to #{new_status.titleize}."
-    else
-      redirect_to @application, alert: "Invalid status."
-    end
+    @service = JobApplicationService.new(@application, current_user)
+    result = @service.update_status(params[:status], params[:status_notes], current_user)
+    redirect_to job_job_application_path(@job, @application), notice: result.message
   end
 
   def destroy
@@ -133,6 +104,10 @@ class JobApplicationsController < ApplicationController
     # This action will be handled by the view
   end
 
+  # ============================================================================
+  # PRIVATE METHODS
+  # ============================================================================
+
   private
 
   def set_job
@@ -140,7 +115,19 @@ class JobApplicationsController < ApplicationController
   end
 
   def set_application
-    @application = @job.job_applications.find(params[:id])
+    @application = @job.job_applications.with_applicant_details.find(params[:id])
+  end
+
+  def authorize_application_access
+    unless @application.user == current_user || current_user.company == @job.company
+      redirect_to root_path, alert: "You don't have permission to access this application."
+    end
+  end
+
+  def authorize_company_access
+    unless current_user.company == @job.company
+      redirect_to root_path, alert: "You don't have permission to view these applications."
+    end
   end
 
   def application_params

@@ -1,0 +1,31 @@
+<div class="bg-white rounded-lg shadow-sm border border-gray-200 p-5">
+  <h3 class="text-lg font-semibold text-gray-900 mb-4">Actions</h3>
+
+  <div class="space-y-3">
+    <% if @application.user == current_user %>
+      <% if @application.can_be_withdrawn? %>
+        <%= link_to withdraw_job_job_application_path(@job, @application),
+            data: { turbo_confirm: "Are you sure you want to withdraw your application?", turbo_method: :patch },
+            class: "w-full inline-flex justify-center items-center px-4 py-2 border border-red-300 rounded-md shadow-sm text-sm font-medium text-red-700 bg-white hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500" do %>
+          <%= lucide_icon('x-circle', class: 'w-4 h-4 mr-2') %>
+          Withdraw Application
+        <% end %>
+      <% elsif @application.can_be_re_apply? %>
+        <%= link_to re_apply_job_job_application_path(@job, @application),
+            data: { turbo_confirm: "Are you sure you want to resume your application?", turbo_method: :patch },
+            class: "w-full inline-flex justify-center items-center px-4 py-2 border border-red-300 rounded-md shadow-sm text-sm font-medium text-red-700 bg-white hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500" do %>
+          <%= lucide_icon('x-circle', class: 'w-4 h-4 mr-2') %>
+          Re-Apply
+        <% end %>
+      <% end %>
+
+      <% if @application.user == current_user && @application.can_be_withdrawn? %>
+        <%= link_to edit_job_job_application_path(@job, @application),
+            class: "w-full inline-flex justify-center items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500" do %>
+          <%= lucide_icon('edit', class: 'w-4 h-4 mr-2') %>
+          Edit Application
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,27 @@
+<div class="bg-white rounded-lg shadow-sm border border-gray-200 p-5">
+  <h2 class="text-lg font-semibold text-gray-900 mb-4">Applicant Information</h2>
+
+  <div class="flex items-start space-x-4">
+    <div class="flex-shrink-0">
+      <% if @application.user.avatar.attached? %>
+        <%= image_tag @application.user.avatar.variant(:small), class: "w-16 h-16 rounded-full" %>
+      <% else %>
+        <div class="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center">
+          <span class="text-gray-500 font-semibold text-lg"><%= @application.user.initials %></span>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="flex-1">
+      <h3 class="text-lg font-medium text-gray-900"><%= @application.user.display_name %></h3>
+      <p class="text-gray-600"><%= @application.user.email %></p>
+      <p class="text-sm text-gray-500">Applied <%= @application.display_applied_date %></p>
+      <% if @application.candidate.location.present? %>
+        <p class="text-sm text-gray-500 mt-1">
+          <%= lucide_icon('map-pin', class: 'w-4 h-4 inline mr-1') %>
+          <%= @application.candidate.location.location_search %>
+        </p>
+      <% end %>
+    </div>
+  </div>
+</div>
