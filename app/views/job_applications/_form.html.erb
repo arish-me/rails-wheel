@@ -274,11 +274,12 @@
         </div>
 
         <div class="flex items-center space-x-3">
-          <%= link_to public_job_path(@job),
-              class: "inline-flex items-center px-6 py-3 border border-gray-300 rounded-lg shadow-sm text-base font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200" do %>
-            <%= lucide_icon('x', class: 'w-4 h-4 mr-2') %>
-            Cancel
-          <% end %>
+          <%= render LinkComponent.new(
+              text: "Cancel",
+              variant: :outline,
+              icon: "x",
+              href: public_job_path(@job)
+            ) %>
 
           <%= f.submit @application.new_record? ? 'Submit Application' : 'Update Application',
               class: "inline-flex items-center px-8 py-3 border border-transparent rounded-lg shadow-sm text-base font-semibold text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200",
