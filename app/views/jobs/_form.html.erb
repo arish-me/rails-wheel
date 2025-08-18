@@ -1,375 +1,344 @@
 <div class="min-h-screen bg-gray-50 py-6">
-  <div class="max-w-4xl mx-auto">
-    <!-- Header Section -->
-    <%= render 'form_header' %>
-
-    <%= styled_form_with model: @job, class: "space-y-4", data: { controller: "job-location" } do |f| %>
-      <% if @job.errors.any? %>
-        <div class="bg-red-50 border border-red-200 rounded-lg p-3 mb-4">
-          <%= render "shared/form_errors", model: @job %>
-        </div>
-      <% end %>
-      
-      <!-- Basic Information Section -->
-      <%= render 'form_section', 
-          title: 'Basic Information', 
+	<div class="max-w-4xl mx-auto">
+		<!-- Header Section -->
+		<%= render 'form_header' %>
+		<%= styled_form_with model: @job, class: "space-y-4", data: { controller: "job-location" } do |f| %>
+			<% if @job.errors.any? %>
+				<div class="bg-red-50 border border-red-200 rounded-lg p-3 mb-4">
+					<%= render "shared/form_errors", model: @job %>
+				</div>
+			<% end %>
+			<!-- Basic Information Section -->
+			<%= render 'form_section',
+          title: 'Basic Information',
           description: 'Start with the essential details about the position',
           color: 'blue',
           icon_path: 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z' do %>
-        <div class="space-y-4">
-          <div>
-            <%= f.text_field :title,
+				<div class="space-y-4">
+					<div>
+						<%= f.text_field :title,
                 label: 'Job Title',
                 placeholder: 'e.g. Senior Ruby Developer, Product Manager, UX Designer'%>
-            <p class="mt-1 text-xs text-gray-500">Be specific and use industry-standard titles</p>
-          </div>
-
-          <div>
-            <%= f.rich_textarea :description,
+						<p class="mt-1 text-xs text-gray-500">Be specific and use industry-standard titles</p>
+					</div>
+					<div>
+						<%= f.rich_textarea :description,
                 label: 'Job Description',
                 placeholder: 'Describe the role, responsibilities, and what makes this position exciting. Include key responsibilities, required skills, and what success looks like in this role...',
                 rows: 6 %>
-          </div>
-        </div>
-      <% end %>
-
-      <!-- Job Details Section -->
-      <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-        <div class="px-6 py-4 bg-gradient-to-r from-green-50 to-emerald-50 border-b border-gray-200">
-          <div class="flex items-center">
-            <div class="flex-shrink-0">
-              <div class="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center">
-                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
-                </svg>
-              </div>
-            </div>
-            <div class="ml-4">
-              <h3 class="text-lg font-semibold text-gray-900">Job Details</h3>
-              <p class="text-sm text-gray-600">Define the role type, level, and required skills</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="p-6 space-y-6">
-          <!-- Skills and Roles -->
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Required Skills</label>
-              <div data-controller="multi-select"
+					</div>
+				</div>
+			<% end %>
+			<!-- Job Details Section -->
+			<div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+				<div class="px-6 py-4 bg-gradient-to-r from-green-50 to-emerald-50 border-b border-gray-200">
+					<div class="flex items-center">
+						<div class="flex-shrink-0">
+							<div class="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center">
+								<svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+								</svg>
+							</div>
+						</div>
+						<div class="ml-4">
+							<h3 class="text-lg font-semibold text-gray-900">Job Details</h3>
+							<p class="text-sm text-gray-600">Define the role type, level, and required skills</p>
+						</div>
+					</div>
+				</div>
+				<div class="p-6 space-y-6">
+					<!-- Skills and Roles -->
+					<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+						<div>
+							<label class="block text-sm font-medium text-gray-700 mb-2">Required Skills</label>
+							<div data-controller="multi-select"
                    data-multi-select-max-items-value="10"
                    data-multi-select-placeholder-value="Select up to 10 skills"
                    data-multi-select-remove-item-button-value="true"
                    data-multi-select-search-enabled-value="true"
                    class="relative">
-                <%= f.select :skill_ids,
+								<%= f.select :skill_ids,
                     options_from_collection_for_select(@skills || [], :id, :name, selected: @job&.skill_ids),
                     {},
                     multiple: true,
                     data: { multi_select_target: "select" }
                      %>
-              </div>
-              <p class="mt-1 text-sm text-gray-500">Select the most relevant skills for this position</p>
-            </div>
-
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Role Specializations</label>
-              <div data-controller="multi-select"
+							</div>
+							<p class="mt-1 text-sm text-gray-500">Select the most relevant skills for this position</p>
+						</div>
+						<div>
+							<label class="block text-sm font-medium text-gray-700 mb-2">Role Specializations</label>
+							<div data-controller="multi-select"
                    data-multi-select-max-items-value="5"
                    data-multi-select-placeholder-value="Select up to 5 specializations"
                    data-multi-select-remove-item-button-value="true"
                    data-multi-select-search-enabled-value="true"
                    class="relative">
-                <%= f.select :candidate_role_ids,
+								<%= f.select :candidate_role_ids,
                     options_from_collection_for_select(@candidate_role_groups.flat_map(&:candidate_roles), :id, :name, selected: @job&.candidate_role_ids),
                     {},
                     multiple: true,
                     data: { multi_select_target: "select" }
                 %>
-              </div>
-              <p class="mt-1 text-sm text-gray-500">Choose relevant role categories</p>
-            </div>
-          </div>
-
-          <!-- Job Type, Level, and Remote Policy -->
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div>
-              <%= f.select :role_type,
+							</div>
+							<p class="mt-1 text-sm text-gray-500">Choose relevant role categories</p>
+						</div>
+					</div>
+					<!-- Job Type, Level, and Remote Policy -->
+					<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+						<div>
+							<%= f.select :role_type,
                   RoleType::TYPES.map { |type| [type.to_s.titleize, type] },
                   { label: 'Job Type' }
                   %>
-            </div>
-
-            <div>
-              <%= f.select :role_level,
+						</div>
+						<div>
+							<%= f.select :role_level,
                   RoleLevel::TYPES.map { |level| [level.to_s.titleize, level] },
                   { label: 'Experience Level' }
                    %>
-            </div>
-
-            <div>
-              <%= f.select :remote_policy,
+						</div>
+						<div>
+							<%= f.select :remote_policy,
                   Job::REMOTE_POLICIES.map { |policy| [policy.titleize, policy] },
                   { label: 'Remote Policy' }
                    %>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Salary Information Section -->
-      <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-        <div class="px-6 py-4 bg-gradient-to-r from-yellow-50 to-amber-50 border-b border-gray-200">
-          <div class="flex items-center">
-            <div class="flex-shrink-0">
-              <div class="w-8 h-8 bg-yellow-600 rounded-full flex items-center justify-center">
-                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"/>
-                </svg>
-              </div>
-            </div>
-            <div class="ml-4">
-              <h3 class="text-lg font-semibold text-gray-900">Salary Information</h3>
-              <p class="text-sm text-gray-600">Set competitive compensation details</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="p-6">
-          <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div>
-              <%= f.number_field :salary_min,
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- Salary Information Section -->
+			<div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+				<div class="px-6 py-4 bg-gradient-to-r from-yellow-50 to-amber-50 border-b border-gray-200">
+					<div class="flex items-center">
+						<div class="flex-shrink-0">
+							<div class="w-8 h-8 bg-yellow-600 rounded-full flex items-center justify-center">
+								<svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"/>
+								</svg>
+							</div>
+						</div>
+						<div class="ml-4">
+							<h3 class="text-lg font-semibold text-gray-900">Salary Information</h3>
+							<p class="text-sm text-gray-600">Set competitive compensation details</p>
+						</div>
+					</div>
+				</div>
+				<div class="p-6">
+					<div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+						<div>
+							<%= f.number_field :salary_min,
                   label: 'Minimum Salary',
                   placeholder: '50000',
                   step: '0.01',
                   class: 'block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500' %>
-            </div>
-
-            <div>
-              <%= f.number_field :salary_max,
+						</div>
+						<div>
+							<%= f.number_field :salary_max,
                   label: 'Maximum Salary',
                   placeholder: '80000',
                   step: '0.01',
                   class: 'block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500' %>
-            </div>
-
-            <div>
-              <%= f.select :salary_currency,
+						</div>
+						<div>
+							<%= f.select :salary_currency,
                   [['USD ($)', 'USD'], ['EUR (€)', 'EUR'], ['GBP (£)', 'GBP'], ['CAD (C$)', 'CAD']],
                   { label: 'Currency' },
                   class: 'block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500' %>
-            </div>
-
-            <div>
-              <%= f.select :salary_period,
+						</div>
+						<div>
+							<%= f.select :salary_period,
                   Job::SALARY_PERIODS.map { |period| [period.titleize, period] },
                   { label: 'Period' },
                   class: 'block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500' %>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Location Section -->
-      <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-        <div class="px-6 py-4 bg-gradient-to-r from-purple-50 to-pink-50 border-b border-gray-200">
-          <div class="flex items-center">
-            <div class="flex-shrink-0">
-              <div class="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center">
-                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                </svg>
-              </div>
-            </div>
-            <div class="ml-4">
-              <h3 class="text-lg font-semibold text-gray-900">Location</h3>
-              <p class="text-sm text-gray-600">Where is this position located?</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="p-6 space-y-6">
-          <!-- Worldwide Checkbox -->
-          <div class="flex items-center p-4 bg-blue-50 rounded-lg border border-blue-200">
-            <%= f.check_box :worldwide,
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- Location Section -->
+			<div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+				<div class="px-6 py-4 bg-gradient-to-r from-purple-50 to-pink-50 border-b border-gray-200">
+					<div class="flex items-center">
+						<div class="flex-shrink-0">
+							<div class="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center">
+								<svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+								</svg>
+							</div>
+						</div>
+						<div class="ml-4">
+							<h3 class="text-lg font-semibold text-gray-900">Location</h3>
+							<p class="text-sm text-gray-600">Where is this position located?</p>
+						</div>
+					</div>
+				</div>
+				<div class="p-6 space-y-6">
+					<!-- Worldwide Checkbox -->
+					<div class="flex items-center p-4 bg-blue-50 rounded-lg border border-blue-200">
+						<%= f.check_box :worldwide,
                 class: "h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded",
-                data: { 
+                data: {
                   job_location_target: "worldwideCheckbox",
                   action: "change->job-location#worldwideChanged"
                 } %>
-            <div class="ml-3">
-              <%= f.label :worldwide, class: "text-sm font-medium text-gray-900" do %>
-                <span class="font-semibold">Worldwide Position</span>
-                <p class="text-sm text-gray-600 mt-1">This job can be performed from anywhere in the world</p>
-              <% end %>
-            </div>
-          </div>
-
-          <!-- Location Field -->
-          <%= f.fields_for :location, include_id: false do |location| %>
-            <div data-job-location-target="locationSection" class="transition-all duration-200">
-              <div class="form-field pr-0 combobox">
-                <%= location.combobox :location_search,
+						<div class="ml-3">
+							<%= f.label :worldwide, class: "text-sm font-medium text-gray-900" do %>
+								<span class="font-semibold">Worldwide Position</span>
+								<p class="text-sm text-gray-600 mt-1">This job can be performed from anywhere in the world</p>
+							<% end %>
+						</div>
+					</div>
+					<!-- Location Field -->
+					<div data-job-location-target="locationSection" class="transition-all duration-200">
+						<%= f.fields_for :location, include_id: false do |location| %>
+							<div class="form-field pr-0 combobox">
+								<%= location.combobox :location_search,
                     locations_city_suggestions_path,
                     id: "location-search-combobox",
                     label: 'Job Location',
                     placeholder: 'Enter location e.g. San Francisco, California, United States',
                     data: { job_location_target: "locationField" } %>
-                <p class="mt-1 text-sm text-gray-500">Be specific to help candidates understand the work location</p>
-              </div>
-            </div>
-          <% end %>
-        </div>
-      </div>
-
-      <!-- Application Settings Section -->
-      <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-        <div class="px-6 py-4 bg-gradient-to-r from-indigo-50 to-blue-50 border-b border-gray-200">
-          <div class="flex items-center">
-            <div class="flex-shrink-0">
-              <div class="w-8 h-8 bg-indigo-600 rounded-full flex items-center justify-center">
-                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                </svg>
-              </div>
-            </div>
-            <div class="ml-4">
-              <h3 class="text-lg font-semibold text-gray-900">Application Settings</h3>
-              <p class="text-sm text-gray-600">Configure how candidates can apply</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="p-6 space-y-6">
-          <div class="space-y-4">
-            <div class="flex items-center p-4 bg-gray-50 rounded-lg">
-              <%= f.check_box :allow_cover_letter,
+								<p class="mt-1 text-sm text-gray-500">Be specific to help candidates understand the work location</p>
+							</div>
+						</div>
+					<% end %>
+				</div>
+			</div>
+			<!-- Application Settings Section -->
+			<div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+				<div class="px-6 py-4 bg-gradient-to-r from-indigo-50 to-blue-50 border-b border-gray-200">
+					<div class="flex items-center">
+						<div class="flex-shrink-0">
+							<div class="w-8 h-8 bg-indigo-600 rounded-full flex items-center justify-center">
+								<svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+								</svg>
+							</div>
+						</div>
+						<div class="ml-4">
+							<h3 class="text-lg font-semibold text-gray-900">Application Settings</h3>
+							<p class="text-sm text-gray-600">Configure how candidates can apply</p>
+						</div>
+					</div>
+				</div>
+				<div class="p-6 space-y-6">
+					<div class="space-y-4">
+						<div class="flex items-center p-4 bg-gray-50 rounded-lg">
+							<%= f.check_box :allow_cover_letter,
                   class: "h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" %>
-              <div class="ml-3">
-                <%= f.label :allow_cover_letter, class: "text-sm font-medium text-gray-900" %>
-                <p class="text-sm text-gray-500">Allow candidates to submit a cover letter</p>
-              </div>
-            </div>
-
-            <div class="flex items-center p-4 bg-gray-50 rounded-lg">
-              <%= f.check_box :require_portfolio,
+							<div class="ml-3">
+								<%= f.label :allow_cover_letter, class: "text-sm font-medium text-gray-900" %>
+								<p class="text-sm text-gray-500">Allow candidates to submit a cover letter</p>
+							</div>
+						</div>
+						<div class="flex items-center p-4 bg-gray-50 rounded-lg">
+							<%= f.check_box :require_portfolio,
                   class: "h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" %>
-              <div class="ml-3">
-                <%= f.label :require_portfolio, class: "text-sm font-medium text-gray-900" %>
-                <p class="text-sm text-gray-500">Require candidates to provide a portfolio URL</p>
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <%= f.rich_textarea :application_instructions,
+							<div class="ml-3">
+								<%= f.label :require_portfolio, class: "text-sm font-medium text-gray-900" %>
+								<p class="text-sm text-gray-500">Require candidates to provide a portfolio URL</p>
+							</div>
+						</div>
+					</div>
+					<div>
+						<%= f.rich_textarea :application_instructions,
                 label: 'Application Instructions',
                 placeholder: 'Provide specific instructions for applicants. For example: "Please include a brief cover letter explaining why you\'re interested in this role and how your experience aligns with our requirements."',
                 rows: 4 %>
-          </div>
-        </div>
-      </div>
-
-      <!-- Publishing Section -->
-      <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-        <div class="px-6 py-4 bg-gradient-to-r from-emerald-50 to-teal-50 border-b border-gray-200">
-          <div class="flex items-center">
-            <div class="flex-shrink-0">
-              <div class="w-8 h-8 bg-emerald-600 rounded-full flex items-center justify-center">
-                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
-                </svg>
-              </div>
-            </div>
-            <div class="ml-4">
-              <h3 class="text-lg font-semibold text-gray-900">Publishing</h3>
-              <p class="text-sm text-gray-600">Control when and how your job is published</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="p-6 space-y-6">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <%= f.select :status,
+					</div>
+				</div>
+			</div>
+			<!-- Publishing Section -->
+			<div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+				<div class="px-6 py-4 bg-gradient-to-r from-emerald-50 to-teal-50 border-b border-gray-200">
+					<div class="flex items-center">
+						<div class="flex-shrink-0">
+							<div class="w-8 h-8 bg-emerald-600 rounded-full flex items-center justify-center">
+								<svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+								</svg>
+							</div>
+						</div>
+						<div class="ml-4">
+							<h3 class="text-lg font-semibold text-gray-900">Publishing</h3>
+							<p class="text-sm text-gray-600">Control when and how your job is published</p>
+						</div>
+					</div>
+				</div>
+				<div class="p-6 space-y-6">
+					<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+						<div>
+							<%= f.select :status,
                   Job::STATUSES.map { |status| [status.titleize, status] },
                   { label: 'Status' },
                   class: 'block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500' %>
-            </div>
-
-            <div>
-              <%= f.datetime_field :expires_at,
+						</div>
+						<div>
+							<%= f.datetime_field :expires_at,
                   label: 'Expires At',
                   class: 'block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500' %>
-            </div>
-          </div>
-
-          <div class="flex items-center p-4 bg-gray-50 rounded-lg">
-            <%= f.check_box :featured,
+						</div>
+					</div>
+					<div class="flex items-center p-4 bg-gray-50 rounded-lg">
+						<%= f.check_box :featured,
                 class: "h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" %>
-            <div class="ml-3">
-              <%= f.label :featured, class: "text-sm font-medium text-gray-900" %>
-              <p class="text-sm text-gray-500">Feature this job prominently in search results</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- External Integration Section (Collapsible) -->
-      <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-        <div class="px-6 py-4 bg-gradient-to-r from-slate-50 to-gray-50 border-b border-gray-200">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center">
-              <div class="ml-4">
-                <h3 class="text-lg font-semibold text-gray-900">External Integration (Optional)</h3>
-                <p class="text-sm text-gray-600">Connect with external job boards</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div id="external-section" class="p-6 space-y-6">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <%= f.text_field :external_id,
+						<div class="ml-3">
+							<%= f.label :featured, class: "text-sm font-medium text-gray-900" %>
+							<p class="text-sm text-gray-500">Feature this job prominently in search results</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- External Integration Section (Collapsible) -->
+			<div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+				<div class="px-6 py-4 bg-gradient-to-r from-slate-50 to-gray-50 border-b border-gray-200">
+					<div class="flex items-center justify-between">
+						<div class="flex items-center">
+							<div class="ml-4">
+								<h3 class="text-lg font-semibold text-gray-900">External Integration (Optional)</h3>
+								<p class="text-sm text-gray-600">Connect with external job boards</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="external-section" class="p-6 space-y-6">
+					<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+						<div>
+							<%= f.text_field :external_id,
                   label: 'External ID',
                   placeholder: 'For external job board integration',
                   class: 'block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500' %>
-              <p class="mt-1 text-sm text-gray-500">Unique identifier from external job board</p>
-            </div>
-
-            <div>
-              <%= f.select :external_source,
+							<p class="mt-1 text-sm text-gray-500">Unique identifier from external job board</p>
+						</div>
+						<div>
+							<%= f.select :external_source,
                   [['LinkedIn', 'linkedin'], ['Indeed', 'indeed'], ['Glassdoor', 'glassdoor'], ['ZipRecruiter', 'ziprecruiter']],
                   { include_blank: 'Select source', label: 'External Source' },
                   class: 'block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500' %>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Action Buttons -->
-      <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-        <div class="flex items-center justify-between">
-          <div class="flex items-center space-x-4">
-            <%= link_to jobs_path,
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- Action Buttons -->
+			<div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+				<div class="flex items-center justify-between">
+					<div class="flex items-center space-x-4">
+						<%= link_to jobs_path,
                 class: "inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" do %>
-              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
-              </svg>
-              Cancel
-            <% end %>
-          </div>
-
-          <div class="flex items-center space-x-3">
-            <%= f.submit @job.new_record? ? 'Create Job Posting' : 'Update Job Posting',
+							<svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+							</svg>
+							Cancel
+						<% end %>
+					</div>
+					<div class="flex items-center space-x-3">
+						<%= f.submit @job.new_record? ? 'Create Job Posting' : 'Update Job Posting',
                 class: "inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500",
                 data: { full_width: false } %>
-          </div>
-        </div>
-      </div>
-    <% end %>
-  </div>
+					</div>
+				</div>
+			</div>
+		<% end %>
+	</div>
 </div>
-

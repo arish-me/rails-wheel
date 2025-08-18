@@ -73,9 +73,9 @@ module JobFilterable
                        .where(jobs: { status: "published" })
                        .distinct
                        .order(:name)
-    
+
     @locations = Job.published.active
-                   .where.not(location: [nil, ""])
+                   .where.not(location: [ nil, "" ])
                    .distinct
                    .pluck(:location)
                    .compact

@@ -2,10 +2,10 @@ class JobsController < ApplicationController
   include JobAuthorizable
 
   before_action :authenticate_user!
-  before_action :set_job, only: [:show, :edit, :update, :destroy, :publish, :close]
-  before_action :authorize_job_access, only: [:show, :edit, :update, :destroy, :publish, :close]
-  before_action :load_skills, only: [:new, :edit, :create, :update]
-  before_action :authorize_job_creation, only: [:new, :create]
+  before_action :set_job, only: [ :show, :edit, :update, :destroy, :publish, :close ]
+  before_action :authorize_job_access, only: [ :show, :edit, :update, :destroy, :publish, :close ]
+  before_action :load_skills, only: [ :new, :edit, :create, :update ]
+  before_action :authorize_job_creation, only: [ :new, :create ]
 
   # ============================================================================
   # ACTIONS
@@ -89,7 +89,7 @@ class JobsController < ApplicationController
   private
 
   def set_job
-    @job = Job.with_company.friendly.find(params[:id])
+    @job = Job.friendly.find(params[:id])
   end
 
   def load_skills

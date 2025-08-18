@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   static targets = ["worldwideCheckbox", "locationSection", "locationField"]
-  static values = { 
+  static values = {
     worldwide: Boolean,
     requireLocation: { type: Boolean, default: true }
   }
@@ -18,7 +18,7 @@ export default class extends Controller {
 
   toggleLocationSection() {
     const isWorldwide = this.worldwideCheckboxTarget.checked
-    
+
     if (isWorldwide) {
       this.locationSectionTarget.classList.add('opacity-50', 'pointer-events-none')
       this.locationFieldTarget.disabled = true
@@ -31,7 +31,7 @@ export default class extends Controller {
 
   updateValidation() {
     const isWorldwide = this.worldwideCheckboxTarget.checked
-    
+
     if (isWorldwide) {
       // Remove required validation when worldwide is true
       this.locationFieldTarget.removeAttribute('required')
@@ -48,20 +48,20 @@ export default class extends Controller {
   // Called before form submission to ensure validation
   beforeSubmit(event) {
     const isWorldwide = this.worldwideCheckboxTarget.checked
-    
+
     if (!isWorldwide && this.requireLocationValue) {
       const locationValue = this.locationFieldTarget.value.trim()
       if (!locationValue) {
         event.preventDefault()
         this.locationFieldTarget.classList.add('border-red-300', 'focus:border-red-500', 'focus:ring-red-500')
         this.locationFieldTarget.classList.remove('border-gray-300', 'focus:border-blue-500', 'focus:ring-blue-500')
-        
+
         // Show error message
         this.showLocationError()
         return false
       }
     }
-    
+
     return true
   }
 
@@ -76,7 +76,7 @@ export default class extends Controller {
     const errorDiv = document.createElement('div')
     errorDiv.className = 'location-error mt-2 text-sm text-red-600'
     errorDiv.textContent = 'Please enter a job location or select "Worldwide"'
-    
+
     this.locationFieldTarget.parentNode.appendChild(errorDiv)
   }
 }

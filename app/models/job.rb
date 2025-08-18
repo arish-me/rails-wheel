@@ -57,7 +57,7 @@ class Job < ApplicationRecord
 
   # Search
   pg_search_scope :search_by_title_and_description,
-                  against: [:title, :description, :requirements],
+                  against: [ :title, :description, :requirements ],
                   using: { tsearch: { prefix: true } }
 
   # Constants
@@ -152,6 +152,10 @@ class Job < ApplicationRecord
     published? || draft?
   end
 
+  def location
+    super || build_location
+  end
+
   # ============================================================================
   # DISPLAY METHODS
   # ============================================================================
@@ -169,7 +173,7 @@ class Job < ApplicationRecord
   end
 
   def display_location
-    [city, state, country].compact.join(", ")
+    [ city, state, country ].compact.join(", ")
   end
 
   def display_job_type
@@ -258,7 +262,7 @@ class Job < ApplicationRecord
   # ============================================================================
 
   def slug_candidates
-    [[:title, :company_name, :id]]
+    [ [ :title, :company_name, :id ] ]
   end
 
   def company_name
@@ -334,9 +338,9 @@ class Job < ApplicationRecord
   end
 
   def valid_for_publication?
-    title.present? && 
-    description.present? && 
-    expires_at.present? && 
+    title.present? &&
+    description.present? &&
+    expires_at.present? &&
     expires_at > Time.current &&
     (worldwide? || location_present?)
   end

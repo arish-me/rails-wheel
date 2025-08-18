@@ -1,8 +1,8 @@
 class Public::JobsController < ApplicationController
   include JobFilterable
 
-  before_action :set_filters, only: [:index]
-  before_action :set_job, only: [:show]
+  before_action :set_filters, only: [ :index ]
+  before_action :set_job, only: [ :show ]
 
   # ============================================================================
   # ACTIONS
