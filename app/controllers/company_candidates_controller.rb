@@ -8,7 +8,7 @@ class CompanyCandidatesController < ApplicationController
 
   def index
     # Base query - get job applications for company's jobs with candidate details
-    @job_applications = JobApplication.includes(:job, candidate: [ :user, :location ])
+    @job_applications = JobApplication.includes(:job, candidate: [ :user, :location, :role_level, :role_type ])
                                     .joins(:job)
                                     .where(jobs: { company: current_user.company })
 
@@ -124,8 +124,18 @@ class CompanyCandidatesController < ApplicationController
     job_applications = job_applications.where(job_id: params[:job_id]) if params[:job_id].present?
     job_applications = job_applications.joins(candidate: :location).where(locations: { city: params[:location] }) if params[:location].present?
     job_applications = job_applications.where(status: params[:status]) if params[:status].present?
-    job_applications = job_applications.joins(:candidate).where(candidates: { role_level: params[:experience_level] }) if params[:experience_level].present?
-    job_applications = job_applications.joins(:candidate).where(candidates: { role_types: params[:role_type] }) if params[:role_type].present?
+    
+    # Filter by RoleLevel (experience level)
+    if params[:experience_level].present?
+      job_applications = job_applications.joins(candidate: :role_level)
+                                       .where("role_levels.#{params[:experience_level]} = ?", true)
+    end
+    
+    # Filter by RoleType
+    if params[:role_type].present?
+      job_applications = job_applications.joins(candidate: :role_type)
+                                       .where("role_types.#{params[:role_type]} = ?", true)
+    end
 
     job_applications
   end

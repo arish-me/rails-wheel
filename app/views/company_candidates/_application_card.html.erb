@@ -31,11 +31,37 @@
       </div>
       
       <!-- Applied Jobs Count -->
-      <div class="flex items-center text-sm text-gray-600">
+      <div class="flex items-center text-sm text-gray-600 mb-2">
         <%= lucide_icon('briefcase', class: 'w-4 h-4 mr-2 text-gray-400') %>
         <% applied_jobs_count = job_application.candidate.job_applications.joins(:job).where(jobs: { company: current_user.company }).count %>
         <span>Applied Jobs (<%= applied_jobs_count %>)</span>
       </div>
+      
+      <!-- Role Level -->
+      <% if job_application.candidate.role_level.present? %>
+        <div class="flex items-center text-sm text-gray-600 mb-2">
+          <%= lucide_icon('trending-up', class: 'w-4 h-4 mr-2 text-gray-400') %>
+          <% role_levels = [] %>
+          <% role_levels << 'Junior' if job_application.candidate.role_level.junior? %>
+          <% role_levels << 'Mid' if job_application.candidate.role_level.mid? %>
+          <% role_levels << 'Senior' if job_application.candidate.role_level.senior? %>
+          <% role_levels << 'Principal' if job_application.candidate.role_level.principal? %>
+          <% role_levels << 'C-Level' if job_application.candidate.role_level.c_level? %>
+          <span><%= role_levels.join(', ') %></span>
+        </div>
+      <% end %>
+      
+      <!-- Role Type -->
+      <% if job_application.candidate.role_type.present? %>
+        <div class="flex items-center text-sm text-gray-600">
+          <%= lucide_icon('clock', class: 'w-4 h-4 mr-2 text-gray-400') %>
+          <% role_types = [] %>
+          <% role_types << 'Part Time Contract' if job_application.candidate.role_type.part_time_contract? %>
+          <% role_types << 'Full Time Contract' if job_application.candidate.role_type.full_time_contract? %>
+          <% role_types << 'Full Time Employment' if job_application.candidate.role_type.full_time_employment? %>
+          <span><%= role_types.join(', ') %></span>
+        </div>
+      <% end %>
     </div>
 
     <!-- Right Side - Actions and Info -->
