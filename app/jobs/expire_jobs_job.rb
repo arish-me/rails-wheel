@@ -3,15 +3,15 @@ class ExpireJobsJob < ApplicationJob
 
   def perform
     Rails.logger.info "Starting job expiration check..."
-    
+
     # Use the class method to expire jobs
     expired_count = Job.expire_expired_jobs
-    
+
     if expired_count > 0
       Rails.logger.info "Successfully expired #{expired_count} jobs"
-      
+
       # Optionally send notifications for expired jobs
-      Job.where(status: 'expired').where('updated_at >= ?', 1.minute.ago).each do |job|
+      Job.where(status: "expired").where("updated_at >= ?", 1.minute.ago).each do |job|
         notify_company_about_expired_job(job)
       end
     else

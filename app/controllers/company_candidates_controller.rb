@@ -29,9 +29,9 @@ class CompanyCandidatesController < ApplicationController
 
     # Get unique locations from jobs (not candidates) - standard ATS approach
     job_ids = current_user.company.jobs.pluck(:id)
-    @locations = Location.where(locatable_type: 'Job', locatable_id: job_ids)
-                        .select('DISTINCT city, state, country')
-                        .where.not(city: [nil, ''])
+    @locations = Location.where(locatable_type: "Job", locatable_id: job_ids)
+                        .select("DISTINCT city, state, country")
+                        .where.not(city: [ nil, "" ])
                         .order(:city)
   end
 
@@ -118,22 +118,22 @@ class CompanyCandidatesController < ApplicationController
 
   def apply_filters(job_applications)
     job_applications = job_applications.where(job_id: params[:job_id]) if params[:job_id].present?
-    
+
     # Filter by job location
     if params[:location].present?
       job_applications = job_applications.joins(:job)
                                        .joins("INNER JOIN locations ON locations.locatable_type = 'Job' AND locations.locatable_id = jobs.id")
                                        .where(locations: { city: params[:location] })
     end
-    
+
     job_applications = job_applications.where(status: params[:status]) if params[:status].present?
-    
+
     # Filter by RoleLevel (experience level)
     if params[:experience_level].present?
       job_applications = job_applications.joins(candidate: :role_level)
                                        .where("role_levels.#{params[:experience_level]} = ?", true)
     end
-    
+
     # Filter by RoleType
     if params[:role_type].present?
       job_applications = job_applications.joins(candidate: :role_type)

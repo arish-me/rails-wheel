@@ -16,7 +16,12 @@ module SeedData
         u.onboarded_at = Time.now.utc
       end
       user.skip_confirmation!
-      log "Finish Creating Plafrom user with email #{@email}"
+      if user.save
+        log "Finish Creating Plafrom user with email #{@email}"
+      else
+          log "Not able to seed Platform user with errors: #{user.errors.full_messages}"
+
+      end
     end
   end
 end

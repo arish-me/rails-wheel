@@ -118,6 +118,8 @@
           Applications Closed
         </span>
       <% end %>
+    <% elsif current_user.company %>
+
     <% else %>
       <%= link_to new_user_session_path,
           class: "inline-flex items-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200" do %>

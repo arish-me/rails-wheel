@@ -25,7 +25,7 @@
               frame: :modal,
             ) %>
         <% end %>
-        <% if can?(:invite, 'User') %>
+        <% if can?(:create, User, policy_class: Platform::UserPolicy) %>
           <%= render LinkComponent.new(
               text: "Invite User",
               variant: :secondary,

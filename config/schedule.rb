@@ -26,7 +26,7 @@ set :environment, Rails.env
 set :output, "log/cron.log"
 
 # Run job expiration check daily at 2 AM
-every 1.day, at: '2:00 am' do
+every 1.day, at: "2:00 am" do
   rake "jobs:expire"
 end
 

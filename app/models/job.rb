@@ -310,10 +310,10 @@ class Job < ApplicationRecord
   # ============================================================================
 
   def self.expire_expired_jobs
-    expired_jobs = published.where('expires_at <= ?', Time.current)
+    expired_jobs = published.where("expires_at <= ?", Time.current)
 
     if expired_jobs.any?
-      expired_jobs.update_all(status: 'expired', updated_at: Time.current)
+      expired_jobs.update_all(status: "expired", updated_at: Time.current)
       Rails.logger.info "Expired #{expired_jobs.count} jobs"
     end
 

@@ -162,6 +162,7 @@ Rails.application.routes.draw do
   # end
 
   resources :candidates
+  resources :experiences
   get "/locations/city_suggestions", to: "locations#city_suggestions"
 
   # Company candidates management

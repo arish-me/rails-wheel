@@ -39,7 +39,7 @@ class JobService
   def can_publish_job?
     return false unless user.present?
     return false unless user.company == job.company
-    return false unless (job.draft? || job.closed?)
+    return false unless job.draft? || job.closed?
     return false unless job.can_be_published?
     true
   end

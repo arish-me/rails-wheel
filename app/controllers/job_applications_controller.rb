@@ -69,7 +69,7 @@ class JobApplicationsController < ApplicationController
 
     respond_to do |format|
       if result.success
-        format.html { redirect_to [@job, @application], notice: result.message }
+        format.html { redirect_to [ @job, @application ], notice: result.message }
         # format.turbo_stream { render turbo_stream: turbo_stream.redirect([@job, @application]) }
       else
         format.html { render :edit, status: :unprocessable_entity }
