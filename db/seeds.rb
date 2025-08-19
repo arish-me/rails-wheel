@@ -21,6 +21,9 @@ SeedData::CandidateRoleService.call
 puts "🌐 Creating Skills"
 SeedData::SkillService.call
 
+puts "🌐 Seeding Candidates.."
+puts "👥 Seeding candidate data..."
+SeedData::CandidateDataSeeder.new(10).call
 
 puts "🌐 Seeding Jobs.."
 company = Company.find_by(name: "TTC Service")
