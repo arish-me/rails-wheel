@@ -40,6 +40,16 @@ class OnboardingsController < ApplicationController
       user_type = params[:user_type]
 
       if user_type.present? && %w[user company].include?(user_type)
+        # Validate email for company users
+        if user_type == 'company' && @user.email.present?
+          validation_result = EmailDomainValidator.validate_company_email(@user.email)
+          unless validation_result[:valid]
+            flash[:alert] = validation_result[:message]
+            render :looking_for, status: :unprocessable_entity
+            return
+          end
+        end
+        
         @user.update(user_type: user_type)
 
         # Ensure candidate is created for user type

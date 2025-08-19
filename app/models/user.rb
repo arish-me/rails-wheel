@@ -34,8 +34,10 @@ class User < ApplicationRecord
   accepts_nested_attributes_for :location, allow_destroy: true
   accepts_nested_attributes_for :candidate, allow_destroy: true
 
-  validates :first_name, presence: true, on: :update
-  validates :last_name, presence: true, on: :update
+  validates :first_name, presence: true, on: :update, unless: :oauth_user?
+  validates :last_name, presence: true, on: :update, unless: :oauth_user?
+  validates :email, presence: true, email: true
+  validate :company_email_validation, if: :company_user?
 
   pg_search_scope :search_by_email,
               against: :email,
@@ -101,7 +103,7 @@ class User < ApplicationRecord
   end
 
   def missing_fields?
-    first_name.present? && last_name.present? && avatar.attached? && location.present?
+    first_name.present? && last_name.present? && avatar.attached? && location.valid?
   end
 
   def attach_avatar(image_url)
@@ -198,6 +200,25 @@ class User < ApplicationRecord
 
   def needs_profile_completion?
     oauth_user? && (first_name.blank? || last_name.blank? || first_name == "User" || last_name == "User")
+  end
+
+  def company_user?
+    user_type == 'company'
+  end
+
+  def personal_user?
+    user_type == 'user'
+  end
+
+  private
+
+  def company_email_validation
+    return unless email.present?
+
+    validation_result = EmailDomainValidator.validate_company_email(email)
+    unless validation_result[:valid]
+      errors.add(:email, validation_result[:message])
+    end
   end
 
   protected

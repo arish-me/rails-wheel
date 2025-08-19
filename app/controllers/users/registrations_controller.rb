@@ -7,6 +7,15 @@ class Users::RegistrationsController < Devise::RegistrationsController
     build_resource(sign_up_params)
     resource.current_sign_in_ip_address = request.remote_ip
 
+    # Validate email for company users during signup
+    if resource.user_type == 'company' && resource.email.present?
+      validation_result = EmailDomainValidator.validate_company_email(resource.email)
+      unless validation_result[:valid]
+        resource.errors.add(:email, validation_result[:message])
+        render :new and return
+      end
+    end
+
     super
   end
 

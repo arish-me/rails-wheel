@@ -48,6 +48,7 @@ gem "hashid-rails"
 gem "phony_rails"
 gem "httparty"
 gem "friendly_id"
+gem "email_validator"
 
 
 group :development, :test do

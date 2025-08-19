@@ -34,6 +34,10 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
         # If user doesn't have user_type set, redirect to looking_for step
         sign_in user, event: :authentication
         redirect_to looking_for_onboarding_path, notice: "Welcome! Let's get you started."
+      elsif user.company_user? && EmailDomainValidator.personal_domain?(user.email)
+        # Company users with personal emails need to update their email
+        sign_in user, event: :authentication
+        redirect_to settings_profile_path, alert: "Company accounts require a business email address. Please update your email to continue."
       else
         sign_in_and_redirect user, event: :authentication
         set_flash_message(:notice, :success, kind: "Google") if is_navigational_format?
