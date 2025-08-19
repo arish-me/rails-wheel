@@ -408,4 +408,167 @@ RSpec.describe User, type: :model do
       expect(user.profile_image.variant(:small)).to be_present
     end
   end
+
+  describe 'user_type changes' do
+    let(:user) { create(:user, user_type: 'company') }
+
+    context 'when user_type changes from company to user' do
+      it 'creates a candidate record' do
+        expect { user.update(user_type: 'user') }.to change(Candidate, :count).by(1)
+        expect(user.candidate).to be_present
+      end
+    end
+
+    context 'when user_type changes from user to company' do
+      let(:user) { create(:user, user_type: 'user') }
+
+      before do
+        user.create_candidate
+      end
+
+      it 'destroys the candidate record' do
+        expect { user.update(user_type: 'company') }.to change(Candidate, :count).by(-1)
+        expect(user.candidate).to be_nil
+      end
+    end
+
+    context 'when user_type changes but candidate already exists' do
+      let(:user) { create(:user, user_type: 'user') }
+
+      before do
+        user.create_candidate
+      end
+
+      it 'does not create duplicate candidate' do
+        expect { user.update(user_type: 'user') }.not_to change(Candidate, :count)
+        expect(user.candidate).to be_present
+      end
+    end
+
+    context 'when user_type changes but no candidate exists' do
+      let(:user) { create(:user, user_type: 'company') }
+
+      it 'does not try to destroy non-existent candidate' do
+        expect { user.update(user_type: 'company') }.not_to change(Candidate, :count)
+        expect(user.candidate).to be_nil
+      end
+    end
+  end
+
+  describe '#ensure_candidate' do
+    let(:user) { create(:user, user_type: 'user') }
+
+    context 'when user is user type and has no candidate' do
+      it 'creates a candidate' do
+        expect { user.ensure_candidate }.to change(Candidate, :count).by(1)
+        expect(user.candidate).to be_present
+      end
+    end
+
+    context 'when user is user type and already has a candidate' do
+      before do
+        user.create_candidate
+      end
+
+      it 'does not create duplicate candidate' do
+        expect { user.ensure_candidate }.not_to change(Candidate, :count)
+        expect(user.candidate).to be_present
+      end
+    end
+
+    context 'when user is company type' do
+      let(:user) { create(:user, user_type: 'company') }
+
+      it 'does not create a candidate' do
+        expect { user.ensure_candidate }.not_to change(Candidate, :count)
+        expect(user.candidate).to be_nil
+      end
+    end
+  end
+
+  describe 'name validation during onboarding' do
+    let(:oauth_user) { create(:user, user_type: 'user', provider: 'google_oauth2', uid: '123456') }
+
+    context 'when OAuth user is in onboarding context' do
+      before do
+        oauth_user.in_onboarding_context = true
+        oauth_user.update_column(:onboarded_at, nil) # Ensure user needs onboarding
+      end
+
+      it 'requires first_name during onboarding' do
+        oauth_user.first_name = nil
+        expect(oauth_user).not_to be_valid
+        expect(oauth_user.errors[:first_name]).to include("is required to complete your profile")
+      end
+
+      it 'requires last_name during onboarding' do
+        oauth_user.last_name = nil
+        expect(oauth_user).not_to be_valid
+        expect(oauth_user.errors[:last_name]).to include("is required to complete your profile")
+      end
+
+      it 'is valid when both names are present' do
+        oauth_user.first_name = 'John'
+        oauth_user.last_name = 'Doe'
+        expect(oauth_user).to be_valid
+      end
+    end
+
+    context 'when OAuth user is not in onboarding context' do
+      before do
+        oauth_user.in_onboarding_context = false
+        oauth_user.update_column(:onboarded_at, Time.current) # Mark as onboarded
+      end
+
+      it 'allows empty first_name' do
+        oauth_user.first_name = nil
+        expect(oauth_user).to be_valid
+      end
+
+      it 'allows empty last_name' do
+        oauth_user.last_name = nil
+        expect(oauth_user).to be_valid
+      end
+    end
+
+    context 'when non-OAuth user' do
+      let(:regular_user) { create(:user, user_type: 'user') }
+
+      it 'always requires first_name' do
+        regular_user.first_name = nil
+        expect(regular_user).not_to be_valid
+        expect(regular_user.errors[:first_name]).to include("can't be blank")
+      end
+
+      it 'always requires last_name' do
+        regular_user.last_name = nil
+        expect(regular_user).not_to be_valid
+        expect(regular_user.errors[:last_name]).to include("can't be blank")
+      end
+    end
+  end
+
+  describe '#has_complete_basic_profile?' do
+    let(:user) { create(:user, first_name: 'John', last_name: 'Doe') }
+
+    it 'returns true when both names are present' do
+      expect(user.has_complete_basic_profile?).to be true
+    end
+
+    it 'returns false when first_name is missing' do
+      user.first_name = nil
+      expect(user.has_complete_basic_profile?).to be false
+    end
+
+    it 'returns false when last_name is missing' do
+      user.last_name = nil
+      expect(user.has_complete_basic_profile?).to be false
+    end
+
+    it 'returns false when both names are missing' do
+      user.first_name = nil
+      user.last_name = nil
+      expect(user.has_complete_basic_profile?).to be false
+    end
+  end
 end

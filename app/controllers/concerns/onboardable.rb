@@ -14,7 +14,12 @@ module Onboardable
       return unless redirectable_path?(request.path)
 
       if current_user.needs_onboarding?
-        redirect_to onboarding_path
+        # If user doesn't have a user_type set, redirect to looking_for step first
+        if current_user.user_type.blank?
+          redirect_to looking_for_onboarding_path
+        else
+          redirect_to onboarding_path
+        end
         # elsif Current.family.needs_subscription?
         #   redirect_to trial_onboarding_path
         # elsif Current.family.upgrade_required?

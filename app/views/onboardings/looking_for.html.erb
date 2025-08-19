@@ -1,0 +1,71 @@
+<%= content_for :header_nav do %>
+  <%= render "onboardings/onboarding_nav", user: @user %>
+<% end %>
+
+<%= content_for :cancel_action do %>
+  <%= render "onboardings/logout" %>
+<% end %>
+
+<div class="grow max-w-4xl w-full mx-auto bg-surface flex flex-col justify-center md:py-0 py-6 px-4 md:px-0">
+  <div class="text-center mb-8">
+    <h1 class="text-3xl font-bold text-slate-900 mb-4">What are you looking for?</h1>
+    <p class="text-lg text-slate-600">Help us personalize your experience by telling us your goal</p>
+  </div>
+
+  <div class="max-w-2xl mx-auto w-full">
+    <%= form_with url: looking_for_onboarding_path, method: :post, local: true, class: "space-y-6" do |form| %>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Looking for Work Option -->
+        <div class="relative">
+          <%= form.radio_button :user_type, 'user',
+              class: "sr-only peer",
+              id: "user_type_user",
+              required: true %>
+          <%= form.label :user_type_user,
+              class: "flex flex-col items-center p-6 border-2 border-slate-200 rounded-xl cursor-pointer peer-checked:border-amber-500 peer-checked:bg-amber-50 hover:border-slate-300 transition-all duration-200" do %>
+            <div class="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mb-4">
+              <svg class="w-8 h-8 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0V6a2 2 0 012 2v6a2 2 0 01-2 2H8a2 2 0 01-2-2V8a2 2 0 012-2V6"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-slate-900 mb-2">Looking for Work</h3>
+            <p class="text-slate-600 text-center text-sm">I want to find job opportunities and showcase my skills</p>
+          <% end %>
+        </div>
+
+        <!-- Looking for Hire Option -->
+        <div class="relative">
+          <%= form.radio_button :user_type, 'company',
+              class: "sr-only peer",
+              id: "user_type_company",
+              required: true %>
+          <%= form.label :user_type_company,
+              class: "flex flex-col items-center p-6 border-2 border-slate-200 rounded-xl cursor-pointer peer-checked:border-amber-500 peer-checked:bg-amber-50 hover:border-slate-300 transition-all duration-200" do %>
+            <div class="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mb-4">
+              <svg class="w-8 h-8 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-slate-900 mb-2">Looking for Hire</h3>
+            <p class="text-slate-600 text-center text-sm">I want to post jobs and find talented candidates</p>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Error Messages -->
+      <% if flash[:alert] %>
+        <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+          <p class="text-red-800 text-sm"><%= flash[:alert] %></p>
+        </div>
+      <% end %>
+
+      <!-- Next Button -->
+      <div class="flex justify-center pt-6">
+        <%= form.submit "Continue",
+            class: "bg-amber-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-amber-600 transition duration-200 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2" %>
+      </div>
+    <% end %>
+  </div>
+
+  <%= render "layouts/shared/footer" %>
+</div>

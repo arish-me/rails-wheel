@@ -32,6 +32,37 @@ class OnboardingsController < ApplicationController
   def preferences
   end
 
+  def looking_for
+    if request.get?
+      # Show the looking_for form
+    else
+      # Handle the form submission
+      user_type = params[:user_type]
+
+      if user_type.present? && %w[user company].include?(user_type)
+        # Validate email for company users
+        if user_type == 'company' && @user.email.present?
+          validation_result = EmailDomainValidator.validate_company_email(@user.email)
+          unless validation_result[:valid]
+            flash[:alert] = validation_result[:message]
+            render :looking_for, status: :unprocessable_entity
+            return
+          end
+        end
+        
+        @user.update(user_type: user_type)
+
+        # The callback will automatically handle candidate creation/destruction
+
+        flash[:notice] = "Great! Let's get you set up."
+        redirect_to onboarding_path
+      else
+        flash[:alert] = "Please select whether you're looking to hire or work."
+        render :looking_for, status: :unprocessable_entity
+      end
+    end
+  end
+
   def profile_setup
   end
 
@@ -98,6 +129,7 @@ class OnboardingsController < ApplicationController
   private
     def set_user
       @user = current_user
+      @user.in_onboarding_context = true
     end
 
     def set_candidate
@@ -109,6 +141,11 @@ class OnboardingsController < ApplicationController
     def need_onboard
       redirect_to dashboard_path unless current_user.needs_onboarding?
       redirect_to dashboard_path if current_user.platform_admin?
+
+      # If user doesn't have user_type set and we're not on the looking_for page, redirect
+      if current_user.user_type.blank? && action_name != 'looking_for'
+        redirect_to looking_for_onboarding_path
+      end
     end
 
     def load_invitation

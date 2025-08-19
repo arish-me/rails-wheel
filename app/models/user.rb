@@ -29,13 +29,19 @@ class User < ApplicationRecord
   attr_accessor :current_sign_in_ip_address
   attr_accessor :delete_profile_image
   attr_accessor :redirect_to, :email_required, :bio_required
+  attr_accessor :in_onboarding_context
 
   accepts_nested_attributes_for :user_roles, allow_destroy: true
   accepts_nested_attributes_for :location, allow_destroy: true
   accepts_nested_attributes_for :candidate, allow_destroy: true
 
-  validates :first_name, presence: true, on: :update
-  validates :last_name, presence: true, on: :update
+  after_update :handle_user_type_change, if: :saved_change_to_user_type?
+
+  validates :first_name, presence: true, on: :update, if: :should_validate_names?
+  validates :last_name, presence: true, on: :update, if: :should_validate_names?
+  validates :email, presence: true, email: true
+  validate :company_email_validation, if: :company_user?
+  validate :onboarding_name_validation, if: :onboarding_context?
 
   pg_search_scope :search_by_email,
               against: :email,
@@ -101,7 +107,7 @@ class User < ApplicationRecord
   end
 
   def missing_fields?
-    first_name.present? && last_name.present?
+    first_name.present? && last_name.present? && avatar.attached? && location.valid?
   end
 
   def attach_avatar(image_url)
@@ -121,7 +127,7 @@ class User < ApplicationRecord
   end
 
   def ensure_candidate
-    if user?
+    if user? && !candidate.present?
       create_candidate
     end
   end
@@ -189,6 +195,88 @@ class User < ApplicationRecord
       "active"
     else
       "created"
+    end
+  end
+
+  def oauth_user?
+    provider.present? && uid.present?
+  end
+
+  def needs_profile_completion?
+    oauth_user? && (first_name.blank? || last_name.blank? || first_name == "User" || last_name == "User")
+  end
+
+  def company_user?
+    user_type == 'company'
+  end
+
+  def personal_user?
+    user_type == 'user'
+  end
+
+  def has_candidate_profile?
+    candidate.present?
+  end
+
+  def has_complete_basic_profile?
+    first_name.present? && last_name.present?
+  end
+
+  def should_validate_names?
+    # Always validate names for non-OAuth users
+    return true unless oauth_user?
+    
+    # For OAuth users, validate names during onboarding
+    # This means when they're still in the onboarding process
+    needs_onboarding?
+  end
+
+  def onboarding_context?
+    # Check if we're in an onboarding context
+    # This can be determined by checking if we're on onboarding pages
+    # or if the user is still in the onboarding process
+    in_onboarding_context == true || needs_onboarding?
+  end
+
+  private
+
+  def company_email_validation
+    return unless email.present?
+
+    validation_result = EmailDomainValidator.validate_company_email(email)
+    unless validation_result[:valid]
+      errors.add(:email, validation_result[:message])
+    end
+  end
+
+  def handle_user_type_change
+    if user_type == 'user'
+      # User changed to 'user' type - create candidate if it doesn't exist
+      if candidate.present?
+        Rails.logger.info "User #{id} already has candidate record, skipping creation"
+      else
+        create_candidate
+        Rails.logger.info "Created candidate record for user #{id}"
+      end
+    elsif user_type == 'company'
+      # User changed to 'company' type - destroy candidate if it exists
+      if candidate.present?
+        candidate.destroy
+        Rails.logger.info "Destroyed candidate record for user #{id}"
+      else
+        Rails.logger.info "User #{id} has no candidate record to destroy"
+      end
+    end
+  end
+
+  def onboarding_name_validation
+    # During onboarding, require names for all users (including OAuth users)
+    if first_name.blank?
+      errors.add(:first_name, "is required to complete your profile")
+    end
+    
+    if last_name.blank?
+      errors.add(:last_name, "is required to complete your profile")
     end
   end
 
