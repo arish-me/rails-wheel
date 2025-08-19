@@ -29,6 +29,7 @@ class User < ApplicationRecord
   attr_accessor :current_sign_in_ip_address
   attr_accessor :delete_profile_image
   attr_accessor :redirect_to, :email_required, :bio_required
+  attr_accessor :in_onboarding_context
 
   accepts_nested_attributes_for :user_roles, allow_destroy: true
   accepts_nested_attributes_for :location, allow_destroy: true
@@ -36,10 +37,11 @@ class User < ApplicationRecord
 
   after_update :handle_user_type_change, if: :saved_change_to_user_type?
 
-  validates :first_name, presence: true, on: :update, unless: :oauth_user?
-  validates :last_name, presence: true, on: :update, unless: :oauth_user?
+  validates :first_name, presence: true, on: :update, if: :should_validate_names?
+  validates :last_name, presence: true, on: :update, if: :should_validate_names?
   validates :email, presence: true, email: true
   validate :company_email_validation, if: :company_user?
+  validate :onboarding_name_validation, if: :onboarding_context?
 
   pg_search_scope :search_by_email,
               against: :email,
@@ -216,6 +218,26 @@ class User < ApplicationRecord
     candidate.present?
   end
 
+  def has_complete_basic_profile?
+    first_name.present? && last_name.present?
+  end
+
+  def should_validate_names?
+    # Always validate names for non-OAuth users
+    return true unless oauth_user?
+    
+    # For OAuth users, validate names during onboarding
+    # This means when they're still in the onboarding process
+    needs_onboarding?
+  end
+
+  def onboarding_context?
+    # Check if we're in an onboarding context
+    # This can be determined by checking if we're on onboarding pages
+    # or if the user is still in the onboarding process
+    in_onboarding_context == true || needs_onboarding?
+  end
+
   private
 
   def company_email_validation
@@ -244,6 +266,17 @@ class User < ApplicationRecord
       else
         Rails.logger.info "User #{id} has no candidate record to destroy"
       end
+    end
+  end
+
+  def onboarding_name_validation
+    # During onboarding, require names for all users (including OAuth users)
+    if first_name.blank?
+      errors.add(:first_name, "is required to complete your profile")
+    end
+    
+    if last_name.blank?
+      errors.add(:last_name, "is required to complete your profile")
     end
   end
 

@@ -14,6 +14,7 @@ class CandidatesController < ApplicationController
 
   def update
     authorize @candidate
+    @candidate.user.in_onboarding_context = true
     respond_to do |format|
       if @candidate.update(candidate_params)
         flash[:notice] = "Profile was successfully updated."

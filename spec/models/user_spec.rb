@@ -485,4 +485,90 @@ RSpec.describe User, type: :model do
       end
     end
   end
+
+  describe 'name validation during onboarding' do
+    let(:oauth_user) { create(:user, user_type: 'user', provider: 'google_oauth2', uid: '123456') }
+
+    context 'when OAuth user is in onboarding context' do
+      before do
+        oauth_user.in_onboarding_context = true
+        oauth_user.update_column(:onboarded_at, nil) # Ensure user needs onboarding
+      end
+
+      it 'requires first_name during onboarding' do
+        oauth_user.first_name = nil
+        expect(oauth_user).not_to be_valid
+        expect(oauth_user.errors[:first_name]).to include("is required to complete your profile")
+      end
+
+      it 'requires last_name during onboarding' do
+        oauth_user.last_name = nil
+        expect(oauth_user).not_to be_valid
+        expect(oauth_user.errors[:last_name]).to include("is required to complete your profile")
+      end
+
+      it 'is valid when both names are present' do
+        oauth_user.first_name = 'John'
+        oauth_user.last_name = 'Doe'
+        expect(oauth_user).to be_valid
+      end
+    end
+
+    context 'when OAuth user is not in onboarding context' do
+      before do
+        oauth_user.in_onboarding_context = false
+        oauth_user.update_column(:onboarded_at, Time.current) # Mark as onboarded
+      end
+
+      it 'allows empty first_name' do
+        oauth_user.first_name = nil
+        expect(oauth_user).to be_valid
+      end
+
+      it 'allows empty last_name' do
+        oauth_user.last_name = nil
+        expect(oauth_user).to be_valid
+      end
+    end
+
+    context 'when non-OAuth user' do
+      let(:regular_user) { create(:user, user_type: 'user') }
+
+      it 'always requires first_name' do
+        regular_user.first_name = nil
+        expect(regular_user).not_to be_valid
+        expect(regular_user.errors[:first_name]).to include("can't be blank")
+      end
+
+      it 'always requires last_name' do
+        regular_user.last_name = nil
+        expect(regular_user).not_to be_valid
+        expect(regular_user.errors[:last_name]).to include("can't be blank")
+      end
+    end
+  end
+
+  describe '#has_complete_basic_profile?' do
+    let(:user) { create(:user, first_name: 'John', last_name: 'Doe') }
+
+    it 'returns true when both names are present' do
+      expect(user.has_complete_basic_profile?).to be true
+    end
+
+    it 'returns false when first_name is missing' do
+      user.first_name = nil
+      expect(user.has_complete_basic_profile?).to be false
+    end
+
+    it 'returns false when last_name is missing' do
+      user.last_name = nil
+      expect(user.has_complete_basic_profile?).to be false
+    end
+
+    it 'returns false when both names are missing' do
+      user.first_name = nil
+      user.last_name = nil
+      expect(user.has_complete_basic_profile?).to be false
+    end
+  end
 end

@@ -129,6 +129,7 @@ class OnboardingsController < ApplicationController
   private
     def set_user
       @user = current_user
+      @user.in_onboarding_context = true
     end
 
     def set_candidate
