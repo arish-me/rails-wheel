@@ -24,10 +24,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
     self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
     prev_unconfirmed_email = resource.unconfirmed_email if resource.respond_to?(:unconfirmed_email)
     onboarding = params[:user][:redirect_to] == "home" || resource.needs_onboarding?
-    
+
     # Set onboarding context flag for validation
     resource.in_onboarding_context = onboarding
-    
+
     resource_updated = if onboarding
                         update_resource_without_password(resource, account_update_params)
     elsif params[:user][:redirect_to] == "settings_accounts_path"
@@ -81,8 +81,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
       redirect_to settings_preferences_path, notice: notice
     when "goals"
       redirect_to goals_onboarding_path
-    # when "trial"
-    #   redirect_to trial_onboarding_path
+    when "trial"
+       redirect_to trial_onboarding_path
     else
       # path = current_user.user? ? : settings_profile_path
       redirect_to settings_profile_path, notice: notice

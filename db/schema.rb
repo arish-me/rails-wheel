@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_18_122604) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_19_193957) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -111,6 +111,22 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_18_122604) do
     t.integer "status", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "trial_ends_at"
+  end
+
+  create_table "company_subscriptions", force: :cascade do |t|
+    t.bigint "company_id", null: false
+    t.bigint "subscription_plan_id", null: false
+    t.string "status"
+    t.datetime "trial_start"
+    t.datetime "trial_end"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "expires_at"
+    t.text "admin_notes"
+    t.integer "updated_by_admin"
+    t.index ["company_id"], name: "index_company_subscriptions_on_company_id"
+    t.index ["subscription_plan_id"], name: "index_company_subscriptions_on_subscription_plan_id"
   end
 
   create_table "experiences", force: :cascade do |t|
@@ -490,6 +506,18 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_18_122604) do
     t.index ["specializable_type", "specializable_id"], name: "index_specializations_on_specializable"
   end
 
+  create_table "subscription_plans", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.decimal "price"
+    t.string "tier"
+    t.jsonb "features"
+    t.boolean "active"
+    t.integer "trial_days"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "user_roles", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "role_id", null: false
@@ -562,6 +590,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_18_122604) do
   add_foreign_key "candidates", "candidate_roles"
   add_foreign_key "candidates", "users"
   add_foreign_key "categories", "users"
+  add_foreign_key "company_subscriptions", "companies"
+  add_foreign_key "company_subscriptions", "subscription_plans"
   add_foreign_key "experiences", "candidates"
   add_foreign_key "job_applications", "candidates"
   add_foreign_key "job_applications", "jobs"

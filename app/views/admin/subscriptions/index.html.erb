@@ -1,0 +1,192 @@
+<% content_for :title, "Admin - Subscription Management" %>
+
+<div class="container mx-auto px-4 py-8">
+  <div class="max-w-7xl mx-auto">
+    <!-- Header -->
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold text-slate-900 mb-2">Subscription Management</h1>
+      <p class="text-slate-600">Manage company subscriptions and trial periods</p>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+      <div class="bg-white rounded-lg shadow p-6">
+        <div class="flex items-center">
+          <div class="p-2 bg-blue-100 rounded-lg">
+            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+            </svg>
+          </div>
+          <div class="ml-4">
+            <p class="text-sm font-medium text-slate-600">Total Subscriptions</p>
+            <p class="text-2xl font-bold text-slate-900"><%= @subscriptions.total_count %></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-lg shadow p-6">
+        <div class="flex items-center">
+          <div class="p-2 bg-amber-100 rounded-lg">
+            <svg class="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </div>
+          <div class="ml-4">
+            <p class="text-sm font-medium text-slate-600">Trial Subscriptions</p>
+            <p class="text-2xl font-bold text-slate-900"><%= @subscriptions.trial.count %></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-lg shadow p-6">
+        <div class="flex items-center">
+          <div class="p-2 bg-green-100 rounded-lg">
+            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </div>
+          <div class="ml-4">
+            <p class="text-sm font-medium text-slate-600">Active Subscriptions</p>
+            <p class="text-2xl font-bold text-slate-900"><%= @subscriptions.active.count %></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-lg shadow p-6">
+        <div class="flex items-center">
+          <div class="p-2 bg-red-100 rounded-lg">
+            <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </div>
+          <div class="ml-4">
+            <p class="text-sm font-medium text-slate-600">Expired Subscriptions</p>
+            <p class="text-2xl font-bold text-slate-900"><%= @subscriptions.expired.count %></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Subscriptions Table -->
+    <div class="bg-white rounded-lg shadow overflow-hidden">
+      <div class="px-6 py-4 border-b border-slate-200">
+        <h2 class="text-lg font-semibold text-slate-900">All Subscriptions</h2>
+      </div>
+      
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-slate-200">
+          <thead class="bg-slate-50">
+            <tr>
+              <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Company</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Plan</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Status</th>
+                             <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Trial End</th>
+               <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Expires At</th>
+               <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Created</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-slate-200">
+            <% @subscriptions.each do |subscription| %>
+              <tr class="hover:bg-slate-50">
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="flex items-center">
+                    <div class="flex-shrink-0 h-10 w-10">
+                      <% if subscription.company.avatar.attached? %>
+                        <%= image_tag subscription.company.avatar, class: "h-10 w-10 rounded-full" %>
+                      <% else %>
+                        <div class="h-10 w-10 rounded-full bg-slate-300 flex items-center justify-center">
+                          <span class="text-sm font-medium text-slate-600">
+                            <%= subscription.company.name.first.upcase %>
+                          </span>
+                        </div>
+                      <% end %>
+                    </div>
+                    <div class="ml-4">
+                      <div class="text-sm font-medium text-slate-900">
+                        <%= link_to subscription.company.name, admin_subscription_path(subscription.company), class: "hover:text-amber-600" %>
+                      </div>
+                      <div class="text-sm text-slate-500">
+                        <%= subscription.company.primary_contact_email %>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="text-sm text-slate-900"><%= subscription.subscription_plan.name %></div>
+                  <div class="text-sm text-slate-500"><%= subscription.subscription_plan.display_price %>/month</div>
+                </td>
+                
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full <%= subscription_status_badge(subscription.status) %>">
+                    <%= subscription.status.humanize %>
+                  </span>
+                </td>
+                
+                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
+                   <% if subscription.trial_end %>
+                     <%= subscription.trial_end.strftime('%B %d, %Y') %>
+                     <% if subscription.in_trial_period? %>
+                       <br><span class="text-amber-600">(<%= subscription.trial_days_remaining %> days left)</span>
+                     <% elsif subscription.trial_expired? %>
+                       <br><span class="text-red-600">(Expired)</span>
+                     <% end %>
+                   <% else %>
+                     N/A
+                   <% end %>
+                 </td>
+                 
+                 <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
+                   <% if subscription.expires_at %>
+                     <%= subscription.expires_at.strftime('%B %d, %Y') %>
+                     <% if subscription.subscription_expiring_soon? %>
+                       <br><span class="text-orange-600">(<%= subscription.days_until_expiry %> days left)</span>
+                     <% elsif subscription.subscription_expired? %>
+                       <br><span class="text-red-600">(Expired)</span>
+                     <% end %>
+                   <% else %>
+                     N/A
+                   <% end %>
+                 </td>
+                 
+                 <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
+                   <%= subscription.created_at.strftime('%B %d, %Y') %>
+                 </td>
+                
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                  <%= link_to "View Details", admin_subscription_path(subscription.company), 
+                      class: "text-amber-600 hover:text-amber-900" %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+      
+      <!-- Pagination -->
+      <div class="px-6 py-4 border-t border-slate-200">
+        <%= paginate @subscriptions %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% unless defined?(subscription_status_badge) %>
+  <% 
+    def subscription_status_badge(status)
+      case status
+      when 'active'
+        'bg-green-100 text-green-800'
+      when 'trial'
+        'bg-amber-100 text-amber-800'
+      when 'expired'
+        'bg-red-100 text-red-800'
+      when 'canceled'
+        'bg-gray-100 text-gray-800'
+      else
+        'bg-gray-100 text-gray-800'
+      end
+    end
+  %>
+<% end %>

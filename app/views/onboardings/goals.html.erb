@@ -15,9 +15,13 @@
 			<p class="text-secondary text-sm">Select one or more goals that you have with using Wheel as your daily job search tool.</p>
 		</div>
 		<%= styled_form_with(model: @user, url: registration_path(@user), method: :patch, class: "space-y-4", data: { controller: "searchable-select" }) do |form| %>
+    <% if @user.company? %>
 			<%= form.hidden_field :redirect_to, value: "trial" %>
 			<%= form.hidden_field :set_onboarding_goals_at, value: Time.current %>
-			<%= form.hidden_field :onboarded_at, value: Time.current %>
+    <% else %>
+      <%= form.hidden_field :onboarded_at, value: Time.current %>
+    <% end %>
+
 			<%# Assuming current_user is available and has a 'user_type' attribute %>
 			<%
 # Define all possible goal sets

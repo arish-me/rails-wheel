@@ -1,6 +1,6 @@
 <%= content_for :previous_path, goals_onboarding_path %>
 <%= content_for :header_nav do %>
-	<%= render "onboardings/onboarding_nav", user: @user %>
+  <%= render "onboardings/onboarding_nav", user: @user %>
 <% end %>
 <%= content_for :cancel_action do %>
 	<%= render "onboardings/logout" %>
@@ -11,15 +11,84 @@
 <div class="grow flex flex-col gap-12 items-center justify-center">
 	<div class="max-w-sm mx-auto flex flex-col items-center">
 		<p class="text-xl lg:text-3xl text-primary font-display font-medium">
-			Try Wheel for 14 days.
+			Your 30-Day Trial is Active!
 		</p>
 		<h2 class="text-xl lg:text-3xl font-display text-secondary font-medium mb-2">
 			No credit card required
 		</h2>
 		<p class="text-sm text-secondary text-center mb-8">
-			Starting the trial activates your account for Wheel.  You won't need to enter payment details.
+			You're all set to explore Hiring Wheels with full access for 30 days.
 		</p>
-		<div class="w-full">
+		<div class="w-full space-y-3">
+			<%= styled_form_with(model: @user, url: registration_path(@user), method: :patch, class: "space-y-4") do |form| %>
+					<%= form.hidden_field :onboarded_at, value: Time.current %>
+				<div class="mt-6">
+					<%= render ButtonComponent.new(
+	          text: "Get Started",
+	          full_width: true
+	        ) %>
+				</div>
+			<% end %>
+
+
+			<%= link_to pricing_subscriptions_path,
+			    class: "w-full bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 py-3 px-6 rounded-lg font-semibold text-center block transition duration-200" do %>
+				View Pricing Plans
+			<% end %>
+		</div>
+	</div>
+
+	<!-- Trial Information -->
+	<div class="max-w-2xl mx-auto w-full">
+		<div class="bg-white rounded-2xl p-8 shadow-lg">
+			<h2 class="text-2xl font-bold text-slate-900 mb-6 text-center">Your Trial Details</h2>
+
+			<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+				<div class="text-center p-4 bg-amber-50 rounded-lg">
+					<div class="text-3xl font-bold text-amber-600 mb-2">
+						<% if @user.company&.active_subscription&.in_trial_period? %>
+							<%= @user.company.active_subscription.trial_days_remaining %>
+						<% else %>
+							30
+						<% end %>
+					</div>
+					<div class="text-sm text-amber-800 font-medium">Days Remaining</div>
+				</div>
+
+				<div class="text-center p-4 bg-slate-50 rounded-lg">
+					<div class="text-3xl font-bold text-slate-600 mb-2">
+						<% if @user.company&.active_subscription&.trial_end %>
+							<%= @user.company.active_subscription.trial_end.strftime('%b %d') %>
+						<% else %>
+							<%= 30.days.from_now.strftime('%b %d') %>
+						<% end %>
+					</div>
+					<div class="text-sm text-slate-800 font-medium">Trial Ends</div>
+				</div>
+			</div>
+
+			<div class="space-y-4">
+				<div class="flex items-center">
+					<svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+						<path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+					</svg>
+					<span class="text-slate-700">Full access to all features during trial</span>
+				</div>
+
+				<div class="flex items-center">
+					<svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+						<path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+					</svg>
+					<span class="text-slate-700">No payment required until trial ends</span>
+				</div>
+
+				<div class="flex items-center">
+					<svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+						<path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+					</svg>
+					<span class="text-slate-700">Cancel anytime during trial period</span>
+				</div>
+			</div>
 		</div>
 	</div>
 	<div class="space-y-8">
@@ -32,16 +101,16 @@
 			</div>
 			<div class="space-y-12">
 				<div class="space-y-1.5 text-sm">
-					<p class="text-primary font-medium">Today</p>
-					<p class="text-secondary">You'll get free access to Wheel for 14 days</p>
+					<p class="text-primary font-medium">Today (<%= Date.current.strftime("%B %d") %>)</p>
+					<p class="text-secondary">Your 30-day trial starts now with full access to all features</p>
 				</div>
 				<div class="space-y-1.5 text-sm">
-					<p class="text-primary font-medium">In 13 days (<%= 13.days.from_now.strftime("%B %d") %>)</p>
+					<p class="text-primary font-medium">In 25 days (<%= 25.days.from_now.strftime("%B %d") %>)</p>
 					<p class="text-secondary">We'll notify you to remind you when your trial will end.</p>
 				</div>
 				<div class="space-y-1.5 text-sm">
-					<p class="text-primary font-medium">In 14 days (<%= 14.days.from_now.strftime("%B %d") %>)</p>
-					<p class="text-secondary">Your trial ends &mdash; subscribe to continue using Wheel</p>
+					<p class="text-primary font-medium">In 30 days (<%= 30.days.from_now.strftime("%B %d") %>)</p>
+					<p class="text-secondary">Your trial ends &mdash; choose a plan to continue using Hiring Wheels</p>
 				</div>
 			</div>
 		</div>

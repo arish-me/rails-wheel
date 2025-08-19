@@ -136,6 +136,14 @@ Rails.application.routes.draw do
     end
   end
 
+  # Subscription routes
+  resources :subscriptions, only: [:index] do
+    collection do
+      get :pricing
+      post :request_upgrade
+    end
+  end
+
   # Platform admin routes
   namespace :admin do
     resources :users do
@@ -145,6 +153,30 @@ Rails.application.routes.draw do
       collection do
         post :bulk_destroy
         post :stop_impersonating
+      end
+    end
+    
+    resources :subscriptions, only: [:index, :show] do
+      member do
+        post :upgrade
+        post :cancel
+      end
+    end
+    
+    # Subscription Management for Platform Admins
+    namespace :subscription_management do
+      resources :companies, only: [:index, :show] do
+        member do
+          post :update_subscription
+          post :cancel_subscription
+          post :extend_trial
+          post :extend_subscription
+          post :renew_subscription
+          post :create_trial
+        end
+        collection do
+          post :bulk_actions
+        end
       end
     end
   end

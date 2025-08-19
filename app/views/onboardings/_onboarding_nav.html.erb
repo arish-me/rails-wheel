@@ -17,6 +17,7 @@
   { name: "Setup", path: onboarding_path, is_complete: (user.company_id.present?) , step_number: 2 },
   { name: "Personal Information", path: profile_setup_onboarding_path, is_complete: (user.missing_fields?) , step_number: 3 },
   { name: "Goals", path: goals_onboarding_path , is_complete: user.set_onboarding_goals_at.present?, step_number: 4 },
+  { name: "Trial", path: trial_onboarding_path, is_complete: user.company&.active_subscription&.in_trial_period?, step_number: 5 },
 ]%>
 <% end %>
 <ul class="hidden md:flex items-center gap-2">

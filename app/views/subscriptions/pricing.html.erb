@@ -1,0 +1,127 @@
+<% content_for :title, "Pricing Plans" %>
+
+<div class="bg-gradient-to-br from-slate-800 via-slate-700 to-slate-600 text-white py-16">
+  <div class="container mx-auto px-4 text-center">
+    <h1 class="text-4xl md:text-5xl font-bold mb-4">Choose Your Plan</h1>
+    <p class="text-xl text-slate-200 max-w-3xl mx-auto mb-8">
+      Select the perfect plan for your hiring needs. All plans include a 30-day free trial.
+    </p>
+    
+    <% if @current_subscription %>
+      <div class="bg-amber-500 text-slate-900 px-4 py-2 rounded-lg inline-block">
+        Currently on <strong><%= @current_subscription.subscription_plan.name %></strong> plan
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<section class="py-16 bg-white">
+  <div class="container mx-auto px-4">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+      <% @plans.each_with_index do |plan, index| %>
+        <div class="<%= index == 1 ? 'border-2 border-amber-500 relative' : 'border border-slate-200' %> rounded-2xl p-8 bg-white shadow-lg hover:shadow-xl transition-all duration-300">
+          <% if index == 1 %>
+            <div class="absolute -top-4 left-1/2 transform -translate-x-1/2">
+              <span class="bg-amber-500 text-white px-4 py-1 rounded-full text-sm font-medium">Most Popular</span>
+            </div>
+          <% end %>
+          
+          <div class="text-center">
+            <h3 class="text-2xl font-bold text-slate-900 mb-2"><%= plan.name %></h3>
+            <p class="text-slate-600 mb-6"><%= plan.description %></p>
+            
+            <div class="mb-6">
+              <span class="text-4xl font-bold text-slate-900"><%= plan.display_price %></span>
+              <span class="text-slate-600">/month</span>
+            </div>
+
+            <div class="space-y-4 mb-8 text-left">
+              <div class="flex items-center">
+                <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                </svg>
+                <span class="text-sm text-slate-600">
+                  <%= plan.job_posting_limit == 0 ? 'Unlimited' : plan.job_posting_limit %> job postings
+                </span>
+              </div>
+              
+              <div class="flex items-center">
+                <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                </svg>
+                <span class="text-sm text-slate-600">
+                  <%= plan.candidate_search_limit == 0 ? 'Unlimited' : plan.candidate_search_limit %> candidate searches
+                </span>
+              </div>
+
+              <div class="flex items-center">
+                <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                </svg>
+                <span class="text-sm text-slate-600"><%= plan.trial_days %>-day free trial</span>
+              </div>
+
+              <% if plan.analytics_dashboard %>
+                <div class="flex items-center">
+                  <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                  </svg>
+                  <span class="text-sm text-slate-600">Analytics dashboard</span>
+                </div>
+              <% end %>
+
+              <% if plan.priority_support %>
+                <div class="flex items-center">
+                  <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                  </svg>
+                  <span class="text-sm text-slate-600">Priority support</span>
+                </div>
+              <% end %>
+
+              <% if plan.api_access %>
+                <div class="flex items-center">
+                  <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                  </svg>
+                  <span class="text-sm text-slate-600">API access</span>
+                </div>
+              <% end %>
+
+              <% if plan.custom_branding %>
+                <div class="flex items-center">
+                  <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                  </svg>
+                  <span class="text-sm text-slate-600">Custom branding</span>
+                </div>
+              <% end %>
+            </div>
+
+            <% if @current_subscription&.subscription_plan == plan %>
+              <button class="w-full bg-slate-300 text-slate-600 py-3 px-6 rounded-lg font-semibold cursor-not-allowed">
+                Current Plan
+              </button>
+            <% else %>
+              <%= form_with url: request_upgrade_subscriptions_path, method: :post, local: true do |form| %>
+                <%= form.hidden_field :plan_id, value: plan.id %>
+                <%= form.submit "Request Upgrade", 
+                    class: "w-full #{index == 1 ? 'bg-amber-500 hover:bg-amber-600' : 'bg-slate-900 hover:bg-slate-800'} text-white py-3 px-6 rounded-lg font-semibold transition duration-200" %>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="text-center mt-12">
+      <p class="text-slate-600 mb-4">
+        Need a custom plan? Contact our sales team for enterprise solutions.
+      </p>
+      <%= link_to contact_path, 
+          class: "bg-slate-900 hover:bg-slate-800 text-white py-3 px-8 rounded-lg font-semibold transition duration-200" do %>
+        Contact Sales
+      <% end %>
+    </div>
+  </div>
+</section>

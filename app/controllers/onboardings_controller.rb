@@ -2,7 +2,7 @@ class OnboardingsController < ApplicationController
   layout "wizard"
   before_action :authenticate_user!
   before_action :set_user
-  before_action :need_onboard
+  # before_action :need_onboard
   before_action :set_candidate, only: [ :specialization, :candidate_setup, :online_presence ]
 
   def show
@@ -49,7 +49,7 @@ class OnboardingsController < ApplicationController
             return
           end
         end
-        
+
         @user.update(user_type: user_type)
 
         # The callback will automatically handle candidate creation/destruction
@@ -103,6 +103,17 @@ class OnboardingsController < ApplicationController
   end
 
   def trial
+    # Only allow company users to access trial step
+    unless current_user.company_user?
+      redirect_to dashboard_path, alert: 'Trial step is only available for company users.'
+      return
+    end
+
+    # Ensure company has a trial subscription
+    unless current_user.company&.active_subscription&.in_trial_period?
+      # Create trial subscription if it doesn't exist
+      SubscriptionService.create_trial_subscription(current_user.company) if current_user.company
+    end
   end
 
   def handle_redirect(notice)
@@ -119,8 +130,8 @@ class OnboardingsController < ApplicationController
       redirect_to settings_preferences_path, notice: notice
     when "goals"
       redirect_to goals_onboarding_path
-    # when "trial"
-    #   redirect_to trial_onboarding_path
+    when "trial"
+      redirect_to trial_onboarding_path
     else
       redirect_to dashboard_path, notice: notice
     end
@@ -146,6 +157,11 @@ class OnboardingsController < ApplicationController
       if current_user.user_type.blank? && action_name != 'looking_for'
         redirect_to looking_for_onboarding_path
       end
+
+      # For company users, ensure they complete the trial step
+      # if current_user.company_user? && action_name != 'trial' && !current_user.company&.active_subscription&.in_trial_period?
+      #   redirect_to trial_onboarding_path
+      # end
     end
 
     def load_invitation
