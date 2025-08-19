@@ -79,8 +79,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_18_122604) do
   create_table "candidates", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "candidate_role_id"
-    t.string "role_levels", default: [], null: false, array: true
-    t.string "role_types", default: [], null: false, array: true
     t.string "public_profile_key"
     t.integer "search_status"
     t.string "headline"

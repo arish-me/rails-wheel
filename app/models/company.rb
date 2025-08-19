@@ -1,4 +1,5 @@
 class Company < ApplicationRecord
+ include Avatarable
  include Candidates::HasOnlineProfiles
  attr_accessor :redirect_to, :delete_avatar_image
 
@@ -14,21 +15,20 @@ class Company < ApplicationRecord
  has_many :job_applications, through: :jobs
  has_many :job_board_integrations, dependent: :destroy
 
-  has_one_attached :avatar do |attachable|
-      attachable.variant :thumbnail, resize_to_fill: [ 300, 300 ], convert: :webp, saver: { quality: 80 }
-      attachable.variant :small, resize_to_fill: [ 72, 72 ], convert: :webp, saver: { quality: 80 }, preprocessed: true
-  end
-
  pg_search_scope :search_by_name,
                 against: :name,
                 using: {
                   tsearch: { prefix: true }
                 }
 
- accepts_nested_attributes_for :users
+   accepts_nested_attributes_for :users
+
+  # Override avatar validation for Company model - require on create
+  validates :avatar, attached: true, on: :create
+
  def assign_default_roles
   ActsAsTenant.with_tenant(self) do
-    SeedData::MainSeeder.new.seed_initial_data
+    SeedData::MainSeeder.new(seed_user: false).seed_initial_data
   end
  end
 

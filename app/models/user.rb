@@ -1,7 +1,5 @@
 class User < ApplicationRecord
   include Avatarable
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :invitable, :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :lockable,
          :lockable, :timeoutable, :trackable, :confirmable,
@@ -9,7 +7,9 @@ class User < ApplicationRecord
 
   # Include DeviseInvitable::Inviter to allow users to send invitations
   include DeviseInvitable::Inviter
-
+  # def self.avatar_validation_context
+  #  :update
+  # end
   belongs_to :company, optional: true
   has_many :user_roles, dependent: :destroy
   has_many :roles, through: :user_roles
@@ -34,14 +34,6 @@ class User < ApplicationRecord
   accepts_nested_attributes_for :location, allow_destroy: true
   accepts_nested_attributes_for :candidate, allow_destroy: true
 
-  # has_one_attached :avatar do |attachable|
-  #   attachable.variant :thumbnail, resize_to_fill: [ 300, 300 ], convert: :webp, saver: { quality: 80 }
-  #   attachable.variant :small, resize_to_fill: [ 72, 72 ], convert: :webp, saver: { quality: 80 }, preprocessed: true
-  # end
-
-  # has_one_attached :cover_image
-
-  # validate :profile_image_size
   validates :first_name, presence: true, on: :update
   validates :last_name, presence: true, on: :update
 
