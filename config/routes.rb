@@ -16,6 +16,15 @@ Rails.application.routes.draw do
   # ActiveStorage direct uploads
   # post '/rails/active_storage/direct_uploads', to: 'active_storage/direct_uploads#create', as: :rails_direct_uploads
 
+  # Public pages
+  get "pricing", to: "pages#pricing", as: :pricing
+  get "contact", to: "pages#contact", as: :contact
+  get "features", to: "pages#features", as: :features
+  get "about", to: "pages#about", as: :about
+  get "privacy-policy", to: "pages#privacy_policy", as: :privacy_policy
+  get "terms-of-service", to: "pages#terms_of_service", as: :terms_of_service
+  get "talent-search", to: "pages#talent_search", as: :talent_search
+
   namespace :settings do
     resource :profile, only: [ :show, :destroy ]
     resource :preferences, only: :show

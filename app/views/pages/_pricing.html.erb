@@ -1,0 +1,248 @@
+<!-- Pricing Section -->
+<section id="pricing" class="py-16 bg-white">
+  <div class="container mx-auto px-4 md:px-8">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl md:text-3xl font-bold mb-4 text-slate-900">
+        Simple, Transparent <span class="text-slate-600">Pricing</span>
+      </h2>
+      <p class="text-lg text-slate-600 max-w-3xl mx-auto">
+        Start with a free trial. No setup fees, no hidden costs. Cancel anytime.
+      </p>
+    </div>
+
+    <!-- Free Trial Banner -->
+    <div class="bg-gradient-to-r from-amber-400 to-amber-500 rounded-2xl p-6 mb-10 text-center">
+      <div class="max-w-2xl mx-auto">
+        <h3 class="text-2xl font-bold text-white mb-3">🎉 Start Your Free Trial Today!</h3>
+        <p class="text-lg text-white mb-4">Get full access to all features for 30 days. No credit card required.</p>
+        <%= link_to "Start Free Trial", new_user_registration_path,
+            class: "bg-white text-amber-600 py-3 px-6 rounded-lg font-semibold text-base hover:bg-slate-100 transition duration-300 inline-block" %>
+      </div>
+    </div>
+
+    <!-- Billing Toggle -->
+    <div class="flex justify-center mb-10">
+      <div class="bg-slate-100 rounded-lg p-1 flex">
+        <button
+
+                class="px-6 py-2 rounded-md bg-white text-slate-900 font-semibold shadow-sm transition duration-300 billing-toggle active">
+          Monthly
+        </button>
+        <!-- <button data-billing-toggle-target="monthlyButton"
+                data-action="click->billing-toggle#showMonthly"
+                class="px-6 py-2 rounded-md bg-white text-slate-900 font-semibold shadow-sm transition duration-300 billing-toggle active">
+          Monthly
+        </button> -->
+       <!--  <button data-billing-toggle-target="yearlyButton"
+                data-action="click->billing-toggle#showYearly"
+                class="px-6 py-2 rounded-md text-slate-600 font-semibold transition duration-300 billing-toggle">
+          Yearly
+          <span class="ml-2 bg-amber-100 text-amber-800 text-xs px-2 py-1 rounded-full">Save 20%</span>
+        </button> -->
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+
+      <!-- Starter Plan -->
+      <div class="bg-white border-2 border-slate-200 rounded-2xl p-6 hover:border-slate-400 hover:shadow-xl transition duration-300">
+        <div class="text-center mb-6">
+          <h3 class="text-xl font-bold text-slate-900 mb-3">Starter</h3>
+          <div class="mb-4">
+            <span class="text-3xl font-bold text-slate-900" data-billing-toggle-target="monthlyPrice">$10</span>
+            <span class="text-3xl font-bold text-slate-900 hidden" data-billing-toggle-target="yearlyPrice">$8</span>
+            <span class="text-slate-600">/month</span>
+          </div>
+          <p class="text-slate-600 text-sm">Perfect for small businesses and startups</p>
+        </div>
+
+        <ul class="space-y-3 mb-6">
+          <li class="flex items-start">
+            <svg class="w-4 h-4 text-amber-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+            </svg>
+            <span class="text-slate-700 text-sm">Up to 5 active job postings</span>
+          </li>
+          <li class="flex items-start">
+            <svg class="w-4 h-4 text-amber-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+            </svg>
+            <span class="text-slate-700 text-sm">Basic candidate management</span>
+          </li>
+          <li class="flex items-start">
+            <svg class="w-4 h-4 text-amber-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+            </svg>
+            <span class="text-slate-700 text-sm">Email support</span>
+          </li>
+          <li class="flex items-start">
+            <svg class="w-4 h-4 text-amber-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+            </svg>
+            <span class="text-slate-700 text-sm">Basic analytics</span>
+          </li>
+          <li class="flex items-start">
+            <svg class="w-4 h-4 text-amber-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+            </svg>
+            <span class="text-slate-700 text-sm">2 team members</span>
+          </li>
+        </ul>
+
+        <%= link_to "Start Free Trial", new_user_registration_path,
+            class: "w-full bg-slate-800 text-white py-3 px-6 rounded-lg font-semibold hover:bg-slate-700 transition duration-300 text-center block text-sm" %>
+      </div>
+
+      <!-- Professional Plan -->
+      <div class="bg-white border-2 border-slate-400 rounded-2xl p-6 shadow-xl relative">
+        <div class="absolute -top-3 left-1/2 transform -translate-x-1/2">
+          <span class="bg-slate-600 text-white px-3 py-1 rounded-full text-xs font-semibold">Most Popular</span>
+        </div>
+
+        <div class="text-center mb-6">
+          <h3 class="text-xl font-bold text-slate-900 mb-3">Professional</h3>
+          <div class="mb-4">
+            <span class="text-3xl font-bold text-slate-900" data-billing-toggle-target="monthlyPrice">$25</span>
+            <span class="text-3xl font-bold text-slate-900 hidden" data-billing-toggle-target="yearlyPrice">$20</span>
+            <span class="text-slate-600">/month</span>
+          </div>
+          <p class="text-slate-600 text-sm">Ideal for growing companies</p>
+        </div>
+
+        <ul class="space-y-3 mb-6">
+          <li class="flex items-start">
+            <svg class="w-4 h-4 text-amber-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+            </svg>
+            <span class="text-slate-700 text-sm">Up to 25 active job postings</span>
+          </li>
+          <li class="flex items-start">
+            <svg class="w-4 h-4 text-amber-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+            </svg>
+            <span class="text-slate-700 text-sm">Advanced candidate management</span>
+          </li>
+          <li class="flex items-start">
+            <svg class="w-4 h-4 text-amber-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+            </svg>
+            <span class="text-slate-700 text-sm">Priority support</span>
+          </li>
+          <li class="flex items-start">
+            <svg class="w-4 h-4 text-amber-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+            </svg>
+            <span class="text-slate-700 text-sm">Advanced analytics & reporting</span>
+          </li>
+          <li class="flex items-start">
+            <svg class="w-4 h-4 text-amber-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+            </svg>
+            <span class="text-slate-700 text-sm">Up to 10 team members</span>
+          </li>
+          <li class="flex items-start">
+            <svg class="w-4 h-4 text-amber-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+            </svg>
+            <span class="text-slate-700 text-sm">AI-powered job matching</span>
+          </li>
+          <li class="flex items-start">
+            <svg class="w-4 h-4 text-amber-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+            </svg>
+            <span class="text-slate-700 text-sm">Interview scheduling tools</span>
+          </li>
+        </ul>
+
+        <%= link_to "Start Free Trial", new_user_registration_path,
+            class: "w-full bg-slate-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-slate-700 transition duration-300 text-center block text-sm" %>
+      </div>
+
+      <!-- Enterprise Plan -->
+      <div class="bg-white border-2 border-slate-200 rounded-2xl p-6 hover:border-slate-400 hover:shadow-xl transition duration-300">
+        <div class="text-center mb-6">
+          <h3 class="text-xl font-bold text-slate-900 mb-3">Enterprise</h3>
+          <div class="mb-4">
+            <span class="text-3xl font-bold text-slate-900" data-billing-toggle-target="monthlyPrice">$50</span>
+            <span class="text-3xl font-bold text-slate-900 hidden" data-billing-toggle-target="yearlyPrice">$40</span>
+            <span class="text-slate-600">/month</span>
+          </div>
+          <p class="text-slate-600 text-sm">For large organizations</p>
+        </div>
+
+        <ul class="space-y-3 mb-6">
+          <li class="flex items-start">
+            <svg class="w-4 h-4 text-amber-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+            </svg>
+            <span class="text-slate-700 text-sm">Unlimited job postings</span>
+          </li>
+          <li class="flex items-start">
+            <svg class="w-4 h-4 text-amber-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+            </svg>
+            <span class="text-slate-700 text-sm">Full candidate lifecycle management</span>
+          </li>
+          <li class="flex items-start">
+            <svg class="w-4 h-4 text-amber-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+            </svg>
+            <span class="text-slate-700 text-sm">24/7 dedicated support</span>
+          </li>
+          <li class="flex items-start">
+            <svg class="w-4 h-4 text-amber-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+            </svg>
+            <span class="text-slate-700 text-sm">Custom reporting & analytics</span>
+          </li>
+          <li class="flex items-start">
+            <svg class="w-4 h-4 text-amber-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+            </svg>
+            <span class="text-slate-700 text-sm">Unlimited team members</span>
+          </li>
+          <li class="flex items-start">
+            <svg class="w-4 h-4 text-amber-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+            </svg>
+            <span class="text-slate-700 text-sm">Advanced integrations</span>
+          </li>
+          <li class="flex items-start">
+            <svg class="w-4 h-4 text-amber-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+            </svg>
+            <span class="text-slate-700 text-sm">Custom onboarding</span>
+          </li>
+        </ul>
+
+        <%= link_to "Contact Sales", "#contact",
+            class: "w-full bg-slate-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-slate-700 transition duration-300 text-center block text-sm" %>
+      </div>
+    </div>
+
+    <!-- FAQ Section -->
+    <div class="mt-12 text-center">
+      <h3 class="text-xl font-bold text-slate-900 mb-6">Frequently Asked Questions</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto text-left">
+        <div>
+          <h4 class="font-semibold text-slate-900 mb-2 text-sm">Can I cancel anytime?</h4>
+          <p class="text-slate-600 text-sm">Yes, you can cancel your subscription at any time. No long-term contracts or cancellation fees.</p>
+        </div>
+        <div>
+          <h4 class="font-semibold text-slate-900 mb-2 text-sm">What's included in the free trial?</h4>
+          <p class="text-slate-600 text-sm">The free trial includes all features of the Professional plan for 30 days. No credit card required.</p>
+        </div>
+        <div>
+          <h4 class="font-semibold text-slate-900 mb-2 text-sm">Do you offer refunds?</h4>
+          <p class="text-slate-600 text-sm">We offer a 30-day money-back guarantee if you're not satisfied with our service.</p>
+        </div>
+        <div>
+          <h4 class="font-semibold text-slate-900 mb-2 text-sm">Is there a setup fee?</h4>
+          <p class="text-slate-600 text-sm">No setup fees. You only pay the monthly subscription fee after your free trial ends.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+

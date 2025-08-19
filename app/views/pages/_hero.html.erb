@@ -1,0 +1,167 @@
+<!-- Hero Section -->
+<section class="hero-section bg-gradient-to-br from-slate-800 via-slate-700 to-slate-600 text-white py-16 lg:py-20">
+  <div class="container mx-auto px-4 md:px-8">
+    <div class="flex flex-col lg:flex-row items-center justify-between">
+      <!-- Hero Content -->
+      <div class="lg:w-1/2 mb-10 lg:mb-0">
+        <div class="max-w-2xl">
+          <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 leading-tight">
+            Find Your Perfect 
+            <span class="text-amber-300">Job Match</span>
+          </h1>
+          <p class="text-lg md:text-xl mb-6 text-slate-200 leading-relaxed">
+            Hiring Wheels connects talented professionals with innovative companies. 
+            Streamline your hiring process or discover your next career opportunity.
+          </p>
+          
+          <!-- CTA Buttons -->
+          <div class="flex flex-col sm:flex-row gap-3 mb-6">
+            <%= link_to "I Want to Hire", new_user_registration_path, 
+                class: "bg-amber-500 text-slate-900 py-3 px-6 rounded-lg font-semibold text-base hover:bg-amber-400 transition duration-300 text-center" %>
+            <%= link_to "I Want to Work", new_user_registration_path, 
+                class: "border-2 border-white text-white py-3 px-6 rounded-lg font-semibold text-base hover:bg-white hover:text-slate-800 transition duration-300 text-center" %>
+          </div>
+          
+          <!-- Trust Indicators -->
+          <div class="flex items-center space-x-4 text-sm text-slate-300">
+            <div class="flex items-center">
+              <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <span>1 Month Free Trial</span>
+            </div>
+            <div class="flex items-center">
+              <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <span>No Setup Fees</span>
+            </div>
+            <div class="flex items-center">
+              <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <span>Cancel Anytime</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Hero Image/Illustration -->
+      <div class="lg:w-1/2">
+        <div class="relative">
+          <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
+            <!-- Header with logo -->
+            <div class="flex items-center justify-between mb-4">
+              <div class="flex items-center space-x-2">
+                <div class="w-8 h-8 bg-amber-400 rounded-lg flex items-center justify-center">
+                  <svg class="w-5 h-5 text-slate-900" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                </div>
+                <span class="text-white font-semibold text-sm">Hiring Wheels</span>
+              </div>
+              <div class="text-xs text-white/60">Dashboard</div>
+            </div>
+            
+            <!-- Job Cards Grid -->
+            <div class="grid grid-cols-2 gap-3">
+              <!-- Senior Developer Card -->
+              <div class="bg-white/20 rounded-lg p-3">
+                <div class="flex items-center mb-2">
+                  <div class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center mr-2">
+                    <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"/>
+                    </svg>
+                  </div>
+                  <div class="flex-1">
+                    <div class="text-xs font-medium text-white">Senior Developer</div>
+                    <div class="text-xs text-white/60">TechCorp Inc.</div>
+                  </div>
+                </div>
+                <div class="flex items-center justify-between text-xs">
+                  <span class="text-amber-300 font-medium">$120k-150k</span>
+                  <span class="bg-green-500/20 text-green-300 px-2 py-1 rounded">Remote</span>
+                </div>
+              </div>
+              
+              <!-- Product Manager Card -->
+              <div class="bg-white/20 rounded-lg p-3">
+                <div class="flex items-center mb-2">
+                  <div class="w-8 h-8 bg-purple-500 rounded-lg flex items-center justify-center mr-2">
+                    <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                    </svg>
+                  </div>
+                  <div class="flex-1">
+                    <div class="text-xs font-medium text-white">Product Manager</div>
+                    <div class="text-xs text-white/60">InnovateLab</div>
+                  </div>
+                </div>
+                <div class="flex items-center justify-between text-xs">
+                  <span class="text-amber-300 font-medium">$100k-130k</span>
+                  <span class="bg-blue-500/20 text-blue-300 px-2 py-1 rounded">Hybrid</span>
+                </div>
+              </div>
+              
+              <!-- UX Designer Card -->
+              <div class="bg-white/20 rounded-lg p-3">
+                <div class="flex items-center mb-2">
+                  <div class="w-8 h-8 bg-pink-500 rounded-lg flex items-center justify-center mr-2">
+                    <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z"/>
+                    </svg>
+                  </div>
+                  <div class="flex-1">
+                    <div class="text-xs font-medium text-white">UX Designer</div>
+                    <div class="text-xs text-white/60">DesignHub</div>
+                  </div>
+                </div>
+                <div class="flex items-center justify-between text-xs">
+                  <span class="text-amber-300 font-medium">$80k-110k</span>
+                  <span class="bg-green-500/20 text-green-300 px-2 py-1 rounded">Remote</span>
+                </div>
+              </div>
+              
+              <!-- Data Scientist Card -->
+              <div class="bg-white/20 rounded-lg p-3">
+                <div class="flex items-center mb-2">
+                  <div class="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center mr-2">
+                    <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"/>
+                    </svg>
+                  </div>
+                  <div class="flex-1">
+                    <div class="text-xs font-medium text-white">Data Scientist</div>
+                    <div class="text-xs text-white/60">AnalyticsPro</div>
+                  </div>
+                </div>
+                <div class="flex items-center justify-between text-xs">
+                  <span class="text-amber-300 font-medium">$110k-140k</span>
+                  <span class="bg-orange-500/20 text-orange-300 px-2 py-1 rounded">On-site</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Stats Bar -->
+            <div class="mt-4 pt-4 border-t border-white/20">
+              <div class="flex items-center justify-between text-xs text-white/80">
+                <div class="flex items-center">
+                  <div class="w-2 h-2 bg-green-400 rounded-full mr-2"></div>
+                  <span>24 active jobs</span>
+                </div>
+                <div class="flex items-center">
+                  <div class="w-2 h-2 bg-blue-400 rounded-full mr-2"></div>
+                  <span>156 candidates</span>
+                </div>
+                <div class="flex items-center">
+                  <div class="w-2 h-2 bg-amber-400 rounded-full mr-2"></div>
+                  <span>89% match rate</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
