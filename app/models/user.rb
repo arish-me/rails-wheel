@@ -101,7 +101,7 @@ class User < ApplicationRecord
   end
 
   def missing_fields?
-    first_name.present? && last_name.present?
+    first_name.present? && last_name.present? && avatar.attached? && location.present?
   end
 
   def attach_avatar(image_url)
@@ -190,6 +190,14 @@ class User < ApplicationRecord
     else
       "created"
     end
+  end
+
+  def oauth_user?
+    provider.present? && uid.present?
+  end
+
+  def needs_profile_completion?
+    oauth_user? && (first_name.blank? || last_name.blank? || first_name == "User" || last_name == "User")
   end
 
   protected
