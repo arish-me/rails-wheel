@@ -11,23 +11,7 @@
         <%= render 'job_content_section',
             title: 'Job Description',
             color: 'blue',
-            content: @job.rich_text_description %>
-
-        <!-- Requirements -->
-        <% if @job.requirements.present? %>
-          <%= render 'job_content_section',
-              title: 'Requirements',
-              color: 'green',
-              content: @job.requirements_rich_text %>
-        <% end %>
-
-        <!-- Benefits -->
-        <% if @job.benefits.present? %>
-          <%= render 'job_content_section',
-              title: 'Benefits & Perks',
-              color: 'yellow',
-              content: @job.benefits_rich_text %>
-        <% end %>
+            content: @job.description %>
 
         <% if @job.application_instructions.present? %>
           <%= render 'job_content_section',

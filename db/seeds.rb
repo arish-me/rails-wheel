@@ -5,14 +5,30 @@
 faker_count = ENV['FAKER_COUNT'] ? ENV['FAKER_COUNT'].to_i : nil
 # faker_count = 100
 # Call the main seeder service with the faker count
-
+puts "🌐 Creating Default company"
 company = Company.find_or_create_by!(name: "TTC Service", subdomain: 'wheel.in', website: 'www.wheel.in')
+puts "🌐 Finish Creating Default company"
 ActsAsTenant.with_tenant(company) do
+  puts "🌐 Running MainSeeder"
   SeedData::MainSeeder.new(faker_count, false, true, company).call
+  puts "🌐 Finish MainSeeder"
 end
+puts "🌐 Creating PlatformUser"
 SeedData::PlatformUserService.new('serviceuser@wheel.com').call
+
+puts "🌐 Creating Candidate Roles"
 SeedData::CandidateRoleService.call
+puts "🌐 Creating Skills"
 SeedData::SkillService.call
+
+
+puts "🌐 Seeding Jobs.."
+company = Company.find_by(name: "TTC Service")
+if company
+  puts "📋 Seeding real job data..."
+  SeedData::RealJobDataSeeder.new(company, 5).call
+end
+
 
 # # Seed job board providers
 # load(Rails.root.join('db', 'seeds', 'job_board_providers.rb'))
