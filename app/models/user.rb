@@ -3,7 +3,7 @@ class User < ApplicationRecord
   devise :invitable, :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :lockable,
          :lockable, :timeoutable, :trackable, :confirmable,
-         :omniauthable, omniauth_providers: %i[google_oauth2 github]
+         :omniauthable, omniauth_providers: %i[google_oauth2]
 
   # Include DeviseInvitable::Inviter to allow users to send invitations
   include DeviseInvitable::Inviter
