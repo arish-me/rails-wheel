@@ -112,14 +112,13 @@
           <%= lucide_icon('send', class: 'w-4 h-4 mr-2') %>
           Apply Now
         <% end %>
+      <% elsif current_user.company %>
       <% else %>
         <span class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-gray-100">
           <%= lucide_icon('x-circle', class: 'w-4 h-4 mr-2') %>
           Applications Closed
         </span>
       <% end %>
-    <% elsif current_user.company %>
-
     <% else %>
       <%= link_to new_user_session_path,
           class: "inline-flex items-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200" do %>
