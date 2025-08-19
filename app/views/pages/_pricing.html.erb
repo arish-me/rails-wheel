@@ -23,13 +23,22 @@
     <!-- Billing Toggle -->
     <div class="flex justify-center mb-10">
       <div class="bg-slate-100 rounded-lg p-1 flex">
-        <button id="monthly-btn" class="px-6 py-2 rounded-md bg-white text-slate-900 font-semibold shadow-sm transition duration-300 billing-toggle active">
+        <button
+
+                class="px-6 py-2 rounded-md bg-white text-slate-900 font-semibold shadow-sm transition duration-300 billing-toggle active">
           Monthly
         </button>
-        <button id="yearly-btn" class="px-6 py-2 rounded-md text-slate-600 font-semibold transition duration-300 billing-toggle">
+        <!-- <button data-billing-toggle-target="monthlyButton"
+                data-action="click->billing-toggle#showMonthly"
+                class="px-6 py-2 rounded-md bg-white text-slate-900 font-semibold shadow-sm transition duration-300 billing-toggle active">
+          Monthly
+        </button> -->
+       <!--  <button data-billing-toggle-target="yearlyButton"
+                data-action="click->billing-toggle#showYearly"
+                class="px-6 py-2 rounded-md text-slate-600 font-semibold transition duration-300 billing-toggle">
           Yearly
           <span class="ml-2 bg-amber-100 text-amber-800 text-xs px-2 py-1 rounded-full">Save 20%</span>
-        </button>
+        </button> -->
       </div>
     </div>
 
@@ -40,8 +49,8 @@
         <div class="text-center mb-6">
           <h3 class="text-xl font-bold text-slate-900 mb-3">Starter</h3>
           <div class="mb-4">
-            <span class="text-3xl font-bold text-slate-900 monthly-price">$10</span>
-            <span class="text-3xl font-bold text-slate-900 yearly-price hidden">$8</span>
+            <span class="text-3xl font-bold text-slate-900" data-billing-toggle-target="monthlyPrice">$10</span>
+            <span class="text-3xl font-bold text-slate-900 hidden" data-billing-toggle-target="yearlyPrice">$8</span>
             <span class="text-slate-600">/month</span>
           </div>
           <p class="text-slate-600 text-sm">Perfect for small businesses and startups</p>
@@ -93,8 +102,8 @@
         <div class="text-center mb-6">
           <h3 class="text-xl font-bold text-slate-900 mb-3">Professional</h3>
           <div class="mb-4">
-            <span class="text-3xl font-bold text-slate-900 monthly-price">$25</span>
-            <span class="text-3xl font-bold text-slate-900 yearly-price hidden">$20</span>
+            <span class="text-3xl font-bold text-slate-900" data-billing-toggle-target="monthlyPrice">$25</span>
+            <span class="text-3xl font-bold text-slate-900 hidden" data-billing-toggle-target="yearlyPrice">$20</span>
             <span class="text-slate-600">/month</span>
           </div>
           <p class="text-slate-600 text-sm">Ideal for growing companies</p>
@@ -154,8 +163,8 @@
         <div class="text-center mb-6">
           <h3 class="text-xl font-bold text-slate-900 mb-3">Enterprise</h3>
           <div class="mb-4">
-            <span class="text-3xl font-bold text-slate-900 monthly-price">$50</span>
-            <span class="text-3xl font-bold text-slate-900 yearly-price hidden">$40</span>
+            <span class="text-3xl font-bold text-slate-900" data-billing-toggle-target="monthlyPrice">$50</span>
+            <span class="text-3xl font-bold text-slate-900 hidden" data-billing-toggle-target="yearlyPrice">$40</span>
             <span class="text-slate-600">/month</span>
           </div>
           <p class="text-slate-600 text-sm">For large organizations</p>
@@ -236,31 +245,4 @@
   </div>
 </section>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  const monthlyBtn = document.getElementById('monthly-btn');
-  const yearlyBtn = document.getElementById('yearly-btn');
-  const monthlyPrices = document.querySelectorAll('.monthly-price');
-  const yearlyPrices = document.querySelectorAll('.yearly-price');
 
-  monthlyBtn.addEventListener('click', function() {
-    monthlyBtn.classList.add('active', 'bg-white', 'text-slate-900', 'shadow-sm');
-    monthlyBtn.classList.remove('text-slate-600');
-    yearlyBtn.classList.remove('active', 'bg-white', 'text-slate-900', 'shadow-sm');
-    yearlyBtn.classList.add('text-slate-600');
-
-    monthlyPrices.forEach(price => price.classList.remove('hidden'));
-    yearlyPrices.forEach(price => price.classList.add('hidden'));
-  });
-
-  yearlyBtn.addEventListener('click', function() {
-    yearlyBtn.classList.add('active', 'bg-white', 'text-slate-900', 'shadow-sm');
-    yearlyBtn.classList.remove('text-slate-600');
-    monthlyBtn.classList.remove('active', 'bg-white', 'text-slate-900', 'shadow-sm');
-    monthlyBtn.classList.add('text-slate-600');
-
-    yearlyPrices.forEach(price => price.classList.remove('hidden'));
-    monthlyPrices.forEach(price => price.classList.add('hidden'));
-  });
-});
-</script>
