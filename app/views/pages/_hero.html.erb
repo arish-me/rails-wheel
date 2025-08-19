@@ -1,0 +1,80 @@
+<!-- Hero Section -->
+<section class="hero-section bg-gradient-to-br from-blue-600 via-indigo-700 to-purple-800 text-white py-24 lg:py-32">
+  <div class="container mx-auto px-4 md:px-8">
+    <div class="flex flex-col lg:flex-row items-center justify-between">
+      <!-- Hero Content -->
+      <div class="lg:w-1/2 mb-12 lg:mb-0">
+        <div class="max-w-2xl">
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+            Find Your Perfect 
+            <span class="text-yellow-400">Job Match</span>
+          </h1>
+          <p class="text-xl md:text-2xl mb-8 text-blue-100 leading-relaxed">
+            Hiring Wheels connects talented professionals with innovative companies. 
+            Streamline your hiring process or discover your next career opportunity.
+          </p>
+          
+          <!-- CTA Buttons -->
+          <div class="flex flex-col sm:flex-row gap-4 mb-8">
+            <%= link_to "Post a Job - Free Trial", new_user_registration_path, 
+                class: "bg-yellow-400 text-gray-900 py-4 px-8 rounded-lg font-bold text-lg hover:bg-yellow-300 transition duration-300 text-center" %>
+            <%= link_to "Find Jobs", new_user_registration_path, 
+                class: "border-2 border-white text-white py-4 px-8 rounded-lg font-bold text-lg hover:bg-white hover:text-gray-900 transition duration-300 text-center" %>
+          </div>
+          
+          <!-- Trust Indicators -->
+          <div class="flex items-center space-x-6 text-sm text-blue-200">
+            <div class="flex items-center">
+              <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <span>1 Month Free Trial</span>
+            </div>
+            <div class="flex items-center">
+              <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <span>No Setup Fees</span>
+            </div>
+            <div class="flex items-center">
+              <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <span>Cancel Anytime</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Hero Image/Illustration -->
+      <div class="lg:w-1/2">
+        <div class="relative">
+          <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20">
+            <div class="grid grid-cols-2 gap-4">
+              <div class="bg-white/20 rounded-lg p-4">
+                <div class="w-12 h-12 bg-yellow-400 rounded-lg mb-3"></div>
+                <div class="h-3 bg-white/30 rounded mb-2"></div>
+                <div class="h-2 bg-white/20 rounded w-3/4"></div>
+              </div>
+              <div class="bg-white/20 rounded-lg p-4">
+                <div class="w-12 h-12 bg-blue-400 rounded-lg mb-3"></div>
+                <div class="h-3 bg-white/30 rounded mb-2"></div>
+                <div class="h-2 bg-white/20 rounded w-2/3"></div>
+              </div>
+              <div class="bg-white/20 rounded-lg p-4">
+                <div class="w-12 h-12 bg-green-400 rounded-lg mb-3"></div>
+                <div class="h-3 bg-white/30 rounded mb-2"></div>
+                <div class="h-2 bg-white/20 rounded w-4/5"></div>
+              </div>
+              <div class="bg-white/20 rounded-lg p-4">
+                <div class="w-12 h-12 bg-purple-400 rounded-lg mb-3"></div>
+                <div class="h-3 bg-white/30 rounded mb-2"></div>
+                <div class="h-2 bg-white/20 rounded w-1/2"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

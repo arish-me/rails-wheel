@@ -1,0 +1,71 @@
+<!-- Header -->
+<header class="bg-white shadow-sm sticky top-0 z-50">
+  <div class="container mx-auto px-4 md:px-8">
+    <div class="flex items-center justify-between h-16">
+      
+      <!-- Logo -->
+      <div class="flex items-center">
+        <%= link_to root_path, class: "flex items-center space-x-2" do %>
+          <div class="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
+            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+            </svg>
+          </div>
+          <span class="text-xl font-bold text-gray-900">Hiring Wheels</span>
+        <% end %>
+      </div>
+
+      <!-- Desktop Navigation -->
+      <nav class="hidden md:flex items-center space-x-8">
+        <%= link_to "Features", "#features", class: "text-gray-700 hover:text-blue-600 transition duration-300" %>
+        <%= link_to "Pricing", "#pricing", class: "text-gray-700 hover:text-blue-600 transition duration-300" %>
+        <%= link_to "About", "#about", class: "text-gray-700 hover:text-blue-600 transition duration-300" %>
+        <%= link_to "Contact", "#contact", class: "text-gray-700 hover:text-blue-600 transition duration-300" %>
+      </nav>
+
+      <!-- CTA Buttons -->
+      <div class="hidden md:flex items-center space-x-4">
+        <%= link_to "Sign In", new_user_session_path, 
+            class: "text-gray-700 hover:text-blue-600 transition duration-300" %>
+        <%= link_to "Get Started", new_user_registration_path, 
+            class: "bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition duration-300" %>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <div class="md:hidden">
+        <button type="button" class="text-gray-700 hover:text-blue-600" onclick="toggleMobileMenu()">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="md:hidden hidden">
+      <div class="px-2 pt-2 pb-3 space-y-1 bg-white border-t">
+        <%= link_to "Features", "#features", 
+            class: "block px-3 py-2 text-gray-700 hover:text-blue-600 transition duration-300" %>
+        <%= link_to "Pricing", "#pricing", 
+            class: "block px-3 py-2 text-gray-700 hover:text-blue-600 transition duration-300" %>
+        <%= link_to "About", "#about", 
+            class: "block px-3 py-2 text-gray-700 hover:text-blue-600 transition duration-300" %>
+        <%= link_to "Contact", "#contact", 
+            class: "block px-3 py-2 text-gray-700 hover:text-blue-600 transition duration-300" %>
+        <div class="border-t pt-4 mt-4">
+          <%= link_to "Sign In", new_user_session_path, 
+              class: "block px-3 py-2 text-gray-700 hover:text-blue-600 transition duration-300" %>
+          <%= link_to "Get Started", new_user_registration_path, 
+              class: "block px-3 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition duration-300 text-center mt-2" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<script>
+function toggleMobileMenu() {
+  const menu = document.getElementById('mobile-menu');
+  menu.classList.toggle('hidden');
+}
+</script>
