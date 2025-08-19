@@ -3,33 +3,40 @@
 
   <div class="space-y-3">
     <div class="flex justify-between">
-      <span class="text-gray-600">Application Date</span>
-      <span class="font-medium"><%= @application.display_applied_date %></span>
+      <span class="text-gray-600 text-sm ">Application Date</span>
+      <span class="font-medium text-sm "><%= @application.display_applied_date %></span>
     </div>
 
     <% if @application.reviewed_at.present? %>
       <div class="flex justify-between">
-        <span class="text-gray-600">Last Reviewed</span>
-        <span class="font-medium"><%= @application.display_reviewed_date %></span>
+        <span class="text-gray-600 text-sm ">Last Reviewed</span>
+        <span class="font-medium text-sm "><%= @application.display_reviewed_date %></span>
       </div>
 
       <% if @application.reviewed_by.present? %>
         <div class="flex justify-between">
-          <span class="text-gray-600">Reviewed By</span>
-          <span class="font-medium"><%= @application.reviewed_by.display_name %></span>
+          <span class="text-gray-600 text-sm ">Reviewed By</span>
+          <span class="font-medium text-sm "><%= @application.reviewed_by.display_name %></span>
         </div>
       <% end %>
     <% end %>
 
     <div class="flex justify-between">
-      <span class="text-gray-600">Views</span>
-      <span class="font-medium"><%= @application.view_count %></span>
+      <span class="text-gray-600 text-sm ">Views</span>
+      <span class="font-medium text-sm "><%= @application.view_count %></span>
     </div>
 
     <% if @application.is_quick_apply %>
       <div class="flex justify-between">
-        <span class="text-gray-600">Application Type</span>
-        <span class="font-medium text-orange-600">Quick Apply</span>
+        <span class="text-gray-600 text-sm ">Application Type</span>
+        <span class="font-medium text-orange-600 text-sm ">Quick Apply</span>
+      </div>
+    <% end %>
+
+    <% unless @application.is_quick_apply %>
+      <div class="flex justify-between">
+        <span class="text-gray-600 text-sm ">Application Type</span>
+        <span class="font-medium text-sm text-orange-600">Standard Apply</span>
       </div>
     <% end %>
   </div>

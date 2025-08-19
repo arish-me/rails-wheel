@@ -61,6 +61,19 @@ class Candidate < ApplicationRecord
     invisible: 4
   }
 
+  # Search functionality
+  pg_search_scope :search_by_content,
+                  against: [ :headline, :bio, :experience ],
+                  associated_against: {
+                    user: [ :first_name, :last_name, :email ],
+                    location: [ :city, :state, :country ],
+                    skills: [ :name ],
+                    experiences: [ :company_name, :job_title, :description ]
+                  },
+                  using: {
+                    tsearch: { prefix: true }
+                  }
+
   # Find candidate by public profile key
   def self.find_by_public_profile_key!(key)
     find_by!(public_profile_key: key)

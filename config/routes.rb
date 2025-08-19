@@ -162,7 +162,19 @@ Rails.application.routes.draw do
   # end
 
   resources :candidates
+  resources :experiences
   get "/locations/city_suggestions", to: "locations#city_suggestions"
+
+  # Company candidates management
+  resources :company_candidates, only: [ :index, :show ] do
+    collection do
+      post :bulk_actions
+    end
+    member do
+      patch :update_status
+      patch :add_note
+    end
+  end
 
   get "up" => "rails/health#show", as: :rails_health_check
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest

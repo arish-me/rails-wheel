@@ -1,0 +1,130 @@
+<div class="p-6 hover:bg-gray-50 transition-colors duration-150">
+  <div class="flex items-start space-x-4">
+    <!-- Checkbox -->
+    <div class="flex-shrink-0 pt-1">
+      <input type="checkbox"
+             value="<%= candidate.id %>"
+             class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+             data-bulk-actions-target="checkbox"
+             data-action="change->bulk-actions#toggleSelection">
+    </div>
+
+    <!-- Avatar -->
+    <div class="flex-shrink-0">
+      <% if candidate.user.avatar.attached? %>
+        <%= image_tag candidate.user.avatar.variant(:small), class: "w-12 h-12 rounded-full" %>
+      <% else %>
+        <div class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center">
+          <span class="text-gray-500 font-semibold text-sm"><%= candidate.user.initials %></span>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Candidate Info -->
+    <div class="flex-1 min-w-0">
+      <div class="flex items-center justify-between">
+        <div>
+          <h4 class="text-lg font-medium text-gray-900">
+            <%= link_to candidate.user.display_name, company_candidate_path(candidate), class: "hover:text-blue-600" %>
+          </h4>
+          <p class="text-sm text-gray-500"><%= candidate.user.email %></p>
+        </div>
+
+        <!-- Actions Dropdown -->
+        <div class="relative" data-controller="dropdown">
+          <button type="button"
+                  class="p-2 text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-full"
+                  data-action="click->dropdown#toggle">
+            <%= lucide_icon('more-horizontal', class: 'h-5 w-5') %>
+          </button>
+          <div data-dropdown-target="menu"
+               class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 z-10">
+            <div class="py-1">
+              <%= link_to "View Profile", company_candidate_path(candidate),
+                  class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
+              <button type="button"
+                      class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      data-action="click->candidate-actions#addNote"
+                      data-candidate-id="<%= candidate.id %>">
+                Add Note
+              </button>
+              <button type="button"
+                      class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      data-action="click->candidate-actions#updateStatus"
+                      data-candidate-id="<%= candidate.id %>">
+                Update Status
+              </button>
+              <button type="button"
+                      class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      data-action="click->candidate-actions#viewApplications"
+                      data-candidate-id="<%= candidate.id %>">
+                View Applications
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Candidate Details -->
+      <div class="mt-2 flex items-center space-x-4 text-sm text-gray-500">
+        <% if candidate.location.present? %>
+          <span class="flex items-center">
+            <%= lucide_icon('map-pin', class: 'w-4 h-4 mr-1') %>
+            <%= [candidate.location.city, candidate.location.state, candidate.location.country].compact.join(', ') %>
+          </span>
+        <% end %>
+
+        <% if candidate.role_level.present? %>
+          <span class="flex items-center">
+            <%= lucide_icon('briefcase', class: 'w-4 h-4 mr-1') %>
+            <%= candidate.role_level.to_s.titleize %>
+          </span>
+        <% end %>
+
+        <span class="flex items-center">
+          <%= lucide_icon('calendar', class: 'w-4 h-4 mr-1') %>
+          Joined <%= time_ago_in_words(candidate.created_at) %> ago
+        </span>
+      </div>
+
+      <!-- Applications Info -->
+      <div class="mt-3 flex items-center space-x-4">
+        <span class="text-sm text-gray-600">
+          <%= pluralize(candidate.job_applications.count, 'application') %>
+        </span>
+
+        <% if candidate.job_applications.any? %>
+          <span class="text-sm text-gray-600">
+            Latest: <%= candidate.job_applications.recent.first.job.title %>
+          </span>
+        <% end %>
+      </div>
+
+      <!-- Status and Tags -->
+      <div class="mt-3 flex items-center space-x-2">
+        <% if candidate.search_status.present? %>
+          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+            <%= candidate.search_status.titleize %>
+          </span>
+        <% end %>
+
+        <% if candidate.role_type.present? %>
+          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+            <%= candidate.role_type.to_s.titleize %>
+          </span>
+        <% end %>
+      </div>
+
+      <!-- Notes Preview -->
+      <% if false && candidate&.notes&.present? %>
+        <div class="mt-3 p-3 bg-yellow-50 border border-yellow-200 rounded-md">
+          <p class="text-sm text-yellow-800">
+            <strong>Note:</strong> <%= truncate(candidate.notes, length: 100) %>
+          </p>
+        </div>
+      <% end %>
+
+
+    </div>
+  </div>
+</div>

@@ -124,7 +124,7 @@ module SeedData
           expires_at: status == "published" ? rand(30..90).days.from_now : nil,
           published_at: status == "published" ? rand(1..30).days.ago : nil,
           views_count: status == "published" ? rand(10..500) : 0,
-          applications_count: status == "published" ? rand(0..20) : 0
+          job_applications_count: status == "published" ? rand(0..20) : 0
         )
 
         # Set external data for some jobs to simulate external integrations
@@ -180,7 +180,7 @@ module SeedData
           )
 
           # Update job application count
-          job.increment!(:applications_count)
+          job.increment!(:job_applications_count)
           application_count += 1
         end
       end

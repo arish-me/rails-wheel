@@ -7,7 +7,7 @@ class Job < ApplicationRecord
   belongs_to :created_by, class_name: "User"
 
   # Associations
-  has_many :job_applications, dependent: :destroy, counter_cache: true
+  has_many :job_applications, dependent: :destroy, counter_cache: :job_applications_count
   has_many :applicants, through: :job_applications, source: :candidate
   has_many :application_users, through: :job_applications, source: :user
   has_many :job_board_sync_logs, dependent: :destroy
@@ -30,6 +30,7 @@ class Job < ApplicationRecord
     draft: "draft",
     published: "published",
     closed: "closed",
+    expired: "expired",
     archived: "archived"
   }
 
@@ -55,6 +56,7 @@ class Job < ApplicationRecord
   before_save :set_published_at, if: :status_changed_to_published?
   after_save :update_company_job_count, if: :saved_change_to_status?
 
+
   # Search
   pg_search_scope :search_by_title_and_description,
                   against: [ :title, :description, :requirements ],
@@ -73,7 +75,8 @@ class Job < ApplicationRecord
   # Status scopes
   scope :published, -> { where(status: "published") }
   scope :active, -> { published.where("expires_at > ?", Time.current) }
-  scope :expired, -> { where("expires_at <= ?", Time.current) }
+  scope :expired, -> { where(status: "expired") }
+  scope :expired_by_date, -> { where("expires_at <= ?", Time.current) }
   scope :draft, -> { where(status: "draft") }
   scope :closed, -> { where(status: "closed") }
   scope :archived, -> { where(status: "archived") }
@@ -102,7 +105,7 @@ class Job < ApplicationRecord
   scope :oldest_first, -> { order(published_at: :asc) }
   scope :salary_high_to_low, -> { order(salary_max: :desc) }
   scope :salary_low_to_high, -> { order(salary_min: :asc) }
-  scope :most_applications, -> { order(applications_count: :desc) }
+  scope :most_applications, -> { order(job_applications_count: :desc) }
   scope :most_views, -> { order(views_count: :desc) }
 
   # Performance scopes
@@ -128,16 +131,20 @@ class Job < ApplicationRecord
     status == "closed"
   end
 
+  def expired?
+    status == "expired"
+  end
+
   def archived?
     status == "archived"
   end
 
-  def expired?
+  def past_expiration_date?
     expires_at.present? && expires_at <= Time.current
   end
 
   def active?
-    published? && !expired?
+    published? && !past_expiration_date?
   end
 
   def can_be_applied_to?
@@ -145,7 +152,7 @@ class Job < ApplicationRecord
   end
 
   def can_be_published?
-    draft? && valid_for_publication?
+    (draft? || closed?) && valid_for_publication?
   end
 
   def can_be_closed?
@@ -217,7 +224,7 @@ class Job < ApplicationRecord
   end
 
   def applications_count
-    job_applications_count || 0
+    job_applications_count
   end
 
   def recent_applications(limit: 5)
@@ -296,6 +303,21 @@ class Job < ApplicationRecord
        .where(company: company)
        .or(Job.published.active.where(role_type: role_type))
        .limit(limit)
+  end
+
+  # ============================================================================
+  # CLASS METHODS
+  # ============================================================================
+
+  def self.expire_expired_jobs
+    expired_jobs = published.where("expires_at <= ?", Time.current)
+
+    if expired_jobs.any?
+      expired_jobs.update_all(status: "expired", updated_at: Time.current)
+      Rails.logger.info "Expired #{expired_jobs.count} jobs"
+    end
+
+    expired_jobs.count
   end
 
   # ============================================================================

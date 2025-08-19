@@ -21,6 +21,10 @@ class Platform::UserPolicy < ApplicationPolicy
     user.platform_admin?
   end
 
+  def invite?
+    user.platform_admin?
+  end
+
   def edit?
     user.platform_admin?
   end

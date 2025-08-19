@@ -27,14 +27,14 @@
     <!-- Main Content -->
     <div class="lg:col-span-2 space-y-5">
       <%= render 'applicant_info' %>
-      
+
       <% if @application.cover_letter.present? %>
         <%= render 'content_section', title: 'Cover Letter', content: simple_format(@application.cover_letter) %>
       <% end %>
-      
+
       <%= render 'resume_section' %>
       <%= render 'portfolio_section' %>
-      
+
       <% if @application.additional_notes.present? %>
         <%= render 'content_section', title: 'Additional Notes', content: simple_format(@application.additional_notes) %>
       <% end %>
@@ -44,7 +44,7 @@
     <div class="space-y-5">
       <%= render 'status_section' %>
       <%= render 'details_section' %>
-      <%= render 'actions_section' %>
+      <%= render 'actions_section' if @application.user == current_user %>
     </div>
   </div>
 </div>

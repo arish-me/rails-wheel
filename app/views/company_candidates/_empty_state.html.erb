@@ -1,0 +1,19 @@
+<div class="text-center py-12">
+  <div class="mx-auto h-12 w-12 text-gray-400">
+    <%= lucide_icon('users', class: 'h-12 w-12') %>
+  </div>
+  <h3 class="mt-2 text-sm font-medium text-gray-900">No applications found</h3>
+  <p class="mt-1 text-sm text-gray-500">
+    <% if params[:search].present? || params[:job_id].present? || params[:status].present? %>
+      Try adjusting your filters or search terms.
+    <% else %>
+      Applications will appear here once candidates start applying to your jobs.
+    <% end %>
+  </p>
+  <% if params[:search].present? || params[:job_id].present? || params[:status].present? %>
+    <div class="mt-6">
+      <%= link_to "Clear all filters", company_candidates_path, 
+          class: "inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+    </div>
+  <% end %>
+</div>
