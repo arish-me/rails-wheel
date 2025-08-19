@@ -1,7 +1,7 @@
 <!-- Footer -->
 <footer class="bg-slate-900 text-white">
   <div class="container mx-auto px-4 md:px-8 py-12">
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       
       <!-- Company Info -->
       <div class="lg:col-span-1">
@@ -44,33 +44,20 @@
         <ul class="space-y-3">
           <li><%= link_to "Features", features_path, class: "text-slate-400 hover:text-white transition duration-300 text-sm" %></li>
           <li><%= link_to "Pricing", pricing_path, class: "text-slate-400 hover:text-white transition duration-300 text-sm" %></li>
-          <li><%= link_to "Job Posting", "#", class: "text-slate-400 hover:text-white transition duration-300 text-sm" %></li>
-          <li><%= link_to "Candidate Search", "#", class: "text-slate-400 hover:text-white transition duration-300 text-sm" %></li>
+          <li><%= link_to "Browse Jobs", public_jobs_path, class: "text-slate-400 hover:text-white transition duration-300 text-sm" %></li>
+          <li><%= link_to "Talent Search", talent_search_path, class: "text-slate-400 hover:text-white transition duration-300 text-sm" %></li>
           <li><%= link_to "Analytics", "#", class: "text-slate-400 hover:text-white transition duration-300 text-sm" %></li>
         </ul>
       </div>
 
-      <!-- Company -->
+      <!-- Support & Legal -->
       <div>
-        <h3 class="text-base font-semibold mb-4">Company</h3>
+        <h3 class="text-base font-semibold mb-4">Support & Legal</h3>
         <ul class="space-y-3">
           <li><%= link_to "About Us", about_path, class: "text-slate-400 hover:text-white transition duration-300 text-sm" %></li>
-          <li><%= link_to "Careers", "#", class: "text-slate-400 hover:text-white transition duration-300 text-sm" %></li>
-          <li><%= link_to "Blog", "#", class: "text-slate-400 hover:text-white transition duration-300 text-sm" %></li>
-          <li><%= link_to "Press", "#", class: "text-slate-400 hover:text-white transition duration-300 text-sm" %></li>
-          <li><%= link_to "Partners", "#", class: "text-slate-400 hover:text-white transition duration-300 text-sm" %></li>
-        </ul>
-      </div>
-
-      <!-- Support -->
-      <div>
-        <h3 class="text-base font-semibold mb-4">Support</h3>
-        <ul class="space-y-3">
-          <li><%= link_to "Help Center", "#", class: "text-slate-400 hover:text-white transition duration-300 text-sm" %></li>
           <li><%= link_to "Contact Us", contact_path, class: "text-slate-400 hover:text-white transition duration-300 text-sm" %></li>
-          <li><%= link_to "Privacy Policy", "#", class: "text-slate-400 hover:text-white transition duration-300 text-sm" %></li>
-          <li><%= link_to "Terms of Service", "#", class: "text-slate-400 hover:text-white transition duration-300 text-sm" %></li>
-          <li><%= link_to "Cookie Policy", "#", class: "text-slate-400 hover:text-white transition duration-300 text-sm" %></li>
+          <li><%= link_to "Privacy Policy", privacy_policy_path, class: "text-slate-400 hover:text-white transition duration-300 text-sm" %></li>
+          <li><%= link_to "Terms of Service", terms_of_service_path, class: "text-slate-400 hover:text-white transition duration-300 text-sm" %></li>
         </ul>
       </div>
     </div>
@@ -82,9 +69,8 @@
           © 2024 Hiring Wheels. All rights reserved.
         </div>
         <div class="flex space-x-4">
-          <a href="#" class="text-slate-400 hover:text-white text-xs transition duration-300">Privacy</a>
-          <a href="#" class="text-slate-400 hover:text-white text-xs transition duration-300">Terms</a>
-          <a href="#" class="text-slate-400 hover:text-white text-xs transition duration-300">Cookies</a>
+          <a href="<%= privacy_policy_path %>" class="text-slate-400 hover:text-white text-xs transition duration-300">Privacy</a>
+          <a href="<%= terms_of_service_path %>" class="text-slate-400 hover:text-white text-xs transition duration-300">Terms</a>
         </div>
       </div>
     </div>

@@ -127,7 +127,13 @@
                 All Jobs
               <% end %>
             </h2>
-            <p class="text-sm text-gray-600"><%= @pagy.count %> jobs found</p>
+            <p class="text-sm text-gray-600">
+              <% if user_signed_in? %>
+                <%= @pagy.count %> jobs found
+              <% else %>
+                <%= @jobs.count %> jobs shown (of <%= Job.published.active.count %> total)
+              <% end %>
+            </p>
           </div>
         </div>
 
@@ -219,10 +225,26 @@
           </div>
         <% end %>
 
+        <!-- Trial CTA for non-logged-in users -->
+        <% if @show_trial_cta %>
+          <div class="mt-8 bg-gradient-to-r from-amber-500 to-amber-600 rounded-lg p-6 text-center">
+            <h3 class="text-xl font-bold text-white mb-2">Ready to Find Your Perfect Job?</h3>
+            <p class="text-amber-100 mb-4">Get access to thousands more jobs, advanced filters, and personalized recommendations.</p>
+            <div class="flex flex-col sm:flex-row gap-3 justify-center">
+              <%= link_to "Start Free Trial", new_user_registration_path, 
+                  class: "bg-white text-amber-600 px-6 py-3 rounded-lg font-semibold hover:bg-amber-50 transition duration-300" %>
+              <%= link_to "Learn More", pricing_path, 
+                  class: "border-2 border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-amber-600 transition duration-300" %>
+            </div>
+          </div>
+        <% end %>
+
         <!-- Pagination -->
-        <div class="mt-6">
-          <%= render "shared/pagination", pagy: @pagy %>
-        </div>
+        <% if user_signed_in? %>
+          <div class="mt-6">
+            <%= render "shared/pagination", pagy: @pagy %>
+          </div>
+        <% end %>
       </div>
     </div>
   </div>

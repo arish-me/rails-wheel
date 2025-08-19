@@ -20,4 +20,17 @@ class PagesController < ApplicationController
   def about
     # About page action
   end
+
+  def privacy_policy
+    # Privacy Policy page action
+  end
+
+  def terms_of_service
+    # Terms of Service page action
+  end
+
+  def talent_search
+    # Talent Search page action (to be implemented later)
+    redirect_to public_jobs_path
+  end
 end
