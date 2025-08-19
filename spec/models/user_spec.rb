@@ -408,4 +408,81 @@ RSpec.describe User, type: :model do
       expect(user.profile_image.variant(:small)).to be_present
     end
   end
+
+  describe 'user_type changes' do
+    let(:user) { create(:user, user_type: 'company') }
+
+    context 'when user_type changes from company to user' do
+      it 'creates a candidate record' do
+        expect { user.update(user_type: 'user') }.to change(Candidate, :count).by(1)
+        expect(user.candidate).to be_present
+      end
+    end
+
+    context 'when user_type changes from user to company' do
+      let(:user) { create(:user, user_type: 'user') }
+
+      before do
+        user.create_candidate
+      end
+
+      it 'destroys the candidate record' do
+        expect { user.update(user_type: 'company') }.to change(Candidate, :count).by(-1)
+        expect(user.candidate).to be_nil
+      end
+    end
+
+    context 'when user_type changes but candidate already exists' do
+      let(:user) { create(:user, user_type: 'user') }
+
+      before do
+        user.create_candidate
+      end
+
+      it 'does not create duplicate candidate' do
+        expect { user.update(user_type: 'user') }.not_to change(Candidate, :count)
+        expect(user.candidate).to be_present
+      end
+    end
+
+    context 'when user_type changes but no candidate exists' do
+      let(:user) { create(:user, user_type: 'company') }
+
+      it 'does not try to destroy non-existent candidate' do
+        expect { user.update(user_type: 'company') }.not_to change(Candidate, :count)
+        expect(user.candidate).to be_nil
+      end
+    end
+  end
+
+  describe '#ensure_candidate' do
+    let(:user) { create(:user, user_type: 'user') }
+
+    context 'when user is user type and has no candidate' do
+      it 'creates a candidate' do
+        expect { user.ensure_candidate }.to change(Candidate, :count).by(1)
+        expect(user.candidate).to be_present
+      end
+    end
+
+    context 'when user is user type and already has a candidate' do
+      before do
+        user.create_candidate
+      end
+
+      it 'does not create duplicate candidate' do
+        expect { user.ensure_candidate }.not_to change(Candidate, :count)
+        expect(user.candidate).to be_present
+      end
+    end
+
+    context 'when user is company type' do
+      let(:user) { create(:user, user_type: 'company') }
+
+      it 'does not create a candidate' do
+        expect { user.ensure_candidate }.not_to change(Candidate, :count)
+        expect(user.candidate).to be_nil
+      end
+    end
+  end
 end

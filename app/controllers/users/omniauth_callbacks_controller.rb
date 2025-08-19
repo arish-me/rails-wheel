@@ -17,11 +17,14 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     end
 
     if user.persisted?
-      # Update name if user exists but doesn't have it set
-      if user.first_name.blank? || user.last_name.blank?
-        set_user_name_from_oauth(user, user_info)
-        user.save
-      end
+              # Update name if user exists but doesn't have it set
+        if user.first_name.blank? || user.last_name.blank?
+          set_user_name_from_oauth(user, user_info)
+          user.save
+        end
+
+        # Ensure candidate is created if user_type is 'user' (callback will handle this)
+        user.ensure_candidate if user.user_type == 'user'
 
       # Create or update the profile for the user
       user.attach_avatar(user_info["info"]["image"])

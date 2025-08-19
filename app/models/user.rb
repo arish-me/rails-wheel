@@ -34,6 +34,8 @@ class User < ApplicationRecord
   accepts_nested_attributes_for :location, allow_destroy: true
   accepts_nested_attributes_for :candidate, allow_destroy: true
 
+  after_update :handle_user_type_change, if: :saved_change_to_user_type?
+
   validates :first_name, presence: true, on: :update, unless: :oauth_user?
   validates :last_name, presence: true, on: :update, unless: :oauth_user?
   validates :email, presence: true, email: true
@@ -123,7 +125,7 @@ class User < ApplicationRecord
   end
 
   def ensure_candidate
-    if user?
+    if user? && !candidate.present?
       create_candidate
     end
   end
@@ -210,6 +212,10 @@ class User < ApplicationRecord
     user_type == 'user'
   end
 
+  def has_candidate_profile?
+    candidate.present?
+  end
+
   private
 
   def company_email_validation
@@ -218,6 +224,26 @@ class User < ApplicationRecord
     validation_result = EmailDomainValidator.validate_company_email(email)
     unless validation_result[:valid]
       errors.add(:email, validation_result[:message])
+    end
+  end
+
+  def handle_user_type_change
+    if user_type == 'user'
+      # User changed to 'user' type - create candidate if it doesn't exist
+      if candidate.present?
+        Rails.logger.info "User #{id} already has candidate record, skipping creation"
+      else
+        create_candidate
+        Rails.logger.info "Created candidate record for user #{id}"
+      end
+    elsif user_type == 'company'
+      # User changed to 'company' type - destroy candidate if it exists
+      if candidate.present?
+        candidate.destroy
+        Rails.logger.info "Destroyed candidate record for user #{id}"
+      else
+        Rails.logger.info "User #{id} has no candidate record to destroy"
+      end
     end
   end
 

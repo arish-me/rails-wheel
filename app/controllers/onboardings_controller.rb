@@ -52,8 +52,7 @@ class OnboardingsController < ApplicationController
         
         @user.update(user_type: user_type)
 
-        # Ensure candidate is created for user type
-        @user.ensure_candidate if @user.user?
+        # The callback will automatically handle candidate creation/destruction
 
         flash[:notice] = "Great! Let's get you set up."
         redirect_to onboarding_path
