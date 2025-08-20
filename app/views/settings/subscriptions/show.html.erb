@@ -1,100 +1,100 @@
 <% content_for :title, "Subscription Management" %>
 
-<div class="container mx-auto px-4 py-8">
-  <div class="max-w-4xl mx-auto">
+<div class="container mx-auto px-4 py-6">
+  <div class="max-w-3xl mx-auto">
     <!-- Header -->
-    <div class="mb-8">
-      <h1 class="text-3xl font-bold text-slate-900 mb-2">Subscription Management</h1>
-      <p class="text-slate-600">Manage your subscription and billing details</p>
+    <div class="mb-6">
+      <h1 class="text-2xl font-bold text-slate-900 mb-1">Subscription Management</h1>
+      <p class="text-sm text-slate-600">Manage your subscription and billing details</p>
     </div>
     <% if @subscription %>
       <!-- Current Subscription -->
-      <div class="bg-white rounded-2xl shadow-lg p-8 mb-8">
-        <div class="flex items-center justify-between mb-6">
-          <h2 class="text-xl font-bold text-slate-900">Current Subscription</h2>
-          <span class="px-3 py-1 rounded-full text-sm font-medium <%= subscription_status_badge(@subscription.status) %>">
+      <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 mb-6">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-lg font-semibold text-slate-900">Current Subscription</h2>
+          <span class="px-2 py-1 rounded-full text-xs font-medium <%= subscription_status_badge(@subscription.status) %>">
             <%= @subscription.status.humanize %>
           </span>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-          <div>
-            <h3 class="font-semibold text-slate-700 mb-2">Plan</h3>
-            <p class="text-2xl font-bold text-slate-900"><%= @subscription.subscription_plan.name %></p>
-            <p class="text-slate-600"><%= @subscription.subscription_plan.description %></p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+          <div class="bg-slate-50 rounded-lg p-4">
+            <h3 class="text-xs font-medium text-slate-500 uppercase tracking-wide mb-1">Plan</h3>
+            <p class="text-lg font-semibold text-slate-900"><%= @subscription.subscription_plan.name %></p>
+            <p class="text-xs text-slate-600 mt-1"><%= @subscription.subscription_plan.description %></p>
           </div>
 
-          <div>
-            <h3 class="font-semibold text-slate-700 mb-2">Billing</h3>
-            <p class="text-2xl font-bold text-slate-900"><%= @subscription.subscription_plan.display_price %></p>
-            <p class="text-slate-600">per month</p>
+          <div class="bg-slate-50 rounded-lg p-4">
+            <h3 class="text-xs font-medium text-slate-500 uppercase tracking-wide mb-1">Billing</h3>
+            <p class="text-lg font-semibold text-slate-900"><%= @subscription.subscription_plan.display_price %></p>
+            <p class="text-xs text-slate-600 mt-1">per month</p>
           </div>
 
-          <div>
-            <h3 class="font-semibold text-slate-700 mb-2">Subscription Status</h3>
+          <div class="bg-slate-50 rounded-lg p-4">
+            <h3 class="text-xs font-medium text-slate-500 uppercase tracking-wide mb-1">Status</h3>
             <% if @subscription.in_trial_period? %>
-              <p class="text-2xl font-bold text-amber-600"><%= @subscription.trial_days_remaining %> days</p>
-              <p class="text-slate-600">remaining in trial</p>
+              <p class="text-lg font-semibold text-amber-600"><%= @subscription.trial_days_remaining %> days</p>
+              <p class="text-xs text-slate-600 mt-1">remaining in trial</p>
             <% elsif @subscription.trial_expired? %>
-              <p class="text-2xl font-bold text-red-600">Trial Expired</p>
-              <p class="text-slate-600">Trial ended on <%= @subscription.trial_end.strftime('%B %d, %Y') %></p>
+              <p class="text-lg font-semibold text-red-600">Trial Expired</p>
+              <p class="text-xs text-slate-600 mt-1">Ended <%= @subscription.trial_end.strftime('%b %d, %Y') %></p>
             <% elsif @subscription.subscription_expired? %>
-              <p class="text-2xl font-bold text-red-600">Subscription Expired</p>
-              <p class="text-slate-600">Expired on <%= @subscription.expires_at.strftime('%B %d, %Y') %></p>
+              <p class="text-lg font-semibold text-red-600">Expired</p>
+              <p class="text-xs text-slate-600 mt-1">Expired <%= @subscription.expires_at.strftime('%b %d, %Y') %></p>
             <% elsif @subscription.subscription_expiring_soon? %>
-              <p class="text-2xl font-bold text-orange-600"><%= @subscription.days_until_expiry %> days</p>
-              <p class="text-slate-600">until expiry on <%= @subscription.expires_at.strftime('%B %d, %Y') %></p>
+              <p class="text-lg font-semibold text-orange-600"><%= @subscription.days_until_expiry %> days</p>
+              <p class="text-xs text-slate-600 mt-1">until <%= @subscription.expires_at.strftime('%b %d, %Y') %></p>
             <% else %>
-              <p class="text-2xl font-bold text-green-600">Active</p>
-              <p class="text-slate-600">Expires on <%= @subscription.expires_at.strftime('%B %d, %Y') %></p>
+              <p class="text-lg font-semibold text-green-600">Active</p>
+              <p class="text-xs text-slate-600 mt-1">Until <%= @subscription.expires_at.strftime('%b %d, %Y') %></p>
             <% end %>
           </div>
         </div>
 
         <!-- Plan Features -->
-        <div class="border-t border-slate-200 pt-6 mb-6">
-          <h3 class="font-semibold text-slate-700 mb-4">Plan Features</h3>
-          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div class="text-center p-4 bg-slate-50 rounded-lg">
-              <div class="text-2xl font-bold text-slate-900">
+        <div class="border-t border-slate-200 pt-4 mb-4">
+          <h3 class="text-sm font-medium text-slate-700 mb-3">Plan Features</h3>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <div class="text-center p-3 bg-white border border-slate-200 rounded-lg">
+              <div class="text-lg font-semibold text-slate-900">
                 <%= @subscription.subscription_plan.job_posting_limit == 0 ? '∞' : @subscription.subscription_plan.job_posting_limit %>
               </div>
-              <div class="text-sm text-slate-600">Job Postings</div>
+              <div class="text-xs text-slate-600">Job Postings</div>
             </div>
 
-            <div class="text-center p-4 bg-slate-50 rounded-lg">
-              <div class="text-2xl font-bold text-slate-900">
+            <div class="text-center p-3 bg-white border border-slate-200 rounded-lg">
+              <div class="text-lg font-semibold text-slate-900">
                 <%= @subscription.subscription_plan.candidate_search_limit == 0 ? '∞' : @subscription.subscription_plan.candidate_search_limit %>
               </div>
-              <div class="text-sm text-slate-600">Candidate Searches</div>
+              <div class="text-xs text-slate-600">Candidate Searches</div>
             </div>
 
-            <div class="text-center p-4 bg-slate-50 rounded-lg">
-              <div class="text-2xl font-bold text-<%= @subscription.subscription_plan.analytics_dashboard ? 'green' : 'slate' %>-600">
+            <div class="text-center p-3 bg-white border border-slate-200 rounded-lg">
+              <div class="text-lg font-semibold text-<%= @subscription.subscription_plan.analytics_dashboard ? 'green' : 'slate' %>-600">
                 <%= @subscription.subscription_plan.analytics_dashboard ? '✓' : '✗' %>
               </div>
-              <div class="text-sm text-slate-600">Analytics</div>
+              <div class="text-xs text-slate-600">Analytics</div>
             </div>
 
-            <div class="text-center p-4 bg-slate-50 rounded-lg">
-              <div class="text-2xl font-bold text-<%= @subscription.subscription_plan.priority_support ? 'green' : 'slate' %>-600">
+            <div class="text-center p-3 bg-white border border-slate-200 rounded-lg">
+              <div class="text-lg font-semibold text-<%= @subscription.subscription_plan.priority_support ? 'green' : 'slate' %>-600">
                 <%= @subscription.subscription_plan.priority_support ? '✓' : '✗' %>
               </div>
-              <div class="text-sm text-slate-600">Priority Support</div>
+              <div class="text-xs text-slate-600">Priority Support</div>
             </div>
           </div>
         </div>
 
         <!-- Actions -->
-        <div class="flex flex-wrap gap-4">
+        <div class="flex flex-wrap gap-3">
           <%= link_to pricing_subscriptions_path,
-              class: "bg-amber-500 hover:bg-amber-600 text-white py-2 px-6 rounded-lg font-semibold transition duration-200" do %>
+              class: "bg-amber-500 hover:bg-amber-600 text-white py-2 px-4 rounded-lg text-sm font-medium transition duration-200" do %>
             Change Plan
           <% end %>
 
           <% if @subscription.trial_expired? %>
-            <div class="bg-red-50 border border-red-200 rounded-lg p-4">
-              <p class="text-red-800 text-sm">
+            <div class="bg-red-50 border border-red-200 rounded-lg p-3">
+              <p class="text-red-800 text-xs">
                 <strong>Trial Expired:</strong> Your trial has ended. Please contact support to upgrade your subscription.
               </p>
             </div>
@@ -104,36 +104,36 @@
 
     <% else %>
       <!-- No Subscription -->
-      <div class="bg-white rounded-2xl shadow-lg p-8 text-center">
-        <svg class="w-16 h-16 text-slate-400 mx-auto mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 text-center">
+        <svg class="w-12 h-12 text-slate-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
         </svg>
 
-        <h2 class="text-2xl font-bold text-slate-900 mb-4">No Active Subscription</h2>
-        <p class="text-slate-600 mb-8">You're currently on a trial period. Choose a plan to unlock all features.</p>
+        <h2 class="text-lg font-semibold text-slate-900 mb-2">No Active Subscription</h2>
+        <p class="text-sm text-slate-600 mb-6">You're currently on a trial period. Choose a plan to unlock all features.</p>
 
         <%= link_to pricing_subscriptions_path,
-            class: "bg-amber-500 hover:bg-amber-600 text-white py-3 px-8 rounded-lg font-semibold transition duration-200" do %>
+            class: "bg-amber-500 hover:bg-amber-600 text-white py-2 px-6 rounded-lg text-sm font-medium transition duration-200" do %>
           View Pricing Plans
         <% end %>
       </div>
     <% end %>
 
     <!-- Support Section -->
-    <div class="bg-slate-50 rounded-2xl p-8 mt-8">
-      <h2 class="text-xl font-bold text-slate-900 mb-4">Need Help?</h2>
-      <p class="text-slate-600 mb-6">
+    <div class="bg-slate-50 rounded-xl p-6 mt-6">
+      <h2 class="text-lg font-semibold text-slate-900 mb-3">Need Help?</h2>
+      <p class="text-sm text-slate-600 mb-4">
         Have questions about your subscription or need to make changes? Our support team is here to help.
       </p>
 
-      <div class="flex flex-col sm:flex-row gap-4">
+      <div class="flex flex-col sm:flex-row gap-3">
         <%= link_to contact_path,
-            class: "bg-slate-900 hover:bg-slate-800 text-white py-3 px-6 rounded-lg font-semibold transition duration-200 text-center" do %>
+            class: "bg-slate-900 hover:bg-slate-800 text-white py-2 px-4 rounded-lg text-sm font-medium transition duration-200 text-center" do %>
           Contact Support
         <% end %>
 
         <%= link_to pricing_subscriptions_path,
-            class: "bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 py-3 px-6 rounded-lg font-semibold transition duration-200 text-center" do %>
+            class: "bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 py-2 px-4 rounded-lg text-sm font-medium transition duration-200 text-center" do %>
           View All Plans
         <% end %>
       </div>
