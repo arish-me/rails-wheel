@@ -1,7 +1,7 @@
 class Admin::SubscriptionsController < ApplicationController
   before_action :authenticate_user!
   before_action :ensure_admin!
-  before_action :set_company, only: [:show, :upgrade, :cancel]
+  before_action :set_company, only: [ :show, :upgrade, :cancel ]
 
   def index
     @subscriptions = CompanySubscription.includes(:company, :subscription_plan)
@@ -17,7 +17,7 @@ class Admin::SubscriptionsController < ApplicationController
 
   def upgrade
     plan_name = params[:plan_name]
-    
+
     if SubscriptionService.upgrade_company_subscription(@company, plan_name)
       redirect_to admin_subscription_path(@company), notice: "Successfully upgraded #{@company.name} to #{plan_name}"
     else
@@ -27,7 +27,7 @@ class Admin::SubscriptionsController < ApplicationController
 
   def cancel
     subscription = @company.active_subscription
-    
+
     if subscription&.cancel_subscription
       redirect_to admin_subscription_path(@company), notice: "Successfully canceled subscription for #{@company.name}"
     else
@@ -39,7 +39,7 @@ class Admin::SubscriptionsController < ApplicationController
 
   def ensure_admin!
     unless current_user.platform_admin?
-      redirect_to dashboard_path, alert: 'Access denied. Admin privileges required.'
+      redirect_to dashboard_path, alert: "Access denied. Admin privileges required."
     end
   end
 

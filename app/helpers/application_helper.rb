@@ -97,6 +97,21 @@ module ApplicationHelper
     end
   end
 
+  def subscription_status_badge(status)
+    case status
+    when "active"
+      "bg-green-100 text-green-800"
+    when "trial"
+      "bg-amber-100 text-amber-800"
+    when "expired"
+      "bg-red-100 text-red-800"
+    when "canceled"
+      "bg-gray-100 text-gray-800"
+    else
+      "bg-gray-100 text-gray-800"
+    end
+    end
+
   def can?(action, record_or_class, policy_class: nil)
     actual_policy = policy_class ? policy_class.new(current_user, record_or_class) : policy(record_or_class)
     actual_policy.public_send("#{action}?")

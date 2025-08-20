@@ -3,20 +3,27 @@ class Company < ApplicationRecord
  include Candidates::HasOnlineProfiles
  attr_accessor :redirect_to, :delete_avatar_image
 
+ # Override avatar validation for Company model - require on create
+ validates :avatar, attached: true, on: :create
  validates :name, presence: true, uniqueness: { case_sensitive: false }
  validates :subdomain, presence: true, uniqueness: { case_sensitive: false }
  validates :website, presence: true, uniqueness: { case_sensitive: false }
+
  after_create :assign_default_roles
  after_create :create_trial_subscription
+
  has_many :users, dependent: :destroy
  has_many :user_roles, dependent: :destroy
  has_many :roles, through: :user_roles
+ has_many :roles, dependent: :destroy
+ has_many :role_permissions, through: :roles
  has_many :categories
  has_many :jobs, dependent: :destroy
  has_many :job_applications, through: :jobs
  has_many :job_board_integrations, dependent: :destroy
  has_many :company_subscriptions, dependent: :destroy
- has_one :active_subscription, -> { active }, class_name: 'CompanySubscription'
+
+ has_one :active_subscription, -> { active }, class_name: "CompanySubscription"
 
  pg_search_scope :search_by_name,
                 against: :name,
@@ -24,10 +31,7 @@ class Company < ApplicationRecord
                   tsearch: { prefix: true }
                 }
 
-   accepts_nested_attributes_for :users
-
-  # Override avatar validation for Company model - require on create
-  validates :avatar, attached: true, on: :create
+ accepts_nested_attributes_for :users
 
  def assign_default_roles
   ActsAsTenant.with_tenant(self) do
@@ -53,7 +57,7 @@ class Company < ApplicationRecord
   end
 
   def subscription_status
-    return 'no_subscription' unless active_subscription
+    return "no_subscription" unless active_subscription
     active_subscription.status
   end
 
@@ -82,6 +86,8 @@ class Company < ApplicationRecord
   private
 
   def create_trial_subscription
+    # Only create trial if no subscriptions exist
+    return if company_subscriptions.exists?
     SubscriptionService.create_trial_subscription(self)
   end
 end

@@ -30,8 +30,20 @@ Rails.application.routes.draw do
     resource :preferences, only: :show
     resource :accounts, only: :show
     resource :company, only: :show
+    resource :subscriptions, only: :show do
+    end
     get "account", to: "settings#edit_account", as: "edit_account"
   end
+
+
+  # Subscription routes
+  resources :subscriptions, only: [ :index ] do
+    collection do
+      get :pricing
+      post :request_upgrade
+    end
+  end
+
 
   devise_for :users, controllers: {
     omniauth_callbacks: "users/omniauth_callbacks",
@@ -136,14 +148,6 @@ Rails.application.routes.draw do
     end
   end
 
-  # Subscription routes
-  resources :subscriptions, only: [:index] do
-    collection do
-      get :pricing
-      post :request_upgrade
-    end
-  end
-
   # Platform admin routes
   namespace :admin do
     resources :users do
@@ -155,17 +159,17 @@ Rails.application.routes.draw do
         post :stop_impersonating
       end
     end
-    
-    resources :subscriptions, only: [:index, :show] do
+
+    resources :subscriptions, only: [ :index, :show ] do
       member do
         post :upgrade
         post :cancel
       end
     end
-    
+
     # Subscription Management for Platform Admins
     namespace :subscription_management do
-      resources :companies, only: [:index, :show] do
+      resources :companies, only: [ :index, :show ] do
         member do
           post :update_subscription
           post :cancel_subscription

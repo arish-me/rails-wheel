@@ -2,7 +2,7 @@ class CompanySubscription < ApplicationRecord
   belongs_to :company
   belongs_to :subscription_plan
 
-  enum :status, { trial: 'trial', active: 'active', expired: 'expired', canceled: 'canceled' }
+  enum :status, { trial: "trial", active: "active", expired: "expired", canceled: "canceled" }
 
   validates :status, presence: true
   validates :trial_start, presence: true, if: :trial?
@@ -11,16 +11,16 @@ class CompanySubscription < ApplicationRecord
   before_create :set_trial_period
   after_create :set_company_trial_status
 
-  scope :active, -> { where(status: 'active') }
-  scope :trial, -> { where(status: 'trial') }
-  scope :expired, -> { where(status: 'expired') }
-  scope :expiring_soon, -> { where('expires_at <= ? AND expires_at > ?', 30.days.from_now, Time.current) }
-  scope :expired_subscriptions, -> { where('expires_at <= ?', Time.current) }
+  scope :active, -> { where(status: "active") }
+  scope :trial, -> { where(status: "trial") }
+  scope :expired, -> { where(status: "expired") }
+  scope :expiring_soon, -> { where("expires_at <= ? AND expires_at > ?", 30.days.from_now, Time.current) }
+  scope :expired_subscriptions, -> { where("expires_at <= ?", Time.current) }
 
   def trial_days_remaining
     return 0 unless trial_end
     remaining = (trial_end - Time.current).to_i / 1.day
-    [remaining, 0].max
+    [ remaining, 0 ].max
   end
 
   def in_trial_period?
@@ -42,7 +42,7 @@ class CompanySubscription < ApplicationRecord
   def days_until_expiry
     return nil unless expires_at
     remaining = (expires_at - Time.current).to_i / 1.day
-    [remaining, 0].max
+    [ remaining, 0 ].max
   end
 
   def subscription_days_remaining
@@ -79,13 +79,13 @@ class CompanySubscription < ApplicationRecord
 
   def upgrade_to_plan(new_plan, duration_months: 1)
     return false unless new_plan.is_a?(SubscriptionPlan)
-    
+
     # Set expiry date based on duration
     new_expires_at = Time.current + duration_months.months
-    
+
     update(
       subscription_plan: new_plan,
-      status: 'active',
+      status: "active",
       trial_start: nil,
       trial_end: nil,
       expires_at: new_expires_at
@@ -93,20 +93,20 @@ class CompanySubscription < ApplicationRecord
   end
 
   def cancel_subscription
-    update(status: 'canceled')
+    update(status: "canceled")
   end
 
   def reactivate_subscription
-    update(status: 'active')
+    update(status: "active")
   end
 
   def expire_trial
-    update(status: 'expired') if trial?
+    update(status: "expired") if trial?
   end
 
   def extend_subscription(days)
     return false unless expires_at
-    
+
     new_expires_at = expires_at + days.days
     update(expires_at: new_expires_at)
   end
@@ -114,7 +114,7 @@ class CompanySubscription < ApplicationRecord
   def renew_subscription(duration_months: 1)
     new_expires_at = Time.current + duration_months.months
     update(
-      status: 'active',
+      status: "active",
       expires_at: new_expires_at
     )
   end
@@ -123,10 +123,10 @@ class CompanySubscription < ApplicationRecord
 
   def set_trial_period
     return unless subscription_plan.trial_days > 0
-    
+
     self.trial_start = Time.current
     self.trial_end = trial_start + subscription_plan.trial_days.days
-    self.status = 'trial'
+    self.status = "trial"
   end
 
   def set_company_trial_status

@@ -8,7 +8,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     resource.current_sign_in_ip_address = request.remote_ip
 
     # Validate email for company users during signup
-    if resource.user_type == 'company' && resource.email.present?
+    if resource.user_type == "company" && resource.email.present?
       validation_result = EmailDomainValidator.validate_company_email(resource.email)
       unless validation_result[:valid]
         resource.errors.add(:email, validation_result[:message])
@@ -27,7 +27,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
     # Set onboarding context flag for validation
     resource.in_onboarding_context = onboarding
-
     resource_updated = if onboarding
                         update_resource_without_password(resource, account_update_params)
     elsif params[:user][:redirect_to] == "settings_accounts_path"
@@ -40,7 +39,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
     if resource_updated
       set_flash_message_for_update(resource, prev_unconfirmed_email)
       bypass_sign_in resource, scope: resource_name if sign_in_after_change_password?
-
       respond_to do |format|
         format.html do
           flash[:notice] = "Your account has been updated successfully."
@@ -91,6 +89,20 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   protected
 
+
+  def company_subscription(resource)
+    # Only allow company users to access trial step
+    unless resource.company_user?
+      redirect_to dashboard_path, alert: "Trial step is only available for company users."
+      return
+    end
+
+    # Only create trial subscription if company doesn't have ANY subscription
+    if resource.company && !resource.company.company_subscriptions.exists?
+      SubscriptionService.create_trial_subscription(resource.company)
+    end
+  end
+
   def should_purge_profile_image?
     account_update_params[:delete_profile_image] == "1" &&
       account_update_params[:avatar].blank?
@@ -127,6 +139,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def update_resource_without_password(resource, params)
+    # Only create trial subscription if this is the first time completing onboarding
+    if params[:onboarded_at].present?
+      company_subscription(resource)
+    end
     resource.update_without_password(params.except(:redirect_to, :delete_profile_image, :redirect_to, :bio_required))
   end
 

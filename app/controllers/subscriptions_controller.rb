@@ -14,7 +14,7 @@ class SubscriptionsController < ApplicationController
 
   def request_upgrade
     plan = SubscriptionPlan.find(params[:plan_id])
-    
+
     # Create a subscription request (you can create a separate model for this)
     # For now, we'll just redirect to contact support
     redirect_to contact_path(
@@ -22,7 +22,7 @@ class SubscriptionsController < ApplicationController
       message: "I would like to upgrade to #{plan.name} plan. Company: #{@company.name}, Contact: #{current_user.email}"
     ), notice: "Your upgrade request has been sent. We'll contact you soon!"
   rescue ActiveRecord::RecordNotFound
-    redirect_to pricing_subscriptions_path, alert: 'Please select a valid subscription plan.'
+    redirect_to pricing_subscriptions_path, alert: "Please select a valid subscription plan."
   end
 
   def contact_support
@@ -33,14 +33,14 @@ class SubscriptionsController < ApplicationController
 
   def ensure_company_user!
     unless current_user.company_user?
-      redirect_to dashboard_path, alert: 'Only company users can manage subscriptions.'
+      redirect_to dashboard_path, alert: "Only company users can manage subscriptions."
     end
   end
 
   def set_company
     @company = current_user.company
     unless @company
-      redirect_to dashboard_path, alert: 'Please complete your company setup first.'
+      redirect_to dashboard_path, alert: "Please complete your company setup first."
     end
   end
 end

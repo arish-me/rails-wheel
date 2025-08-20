@@ -41,7 +41,7 @@ class OnboardingsController < ApplicationController
 
       if user_type.present? && %w[user company].include?(user_type)
         # Validate email for company users
-        if user_type == 'company' && @user.email.present?
+        if user_type == "company" && @user.email.present?
           validation_result = EmailDomainValidator.validate_company_email(@user.email)
           unless validation_result[:valid]
             flash[:alert] = validation_result[:message]
@@ -105,14 +105,13 @@ class OnboardingsController < ApplicationController
   def trial
     # Only allow company users to access trial step
     unless current_user.company_user?
-      redirect_to dashboard_path, alert: 'Trial step is only available for company users.'
+      redirect_to dashboard_path, alert: "Trial step is only available for company users."
       return
     end
 
-    # Ensure company has a trial subscription
-    unless current_user.company&.active_subscription&.in_trial_period?
-      # Create trial subscription if it doesn't exist
-      SubscriptionService.create_trial_subscription(current_user.company) if current_user.company
+    # Only create trial subscription if company doesn't have ANY subscription
+    if current_user.company && !current_user.company.company_subscriptions.exists?
+      SubscriptionService.create_trial_subscription(current_user.company)
     end
   end
 
@@ -154,7 +153,7 @@ class OnboardingsController < ApplicationController
       redirect_to dashboard_path if current_user.platform_admin?
 
       # If user doesn't have user_type set and we're not on the looking_for page, redirect
-      if current_user.user_type.blank? && action_name != 'looking_for'
+      if current_user.user_type.blank? && action_name != "looking_for"
         redirect_to looking_for_onboarding_path
       end
 

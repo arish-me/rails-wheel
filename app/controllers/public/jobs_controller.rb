@@ -10,7 +10,7 @@ class Public::JobsController < ApplicationController
 
   def index
     @jobs = JobService.search_jobs(@filters)
-    
+
     # Limit to 5 jobs for non-logged-in users
     if user_signed_in?
       @pagy, @jobs = pagy(@jobs, items: 12)
@@ -18,7 +18,7 @@ class Public::JobsController < ApplicationController
       @jobs = @jobs.limit(5)
       @show_trial_cta = true
     end
-    
+
     load_filter_options
   end
 

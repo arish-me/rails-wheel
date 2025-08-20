@@ -69,3 +69,4 @@ puts "📋 Total jobs across all companies: #{Job.count}"
 puts "=================="
 
 
+load Rails.root.join('db', 'seeds', 'subscription_plans.rb')
