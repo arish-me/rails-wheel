@@ -103,6 +103,16 @@ class OnboardingsController < ApplicationController
   end
 
   def trial
+    # Ensure only company users can access this step
+    unless current_user.company_user?
+      redirect_to onboarding_path
+      return
+    end
+
+    # Create trial subscription if it doesn't exist
+    if current_user.company && !current_user.company.has_subscription?
+      current_user.company.create_trial_subscription
+    end
   end
 
   def handle_redirect(notice)
@@ -145,6 +155,11 @@ class OnboardingsController < ApplicationController
       # If user doesn't have user_type set and we're not on the looking_for page, redirect
       if current_user.user_type.blank? && action_name != 'looking_for'
         redirect_to looking_for_onboarding_path
+      end
+
+      # For company users, redirect to trial step if they don't have a subscription
+      if current_user.company_user? && current_user.company && !current_user.company.has_subscription? && action_name != 'trial'
+        redirect_to trial_onboarding_path
       end
     end
 
