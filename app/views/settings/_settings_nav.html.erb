@@ -1,5 +1,6 @@
+
 <%
-nav_sections = [
+general_sections = [
   {
     header: "General",
     items: [
@@ -10,24 +11,27 @@ nav_sections = [
 
 
     ]
-  },
+  }
+]
+%>
+<%
+company_sections = [
   {
     header: "Company",
     items: [
       { label: "Company Setting", path: settings_company_path, icon: "bolt" },
       { label: "Subscriptions", path: settings_subscriptions_path, icon: "credit-card" },
-
-
-    ]
-  },
-  {
-    header: "Others",
-    items: [
-
     ]
   }
-]
-%>
+] %>
+
+<% nav_sections = if current_user.user?
+                      general_sections
+                  elsif current_user.company?
+                    general_sections + company_sections
+                  end
+
+                  %>
 <div class="space-y-4">
 	<div class="hidden lg:flex items-center gap-2 p-1.5">
 		<%= render LinkComponent.new(

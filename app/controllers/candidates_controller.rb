@@ -1,5 +1,5 @@
 class CandidatesController < ApplicationController
-  before_action :authenticate_user!, only: %i[edit update]
+  before_action :authenticate_user!
   before_action :set_candidate, only: %i[ show edit update ]
 
   def index
