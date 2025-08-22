@@ -11,6 +11,7 @@
 
     <div class="relative mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20">
       <div class="text-center max-w-4xl mx-auto">
+        <%if false %>
         <h1 class="text-4xl lg:text-6xl font-bold text-white mb-6 leading-tight">
           Find Your Dream Job
           <span class="block text-blue-200 text-3xl lg:text-4xl font-medium mt-2">in Tech & Innovation</span>
@@ -18,21 +19,23 @@
         <p class="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
           Discover thousands of opportunities from top companies. Your next career move starts here.
         </p>
-
+        <% end  %>
         <!-- Enhanced Search Bar -->
-        <%= form_with url: public_jobs_path, method: :get, class: "max-w-3xl mx-auto" do |f| %>
+        <%= form_with url: public_jobs_path, method: :get, class: "max-w-3xl mx-auto", data: { controller: "search-form", action: "submit->search-form#submit" } do |f| %>
           <div class="flex flex-col sm:flex-row gap-3 bg-white/10 backdrop-blur-sm rounded-2xl p-2 shadow-2xl">
             <div class="flex-1 relative">
               <%= f.text_field :search,
                   value: @filters[:search],
                   placeholder: "Search jobs, companies, or keywords...",
-                  class: "w-full px-6 py-4 text-gray-900 placeholder-gray-500 bg-white rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg shadow-sm" %>
+                  class: "w-full px-6 py-4 text-gray-900 placeholder-gray-500 bg-white rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg shadow-sm",
+                  data: { search_form_target: "input" } %>
               <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                 <%= lucide_icon('search', class: 'h-5 w-5 text-gray-400') %>
               </div>
             </div>
             <%= f.submit "Search Jobs",
-                class: "px-8 py-4 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold rounded-xl hover:from-blue-600 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transform transition-all duration-200 hover:scale-105 shadow-lg" %>
+                class: "px-8 py-4 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold rounded-xl hover:from-blue-600 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transform transition-all duration-200 hover:scale-105 shadow-lg",
+                data: { search_form_target: "submit" } %>
           </div>
         <% end %>
       </div>
@@ -46,10 +49,10 @@
         <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 sticky top-6">
           <div class="flex items-center justify-between mb-6">
             <h3 class="text-lg font-bold text-gray-900">Filters</h3>
-            <%= link_to "Clear All", public_jobs_path, class: "text-sm text-blue-600 hover:text-blue-700 font-medium" %>
+            <%= link_to "Clear All", public_jobs_path, class: "text-sm text-blue-600 hover:text-blue-700 font-medium", data: { controller: "clear-filters", action: "click->clear-filters#clear" } %>
           </div>
 
-          <%= form_with url: public_jobs_path, method: :get, local: true, class: "space-y-6" do |f| %>
+          <%= form_with url: public_jobs_path, method: :get, local: true, class: "space-y-6", data: { controller: "filter-form", action: "submit->filter-form#submit" } do |f| %>
             <!-- Hidden search field to preserve search -->
             <%= f.hidden_field :search, value: @filters[:search] if @filters[:search].present? %>
 
@@ -126,16 +129,21 @@
             <!-- Apply Filters -->
             <div class="pt-4">
               <%= f.submit "Apply Filters",
-                  class: "w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-3 rounded-lg hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 text-sm font-semibold transform transition-all duration-200 hover:scale-105 shadow-lg" %>
+                  class: "w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-3 rounded-lg hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 text-sm font-semibold transform transition-all duration-200 hover:scale-105 shadow-lg",
+                  data: { filter_form_target: "submit" } %>
             </div>
           <% end %>
         </div>
       </div>
 
       <!-- Enhanced Jobs List -->
-      <div class="lg:w-2/3 xl:w-3/4">
+      <div class="lg:w-2/3 xl:w-3/4" id="jobs-results">
         <!-- Results Header -->
-        <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 mb-6">
+        <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 mb-6" data-controller="results-header">
+          <div class="flex items-center justify-center mb-4" data-results-header-target="loading" style="display: none;">
+            <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
+            <span class="ml-2 text-gray-600">Loading results...</span>
+          </div>
           <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
               <h2 class="text-2xl font-bold text-gray-900">
@@ -152,16 +160,6 @@
                   <%= @jobs.count %> jobs found
                 <% end %>
               </p>
-            </div>
-
-            <!-- View Toggle -->
-            <div class="flex items-center space-x-2">
-              <button class="p-2 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100">
-                <%= lucide_icon('grid', class: 'h-5 w-5') %>
-              </button>
-              <button class="p-2 text-blue-600 bg-blue-50 rounded-lg">
-                <%= lucide_icon('list', class: 'h-5 w-5') %>
-              </button>
             </div>
           </div>
         </div>
@@ -285,8 +283,9 @@
                 No jobs are currently available. Check back later for new opportunities!
               <% end %>
             </p>
-            <%= link_to "Clear Filters", public_jobs_path,
-                class: "inline-flex items-center px-6 py-3 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold hover:from-blue-700 hover:to-indigo-700 transform transition-all duration-200 hover:scale-105 shadow-lg" %>
+                         <%= link_to "Clear Filters", public_jobs_path,
+                 class: "inline-flex items-center px-6 py-3 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold hover:from-blue-700 hover:to-indigo-700 transform transition-all duration-200 hover:scale-105 shadow-lg",
+                 data: { controller: "clear-filters", action: "click->clear-filters#clear" } %>
           </div>
         <% end %>
 
@@ -320,5 +319,16 @@
         <% end %>
       </div>
     </div>
+  </div>
+
+  <!-- Back to Top Button -->
+  <div class="fixed bottom-8 right-8 z-50" data-controller="back-to-top">
+    <button
+      data-back-to-top-target="button"
+      data-action="click->back-to-top#scrollToTop"
+      class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-3 rounded-full shadow-lg hover:from-blue-700 hover:to-indigo-700 transform transition-all duration-200 hover:scale-110 opacity-0 pointer-events-none"
+      style="transition: opacity 0.3s ease-in-out;">
+      <%= lucide_icon('arrow-up', class: 'h-5 w-5') %>
+    </button>
   </div>
 </div>
