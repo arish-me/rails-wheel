@@ -5,8 +5,8 @@ class Candidate < ApplicationRecord
   attr_accessor :redirect_to, :bio_required
 
   belongs_to :user
-  has_one :role_type, class_name: 'RoleType', dependent: :destroy
-  has_one :role_level, class_name: 'RoleLevel', dependent: :destroy
+  has_one :role_type, class_name: "RoleType", dependent: :destroy
+  has_one :role_level, class_name: "RoleLevel", dependent: :destroy
   has_one :location, as: :locatable, dependent: :destroy
 
   has_one :social_link, as: :linkable, dependent: :destroy
@@ -66,7 +66,7 @@ class Candidate < ApplicationRecord
                   associated_against: {
                     user: %i[first_name last_name email],
                     location: %i[city state country],
-                    skills: [:name],
+                    skills: [ :name ],
                     experiences: %i[company_name job_title description]
                   },
                   using: {
@@ -96,15 +96,15 @@ class Candidate < ApplicationRecord
     experiences.keys.map do |key|
       case key.to_sym
       when :fresher
-        ['Fresher', key]
+        [ "Fresher", key ]
       when :greater_than_10_years
-        ['> 10 Years', key]
-      when ->(k) { k.to_s.start_with?('year_') }
+        [ "> 10 Years", key ]
+      when ->(k) { k.to_s.start_with?("year_") }
         # Extract the number from 'year_X' and append 'Year(s)'
-        year_number = key.to_s.gsub('year_', '').to_i
-        ["#{year_number} Year#{'s' if year_number > 1}", key]
+        year_number = key.to_s.gsub("year_", "").to_i
+        [ "#{year_number} Year#{'s' if year_number > 1}", key ]
       else
-        [key.humanize, key] # Fallback for any other unexpected keys
+        [ key.humanize, key ] # Fallback for any other unexpected keys
       end
     end
   end
@@ -113,11 +113,11 @@ class Candidate < ApplicationRecord
   def display_experience_level
     case experience.to_sym
     when :fresher
-      'Fresher'
+      "Fresher"
     when :greater_than_10_years
-      '> 10 Years'
-    when ->(k) { k.to_s.start_with?('year_') }
-      year_number = experience_level.to_s.gsub('year_', '').to_i
+      "> 10 Years"
+    when ->(k) { k.to_s.start_with?("year_") }
+      year_number = experience_level.to_s.gsub("year_", "").to_i
       "#{year_number} Year#{'s' if year_number > 1}"
     else
       experience_level.humanize # Fallback
@@ -152,7 +152,7 @@ class Candidate < ApplicationRecord
   end
 
   def full_name
-    [user.first_name, user.last_name].compact.join(' ').presence || user.email
+    [ user.first_name, user.last_name ].compact.join(" ").presence || user.email
   end
 
   def work_preference_missing_fields?
@@ -162,18 +162,18 @@ class Candidate < ApplicationRecord
   def specialization_count_within_bounds
     count = candidate_role_ids.compact_blank.size
     if count < 1
-      errors.add(:candidate_role_ids, 'You must select at least one specialization.')
+      errors.add(:candidate_role_ids, "You must select at least one specialization.")
     elsif count > 5
-      errors.add(:candidate_role_ids, 'You can select up to 5 specializations only.')
+      errors.add(:candidate_role_ids, "You can select up to 5 specializations only.")
     end
   end
 
   def skills_count_within_bounds
     count = skill_ids.compact_blank.size
     if count < 1
-      errors.add(:skill_ids, 'You must select at least one skill.')
+      errors.add(:skill_ids, "You must select at least one skill.")
     elsif count > 10
-      errors.add(:skill_ids, 'You can select up to 5 skill only.')
+      errors.add(:skill_ids, "You can select up to 5 skill only.")
     end
   end
 end

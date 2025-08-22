@@ -4,9 +4,9 @@ module Platform
 
     def index
       if params[:query].present?
-        @pagy, @companies = pagy(Company.search_by_name(params[:query]), limit: params[:per_page] || '10')
+        @pagy, @companies = pagy(Company.search_by_name(params[:query]), limit: params[:per_page] || "10")
       else
-        @pagy, @companies = pagy(Company.order(id: :asc), limit: params[:per_page] || '10')
+        @pagy, @companies = pagy(Company.order(id: :asc), limit: params[:per_page] || "10")
       end
 
       authorize Company, policy_class: Platform::CompanyPolicy
@@ -39,7 +39,7 @@ module Platform
           format.turbo_stream { render turbo_stream: turbo_stream.refresh(request_id: nil) }
         end
       rescue ActiveRecord::Rollback
-        flash.now[:alert] = 'Failed to create company and point of contact. Please check the errors below.'
+        flash.now[:alert] = "Failed to create company and point of contact. Please check the errors below."
         render :new, status: :unprocessable_entity
       end
     end
@@ -49,8 +49,8 @@ module Platform
       # authorize @company, policy_class: Platform::CompanyPolicy
       respond_to do |format|
         if @company.update(company_params)
-          flash[:notice] = 'Company was successfully updated.'
-          format.html { redirect_to @company, notice: 'Company was successfully updated.' }
+          flash[:notice] = "Company was successfully updated."
+          format.html { redirect_to @company, notice: "Company was successfully updated." }
           format.turbo_stream { render turbo_stream: turbo_stream.refresh(request_id: nil) }
           format.json { render :show, status: :ok, location: @company }
         else
@@ -65,7 +65,7 @@ module Platform
       @company.destroy!
 
       respond_to do |format|
-        format.html { redirect_to users_path, status: :see_other, notice: 'User was successfully destroyed.' }
+        format.html { redirect_to users_path, status: :see_other, notice: "User was successfully destroyed." }
         format.json { head :no_content }
       end
     end

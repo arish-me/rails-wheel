@@ -4,7 +4,7 @@ module Settings
     before_action :authenticate_user!
 
     def edit_account
-      render 'devise/registrations/edit', locals: { resource: current_user, resource_name: :user }
+      render "devise/registrations/edit", locals: { resource: current_user, resource_name: :user }
     end
   end
 end

@@ -27,11 +27,11 @@ module Candidates
     end
 
     def title
-      @title || t('.title')
+      @title || t(".title")
     end
 
     def description
-      @description || t('.description')
+      @description || t(".description")
     end
   end
 end

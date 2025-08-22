@@ -29,9 +29,9 @@ class CompanyCandidatesController < ApplicationController
 
     # Get unique locations from jobs (not candidates) - standard ATS approach
     job_ids = current_user.company.jobs.pluck(:id)
-    @locations = Location.where(locatable_type: 'Job', locatable_id: job_ids)
-                         .select('DISTINCT city, state, country')
-                         .where.not(city: [nil, ''])
+    @locations = Location.where(locatable_type: "Job", locatable_id: job_ids)
+                         .select("DISTINCT city, state, country")
+                         .where.not(city: [ nil, "" ])
                          .order(:city)
   end
 
@@ -40,7 +40,7 @@ class CompanyCandidatesController < ApplicationController
     action = params[:bulk_action]
 
     if application_ids.blank?
-      redirect_to company_candidates_path, alert: 'Please select at least one application.'
+      redirect_to company_candidates_path, alert: "Please select at least one application."
       return
     end
 
@@ -50,17 +50,17 @@ class CompanyCandidatesController < ApplicationController
                                  .where(id: application_ids)
 
     case action
-    when 'add_note'
+    when "add_note"
       # Handle bulk note addition
       redirect_to company_candidates_path, notice: "Note added to #{applications.count} applications."
-    when 'update_status'
+    when "update_status"
       # Handle bulk status update
       redirect_to company_candidates_path, notice: "Status updated for #{applications.count} applications."
-    when 'export'
+    when "export"
       # Handle export
       redirect_to company_candidates_path, notice: "Export completed for #{applications.count} applications."
     else
-      redirect_to company_candidates_path, alert: 'Invalid action selected.'
+      redirect_to company_candidates_path, alert: "Invalid action selected."
     end
   end
 
@@ -85,7 +85,7 @@ class CompanyCandidatesController < ApplicationController
 
     if @job_application
       @job_application.update(status: params[:status])
-      redirect_to company_candidates_path, notice: 'Application status updated successfully.'
+      redirect_to company_candidates_path, notice: "Application status updated successfully."
     else
       redirect_to company_candidates_path,
                   alert: "Application not found or you don't have permission to update this application."
@@ -100,7 +100,7 @@ class CompanyCandidatesController < ApplicationController
 
     if @job_application
       @job_application.update(status_notes: params[:notes])
-      redirect_to company_candidates_path, notice: 'Note added successfully.'
+      redirect_to company_candidates_path, notice: "Note added successfully."
     else
       redirect_to company_candidates_path,
                   alert: "Application not found or you don't have permission to add notes to this application."
@@ -148,23 +148,23 @@ class CompanyCandidatesController < ApplicationController
 
   def apply_search(job_applications)
     job_applications.joins(:candidate).where(
-      'candidates.headline ILIKE ? OR candidates.bio ILIKE ? OR users.first_name ILIKE ? OR users.last_name ILIKE ? OR users.email ILIKE ?',
+      "candidates.headline ILIKE ? OR candidates.bio ILIKE ? OR users.first_name ILIKE ? OR users.last_name ILIKE ? OR users.email ILIKE ?",
       "%#{params[:search]}%", "%#{params[:search]}%", "%#{params[:search]}%", "%#{params[:search]}%", "%#{params[:search]}%"
     ).joins(candidate: :user)
   end
 
   def apply_sorting(job_applications)
     case params[:sort]
-    when 'name'
-      job_applications.joins(candidate: :user).order('users.first_name ASC, users.last_name ASC')
-    when 'location'
-      job_applications.joins(candidate: :location).order('locations.city ASC, locations.state ASC, locations.country ASC')
-    when 'recent'
-      job_applications.order('job_applications.applied_at DESC')
-    when 'applications'
-      job_applications.order('job_applications.applied_at DESC')
+    when "name"
+      job_applications.joins(candidate: :user).order("users.first_name ASC, users.last_name ASC")
+    when "location"
+      job_applications.joins(candidate: :location).order("locations.city ASC, locations.state ASC, locations.country ASC")
+    when "recent"
+      job_applications.order("job_applications.applied_at DESC")
+    when "applications"
+      job_applications.order("job_applications.applied_at DESC")
     else
-      job_applications.order('job_applications.applied_at DESC')
+      job_applications.order("job_applications.applied_at DESC")
     end
   end
 end

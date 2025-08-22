@@ -19,12 +19,12 @@ class Experience < ApplicationRecord
 
     return unless end_date < start_date
 
-    errors.add(:end_date, 'cannot be before start date')
+    errors.add(:end_date, "cannot be before start date")
   end
 
   def end_date_blank_if_current_job
     return unless current_job && end_date.present?
 
-    errors.add(:end_date, 'must be blank if this is your current job')
+    errors.add(:end_date, "must be blank if this is your current job")
   end
 end

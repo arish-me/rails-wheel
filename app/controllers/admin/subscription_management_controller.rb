@@ -20,7 +20,7 @@ module Admin
                     notice: "Subscription upgraded successfully for #{duration_months} month(s)"
       else
         redirect_to admin_subscription_management_path(@company),
-                    alert: 'Failed to upgrade subscription'
+                    alert: "Failed to upgrade subscription"
       end
     end
 
@@ -35,18 +35,18 @@ module Admin
                     notice: "Trial extended by #{days} days"
       else
         redirect_to admin_subscription_management_path(@company),
-                    alert: 'No subscription found'
+                    alert: "No subscription found"
       end
     end
 
     def cancel
       if @company.company_subscription
-        @company.company_subscription.update!(status: 'expired')
+        @company.company_subscription.update!(status: "expired")
         redirect_to admin_subscription_management_path(@company),
-                    notice: 'Subscription cancelled'
+                    notice: "Subscription cancelled"
       else
         redirect_to admin_subscription_management_path(@company),
-                    alert: 'No subscription found'
+                    alert: "No subscription found"
       end
     end
 
@@ -59,7 +59,7 @@ module Admin
     def require_platform_admin
       return if current_user.platform_admin?
 
-      redirect_to root_path, alert: 'Access denied'
+      redirect_to root_path, alert: "Access denied"
     end
   end
 end

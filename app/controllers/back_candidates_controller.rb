@@ -15,14 +15,14 @@ class CandidatesController < ApplicationController
   def update
     respond_to do |format|
       if @candidate.update(candidate_params)
-        flash[:notice] = 'Profile was successfully updated.'
-        format.html {}
+        flash[:notice] = "Profile was successfully updated."
+        format.html { }
       else
-        flash[:alert] = @candidate.errors.full_messages.join(', ')
+        flash[:alert] = @candidate.errors.full_messages.join(", ")
         if current_user.onboarded?
           format.html { render :edit, status: :unprocessable_entity }
         else
-          format.html { render 'onboardings/show', status: :unprocessable_entity }
+          format.html { render "onboardings/show", status: :unprocessable_entity }
         end
         format.json { render json: @candidate.errors, status: :unprocessable_entity }
       end
@@ -38,8 +38,8 @@ class CandidatesController < ApplicationController
 
   def candidate_params
     params.expect(
-      candidate: [:redirect_to, :onboarding_preferences,
-                  { user_attributes: [:id, :first_name, :last_name, :gender, :phone_number, :date_of_birth, :bio, :avatar, :delete_profile_image, :cover_image, { location_attributes: %i[location_search city state country id] }] }]
+      candidate: [ :redirect_to, :onboarding_preferences,
+                  { user_attributes: [ :id, :first_name, :last_name, :gender, :phone_number, :date_of_birth, :bio, :avatar, :delete_profile_image, :cover_image, { location_attributes: %i[location_search city state country id] } ] } ]
     )
   end
 

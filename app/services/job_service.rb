@@ -1,4 +1,4 @@
-require 'ostruct'
+require "ostruct"
 
 class JobService
   attr_reader :job, :user
@@ -13,22 +13,22 @@ class JobService
   # ============================================================================
 
   def publish_job
-    return failure_result('Job cannot be published') unless can_publish_job?
+    return failure_result("Job cannot be published") unless can_publish_job?
 
-    if job.update(status: 'published', published_at: Time.current)
-      success_result('Job was successfully published')
+    if job.update(status: "published", published_at: Time.current)
+      success_result("Job was successfully published")
     else
-      failure_result('Failed to publish job', job.errors.full_messages)
+      failure_result("Failed to publish job", job.errors.full_messages)
     end
   end
 
   def close_job
-    return failure_result('Job cannot be closed') unless can_close_job?
+    return failure_result("Job cannot be closed") unless can_close_job?
 
-    if job.update(status: 'closed')
-      success_result('Job was successfully closed')
+    if job.update(status: "closed")
+      success_result("Job was successfully closed")
     else
-      failure_result('Failed to close job', job.errors.full_messages)
+      failure_result("Failed to close job", job.errors.full_messages)
     end
   end
 
@@ -140,10 +140,10 @@ class JobService
     jobs.by_job_type(job_type)
   end
 
-  def self.apply_experience_filter(jobs, experience_level)
-    return jobs if experience_level.blank?
+  def self.apply_experience_filter(jobs, role_level)
+    return jobs if role_level.blank?
 
-    jobs.by_experience_level(experience_level)
+    jobs.by_role_level(role_level)
   end
 
   def self.apply_remote_policy_filter(jobs, remote_policy)
@@ -165,24 +165,24 @@ class JobService
   end
 
   def self.apply_featured_filter(jobs, featured)
-    return jobs unless featured == 'true'
+    return jobs unless featured == "true"
 
     jobs.featured
   end
 
   def self.apply_sorting(jobs, sort_option)
     case sort_option
-    when 'newest'
+    when "newest"
       jobs.newest_first
-    when 'oldest'
+    when "oldest"
       jobs.oldest_first
-    when 'salary_high'
+    when "salary_high"
       jobs.salary_high_to_low
-    when 'salary_low'
+    when "salary_low"
       jobs.salary_low_to_high
-    when 'applications'
+    when "applications"
       jobs.most_applications
-    when 'views'
+    when "views"
       jobs.most_views
     else
       jobs.newest_first

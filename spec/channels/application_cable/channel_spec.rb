@@ -6,14 +6,14 @@ RSpec.describe ApplicationCable::Channel, type: :channel do
   end
 
   it 'can be instantiated with proper arguments' do
-    connection = double('connection', identifiers: [:current_user])
+    connection = double('connection', identifiers: [ :current_user ])
     identifier = 'test_channel'
 
     expect { described_class.new(connection, identifier) }.not_to raise_error
   end
 
   it 'can be instantiated with connection, identifier, and params' do
-    connection = double('connection', identifiers: [:current_user])
+    connection = double('connection', identifiers: [ :current_user ])
     identifier = 'test_channel'
     params = { room: 'test_room' }
 
@@ -21,7 +21,7 @@ RSpec.describe ApplicationCable::Channel, type: :channel do
   end
 
   describe 'instance methods' do
-    let(:connection) { double('connection', identifiers: [:current_user]) }
+    let(:connection) { double('connection', identifiers: [ :current_user ]) }
     let(:identifier) { 'test_channel' }
     let(:channel) { described_class.new(connection, identifier) }
 
@@ -34,12 +34,12 @@ RSpec.describe ApplicationCable::Channel, type: :channel do
     end
 
     it 'can access identifiers from connection' do
-      expect(channel.connection.identifiers).to eq([:current_user])
+      expect(channel.connection.identifiers).to eq([ :current_user ])
     end
   end
 
   describe 'channel behavior' do
-    let(:connection) { double('connection', identifiers: [:current_user]) }
+    let(:connection) { double('connection', identifiers: [ :current_user ]) }
     let(:identifier) { 'test_channel' }
     let(:channel) { described_class.new(connection, identifier) }
 
@@ -72,25 +72,25 @@ RSpec.describe ApplicationCable::Channel, type: :channel do
 
     context 'with different identifier types' do
       it 'accepts string identifiers' do
-        connection = double('connection', identifiers: [:current_user])
+        connection = double('connection', identifiers: [ :current_user ])
         expect { described_class.new(connection, 'string_id') }.not_to raise_error
       end
 
       it 'accepts symbol identifiers' do
-        connection = double('connection', identifiers: [:current_user])
+        connection = double('connection', identifiers: [ :current_user ])
         expect { described_class.new(connection, :symbol_id) }.not_to raise_error
       end
     end
 
     context 'with different parameter types' do
       it 'accepts hash parameters' do
-        connection = double('connection', identifiers: [:current_user])
+        connection = double('connection', identifiers: [ :current_user ])
         params = { key: 'value', number: 123 }
         expect { described_class.new(connection, 'test', params) }.not_to raise_error
       end
 
       it 'accepts empty hash parameters' do
-        connection = double('connection', identifiers: [:current_user])
+        connection = double('connection', identifiers: [ :current_user ])
         params = {}
         expect { described_class.new(connection, 'test', params) }.not_to raise_error
       end
@@ -98,7 +98,7 @@ RSpec.describe ApplicationCable::Channel, type: :channel do
   end
 
   describe 'channel capabilities' do
-    let(:connection) { double('connection', identifiers: [:current_user]) }
+    let(:connection) { double('connection', identifiers: [ :current_user ]) }
     let(:channel) { described_class.new(connection, 'test') }
 
     it 'can stream to specific targets' do

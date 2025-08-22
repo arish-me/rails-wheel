@@ -1,6 +1,6 @@
 module Settings
   class CompaniesController < ApplicationController
-    layout 'settings'
+    layout "settings"
 
     def show
       @user = current_user

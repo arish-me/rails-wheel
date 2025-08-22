@@ -12,7 +12,7 @@ module SeedData
     end
 
     def call
-      log 'Starting database seeding process...'
+      log "Starting database seeding process..."
       # Only run faker seeds in development or test environment
       if @fake_data
         seed_faker_data
@@ -20,7 +20,7 @@ module SeedData
         seed_initial_data
       end
 
-      log 'Seeding completed successfully!'
+      log "Seeding completed successfully!"
     end
 
     def seed_initial_data

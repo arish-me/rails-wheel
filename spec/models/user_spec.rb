@@ -374,15 +374,15 @@ RSpec.describe User, type: :model do
 
     it 'defines DATE_FORMATS constant correctly' do
       expect(User::DATE_FORMATS).to eq([
-                                         ['MM-DD-YYYY', '%m-%d-%Y'],
-                                         ['DD.MM.YYYY', '%d.%m.%Y'],
-                                         ['DD-MM-YYYY', '%d-%m-%Y'],
-                                         ['YYYY-MM-DD', '%Y-%m-%d'],
-                                         ['DD/MM/YYYY', '%d/%m/%Y'],
-                                         ['YYYY/MM/DD', '%Y/%m/%d'],
-                                         ['MM/DD/YYYY', '%m/%d/%Y'],
-                                         ['D/MM/YYYY', '%e/%m/%Y'],
-                                         ['YYYY.MM.DD', '%Y.%m.%d']
+                                         [ 'MM-DD-YYYY', '%m-%d-%Y' ],
+                                         [ 'DD.MM.YYYY', '%d.%m.%Y' ],
+                                         [ 'DD-MM-YYYY', '%d-%m-%Y' ],
+                                         [ 'YYYY-MM-DD', '%Y-%m-%d' ],
+                                         [ 'DD/MM/YYYY', '%d/%m/%Y' ],
+                                         [ 'YYYY/MM/DD', '%Y/%m/%d' ],
+                                         [ 'MM/DD/YYYY', '%m/%d/%Y' ],
+                                         [ 'D/MM/YYYY', '%e/%m/%Y' ],
+                                         [ 'YYYY.MM.DD', '%Y.%m.%d' ]
                                        ])
     end
 

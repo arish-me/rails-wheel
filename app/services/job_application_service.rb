@@ -1,4 +1,4 @@
-require 'ostruct'
+require "ostruct"
 
 class JobApplicationService
   attr_reader :application, :user
@@ -17,13 +17,13 @@ class JobApplicationService
 
     # Check if user already applied
     if application.job.has_applicant?(user.candidate)
-      result.message = 'You have already applied to this job.'
+      result.message = "You have already applied to this job."
       return result
     end
 
     # Check if job can be applied to
     unless application.job.can_be_applied_to?
-      result.message = 'This job is no longer accepting applications.'
+      result.message = "This job is no longer accepting applications."
       return result
     end
 
@@ -34,10 +34,10 @@ class JobApplicationService
 
     if application.save
       result.success = true
-      result.message = 'Your application was submitted successfully!'
+      result.message = "Your application was submitted successfully!"
       result.application = application
     else
-      result.message = 'Failed to submit application. Please check your information.'
+      result.message = "Failed to submit application. Please check your information."
     end
 
     result
@@ -53,9 +53,9 @@ class JobApplicationService
 
     if application.update(params)
       result.success = true
-      result.message = 'Application was successfully updated.'
+      result.message = "Application was successfully updated."
     else
-      result.message = 'Failed to update application. Please check your information.'
+      result.message = "Failed to update application. Please check your information."
     end
 
     result
@@ -71,9 +71,9 @@ class JobApplicationService
 
     if application.withdraw!
       result.success = true
-      result.message = 'Your application has been withdrawn.'
+      result.message = "Your application has been withdrawn."
     else
-      result.message = 'Failed to withdraw application.'
+      result.message = "Failed to withdraw application."
     end
 
     result
@@ -89,9 +89,9 @@ class JobApplicationService
 
     if application.applied!
       result.success = true
-      result.message = 'Your application has been resumed.'
+      result.message = "Your application has been resumed."
     else
-      result.message = 'Failed to resume application.'
+      result.message = "Failed to resume application."
     end
 
     result
@@ -101,7 +101,7 @@ class JobApplicationService
     result = OpenStruct.new(success: false, message: nil)
 
     unless JobApplication::STATUSES.include?(new_status)
-      result.message = 'Invalid status.'
+      result.message = "Invalid status."
       return result
     end
 
@@ -113,7 +113,7 @@ class JobApplicationService
       result.success = true
       result.message = "Application status updated to #{new_status.titleize}."
     else
-      result.message = 'Failed to update application status.'
+      result.message = "Failed to update application status."
     end
 
     result
@@ -182,9 +182,9 @@ class JobApplicationService
 
   def self.filter_by_type(job, type)
     case type
-    when 'quick_apply'
+    when "quick_apply"
       job.job_applications.with_applicant_details.quick_applies
-    when 'standard'
+    when "standard"
       job.job_applications.with_applicant_details.with_cover_letter
     else
       job.job_applications.with_applicant_details

@@ -5,8 +5,8 @@ class LinkComponent < ButtonishComponent
 
   VARIANTS = VARIANTS.reverse_merge(
     default: {
-      container_classes: '',
-      icon_classes: 'fg-gray'
+      container_classes: "",
+      icon_classes: "fg-gray"
     }
   ).freeze
 

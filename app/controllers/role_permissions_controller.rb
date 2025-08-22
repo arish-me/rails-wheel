@@ -6,10 +6,10 @@ class RolePermissionsController < ApplicationController
   # GET /role_permissions or /role_permissions.json
   def index
     if params[:query].present?
-      @pagy, @role_permissions = pagy(RolePermission.search_by_name(params[:query]), limit: params[:per_page] || '10')
+      @pagy, @role_permissions = pagy(RolePermission.search_by_name(params[:query]), limit: params[:per_page] || "10")
     else
       @roles = Role.all
-      @pagy, @role_permissions = pagy(RolePermission.all, limit: params[:per_page] || '10')
+      @pagy, @role_permissions = pagy(RolePermission.all, limit: params[:per_page] || "10")
     end
     authorize @role_permissions
   end
@@ -38,7 +38,7 @@ class RolePermissionsController < ApplicationController
     ActiveRecord::Base.transaction do
       permissions.each do |permission_id, action|
         # Delete the RolePermission if "none" is selected
-        if action == 'none'
+        if action == "none"
           RolePermission.where(role_id: role_id, permission_id: permission_id).destroy_all
         else
           role_permission = RolePermission.find_or_initialize_by(role_id: role_id, permission_id: permission_id)
@@ -49,9 +49,9 @@ class RolePermissionsController < ApplicationController
     end
 
     respond_to do |format|
-      flash[:notice] = 'Permissions assigned successfully.'
+      flash[:notice] = "Permissions assigned successfully."
       format.turbo_stream { render turbo_stream: turbo_stream.refresh(request_id: nil) }
-      format.html { redirect_to roles_path, notice: 'Permissions updated successfully.' }
+      format.html { redirect_to roles_path, notice: "Permissions updated successfully." }
     end
   rescue StandardError => e
     respond_to do |format|
@@ -66,9 +66,9 @@ class RolePermissionsController < ApplicationController
   def update
     respond_to do |format|
       if @role_permission.update(role_permission_params)
-        flash[:notice] = 'Role permission was successfully created.'
+        flash[:notice] = "Role permission was successfully created."
         format.turbo_stream { render turbo_stream: turbo_stream.refresh(request_id: nil) }
-        format.html { redirect_to @role_permission, notice: 'Role permission was successfully updated.' }
+        format.html { redirect_to @role_permission, notice: "Role permission was successfully updated." }
         format.json { render :show, status: :ok, location: @role_permission }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -83,7 +83,7 @@ class RolePermissionsController < ApplicationController
 
     respond_to do |format|
       format.html do
-        redirect_to role_permissions_path, status: :see_other, notice: 'Role permission was successfully destroyed.'
+        redirect_to role_permissions_path, status: :see_other, notice: "Role permission was successfully destroyed."
       end
       format.json { head :no_content }
     end
@@ -95,7 +95,7 @@ class RolePermissionsController < ApplicationController
       if resource_ids.present?
         # Destroy roles matching the provided entry_ids
         Permission.where(id: resource_ids).destroy_all
-        format.html { redirect_to roles_path, notice: 'Permission was successfully destroyed.' }
+        format.html { redirect_to roles_path, notice: "Permission was successfully destroyed." }
         format.turbo_stream { render turbo_stream: turbo_stream.refresh(request_id: nil) }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -106,7 +106,7 @@ class RolePermissionsController < ApplicationController
   private
 
   def bulk_delete_params
-    params.expect(bulk_delete: [resource_ids: []])
+    params.expect(bulk_delete: [ resource_ids: [] ])
   end
 
   # Use callbacks to share common setup or constraints between actions.

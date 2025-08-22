@@ -9,10 +9,10 @@ module SeedData
     end
 
     def call
-      log 'Starting bulk faker seeding process...'
+      log "Starting bulk faker seeding process..."
       seed_users
       seed_categories
-      log 'Bulk seeding completed successfully!'
+      log "Bulk seeding completed successfully!"
     end
 
     private

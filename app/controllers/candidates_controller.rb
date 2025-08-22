@@ -15,11 +15,11 @@ class CandidatesController < ApplicationController
     @candidate.user.in_onboarding_context = true
     respond_to do |format|
       if @candidate.update(candidate_params)
-        flash[:notice] = 'Profile was successfully updated.'
+        flash[:notice] = "Profile was successfully updated."
         format.turbo_stream { render turbo_stream: turbo_stream.refresh(request_id: nil) }
-        format.html { redirect_to candidate_path(@candidate), notice: 'Profile was successfully updated.' }
+        format.html { redirect_to candidate_path(@candidate), notice: "Profile was successfully updated." }
       else
-        flash.now[:alert] = @candidate.errors.full_messages.join(', ')
+        flash.now[:alert] = @candidate.errors.full_messages.join(", ")
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @candidate.errors, status: :unprocessable_entity }
       end
@@ -38,16 +38,16 @@ class CandidatesController < ApplicationController
 
   def candidate_params
     params.expect(
-      candidate: [:bio, :redirect_to,
-                  { user_attributes: [:id, :first_name, :last_name, :phone_number, :gender, :date_of_birth, :email_required, :delete_profile_image, :avatar,
-                                      { location_attributes: %i[id location_search city state country _destroy] }],
+      candidate: [ :bio, :redirect_to,
+                  { user_attributes: [ :id, :first_name, :last_name, :phone_number, :gender, :date_of_birth, :email_required, :delete_profile_image, :avatar,
+                                      { location_attributes: %i[id location_search city state country _destroy] } ],
                     experiences_attributes: %i[company_name job_title start_date end_date current_job description
                                                _destroy],
                     skill_ids: [],
                     candidate_role_ids: [],
                     role_type_attributes: RoleType::TYPES,
                     role_level_attributes: RoleLevel::TYPES,
-                    social_link_attributes: %i[id github website linked_in twitter _destroy] }]
+                    social_link_attributes: %i[id github website linked_in twitter _destroy] } ]
     )
   end
 end

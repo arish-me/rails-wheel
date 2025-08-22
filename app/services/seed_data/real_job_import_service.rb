@@ -19,7 +19,7 @@ module SeedData
     private
 
     def import_real_jobs
-      Rails.logger.debug '🌐 Importing real job data from external APIs...'
+      Rails.logger.debug "🌐 Importing real job data from external APIs..."
 
       # Fetch jobs from multiple sources
       external_jobs = JobBoardApiService.fetch_all_sources(
@@ -29,7 +29,7 @@ module SeedData
       )
 
       if external_jobs.empty?
-        Rails.logger.debug '⚠️ No jobs found from external APIs. Using simulated data...'
+        Rails.logger.debug "⚠️ No jobs found from external APIs. Using simulated data..."
         external_jobs = generate_simulated_external_jobs
       end
 
@@ -49,15 +49,15 @@ module SeedData
           role_type: job_data[:job_type],
           role_level: job_data[:experience_level],
           remote_policy: job_data[:remote_policy],
-          status: 'published',
+          status: "published",
           featured: rand < 0.2, # 20% chance of being featured
           salary_min: job_data[:salary_min],
           salary_max: job_data[:salary_max],
-          salary_currency: job_data[:salary_currency] || 'USD',
-          salary_period: 'yearly',
-          allow_cover_letter: [true, false].sample,
-          require_portfolio: [true, false, false].sample,
-          application_instructions: 'Please apply through our platform or visit the original posting for more details.',
+          salary_currency: job_data[:salary_currency] || "USD",
+          salary_period: "yearly",
+          allow_cover_letter: [ true, false ].sample,
+          require_portfolio: [ true, false, false ].sample,
+          application_instructions: "Please apply through our platform or visit the original posting for more details.",
           expires_at: rand(30..90).days.from_now,
           published_at: job_data[:posted_at] ? Time.zone.parse(job_data[:posted_at]) : rand(1..30).days.ago,
           views_count: rand(10..500),
@@ -81,7 +81,7 @@ module SeedData
 
     def find_or_create_external_company(company_name)
       # Try to find existing company
-      existing_company = Company.find_by('LOWER(name) = ?', company_name.downcase)
+      existing_company = Company.find_by("LOWER(name) = ?", company_name.downcase)
       return existing_company if existing_company
 
       # Create new company for external job
@@ -94,12 +94,12 @@ module SeedData
       # Create a default user for the external company
       user = User.create!(
         email: "admin@#{generate_subdomain(company_name)}.com",
-        first_name: 'Admin',
+        first_name: "Admin",
         last_name: company_name.split.first,
-        user_type: 'company',
+        user_type: "company",
         company: external_company,
-        password: 'password123',
-        password_confirmation: 'password123',
+        password: "password123",
+        password_confirmation: "password123",
         confirmed_at: Time.current,
         onboarded_at: Time.current
       )
@@ -113,8 +113,8 @@ module SeedData
     def generate_subdomain(company_name)
       # Convert company name to subdomain-friendly format
       subdomain = company_name.downcase
-                              .gsub(/[^a-z0-9]/, '')
-                              .gsub(/\s+/, '')
+                              .gsub(/[^a-z0-9]/, "")
+                              .gsub(/\s+/, "")
                               .first(20)
 
       # Ensure uniqueness
@@ -148,16 +148,16 @@ module SeedData
     end
 
     def generate_requirements_from_description(description)
-      return 'Requirements will be discussed during the interview process.' if description.blank?
+      return "Requirements will be discussed during the interview process." if description.blank?
 
       # Extract potential requirements from description
       requirements = "**Required Skills:**\n"
 
       # Common tech skills to look for
       tech_skills = [
-        'JavaScript', 'Python', 'Ruby', 'Java', 'React', 'Angular', 'Vue',
-        'Node.js', 'Rails', 'Django', 'AWS', 'Docker', 'Kubernetes',
-        'PostgreSQL', 'MongoDB', 'Redis', 'Git', 'Agile', 'Scrum'
+        "JavaScript", "Python", "Ruby", "Java", "React", "Angular", "Vue",
+        "Node.js", "Rails", "Django", "AWS", "Docker", "Kubernetes",
+        "PostgreSQL", "MongoDB", "Redis", "Git", "Agile", "Scrum"
       ]
 
       found_skills = tech_skills.select { |skill| description.include?(skill) }
@@ -174,18 +174,18 @@ module SeedData
     end
 
     def extract_city(location)
-      return 'Remote' if location.include?('Remote')
+      return "Remote" if location.include?("Remote")
 
       # Extract city from location string
-      city_state = location.split(',').first&.strip
-      city_state || 'Unknown'
+      city_state = location.split(",").first&.strip
+      city_state || "Unknown"
     end
 
     def extract_state(location)
-      return nil if location.include?('Remote')
+      return nil if location.include?("Remote")
 
       # Extract state from location string
-      parts = location.split(',')
+      parts = location.split(",")
       return nil if parts.length < 2
 
       state = parts[1]&.strip
@@ -193,64 +193,64 @@ module SeedData
     end
 
     def extract_country(location)
-      return 'United States' if location.include?('US') || location.include?('United States')
-      return 'United Kingdom' if location.include?('UK') || location.include?('United Kingdom')
-      return 'Canada' if location.include?('Canada')
-      return 'Australia' if location.include?('Australia')
+      return "United States" if location.include?("US") || location.include?("United States")
+      return "United Kingdom" if location.include?("UK") || location.include?("United Kingdom")
+      return "Canada" if location.include?("Canada")
+      return "Australia" if location.include?("Australia")
 
-      'United States' # Default
+      "United States" # Default
     end
 
     def generate_simulated_external_jobs
       # Generate simulated external jobs when APIs are not available
       [
         {
-          title: 'Senior Software Engineer - Remote',
-          company: 'TechStartup Inc',
-          location: 'Remote, United States',
+          title: "Senior Software Engineer - Remote",
+          company: "TechStartup Inc",
+          location: "Remote, United States",
           description: "Join our growing team as a Senior Software Engineer. We're building innovative solutions that impact millions of users worldwide.",
           salary_min: 120_000,
           salary_max: 180_000,
-          salary_currency: 'USD',
+          salary_currency: "USD",
           role_type: RoleType::TYPES.sample.to_s,
           role_level: RoleLevel::TYPES.sample.to_s,
-          remote_policy: 'remote',
+          remote_policy: "remote",
           external_id: "sim_#{SecureRandom.hex(8)}",
-          external_source: 'simulated',
+          external_source: "simulated",
           posted_at: rand(1..30).days.ago.iso8601,
-          external_data: { source: 'simulated', simulated: true }
+          external_data: { source: "simulated", simulated: true }
         },
         {
-          title: 'Frontend Developer - React',
-          company: 'Digital Solutions Ltd',
-          location: 'London, UK',
+          title: "Frontend Developer - React",
+          company: "Digital Solutions Ltd",
+          location: "London, UK",
           description: "We're looking for a talented Frontend Developer to join our team in London. Experience with React and modern JavaScript is essential.",
           salary_min: 60_000,
           salary_max: 90_000,
-          salary_currency: 'GBP',
+          salary_currency: "GBP",
           role_type: RoleType::TYPES.sample.to_s,
           role_level: RoleLevel::TYPES.sample.to_s,
-          remote_policy: 'hybrid',
+          remote_policy: "hybrid",
           external_id: "sim_#{SecureRandom.hex(8)}",
-          external_source: 'simulated',
+          external_source: "simulated",
           posted_at: rand(1..30).days.ago.iso8601,
-          external_data: { source: 'simulated', simulated: true }
+          external_data: { source: "simulated", simulated: true }
         },
         {
-          title: 'DevOps Engineer',
-          company: 'CloudTech Solutions',
-          location: 'San Francisco, CA',
-          description: 'Help us scale our infrastructure and implement best practices for deployment and monitoring.',
+          title: "DevOps Engineer",
+          company: "CloudTech Solutions",
+          location: "San Francisco, CA",
+          description: "Help us scale our infrastructure and implement best practices for deployment and monitoring.",
           salary_min: 100_000,
           salary_max: 160_000,
-          salary_currency: 'USD',
+          salary_currency: "USD",
           role_type: RoleType::TYPES.sample.to_s,
           role_level: RoleLevel::TYPES.sample.to_s,
-          remote_policy: 'hybrid',
+          remote_policy: "hybrid",
           external_id: "sim_#{SecureRandom.hex(8)}",
-          external_source: 'simulated',
+          external_source: "simulated",
           posted_at: rand(1..30).days.ago.iso8601,
-          external_data: { source: 'simulated', simulated: true }
+          external_data: { source: "simulated", simulated: true }
         }
       ]
     end

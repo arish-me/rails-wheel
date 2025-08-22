@@ -20,7 +20,7 @@ module JobAuthorizable
   def authorize_job_creation
     return if current_user.company.present?
 
-    redirect_to root_path, alert: 'You must be associated with a company to create jobs.'
+    redirect_to root_path, alert: "You must be associated with a company to create jobs."
   end
 
   def can_manage_job?(job)

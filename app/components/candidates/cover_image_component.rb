@@ -1,10 +1,10 @@
 module Candidates
   class CoverImageComponent < ViewComponent::Base
-    DEFAULT_COVER = 'default_splash.jpg'.freeze
+    DEFAULT_COVER = "default_splash.jpg".freeze
 
     attr_reader :developer, :data, :classes
 
-    def initialize(developer:, data: {}, classes: '')
+    def initialize(developer:, data: {}, classes: "")
       @developer = developer
       @data = data
       @classes = classes

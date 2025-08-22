@@ -20,10 +20,10 @@ module Notifiable
     items = flash.flat_map do |type, data|
       notifications = resolve_notifications(type, data)
 
-      if type == 'cta'
-        notifications.map { |notification| turbo_stream.replace('cta', **notification) }
+      if type == "cta"
+        notifications.map { |notification| turbo_stream.replace("cta", **notification) }
       else
-        notifications.map { |notification| turbo_stream.append('notification-tray', **notification) }
+        notifications.map { |notification| turbo_stream.append("notification-tray", **notification) }
       end
     end.compact
 
@@ -36,20 +36,20 @@ module Notifiable
 
   def resolve_cta(cta)
     case cta[:type]
-    when 'category_rule'
-      { partial: 'rules/category_rule_cta', locals: { cta: } }
+    when "category_rule"
+      { partial: "rules/category_rule_cta", locals: { cta: } }
     end
   end
 
   def resolve_notifications(type, data)
     case type
-    when 'alert'
-      [{ partial: 'shared/notifications/alert', locals: { message: data } }]
-    when 'cta'
-      [resolve_cta(data)]
-    when 'notice'
+    when "alert"
+      [ { partial: "shared/notifications/alert", locals: { message: data } } ]
+    when "cta"
+      [ resolve_cta(data) ]
+    when "notice"
       messages = Array(data)
-      messages.map { |message| { partial: 'shared/notifications/notice', locals: { message: message } } }
+      messages.map { |message| { partial: "shared/notifications/notice", locals: { message: message } } }
     else
       []
     end

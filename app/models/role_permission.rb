@@ -7,5 +7,5 @@ class RolePermission < ApplicationRecord
 
   # enum action, { none: 0, view: 1, edit: 2 }
   enum :action, { view: 0, edit: 1 }
-  validates :permission_id, uniqueness: { scope: :role_id, message: 'already assigned to this role' }
+  validates :permission_id, uniqueness: { scope: :role_id, message: "already assigned to this role" }
 end

@@ -13,7 +13,7 @@ class Role < ApplicationRecord
                   }
 
   validates :name, presence: true,
-                   uniqueness: { scope: :company_id, case_sensitive: false, message: 'already exists for this company' }
+                   uniqueness: { scope: :company_id, case_sensitive: false, message: "already exists for this company" }
 
   has_many :user_roles, dependent: :destroy
   has_many :users, through: :user_roles
@@ -23,7 +23,7 @@ class Role < ApplicationRecord
   has_many :role_permissions, dependent: :destroy
   has_many :permissions, through: :role_permissions
 
-  scope :excluding_super_admin, -> { where.not(name: 'SuperAdmin') }
+  scope :excluding_super_admin, -> { where.not(name: "SuperAdmin") }
 
   before_save :ensure_single_default, if: -> { is_default_changed? && is_default }
 

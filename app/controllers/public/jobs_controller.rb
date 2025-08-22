@@ -2,8 +2,8 @@ module Public
   class JobsController < ApplicationController
     include JobFilterable
 
-    before_action :set_filters, only: [:index]
-    before_action :set_job, only: [:show]
+    before_action :set_filters, only: [ :index ]
+    before_action :set_job, only: [ :show ]
 
     # ============================================================================
     # ACTIONS
@@ -46,13 +46,13 @@ module Public
     def set_filters
       @filters = {
         search: params[:search],
-        job_type: params[:job_type],
-        experience_level: params[:experience_level],
+        role_type: params[:role_type],
+        role_level: params[:role_level],
         remote_policy: params[:remote_policy],
         location: params[:location],
         company_id: params[:company_id],
         featured: params[:featured],
-        sort: params[:sort] || 'newest'
+        sort: params[:sort] || "newest"
       }
     end
   end

@@ -2,7 +2,7 @@ class Location < ApplicationRecord
   # attr_accessor :location_search
   belongs_to :locatable, polymorphic: true
 
-  scope :top_countries, lambda { |limit = ENV.fetch('TOP_COUNTRIES', 5)|
+  scope :top_countries, lambda { |limit = ENV.fetch("TOP_COUNTRIES", 5)|
     group(:country)
       .where.not(country: nil)
       .order(count_all: :desc)
@@ -11,7 +11,7 @@ class Location < ApplicationRecord
       .keys
   }
 
-  scope :not_top_countries, lambda { |limit = ENV.fetch('TOP_COUNTRIES', 5)|
+  scope :not_top_countries, lambda { |limit = ENV.fetch("TOP_COUNTRIES", 5)|
     where.not(country: top_countries(limit))
          .select(:country)
          .distinct
@@ -40,7 +40,7 @@ class Location < ApplicationRecord
   def location_search
     # Only compose the address if city, state, or country are present (i.e., it's an existing record with data)
     if city.present? || state.present? || country.present?
-      [city, state, country].compact.join(', ')
+      [ city, state, country ].compact.join(", ")
     else
       @location_search # Return the value of the accessor if it was set manually
     end
@@ -50,18 +50,18 @@ class Location < ApplicationRecord
     @location_search = value
     return if value.blank?
 
-    parts = value.split(',').map(&:strip)
+    parts = value.split(",").map(&:strip)
     self.city = parts[0]
     self.state = parts[1]
     self.country = parts[2]
   end
 
   def job_location
-    [city, country].compact.join(', ')
+    [ city, country ].compact.join(", ")
   end
 
   def query
-    @location_search.presence || [city, state, country].compact.join(', ')
+    @location_search.presence || [ city, state, country ].compact.join(", ")
   end
 
   private
@@ -70,13 +70,13 @@ class Location < ApplicationRecord
     if latitude.blank? || longitude.blank?
       # i18n-tasks-use t('activerecord.errors.models.location.invalid_coordinates')
       # errors.add(:city, :invalid_coordinates)
-      errors.add(:base, 'Please Enter Correct Location')
+      errors.add(:base, "Please Enter Correct Location")
     end
-    errors.add(:base, 'Please Enter Correct Location') if time_zone.blank? || utc_offset.blank?
+    errors.add(:base, "Please Enter Correct Location") if time_zone.blank? || utc_offset.blank?
 
     return unless time_zone.blank? || time_zone.blank?
 
-    errors.add(:base, 'Please Enter Correct Location')
+    errors.add(:base, "Please Enter Correct Location")
   end
 
   def geocode

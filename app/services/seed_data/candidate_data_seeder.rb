@@ -1,6 +1,6 @@
 # SeedData::CandidateDataSeeder.call
-require 'net/http'
-require 'tempfile'
+require "net/http"
+require "tempfile"
 module SeedData
   class CandidateDataSeeder < BaseService
     # Constants for configuration
@@ -40,7 +40,7 @@ module SeedData
     private
 
     def seed_candidate_data
-      Rails.logger.debug '👥 Seeding candidate data...'
+      Rails.logger.debug "👥 Seeding candidate data..."
 
       created_count = 0
 
@@ -64,7 +64,7 @@ module SeedData
         add_location_to_candidate(user.candidate)
 
         created_count += 1
-        Rails.logger.debug '.' if ((i + 1) % 5).zero?
+        Rails.logger.debug "." if ((i + 1) % 5).zero?
 
         # Debug output
         Rails.logger.debug { "\n✅ Created candidate #{i + 1}:" }
@@ -156,9 +156,9 @@ module SeedData
         bio: generate_bio(experience_level),
         response_rate: rand(60..100),
         search_score: rand(50..95),
-        role_type_attributes: { 'part_time_contract' => '1', 'full_time_contract' => '1',
-                                'full_time_employment' => '0' },
-        role_level_attributes: { 'junior' => '1', 'mid' => '1', 'senior' => '1', 'principal' => '1', 'c_level' => '1' }
+        role_type_attributes: { "part_time_contract" => "1", "full_time_contract" => "1",
+                                "full_time_employment" => "0" },
+        role_level_attributes: { "junior" => "1", "mid" => "1", "senior" => "1", "principal" => "1", "c_level" => "1" }
       )
       # Add candidate roles (specializations)
       add_candidate_roles(user.candidate)
@@ -169,15 +169,15 @@ module SeedData
     def add_skills_to_candidate(candidate)
       # Get random skills based on experience level
       skill_count = case candidate.experience
-                    when 'fresher'
+      when "fresher"
                       rand(3..6)
-                    when 'year_1', 'year_2'
+      when "year_1", "year_2"
                       rand(4..8)
-                    when 'year_3', 'year_4', 'year_5'
+      when "year_3", "year_4", "year_5"
                       rand(6..12)
-                    else
+      else
                       rand(8..15)
-                    end
+      end
 
       available_skills = Skill.all.sample(skill_count)
 
@@ -189,28 +189,28 @@ module SeedData
 
     def add_experiences_to_candidate(candidate)
       experience_count = case candidate.experience
-                         when 'fresher'
+      when "fresher"
                            0
-                         when 'year_1'
+      when "year_1"
                            rand(1..2)
-                         when 'year_2', 'year_3'
+      when "year_2", "year_3"
                            rand(1..3)
-                         when 'year_4', 'year_5'
+      when "year_4", "year_5"
                            rand(2..4)
-                         else
+      else
                            rand(3..6)
-                         end
+      end
 
       experience_count.times do |i|
         is_current = (i == experience_count - 1) && rand < 0.3 # 30% chance of current job
 
         start_date = if i.zero?
                        Faker::Date.between(from: 5.years.ago, to: 2.years.ago)
-                     else
+        else
                        # Start date should be after previous job's end date
                        previous_experience = candidate.experiences.last
                        Faker::Date.between(from: previous_experience.end_date, to: 1.year.ago)
-                     end
+        end
 
         end_date = is_current ? nil : Faker::Date.between(from: start_date, to: Time.current)
 
@@ -239,9 +239,9 @@ module SeedData
       # Use RandomUser.me location data if available, otherwise generate random location
       location_data = if candidate.user.instance_variable_defined?(:@location_data)
                         map_random_user_location(candidate.user.instance_variable_get(:@location_data))
-                      else
+      else
                         generate_location_data
-                      end
+      end
 
       # Create location with coordinates to bypass geocoding validation
       candidate.create_location!(
@@ -276,7 +276,7 @@ module SeedData
         return experience if random < current_weight
       end
 
-      'year_3' # fallback
+      "year_3" # fallback
     end
 
     def generate_search_status_distribution
@@ -289,7 +289,7 @@ module SeedData
         return status if random < current_weight
       end
 
-      'open' # fallback
+      "open" # fallback
     end
 
     def calculate_hourly_rate(experience_level)
@@ -315,40 +315,40 @@ module SeedData
     def generate_headline(experience_level)
       headlines = {
         fresher: [
-          'Recent Graduate Looking for Opportunities',
-          'Entry-Level Developer Eager to Learn',
-          'Fresh Graduate with Strong Foundation',
-          'New Graduate Passionate About Technology'
+          "Recent Graduate Looking for Opportunities",
+          "Entry-Level Developer Eager to Learn",
+          "Fresh Graduate with Strong Foundation",
+          "New Graduate Passionate About Technology"
         ],
         year_1: [
-          'Junior Developer with 1 Year Experience',
-          'Software Developer Building Web Applications',
-          'Full Stack Developer with Modern Technologies',
-          'Junior Engineer Focused on Quality Code'
+          "Junior Developer with 1 Year Experience",
+          "Software Developer Building Web Applications",
+          "Full Stack Developer with Modern Technologies",
+          "Junior Engineer Focused on Quality Code"
         ],
         year_2: [
-          'Software Developer with 2 Years Experience',
-          'Full Stack Developer Building Scalable Solutions',
-          'Web Developer Specializing in Modern Frameworks',
-          'Developer with Strong Problem-Solving Skills'
+          "Software Developer with 2 Years Experience",
+          "Full Stack Developer Building Scalable Solutions",
+          "Web Developer Specializing in Modern Frameworks",
+          "Developer with Strong Problem-Solving Skills"
         ],
         year_3: [
-          'Mid-Level Software Engineer',
-          'Full Stack Developer with 3 Years Experience',
-          'Software Engineer Building Robust Applications',
-          'Developer with Strong Technical Background'
+          "Mid-Level Software Engineer",
+          "Full Stack Developer with 3 Years Experience",
+          "Software Engineer Building Robust Applications",
+          "Developer with Strong Technical Background"
         ],
         year_4: [
-          'Experienced Software Engineer',
-          'Senior Developer with 4 Years Experience',
-          'Full Stack Engineer Building Complex Systems',
-          'Software Engineer with Strong Architecture Skills'
+          "Experienced Software Engineer",
+          "Senior Developer with 4 Years Experience",
+          "Full Stack Engineer Building Complex Systems",
+          "Software Engineer with Strong Architecture Skills"
         ],
         year_5: [
-          'Senior Software Engineer',
-          'Full Stack Developer with 5 Years Experience',
-          'Software Engineer with Leadership Experience',
-          'Senior Developer Building Enterprise Solutions'
+          "Senior Software Engineer",
+          "Full Stack Developer with 5 Years Experience",
+          "Software Engineer with Leadership Experience",
+          "Senior Developer Building Enterprise Solutions"
         ]
       }
 
@@ -365,29 +365,29 @@ module SeedData
           "New graduate with a solid understanding of programming fundamentals and modern development practices. I'm looking for opportunities to apply my skills and continue learning in a collaborative environment."
         ],
         year_1: [
-          'Software developer with 1 year of experience building web applications using modern technologies. I enjoy solving complex problems and creating user-friendly solutions that make a difference.',
+          "Software developer with 1 year of experience building web applications using modern technologies. I enjoy solving complex problems and creating user-friendly solutions that make a difference.",
           "Junior developer passionate about clean code and user experience. I've worked on various projects and am always eager to learn new technologies and best practices.",
-          'Full stack developer with experience in both frontend and backend development. I focus on writing maintainable code and delivering high-quality solutions.'
+          "Full stack developer with experience in both frontend and backend development. I focus on writing maintainable code and delivering high-quality solutions."
         ],
         year_2: [
-          'Software developer with 2 years of experience creating scalable web applications. I specialize in modern frameworks and enjoy working on challenging problems that require creative solutions.',
+          "Software developer with 2 years of experience creating scalable web applications. I specialize in modern frameworks and enjoy working on challenging problems that require creative solutions.",
           "Full stack developer with strong problem-solving skills and experience in multiple programming languages. I'm passionate about building robust, user-friendly applications.",
-          'Developer with experience in both frontend and backend technologies. I enjoy collaborating with teams and contributing to projects that have real-world impact.'
+          "Developer with experience in both frontend and backend technologies. I enjoy collaborating with teams and contributing to projects that have real-world impact."
         ],
         year_3: [
-          'Mid-level software engineer with 3 years of experience building complex applications. I specialize in scalable architecture and enjoy mentoring junior developers.',
-          'Software engineer with strong technical skills and experience in full-stack development. I focus on writing clean, maintainable code and solving complex business problems.',
-          'Developer with experience in multiple technologies and frameworks. I enjoy working on challenging projects and helping teams deliver high-quality software solutions.'
+          "Mid-level software engineer with 3 years of experience building complex applications. I specialize in scalable architecture and enjoy mentoring junior developers.",
+          "Software engineer with strong technical skills and experience in full-stack development. I focus on writing clean, maintainable code and solving complex business problems.",
+          "Developer with experience in multiple technologies and frameworks. I enjoy working on challenging projects and helping teams deliver high-quality software solutions."
         ],
         year_4: [
-          'Experienced software engineer with 4 years of experience in building enterprise applications. I specialize in scalable architecture and enjoy leading technical initiatives.',
-          'Senior developer with strong problem-solving skills and experience in multiple domains. I focus on delivering high-quality solutions and mentoring team members.',
-          'Software engineer with experience in both technical and leadership roles. I enjoy working on complex problems and helping teams achieve their goals.'
+          "Experienced software engineer with 4 years of experience in building enterprise applications. I specialize in scalable architecture and enjoy leading technical initiatives.",
+          "Senior developer with strong problem-solving skills and experience in multiple domains. I focus on delivering high-quality solutions and mentoring team members.",
+          "Software engineer with experience in both technical and leadership roles. I enjoy working on complex problems and helping teams achieve their goals."
         ],
         year_5: [
-          'Senior software engineer with 5 years of experience building large-scale applications. I specialize in system design and enjoy leading technical teams to deliver exceptional results.',
-          'Experienced developer with strong leadership skills and technical expertise. I focus on building robust, scalable solutions and mentoring junior developers.',
-          'Senior engineer with experience in multiple technologies and domains. I enjoy solving complex problems and helping organizations achieve their technical goals.'
+          "Senior software engineer with 5 years of experience building large-scale applications. I specialize in system design and enjoy leading technical teams to deliver exceptional results.",
+          "Experienced developer with strong leadership skills and technical expertise. I focus on building robust, scalable solutions and mentoring junior developers.",
+          "Senior engineer with experience in multiple technologies and domains. I enjoy solving complex problems and helping organizations achieve their technical goals."
         ]
       }
 
@@ -399,40 +399,40 @@ module SeedData
     def generate_job_title(experience_level)
       titles = {
         fresher: [
-          'Software Developer Intern',
-          'Junior Developer',
-          'Entry-Level Developer',
-          'Graduate Software Engineer'
+          "Software Developer Intern",
+          "Junior Developer",
+          "Entry-Level Developer",
+          "Graduate Software Engineer"
         ],
         year_1: [
-          'Junior Software Developer',
-          'Software Developer',
-          'Web Developer',
-          'Junior Engineer'
+          "Junior Software Developer",
+          "Software Developer",
+          "Web Developer",
+          "Junior Engineer"
         ],
         year_2: [
-          'Software Developer',
-          'Full Stack Developer',
-          'Web Developer',
-          'Software Engineer'
+          "Software Developer",
+          "Full Stack Developer",
+          "Web Developer",
+          "Software Engineer"
         ],
         year_3: [
-          'Software Engineer',
-          'Full Stack Developer',
-          'Senior Developer',
-          'Software Developer'
+          "Software Engineer",
+          "Full Stack Developer",
+          "Senior Developer",
+          "Software Developer"
         ],
         year_4: [
-          'Senior Software Engineer',
-          'Full Stack Engineer',
-          'Software Engineer',
-          'Senior Developer'
+          "Senior Software Engineer",
+          "Full Stack Engineer",
+          "Software Engineer",
+          "Senior Developer"
         ],
         year_5: [
-          'Senior Software Engineer',
-          'Lead Developer',
-          'Software Engineer',
-          'Senior Engineer'
+          "Senior Software Engineer",
+          "Lead Developer",
+          "Software Engineer",
+          "Senior Engineer"
         ]
       }
 
@@ -443,34 +443,34 @@ module SeedData
 
     def generate_experience_description
       descriptions = [
-        'Developed and maintained web applications using modern technologies. Collaborated with cross-functional teams to deliver high-quality software solutions.',
-        'Built scalable backend services and APIs. Worked on database design and optimization to improve application performance.',
-        'Created responsive user interfaces and implemented frontend features. Ensured code quality through testing and code reviews.',
-        'Contributed to the development of enterprise applications. Participated in agile development processes and technical discussions.',
-        'Worked on full-stack development projects. Collaborated with designers and product managers to implement new features.',
-        'Developed and optimized database queries and data processing pipelines. Contributed to system architecture and design decisions.',
-        'Implemented new features and fixed bugs in existing applications. Participated in code reviews and knowledge sharing sessions.',
-        'Built and deployed applications using cloud technologies. Worked on CI/CD pipelines and infrastructure automation.'
+        "Developed and maintained web applications using modern technologies. Collaborated with cross-functional teams to deliver high-quality software solutions.",
+        "Built scalable backend services and APIs. Worked on database design and optimization to improve application performance.",
+        "Created responsive user interfaces and implemented frontend features. Ensured code quality through testing and code reviews.",
+        "Contributed to the development of enterprise applications. Participated in agile development processes and technical discussions.",
+        "Worked on full-stack development projects. Collaborated with designers and product managers to implement new features.",
+        "Developed and optimized database queries and data processing pipelines. Contributed to system architecture and design decisions.",
+        "Implemented new features and fixed bugs in existing applications. Participated in code reviews and knowledge sharing sessions.",
+        "Built and deployed applications using cloud technologies. Worked on CI/CD pipelines and infrastructure automation."
       ]
       descriptions.sample
     end
 
     def map_random_user_location(random_user_location)
       # Map RandomUser.me location data to our format
-      timezone_offset = random_user_location['timezone']['offset']
+      timezone_offset = random_user_location["timezone"]["offset"]
       utc_offset = parse_timezone_offset(timezone_offset)
 
       # Get coordinates from RandomUser.me
-      coordinates = random_user_location['coordinates']
-      latitude = coordinates['latitude'].to_f
-      longitude = coordinates['longitude'].to_f
+      coordinates = random_user_location["coordinates"]
+      latitude = coordinates["latitude"].to_f
+      longitude = coordinates["longitude"].to_f
 
       {
-        city: random_user_location['city'],
-        state: random_user_location['state'],
-        country: random_user_location['country'],
-        country_code: random_user_location['country'], # RandomUser.me doesn't provide country codes
-        time_zone: map_timezone_description(random_user_location['timezone']['description']),
+        city: random_user_location["city"],
+        state: random_user_location["state"],
+        country: random_user_location["country"],
+        country_code: random_user_location["country"], # RandomUser.me doesn't provide country codes
+        time_zone: map_timezone_description(random_user_location["timezone"]["description"]),
         utc_offset: utc_offset,
         latitude: latitude,
         longitude: longitude
@@ -479,7 +479,7 @@ module SeedData
 
     def parse_timezone_offset(offset_string)
       # Parse offset string like "-8:00" to seconds
-      hours, minutes = offset_string.split(':').map(&:to_i)
+      hours, minutes = offset_string.split(":").map(&:to_i)
       (hours * 3600) + (minutes * 60)
     end
 
@@ -487,47 +487,47 @@ module SeedData
       # Map timezone descriptions to standard timezone names
       case description
       when /Pacific Time/
-        'America/Los_Angeles'
+        "America/Los_Angeles"
       when /Mountain Time/
-        'America/Denver'
+        "America/Denver"
       when /Central Time/
-        'America/Chicago'
+        "America/Chicago"
       when /Eastern Time/
-        'America/New_York'
+        "America/New_York"
       else
-        'UTC' # Default fallback
+        "UTC" # Default fallback
       end
     end
 
     def generate_location_data
       locations = [
-        { city: 'San Francisco', state: 'CA', country: 'United States', country_code: 'US',
-          time_zone: 'America/Los_Angeles', utc_offset: -28_800, latitude: 37.7749, longitude: -122.4194 },
-        { city: 'New York', state: 'NY', country: 'United States', country_code: 'US', time_zone: 'America/New_York',
+        { city: "San Francisco", state: "CA", country: "United States", country_code: "US",
+          time_zone: "America/Los_Angeles", utc_offset: -28_800, latitude: 37.7749, longitude: -122.4194 },
+        { city: "New York", state: "NY", country: "United States", country_code: "US", time_zone: "America/New_York",
           utc_offset: -18_000, latitude: 40.7128, longitude: -74.0060 },
-        { city: 'Austin', state: 'TX', country: 'United States', country_code: 'US', time_zone: 'America/Chicago',
+        { city: "Austin", state: "TX", country: "United States", country_code: "US", time_zone: "America/Chicago",
           utc_offset: -21_600, latitude: 30.2672, longitude: -97.7431 },
-        { city: 'Seattle', state: 'WA', country: 'United States', country_code: 'US', time_zone: 'America/Los_Angeles',
+        { city: "Seattle", state: "WA", country: "United States", country_code: "US", time_zone: "America/Los_Angeles",
           utc_offset: -28_800, latitude: 47.6062, longitude: -122.3321 },
-        { city: 'Boston', state: 'MA', country: 'United States', country_code: 'US', time_zone: 'America/New_York',
+        { city: "Boston", state: "MA", country: "United States", country_code: "US", time_zone: "America/New_York",
           utc_offset: -18_000, latitude: 42.3601, longitude: -71.0589 },
-        { city: 'Los Angeles', state: 'CA', country: 'United States', country_code: 'US',
-          time_zone: 'America/Los_Angeles', utc_offset: -28_800, latitude: 34.0522, longitude: -118.2437 },
-        { city: 'Denver', state: 'CO', country: 'United States', country_code: 'US', time_zone: 'America/Denver',
+        { city: "Los Angeles", state: "CA", country: "United States", country_code: "US",
+          time_zone: "America/Los_Angeles", utc_offset: -28_800, latitude: 34.0522, longitude: -118.2437 },
+        { city: "Denver", state: "CO", country: "United States", country_code: "US", time_zone: "America/Denver",
           utc_offset: -25_200, latitude: 39.7392, longitude: -104.9903 },
-        { city: 'Chicago', state: 'IL', country: 'United States', country_code: 'US', time_zone: 'America/Chicago',
+        { city: "Chicago", state: "IL", country: "United States", country_code: "US", time_zone: "America/Chicago",
           utc_offset: -21_600, latitude: 41.8781, longitude: -87.6298 },
-        { city: 'Atlanta', state: 'GA', country: 'United States', country_code: 'US', time_zone: 'America/New_York',
+        { city: "Atlanta", state: "GA", country: "United States", country_code: "US", time_zone: "America/New_York",
           utc_offset: -18_000, latitude: 33.7490, longitude: -84.3880 },
-        { city: 'Portland', state: 'OR', country: 'United States', country_code: 'US',
-          time_zone: 'America/Los_Angeles', utc_offset: -28_800, latitude: 45.5152, longitude: -122.6784 }
+        { city: "Portland", state: "OR", country: "United States", country_code: "US",
+          time_zone: "America/Los_Angeles", utc_offset: -28_800, latitude: 45.5152, longitude: -122.6784 }
       ]
       locations.sample
     end
 
     def fetch_random_user_data
       # Fetch data from RandomUser.me API
-      uri = URI('https://randomuser.me/api/')
+      uri = URI("https://randomuser.me/api/")
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true
       http.read_timeout = 10
@@ -537,22 +537,22 @@ module SeedData
 
       if response.is_a?(Net::HTTPSuccess)
         data = JSON.parse(response.body)
-        user_info = data['results'][0]
+        user_info = data["results"][0]
 
         # Map gender from API to our enum
         gender_mapping = {
-          'male' => 'he_him',
-          'female' => 'she_her'
+          "male" => "he_him",
+          "female" => "she_her"
         }
 
         {
-          first_name: user_info['name']['first'],
-          last_name: user_info['name']['last'],
-          gender: gender_mapping[user_info['gender']] || 'other',
-          phone: user_info['phone'],
-          date_of_birth: Date.parse(user_info['dob']['date']),
-          avatar_url: user_info['picture']['large'],
-          location: user_info['location']
+          first_name: user_info["name"]["first"],
+          last_name: user_info["name"]["last"],
+          gender: gender_mapping[user_info["gender"]] || "other",
+          phone: user_info["phone"],
+          date_of_birth: Date.parse(user_info["dob"]["date"]),
+          avatar_url: user_info["picture"]["large"],
+          location: user_info["location"]
         }
       else
         # Fallback to Faker if API fails
@@ -589,7 +589,7 @@ module SeedData
 
         if response.is_a?(Net::HTTPSuccess) && response.body.size > 1000
           # Use StringIO instead of Tempfile to avoid stream issues
-          require 'stringio'
+          require "stringio"
           io = StringIO.new(response.body)
           io.binmode
 
@@ -597,10 +597,10 @@ module SeedData
           user.avatar.attach(
             io: io,
             filename: "avatar_#{user.first_name.downcase}_#{user.last_name.downcase}.jpg",
-            content_type: 'image/jpeg'
+            content_type: "image/jpeg"
           )
 
-          Rails.logger.debug '✅' # Success indicator
+          Rails.logger.debug "✅" # Success indicator
         else
           Rails.logger.debug { "⚠️  Failed to download avatar for #{user.email}: Invalid response" }
           attach_fallback_avatar(user)
@@ -608,7 +608,7 @@ module SeedData
       rescue StandardError => e
         Rails.logger.debug { "⚠️  Failed to attach avatar for #{user.email}: #{e.message}" }
         # Don't call fallback here to avoid potential infinite loops
-        Rails.logger.debug '❌' # Error indicator
+        Rails.logger.debug "❌" # Error indicator
       end
     end
 
@@ -628,24 +628,24 @@ module SeedData
 
       if response.is_a?(Net::HTTPSuccess)
         # Use StringIO instead of Tempfile to avoid stream issues
-        require 'stringio'
+        require "stringio"
         io = StringIO.new(response.body)
         io.binmode
 
         user.avatar.attach(
           io: io,
           filename: "avatar_#{user.first_name.downcase}_#{user.last_name.downcase}.png",
-          content_type: 'image/png'
+          content_type: "image/png"
         )
 
-        Rails.logger.debug '🔄' # Fallback indicator
+        Rails.logger.debug "🔄" # Fallback indicator
       else
         Rails.logger.debug { "❌ Failed to create fallback avatar for #{user.email}" }
-        Rails.logger.debug '❌' # Error indicator
+        Rails.logger.debug "❌" # Error indicator
       end
     rescue StandardError => e
       Rails.logger.debug { "❌ Failed to create fallback avatar for #{user.email}: #{e.message}" }
-      Rails.logger.debug '❌' # Error indicator
+      Rails.logger.debug "❌" # Error indicator
     end
 
     # No validation needed since candidates are not tied to companies

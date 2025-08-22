@@ -27,9 +27,9 @@ class MenuItemComponent < ViewComponent::Base
 
   def text_classes
     [
-      'text-sm',
-      destructive? ? 'text-destructive' : 'text-primary'
-    ].join(' ')
+      "text-sm",
+      destructive? ? "text-destructive" : "text-primary"
+    ].join(" ")
   end
 
   def destructive?
@@ -40,9 +40,9 @@ class MenuItemComponent < ViewComponent::Base
 
   def container_classes
     [
-      'flex items-center gap-2 p-2 rounded-md w-full',
-      destructive? ? 'hover:bg-red-tint-5 theme-dark:hover:bg-red-tint-10' : 'hover:bg-container-hover'
-    ].join(' ')
+      "flex items-center gap-2 p-2 rounded-md w-full",
+      destructive? ? "hover:bg-red-tint-5 theme-dark:hover:bg-red-tint-10" : "hover:bg-container-hover"
+    ].join(" ")
   end
 
   def merged_opts

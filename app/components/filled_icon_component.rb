@@ -5,26 +5,26 @@ class FilledIconComponent < ViewComponent::Base
 
   SIZES = {
     sm: {
-      container_size: 'w-6 h-6',
-      container_radius: 'rounded-md',
-      icon_size: 'sm',
-      text_size: 'text-xs'
+      container_size: "w-6 h-6",
+      container_radius: "rounded-md",
+      icon_size: "sm",
+      text_size: "text-xs"
     },
     md: {
-      container_size: 'w-8 h-8',
-      container_radius: 'rounded-lg',
-      icon_size: 'md',
-      text_size: 'text-xs'
+      container_size: "w-8 h-8",
+      container_radius: "rounded-lg",
+      icon_size: "md",
+      text_size: "text-xs"
     },
     lg: {
-      container_size: 'w-9 h-9',
-      container_radius: 'rounded-xl',
-      icon_size: 'lg',
-      text_size: 'text-sm'
+      container_size: "w-9 h-9",
+      container_radius: "rounded-xl",
+      icon_size: "lg",
+      text_size: "text-sm"
     }
   }.freeze
 
-  def initialize(variant: :default, icon: nil, text: nil, hex_color: nil, size: 'md', rounded: false)
+  def initialize(variant: :default, icon: nil, text: nil, hex_color: nil, size: "md", rounded: false)
     @variant = variant.to_sym
     @icon = icon
     @text = text
@@ -35,10 +35,10 @@ class FilledIconComponent < ViewComponent::Base
 
   def container_classes
     class_names(
-      'flex justify-center items-center shrink-0',
+      "flex justify-center items-center shrink-0",
       size_classes,
       radius_classes,
-      transparent? ? 'border' : solid_bg_class
+      transparent? ? "border" : solid_bg_class
     )
   end
 
@@ -48,7 +48,7 @@ class FilledIconComponent < ViewComponent::Base
 
   def text_classes
     class_names(
-      'text-center font-medium uppercase',
+      "text-center font-medium uppercase",
       SIZES[size][:text_size]
     )
   end
@@ -70,11 +70,11 @@ class FilledIconComponent < ViewComponent::Base
   def solid_bg_class
     case variant
     when :surface
-      'bg-surface-inset'
+      "bg-surface-inset"
     when :container
-      'bg-container-inset'
+      "bg-container-inset"
     when :inverse
-      'bg-container'
+      "bg-container"
     end
   end
 
@@ -83,11 +83,11 @@ class FilledIconComponent < ViewComponent::Base
   end
 
   def radius_classes
-    rounded ? 'rounded-full' : SIZES[size][:container_radius]
+    rounded ? "rounded-full" : SIZES[size][:container_radius]
   end
 
   def custom_fg_color
-    hex_color || 'var(--color-gray-500)'
+    hex_color || "var(--color-gray-500)"
   end
 
   def transparent_bg_color

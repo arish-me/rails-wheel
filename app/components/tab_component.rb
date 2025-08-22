@@ -9,7 +9,7 @@ class TabComponent < ViewComponent::Base
   end
 
   def tab_class(path)
-    base_class = 'inline-block p-4 border-b-2 rounded-t-lg'
+    base_class = "inline-block p-4 border-b-2 rounded-t-lg"
     if path == current_path
       "#{base_class} text-blue-600 border-blue-600 theme-dark:text-white theme-dark:border-gray-600"
     else

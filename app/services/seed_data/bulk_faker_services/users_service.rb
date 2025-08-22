@@ -4,7 +4,7 @@ module SeedData
   module BulkFakerServices
     class UsersService < BaseService
       def call
-        benchmark_operation('Bulk User Creation') do
+        benchmark_operation("Bulk User Creation") do
           create_users_with_roles
         end
       end
@@ -41,7 +41,7 @@ module SeedData
           # Prepare user data
           users_to_create << {
             email: email,
-            encrypted_password: Devise::Encryptor.digest(User, 'password123'),
+            encrypted_password: Devise::Encryptor.digest(User, "password123"),
             confirmed_at: now,
             created_at: now,
             updated_at: now,
@@ -79,7 +79,7 @@ module SeedData
 
       def unique_email
         # Generate unique email using a combination of values to minimize duplicates
-        domain = ['example.com', 'test.org', 'faker.net', 'dummy.io', 'sample.dev'].sample
+        domain = [ "example.com", "test.org", "faker.net", "dummy.io", "sample.dev" ].sample
         prefix = [
           Faker::Internet.username(specifier: 5..12),
           Faker::Internet.user_name(specifier: 5..12),

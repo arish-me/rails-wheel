@@ -37,7 +37,7 @@ class JobsController < ApplicationController
     @job.created_by = current_user
 
     if @job.save
-      redirect_to @job, notice: 'Job was successfully created.'
+      redirect_to @job, notice: "Job was successfully created."
     else
       render :new, status: :unprocessable_entity
     end
@@ -45,7 +45,7 @@ class JobsController < ApplicationController
 
   def update
     if @job.update(job_params)
-      redirect_to @job, notice: 'Job was successfully updated.'
+      redirect_to @job, notice: "Job was successfully updated."
     else
       render :edit, status: :unprocessable_entity
     end
@@ -55,7 +55,7 @@ class JobsController < ApplicationController
     @job.destroy!
 
     respond_to do |format|
-      format.html { redirect_to jobs_path, notice: 'Job was successfully deleted.' }
+      format.html { redirect_to jobs_path, notice: "Job was successfully deleted." }
       format.turbo_stream { render turbo_stream: turbo_stream.redirect(jobs_path) }
     end
   end
@@ -99,7 +99,7 @@ class JobsController < ApplicationController
 
   def job_params
     params.expect(
-      job: [:title, :description, :requirements, :benefits,
+      job: [ :title, :description, :requirements, :benefits,
             :role_type, :role_level, :remote_policy,
             :salary_min, :salary_max, :salary_currency, :salary_period,
             :status, :featured, :expires_at, :worldwide,
@@ -109,7 +109,7 @@ class JobsController < ApplicationController
                                               skill_ids: [],
                                               location_attributes: %i[
                                                 id location_search city state country _destroy
-                                              ] }]
+                                              ] } ]
     )
   end
 end

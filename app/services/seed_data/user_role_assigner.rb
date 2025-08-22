@@ -11,7 +11,7 @@ module SeedData
 
       # Ensure we operate within the correct tenant context for finding the role
       ActsAsTenant.with_tenant(@company) do
-        super_admin_role = Role.find_by(name: 'SuperAdmin')
+        super_admin_role = Role.find_by(name: "SuperAdmin")
 
         if super_admin_role
           # Assign the role to the user for this company

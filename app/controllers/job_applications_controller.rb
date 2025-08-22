@@ -27,13 +27,13 @@ class JobApplicationsController < ApplicationController
   def new
     # Check if user already applied
     if @job.has_applicant?(current_user.candidate)
-      redirect_to @job, alert: 'You have already applied to this job.'
+      redirect_to @job, alert: "You have already applied to this job."
       return
     end
 
     # Check if job can be applied to
     unless @job.can_be_applied_to?
-      redirect_to @job, alert: 'This job is no longer accepting applications.'
+      redirect_to @job, alert: "This job is no longer accepting applications."
       return
     end
 
@@ -70,11 +70,11 @@ class JobApplicationsController < ApplicationController
 
     respond_to do |format|
       if result.success
-        format.html { redirect_to [@job, @application], notice: result.message }
+        format.html { redirect_to [ @job, @application ], notice: result.message }
         # format.turbo_stream { render turbo_stream: turbo_stream.redirect([@job, @application]) }
       else
         format.html { render :edit, status: :unprocessable_entity }
-        format.turbo_stream { render turbo_stream: turbo_stream.replace('application_form', partial: 'form') }
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("application_form", partial: "form") }
       end
     end
   end

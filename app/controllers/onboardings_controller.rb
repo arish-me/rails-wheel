@@ -1,5 +1,5 @@
 class OnboardingsController < ApplicationController
-  layout 'wizard'
+  layout "wizard"
   before_action :authenticate_user!
   before_action :set_user
   before_action :need_onboard
@@ -11,7 +11,7 @@ class OnboardingsController < ApplicationController
     if flash[:company_data].present?
       @company.assign_attributes(flash[:company_data])
       # Ensure avatar is preserved if it was uploaded
-      @company.avatar.attach(flash[:company_data]['avatar']) if flash[:company_data]['avatar'].present?
+      @company.avatar.attach(flash[:company_data]["avatar"]) if flash[:company_data]["avatar"].present?
     end
     @location = current_user.build_location unless current_user.location
     @candidate = current_user.candidate
@@ -23,11 +23,11 @@ class OnboardingsController < ApplicationController
     else
       respond_to do |format|
         if @candidate.update(specialization_params)
-          flash[:notice] = 'Profile was successfully updated.'
+          flash[:notice] = "Profile was successfully updated."
           handle_redirect(flash[:notice])
-          format.html {}
+          format.html { }
         else
-          flash[:alert] = @candidate.errors.full_messages.join(', ')
+          flash[:alert] = @candidate.errors.full_messages.join(", ")
           format.html { render :specialization, status: :unprocessable_entity }
           format.json { render json: @candidate.errors, status: :unprocessable_entity }
         end
@@ -46,7 +46,7 @@ class OnboardingsController < ApplicationController
 
       if user_type.present? && %w[user company].include?(user_type)
         # Validate email for company users
-        if user_type == 'company' && @user.email.present?
+        if user_type == "company" && @user.email.present?
           validation_result = EmailDomainValidator.validate_company_email(@user.email)
           unless validation_result[:valid]
             flash[:alert] = validation_result[:message]
@@ -76,12 +76,12 @@ class OnboardingsController < ApplicationController
     else
       respond_to do |format|
         if @candidate.update(candidate_params)
-          flash[:notice] = 'Profile was successfully updated.'
+          flash[:notice] = "Profile was successfully updated."
           handle_redirect(flash[:notice])
-          format.html {}
+          format.html { }
         else
           @skills = Skill.order(:name)
-          flash[:alert] = @candidate.errors.full_messages.join(', ')
+          flash[:alert] = @candidate.errors.full_messages.join(", ")
           format.html { render :candidate_setup, status: :unprocessable_entity }
           format.json { render json: @candidate.errors, status: :unprocessable_entity }
         end
@@ -94,11 +94,11 @@ class OnboardingsController < ApplicationController
 
     respond_to do |format|
       if @candidate.update(candidate_params)
-        flash[:notice] = 'Profile was successfully updated.'
+        flash[:notice] = "Profile was successfully updated."
         handle_redirect(flash[:notice])
-        format.html {}
+        format.html { }
       else
-        flash[:alert] = @candidate.errors.full_messages.join(', ')
+        flash[:alert] = @candidate.errors.full_messages.join(", ")
         format.html { render :online_presence, status: :unprocessable_entity }
         format.json { render json: @candidate.errors, status: :unprocessable_entity }
       end
@@ -120,19 +120,19 @@ class OnboardingsController < ApplicationController
 
   def handle_redirect(notice)
     case params[:candidate][:redirect_to]
-    when 'online_presence'
+    when "online_presence"
       redirect_to online_presence_onboarding_path
-    when 'onboarding_candidate'
+    when "onboarding_candidate"
       redirect_to candidate_setup_onboarding_path
-    when 'onboarding_preferences'
+    when "onboarding_preferences"
       redirect_to preferences_onboarding_path
-    when 'home'
+    when "home"
       redirect_to root_path
-    when 'preferences'
+    when "preferences"
       redirect_to settings_preferences_path, notice: notice
-    when 'goals'
+    when "goals"
       redirect_to goals_onboarding_path
-    when 'trial'
+    when "trial"
       redirect_to trial_onboarding_path
     else
       redirect_to dashboard_path, notice: notice
@@ -157,10 +157,10 @@ class OnboardingsController < ApplicationController
     redirect_to dashboard_path if current_user.platform_admin?
 
     # If user doesn't have user_type set and we're not on the looking_for page, redirect
-    redirect_to looking_for_onboarding_path if current_user.user_type.blank? && action_name != 'looking_for'
+    redirect_to looking_for_onboarding_path if current_user.user_type.blank? && action_name != "looking_for"
 
     # For company users, redirect to trial step if they don't have a subscription
-    if current_user.company_user? && current_user.company && !current_user.company.has_subscription? && action_name != 'trial'
+    if current_user.company_user? && current_user.company && !current_user.company.has_subscription? && action_name != "trial"
       redirect_to trial_onboarding_path
     end
   end
@@ -170,12 +170,12 @@ class OnboardingsController < ApplicationController
   end
 
   def candidate_params
-    params.expect(candidate: [:redirect_to, :headline, :experience, :hourly_rate,
+    params.expect(candidate: [ :redirect_to, :headline, :experience, :hourly_rate,
                               :search_status, :bio, :bio_required,
                               { skill_ids: [],
                                 candidate_role_ids: [],
                                 role_type_attributes: RoleType::TYPES,
                                 role_level_attributes: RoleLevel::TYPES,
-                                social_link_attributes: %i[id github website linked_in twitter _destroy] }])
+                                social_link_attributes: %i[id github website linked_in twitter _destroy] } ])
   end
 end

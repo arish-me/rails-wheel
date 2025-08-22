@@ -7,9 +7,9 @@ class CategoriesController < ApplicationController
   def index
     if params[:query].present?
       @pagy, @categories = pagy(current_user.categories.search_by_name(params[:query]),
-                                limit: params[:per_page] || '10')
+                                limit: params[:per_page] || "10")
     else
-      @pagy, @categories = pagy(current_user.categories, limit: params[:per_page] || '10')
+      @pagy, @categories = pagy(current_user.categories, limit: params[:per_page] || "10")
     end
     authorize @categories
   end
@@ -31,9 +31,9 @@ class CategoriesController < ApplicationController
 
     respond_to do |format|
       if @category.save
-        flash[:notice] = 'Category was successfully created.'
+        flash[:notice] = "Category was successfully created."
         format.turbo_stream { render turbo_stream: turbo_stream.refresh(request_id: nil) }
-        format.html { redirect_to @category, notice: 'Category was successfully created.' }
+        format.html { redirect_to @category, notice: "Category was successfully created." }
         format.json { render :show, status: :created, location: @category }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -46,9 +46,9 @@ class CategoriesController < ApplicationController
   def update
     respond_to do |format|
       if @category.update(category_params)
-        flash[:notice] = 'Category was successfully updated.'
+        flash[:notice] = "Category was successfully updated."
         format.turbo_stream { render turbo_stream: turbo_stream.refresh(request_id: nil) }
-        format.html { redirect_to @category, notice: 'Category was successfully updated.' }
+        format.html { redirect_to @category, notice: "Category was successfully updated." }
         format.json { render :show, status: :ok, location: @category }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -62,7 +62,7 @@ class CategoriesController < ApplicationController
     @category.destroy!
 
     respond_to do |format|
-      format.html { redirect_to categories_path, status: :see_other, notice: 'Category was successfully destroyed.' }
+      format.html { redirect_to categories_path, status: :see_other, notice: "Category was successfully destroyed." }
       format.json { head :no_content }
     end
   end
@@ -72,10 +72,10 @@ class CategoriesController < ApplicationController
     respond_to do |format|
       if resource_ids.present?
         Category.where(id: resource_ids).destroy_all
-        format.html { redirect_to categories_path, notice: 'Category was successfully destroyed.' }
+        format.html { redirect_to categories_path, notice: "Category was successfully destroyed." }
         format.turbo_stream { render turbo_stream: turbo_stream.refresh(request_id: nil) }
       else
-        format.html { redirect_to categories_path, notice: 'Something went wrong!' }
+        format.html { redirect_to categories_path, notice: "Something went wrong!" }
       end
     end
   end
@@ -83,7 +83,7 @@ class CategoriesController < ApplicationController
   private
 
   def bulk_delete_params
-    params.expect(bulk_delete: [resource_ids: []])
+    params.expect(bulk_delete: [ resource_ids: [] ])
   end
 
   # Use callbacks to share common setup or constraints between actions.

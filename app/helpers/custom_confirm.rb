@@ -35,20 +35,20 @@ class CustomConfirm
   attr_reader :title, :body, :btn_text, :btn_variant
 
   def derive_btn_variant(destructive, high_severity)
-    return 'primary' unless destructive
+    return "primary" unless destructive
 
-    high_severity ? 'destructive' : 'outline-destructive'
+    high_severity ? "destructive" : "outline-destructive"
   end
 
   def default_title
-    'Are you sure?'
+    "Are you sure?"
   end
 
   def default_body
-    'This is not reversible.'
+    "This is not reversible."
   end
 
   def default_btn_text
-    'Confirm'
+    "Confirm"
   end
 end

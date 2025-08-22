@@ -10,22 +10,22 @@ class JobBoardSyncLog < ApplicationRecord
   scope :recent, -> { order(created_at: :desc) }
   scope :by_status, ->(status) { where(status: status) }
   scope :by_action, ->(action) { where(action: action) }
-  scope :errors, -> { where(status: 'error') }
-  scope :successful, -> { where(status: 'success') }
+  scope :errors, -> { where(status: "error") }
+  scope :successful, -> { where(status: "success") }
 
   # Status enums
   enum :status, {
-    pending: 'pending',
-    success: 'success',
-    error: 'error'
+    pending: "pending",
+    success: "success",
+    error: "error"
   }
 
   # Action enums
   enum :action, {
-    sync_job: 'sync_job',
-    test_connection: 'test_connection',
-    integration_created: 'integration_created',
-    integration_updated: 'integration_updated'
+    sync_job: "sync_job",
+    test_connection: "test_connection",
+    integration_created: "integration_created",
+    integration_updated: "integration_updated"
   }
 
   def display_action
@@ -34,12 +34,12 @@ class JobBoardSyncLog < ApplicationRecord
 
   def display_status
     case status
-    when 'pending'
-      'In Progress'
-    when 'success'
-      'Success'
-    when 'error'
-      'Failed'
+    when "pending"
+      "In Progress"
+    when "success"
+      "Success"
+    when "error"
+      "Failed"
     else
       status.humanize
     end
@@ -47,14 +47,14 @@ class JobBoardSyncLog < ApplicationRecord
 
   def status_color
     case status
-    when 'pending'
-      'yellow'
-    when 'success'
-      'green'
-    when 'error'
-      'red'
+    when "pending"
+      "yellow"
+    when "success"
+      "green"
+    when "error"
+      "red"
     else
-      'gray'
+      "gray"
     end
   end
 
@@ -72,12 +72,12 @@ class JobBoardSyncLog < ApplicationRecord
     return nil if metadata.blank?
 
     case action
-    when 'sync_job'
-      metadata['external_id'] || 'No external ID'
-    when 'test_connection'
-      metadata['provider'] || 'Unknown provider'
+    when "sync_job"
+      metadata["external_id"] || "No external ID"
+    when "test_connection"
+      metadata["provider"] || "Unknown provider"
     else
-      'View details'
+      "View details"
     end
   end
 end

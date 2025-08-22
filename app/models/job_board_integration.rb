@@ -1,6 +1,6 @@
 class JobBoardIntegration < ApplicationRecord
   belongs_to :company
-  belongs_to :job_board_provider, foreign_key: 'provider', primary_key: 'slug'
+  belongs_to :job_board_provider, foreign_key: "provider", primary_key: "slug"
   has_many :job_board_sync_logs, dependent: :destroy
 
   validates :name, presence: true, length: { minimum: 2, maximum: 100 }
@@ -10,15 +10,15 @@ class JobBoardIntegration < ApplicationRecord
   validates :status, presence: true, inclusion: { in: %w[active inactive error] }
   validates :webhook_url, format: { with: URI::DEFAULT_PARSER.make_regexp }, allow_blank: true
 
-  scope :active, -> { where(status: 'active') }
+  scope :active, -> { where(status: "active") }
   scope :by_provider, ->(provider) { where(provider: provider) }
   scope :ordered, -> { order(:name) }
 
   # Status enums
   enum :status, {
-    active: 'active',
-    inactive: 'inactive',
-    error: 'error'
+    active: "active",
+    inactive: "inactive",
+    error: "error"
   }
 
   # Settings schema
@@ -40,7 +40,7 @@ class JobBoardIntegration < ApplicationRecord
   end
 
   def active?
-    status == 'active'
+    status == "active"
   end
 
   def can_sync?
@@ -49,7 +49,7 @@ class JobBoardIntegration < ApplicationRecord
 
   def last_sync_status
     last_log = job_board_sync_logs.order(created_at: :desc).first
-    last_log&.status || 'never'
+    last_log&.status || "never"
   end
 
   def sync_job(job)
@@ -57,8 +57,8 @@ class JobBoardIntegration < ApplicationRecord
 
     log = job_board_sync_logs.create!(
       job: job,
-      action: 'sync_job',
-      status: 'pending',
+      action: "sync_job",
+      status: "pending",
       message: "Syncing job '#{job.title}' to #{provider}"
     )
 
@@ -68,7 +68,7 @@ class JobBoardIntegration < ApplicationRecord
       result = simulate_job_sync(job)
 
       log.update!(
-        status: result[:success] ? 'success' : 'error',
+        status: result[:success] ? "success" : "error",
         message: result[:message],
         metadata: result[:metadata]
       )
@@ -78,7 +78,7 @@ class JobBoardIntegration < ApplicationRecord
       result[:success]
     rescue StandardError => e
       log.update!(
-        status: 'error',
+        status: "error",
         message: "Sync failed: #{e.message}",
         metadata: { error: e.class.name, backtrace: e.backtrace.first(5) }
       )
@@ -90,8 +90,8 @@ class JobBoardIntegration < ApplicationRecord
     return false unless can_sync?
 
     log = job_board_sync_logs.create!(
-      action: 'test_connection',
-      status: 'pending',
+      action: "test_connection",
+      status: "pending",
       message: "Testing connection to #{provider}"
     )
 
@@ -101,7 +101,7 @@ class JobBoardIntegration < ApplicationRecord
       result = simulate_connection_test
 
       log.update!(
-        status: result[:success] ? 'success' : 'error',
+        status: result[:success] ? "success" : "error",
         message: result[:message],
         metadata: result[:metadata]
       )
@@ -109,7 +109,7 @@ class JobBoardIntegration < ApplicationRecord
       result[:success]
     rescue StandardError => e
       log.update!(
-        status: 'error',
+        status: "error",
         message: "Connection test failed: #{e.message}",
         metadata: { error: e.class.name, backtrace: e.backtrace.first(5) }
       )
@@ -120,22 +120,22 @@ class JobBoardIntegration < ApplicationRecord
   private
 
   def set_defaults
-    self.status ||= 'inactive'
+    self.status ||= "inactive"
     self.settings ||= {}
   end
 
   def log_integration_created
     job_board_sync_logs.create!(
-      action: 'integration_created',
-      status: 'success',
+      action: "integration_created",
+      status: "success",
       message: "Integration '#{name}' created for #{provider}"
     )
   end
 
   def log_integration_updated
     job_board_sync_logs.create!(
-      action: 'integration_updated',
-      status: 'success',
+      action: "integration_updated",
+      status: "success",
       message: "Integration '#{name}' updated"
     )
   end
@@ -175,7 +175,7 @@ class JobBoardIntegration < ApplicationRecord
       {
         success: false,
         message: "Invalid API credentials for #{provider}",
-        metadata: { provider: provider, error: 'invalid_credentials' }
+        metadata: { provider: provider, error: "invalid_credentials" }
       }
     end
   end

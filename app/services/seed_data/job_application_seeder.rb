@@ -20,11 +20,11 @@ module SeedData
       Rails.logger.debug { "📝 Seeding #{faker_count} job applications for #{company.name}..." }
 
       published_jobs = company.jobs.published
-      return Rails.logger.debug '⚠️ No published jobs found for applications' if published_jobs.empty?
+      return Rails.logger.debug "⚠️ No published jobs found for applications" if published_jobs.empty?
 
       # Get candidates from all companies for variety
       all_candidates = Candidate.includes(:user, :candidate_roles).limit(50)
-      return Rails.logger.debug '⚠️ No candidates found for applications' if all_candidates.empty?
+      return Rails.logger.debug "⚠️ No candidates found for applications" if all_candidates.empty?
 
       application_count = 0
 
@@ -67,12 +67,12 @@ module SeedData
     def weighted_status_sample
       # Weighted distribution for more realistic status distribution
       weights = {
-        'applied' => 40,      # 40% - Most applications are just applied
-        'reviewing' => 25,    # 25% - Under review
-        'shortlisted' => 15,  # 15% - Shortlisted
-        'interviewed' => 10,  # 10% - Interviewed
-        'offered' => 5,       # 5% - Offered
-        'rejected' => 5       # 5% - Rejected
+        "applied" => 40,      # 40% - Most applications are just applied
+        "reviewing" => 25,    # 25% - Under review
+        "shortlisted" => 15,  # 15% - Shortlisted
+        "interviewed" => 10,  # 10% - Interviewed
+        "offered" => 5,       # 5% - Offered
+        "rejected" => 5       # 5% - Rejected
       }
 
       total_weight = weights.values.sum
@@ -84,18 +84,18 @@ module SeedData
         return status if random < current_weight
       end
 
-      'applied' # fallback
+      "applied" # fallback
     end
 
     def generate_cover_letter(job, candidate)
       templates = [
         {
-          intro: 'Dear Hiring Manager,',
+          intro: "Dear Hiring Manager,",
           body: "I am writing to express my strong interest in the **#{job.title}** position at #{job.company.name}. With my background in #{candidate.candidate_roles.first&.name || 'software development'}, I believe I would be a valuable addition to your team.\n\nI am particularly drawn to this opportunity because of #{job.company.name}'s reputation for innovation and the chance to work on challenging projects. My experience aligns well with the requirements you've outlined, and I am excited about the possibility of contributing to your team's success.",
           closing: "Thank you for considering my application. I look forward to discussing how my skills and experience can benefit #{job.company.name}.\n\nBest regards,\n#{candidate.user.display_name}"
         },
         {
-          intro: 'Hello,',
+          intro: "Hello,",
           body: "I'm excited to apply for the **#{job.title}** role. My experience in #{candidate.candidate_roles.first&.name || 'development'} makes me a great fit for this position.\n\nI've been following #{job.company.name}'s work and am impressed by your commitment to #{[
             'innovation', 'quality', 'user experience', 'growth', 'excellence'
           ].sample}. I'm eager to contribute to your continued success and bring my expertise in #{candidate.candidate_roles.first&.name || 'software development'} to your team.",
@@ -111,12 +111,12 @@ module SeedData
           closing: "I'm available for an interview at your convenience and look forward to learning more about this opportunity.\n\nSincerely,\n#{candidate.user.display_name}"
         },
         {
-          intro: 'Dear Hiring Team,',
+          intro: "Dear Hiring Team,",
           body: "I am thrilled to submit my application for the **#{job.title}** position at #{job.company.name}. As a passionate #{candidate.candidate_roles.first&.name || 'developer'} with #{candidate.experience} years of experience, I am excited about the opportunity to contribute to your innovative team.\n\nMy background in #{candidate.candidate_roles.first&.name || 'software development'} has equipped me with the skills necessary to excel in this role. I am particularly drawn to #{job.company.name}'s mission and values, and I believe my technical expertise and collaborative approach would be a great fit for your organization.",
           closing: "I would welcome the opportunity to discuss how my skills and enthusiasm can contribute to #{job.company.name}'s continued success.\n\nThank you for your consideration.\n\nBest regards,\n#{candidate.user.display_name}"
         },
         {
-          intro: 'Hello Hiring Manager,',
+          intro: "Hello Hiring Manager,",
           body: "I'm writing to express my interest in the **#{job.title}** position. With my experience in #{candidate.candidate_roles.first&.name || 'software development'}, I believe I can bring valuable insights and skills to your team.\n\nI'm impressed by #{job.company.name}'s commitment to #{%w[
             excellence innovation quality growth
           ].sample} and would love to be part of your mission. My background in #{candidate.candidate_roles.first&.name || 'development'} aligns perfectly with your requirements, and I'm excited about the opportunity to contribute to your success.",
@@ -131,19 +131,19 @@ module SeedData
     def generate_portfolio_url(candidate)
       return nil if rand < 0.3 # 30% chance of no portfolio
 
-      domains = ['github.com', 'portfolio.com', 'dev.to', 'dribbble.com', 'behance.net']
+      domains = [ "github.com", "portfolio.com", "dev.to", "dribbble.com", "behance.net" ]
       domain = domains.sample
 
       case domain
-      when 'github.com'
+      when "github.com"
         "https://github.com/#{candidate.user.first_name.downcase}#{candidate.user.last_name.downcase}"
-      when 'portfolio.com'
+      when "portfolio.com"
         "https://#{candidate.user.first_name.downcase}#{candidate.user.last_name.downcase}.portfolio.com"
-      when 'dev.to'
+      when "dev.to"
         "https://dev.to/#{candidate.user.first_name.downcase}#{candidate.user.last_name.downcase}"
-      when 'dribbble.com'
+      when "dribbble.com"
         "https://dribbble.com/#{candidate.user.first_name.downcase}#{candidate.user.last_name.downcase}"
-      when 'behance.net'
+      when "behance.net"
         "https://behance.net/#{candidate.user.first_name.downcase}#{candidate.user.last_name.downcase}"
       end
     end
@@ -155,10 +155,10 @@ module SeedData
         "I'm very excited about this opportunity and believe my skills align perfectly with your requirements.",
         "I'm available to start immediately and can work flexible hours.",
         "I'm particularly interested in your company's approach to remote work and team collaboration.",
-        'I have experience working with similar technologies and would love to discuss how I can contribute.',
+        "I have experience working with similar technologies and would love to discuss how I can contribute.",
         "I'm passionate about continuous learning and would appreciate the opportunity to grow with your team.",
         "I'm open to relocation if required and can start within 2 weeks of receiving an offer.",
-        'I have experience leading small teams and would be interested in growth opportunities.',
+        "I have experience leading small teams and would be interested in growth opportunities.",
         "I'm excited about the possibility of working on cutting-edge projects with your team."
       ]
 

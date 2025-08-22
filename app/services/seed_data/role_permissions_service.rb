@@ -2,7 +2,7 @@
 
 module SeedData
   class RolePermissionsService < BaseService
-    ADMIN_ROLES = ['SuperAdmin'].freeze
+    ADMIN_ROLES = [ "SuperAdmin" ].freeze
 
     def call
       assign_permissions_to_admin_roles

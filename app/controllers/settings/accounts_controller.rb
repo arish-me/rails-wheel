@@ -1,6 +1,6 @@
 module Settings
   class AccountsController < ApplicationController
-    layout 'settings'
+    layout "settings"
     before_action :authenticate_user!
 
     def show

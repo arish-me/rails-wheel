@@ -11,7 +11,7 @@ module ApplicationCable
     private
 
     def find_verified_user
-      if (current_user = env['warden'].user) # Or your session lookup
+      if (current_user = env["warden"].user) # Or your session lookup
         current_user
       else
         reject_unauthorized_connection

@@ -7,7 +7,7 @@ module SeedData
     end
 
     def call
-      log 'Starting Company seeding process...'
+      log "Starting Company seeding process..."
       created_companies = []
 
       @companies_data.each do |company_data|
@@ -60,9 +60,9 @@ module SeedData
     def default_companies_data
       [
         {
-          name: 'TTC Service',
-          subdomain: 'wheel.in',
-          website: 'www.wheel.in'
+          name: "TTC Service",
+          subdomain: "wheel.in",
+          website: "www.wheel.in"
         }
       ]
     end
@@ -82,14 +82,14 @@ module SeedData
 
       if response.is_a?(Net::HTTPSuccess)
         # Use StringIO to avoid stream issues
-        require 'stringio'
+        require "stringio"
         io = StringIO.new(response.body)
         io.binmode
 
         company.avatar.attach(
           io: io,
           filename: "avatar_#{company.name.parameterize}.png",
-          content_type: 'image/png'
+          content_type: "image/png"
         )
 
         log "✅ Avatar attached for company: #{company.name}"

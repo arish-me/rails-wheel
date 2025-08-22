@@ -11,9 +11,9 @@ module Tabs
     renders_many :btns, lambda { |id:, label:, classes: nil, &block|
       content_tag(
         :button, label, id: id,
-                        type: 'button',
+                        type: "button",
                         class: class_names(btn_classes, id == active_tab ? active_btn_classes : inactive_btn_classes, classes),
-                        data: { id: id, action: 'tabs#show', tabs_target: 'navBtn' },
+                        data: { id: id, action: "tabs#show", tabs_target: "navBtn" },
         &block
       )
     }

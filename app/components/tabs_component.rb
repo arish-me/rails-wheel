@@ -12,25 +12,25 @@ class TabsComponent < ViewComponent::Base
   renders_many :panels, lambda { |tab_id:, &block|
     content_tag(
       :div,
-      class: ('hidden' unless tab_id == active_tab),
-      data: { id: tab_id, tabs_target: 'panel' },
+      class: ("hidden" unless tab_id == active_tab),
+      data: { id: tab_id, tabs_target: "panel" },
       &block
     )
   }
 
   VARIANTS = {
     default: {
-      active_btn_classes: 'bg-white theme-dark:bg-gray-700 text-primary shadow-sm',
-      inactive_btn_classes: 'text-secondary hover:bg-surface-inset-hover',
-      base_btn_classes: 'w-full inline-flex justify-center items-center text-sm font-medium px-2 py-1 rounded-md transition-colors duration-200',
-      nav_container_classes: 'flex bg-surface-inset p-1 rounded-lg mb-4'
+      active_btn_classes: "bg-white theme-dark:bg-gray-700 text-primary shadow-sm",
+      inactive_btn_classes: "text-secondary hover:bg-surface-inset-hover",
+      base_btn_classes: "w-full inline-flex justify-center items-center text-sm font-medium px-2 py-1 rounded-md transition-colors duration-200",
+      nav_container_classes: "flex bg-surface-inset p-1 rounded-lg mb-4"
     }
   }.freeze
 
   attr_reader :active_tab, :url_param_key, :session_key, :variant, :testid
 
-  def initialize(active_tab:, url_param_key: nil, session_key: nil, variant: :default, active_btn_classes: '',
-                 inactive_btn_classes: '', testid: nil)
+  def initialize(active_tab:, url_param_key: nil, session_key: nil, variant: :default, active_btn_classes: "",
+                 inactive_btn_classes: "", testid: nil)
     @active_tab = active_tab
     @url_param_key = url_param_key
     @session_key = session_key

@@ -24,7 +24,7 @@ class UserRolesController < ApplicationController
 
     respond_to do |format|
       if @user_role.save
-        format.html { redirect_to @user_role, notice: 'User role was successfully created.' }
+        format.html { redirect_to @user_role, notice: "User role was successfully created." }
         format.json { render :show, status: :created, location: @user_role }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -37,7 +37,7 @@ class UserRolesController < ApplicationController
   def update
     respond_to do |format|
       if @user_role.update(user_role_params)
-        format.html { redirect_to @user_role, notice: 'User role was successfully updated.' }
+        format.html { redirect_to @user_role, notice: "User role was successfully updated." }
         format.json { render :show, status: :ok, location: @user_role }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -51,7 +51,7 @@ class UserRolesController < ApplicationController
     @user_role.destroy!
 
     respond_to do |format|
-      format.html { redirect_to user_roles_path, status: :see_other, notice: 'User role was successfully destroyed.' }
+      format.html { redirect_to user_roles_path, status: :see_other, notice: "User role was successfully destroyed." }
       format.json { head :no_content }
     end
   end

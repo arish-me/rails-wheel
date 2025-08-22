@@ -23,29 +23,29 @@ module SeedData
       Rails.logger.debug { "🌐 Seeding jobs for #{company.name}..." }
 
       job_titles = [
-        'Senior Ruby on Rails Developer',
-        'Frontend React Developer',
-        'Full Stack Developer',
-        'DevOps Engineer',
-        'Product Manager',
-        'UI/UX Designer',
-        'Data Scientist',
-        'Mobile App Developer',
-        'QA Engineer',
-        'Technical Lead'
+        "Senior Ruby on Rails Developer",
+        "Frontend React Developer",
+        "Full Stack Developer",
+        "DevOps Engineer",
+        "Product Manager",
+        "UI/UX Designer",
+        "Data Scientist",
+        "Mobile App Developer",
+        "QA Engineer",
+        "Technical Lead"
       ]
 
       job_descriptions = [
         "We're looking for a passionate Senior Ruby on Rails Developer to join our growing team. You'll work on exciting projects and help shape our technical direction.",
-        'Join our frontend team and build amazing user experiences with React. We value clean code and user-centric design.',
+        "Join our frontend team and build amazing user experiences with React. We value clean code and user-centric design.",
         "As a Full Stack Developer, you'll work across our entire tech stack, from database design to frontend implementation.",
-        'Help us scale our infrastructure and implement best practices for deployment and monitoring.',
-        'Lead product development from ideation to launch. Work closely with engineering and design teams.',
+        "Help us scale our infrastructure and implement best practices for deployment and monitoring.",
+        "Lead product development from ideation to launch. Work closely with engineering and design teams.",
         "Create beautiful and intuitive user interfaces. You'll work on both web and mobile applications.",
-        'Build machine learning models and analyze data to drive business decisions.',
-        'Develop native mobile applications for iOS and Android platforms.',
-        'Ensure our software quality through comprehensive testing and quality assurance processes.',
-        'Lead technical teams and mentor junior developers while contributing to architecture decisions.'
+        "Build machine learning models and analyze data to drive business decisions.",
+        "Develop native mobile applications for iOS and Android platforms.",
+        "Ensure our software quality through comprehensive testing and quality assurance processes.",
+        "Lead technical teams and mentor junior developers while contributing to architecture decisions."
       ]
 
       job_requirements = [
@@ -79,22 +79,22 @@ module SeedData
         experience_level = Job::EXPERIENCE_LEVELS.sample
         remote_policy = Job::REMOTE_POLICIES.sample
         status = %w[draft published published published closed].sample # More published jobs
-        featured = [true, false, false, false].sample # 25% chance of being featured
+        featured = [ true, false, false, false ].sample # 25% chance of being featured
 
         salary_min = case experience_level
-                     when 'entry'
+        when "entry"
                        rand(40_000..60_000)
-                     when 'junior'
+        when "junior"
                        rand(50_000..80_000)
-                     when 'mid'
+        when "mid"
                        rand(70_000..120_000)
-                     when 'senior'
+        when "senior"
                        rand(100_000..160_000)
-                     when 'lead'
+        when "lead"
                        rand(130_000..200_000)
-                     when 'executive'
+        when "executive"
                        rand(180_000..300_000)
-                     end
+        end
 
         salary_max = salary_min + rand(20_000..50_000)
 
@@ -112,22 +112,22 @@ module SeedData
           featured: featured,
           salary_min: salary_min,
           salary_max: salary_max,
-          salary_currency: 'USD',
-          salary_period: 'yearly',
-          city: ['San Francisco', 'New York', 'Austin', 'Seattle', 'Boston', 'Denver', 'Chicago',
-                 'Los Angeles'].sample,
+          salary_currency: "USD",
+          salary_period: "yearly",
+          city: [ "San Francisco", "New York", "Austin", "Seattle", "Boston", "Denver", "Chicago",
+                 "Los Angeles" ].sample,
           state: %w[CA NY TX WA MA CO IL CA].sample,
-          country: 'United States',
-          location: "#{['San Francisco', 'New York', 'Austin', 'Seattle', 'Boston', 'Denver', 'Chicago',
-                        'Los Angeles'].sample}, #{%w[CA NY TX WA MA CO IL
+          country: "United States",
+          location: "#{[ 'San Francisco', 'New York', 'Austin', 'Seattle', 'Boston', 'Denver', 'Chicago',
+                        'Los Angeles' ].sample}, #{%w[CA NY TX WA MA CO IL
                                                      CA].sample}, United States",
-          allow_cover_letter: [true, false].sample,
-          require_portfolio: [true, false, false].sample,
+          allow_cover_letter: [ true, false ].sample,
+          require_portfolio: [ true, false, false ].sample,
           application_instructions: "Please submit your resume and a brief cover letter explaining why you're interested in this position.",
-          expires_at: status == 'published' ? rand(30..90).days.from_now : nil,
-          published_at: status == 'published' ? rand(1..30).days.ago : nil,
-          views_count: status == 'published' ? rand(10..500) : 0,
-          job_applications_count: status == 'published' ? rand(0..20) : 0
+          expires_at: status == "published" ? rand(30..90).days.from_now : nil,
+          published_at: status == "published" ? rand(1..30).days.ago : nil,
+          views_count: status == "published" ? rand(10..500) : 0,
+          job_applications_count: status == "published" ? rand(0..20) : 0
         )
 
         # Set external data for some jobs to simulate external integrations
@@ -149,14 +149,14 @@ module SeedData
     end
 
     def seed_job_applications
-      Rails.logger.debug '📝 Seeding job applications...'
+      Rails.logger.debug "📝 Seeding job applications..."
 
       published_jobs = company.jobs.published
-      return Rails.logger.debug '⚠️ No published jobs found for applications' if published_jobs.empty?
+      return Rails.logger.debug "⚠️ No published jobs found for applications" if published_jobs.empty?
 
       # Get some candidates from other companies for variety
       all_candidates = Candidate.includes(:user).limit(20)
-      return Rails.logger.debug '⚠️ No candidates found for applications' if all_candidates.empty?
+      return Rails.logger.debug "⚠️ No candidates found for applications" if all_candidates.empty?
 
       application_count = 0
 
@@ -195,10 +195,10 @@ module SeedData
     end
 
     def seed_job_board_integrations
-      Rails.logger.debug '🔗 Seeding job board integrations...'
+      Rails.logger.debug "🔗 Seeding job board integrations..."
 
       providers = JobBoardProvider.active
-      return Rails.logger.debug '⚠️ No job board providers found' if providers.empty?
+      return Rails.logger.debug "⚠️ No job board providers found" if providers.empty?
 
       # Create 1-3 integrations per company
       rand(1..3).times do
@@ -213,11 +213,11 @@ module SeedData
           webhook_url: rand < 0.5 ? "https://#{company.subdomain}.com/webhooks/#{provider.slug}" : nil,
           status: %w[active active inactive].sample,
           settings: {
-            auto_sync: [true, false].sample,
-            sync_interval: [1800, 3600, 7200].sample, # 30min, 1hr, 2hr
-            post_new_jobs: [true, false].sample,
-            update_existing_jobs: [true, false].sample,
-            delete_closed_jobs: [true, false, false].sample,
+            auto_sync: [ true, false ].sample,
+            sync_interval: [ 1800, 3600, 7200 ].sample, # 30min, 1hr, 2hr
+            post_new_jobs: [ true, false ].sample,
+            update_existing_jobs: [ true, false ].sample,
+            delete_closed_jobs: [ true, false, false ].sample,
             custom_fields: {}
           },
           last_sync_at: rand < 0.7 ? rand(1..7).days.ago : nil
@@ -228,13 +228,13 @@ module SeedData
     end
 
     def seed_job_board_sync_logs
-      Rails.logger.debug '📊 Seeding job board sync logs...'
+      Rails.logger.debug "📊 Seeding job board sync logs..."
 
       integrations = company.job_board_integrations
-      return Rails.logger.debug '⚠️ No integrations found for sync logs' if integrations.empty?
+      return Rails.logger.debug "⚠️ No integrations found for sync logs" if integrations.empty?
 
       jobs = company.jobs.published.limit(10)
-      return Rails.logger.debug '⚠️ No published jobs found for sync logs' if jobs.empty?
+      return Rails.logger.debug "⚠️ No published jobs found for sync logs" if jobs.empty?
 
       log_count = 0
 
@@ -244,7 +244,7 @@ module SeedData
           action = %w[sync_job test_connection integration_created integration_updated].sample
           status = %w[success success success error].sample
 
-          job = action == 'sync_job' ? jobs.sample : nil
+          job = action == "sync_job" ? jobs.sample : nil
 
           JobBoardSyncLog.create!(
             job_board_integration: integration,
@@ -282,21 +282,21 @@ module SeedData
 
     def generate_sync_message(action, status, job, integration)
       case action
-      when 'sync_job'
-        if status == 'success'
+      when "sync_job"
+        if status == "success"
           "Job '#{job.title}' successfully synced to #{integration.provider}"
         else
           "Failed to sync job '#{job.title}' to #{integration.provider}: API rate limit exceeded"
         end
-      when 'test_connection'
-        if status == 'success'
+      when "test_connection"
+        if status == "success"
           "Successfully connected to #{integration.provider} API"
         else
           "Connection test failed for #{integration.provider}: Invalid API credentials"
         end
-      when 'integration_created'
+      when "integration_created"
         "Integration '#{integration.name}' created for #{integration.provider}"
-      when 'integration_updated'
+      when "integration_updated"
         "Integration '#{integration.name}' settings updated"
       else
         "Action completed for #{integration.provider}"
@@ -305,8 +305,8 @@ module SeedData
 
     def generate_sync_metadata(action, status, job, integration)
       case action
-      when 'sync_job'
-        if status == 'success'
+      when "sync_job"
+        if status == "success"
           {
             external_id: "ext_#{job.id}_#{Time.current.to_i}",
             provider: integration.provider,
@@ -317,11 +317,11 @@ module SeedData
           {
             provider: integration.provider,
             job_id: job.id,
-            error: 'rate_limit_exceeded',
+            error: "rate_limit_exceeded",
             retry_after: 3600
           }
         end
-      when 'test_connection'
+      when "test_connection"
         {
           provider: integration.provider,
           timestamp: Time.current,

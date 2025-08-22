@@ -43,7 +43,7 @@ class Company < ApplicationRecord
     begin
       uri = URI.parse(image_url)
       avatar_file = uri.open
-      avatar.attach(io: avatar_file, filename: 'avatar.jpg', content_type: avatar_file.content_type)
+      avatar.attach(io: avatar_file, filename: "avatar.jpg", content_type: avatar_file.content_type)
     rescue StandardError => e
       Rails.logger.error "Failed to attach avatar: #{e.message}"
     end
@@ -55,7 +55,7 @@ class Company < ApplicationRecord
   end
 
   def subscription_status
-    return 'no_subscription' unless company_subscription
+    return "no_subscription" unless company_subscription
 
     company_subscription.status
   end
@@ -84,7 +84,7 @@ class Company < ApplicationRecord
     return if company_subscription.present?
 
     create_company_subscription!(
-      status: 'trial',
+      status: "trial",
       start_date: Time.current,
       end_date: 30.days.from_now
     )
@@ -94,14 +94,14 @@ class Company < ApplicationRecord
     if company_subscription.present?
       # Update existing subscription
       company_subscription.update!(
-        status: 'active',
+        status: "active",
         start_date: Time.current,
         end_date: Time.current + duration_months.months
       )
     else
       # Create new paid subscription
       create_company_subscription!(
-        status: 'active',
+        status: "active",
         start_date: Time.current,
         end_date: Time.current + duration_months.months
       )

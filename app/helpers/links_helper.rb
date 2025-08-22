@@ -6,7 +6,7 @@ module LinksHelper
   end
 
   def normalized_href(href)
-    if href.start_with?('https://', 'http://')
+    if href.start_with?("https://", "http://")
       href
     else
       "https://#{href}"

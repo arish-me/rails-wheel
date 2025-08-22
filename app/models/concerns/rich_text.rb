@@ -1,5 +1,5 @@
 module RichText
-  require 'redcarpet/render_strip'
+  require "redcarpet/render_strip"
 
   def rich_text_bio
     return nil unless bio

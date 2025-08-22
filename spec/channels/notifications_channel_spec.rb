@@ -5,7 +5,7 @@ RSpec.describe NotificationsChannel, type: :channel do
   let(:connection) do
     double('connection',
            current_user: user,
-           identifiers: [:current_user],
+           identifiers: [ :current_user ],
            logger: Rails.logger,
            transmit: nil,
            reject: nil)

@@ -13,7 +13,7 @@ module Locations
     private
 
     def plus_minus
-      '+' if @utc_offset.positive?
+      "+" if @utc_offset.positive?
     end
 
     def utc_offset

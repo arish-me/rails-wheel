@@ -1,7 +1,7 @@
 module SettingsHelper
   SETTINGS_ORDER = [
-    { name: 'Profile', path: :settings_profile_path },
-    { name: 'Account Setting', path: :settings_accounts_path }
+    { name: "Profile", path: :settings_profile_path },
+    { name: "Account Setting", path: :settings_accounts_path }
 
   ].freeze
 
@@ -15,23 +15,23 @@ module SettingsHelper
 
     adjacent = visible_settings[adjacent_index]
 
-    render partial: 'settings/settings_nav_link_large', locals: {
+    render partial: "settings/settings_nav_link_large", locals: {
       path: send(adjacent[:path]),
-      direction: offset.positive? ? 'next' : 'previous',
+      direction: offset.positive? ? "next" : "previous",
       title: adjacent[:name]
     }
   end
 
   def settings_section(title:, subtitle: nil, &)
     content = capture(&)
-    render partial: 'settings/section', locals: { title: title, subtitle: subtitle, content: content }
+    render partial: "settings/section", locals: { title: title, subtitle: subtitle, content: content }
   end
 
   def settings_nav_footer
     previous_setting = adjacent_setting(request.path, -1)
     next_setting = adjacent_setting(request.path, 1)
 
-    content_tag :div, class: 'hidden md:flex flex-row justify-between gap-4' do
+    content_tag :div, class: "hidden md:flex flex-row justify-between gap-4" do
       concat(previous_setting)
       concat(next_setting)
     end
@@ -41,7 +41,7 @@ module SettingsHelper
     previous_setting = adjacent_setting(request.path, -1)
     next_setting = adjacent_setting(request.path, 1)
 
-    content_tag :div, class: 'md:hidden flex flex-col gap-4' do
+    content_tag :div, class: "md:hidden flex flex-col gap-4" do
       concat(previous_setting)
       concat(next_setting)
     end

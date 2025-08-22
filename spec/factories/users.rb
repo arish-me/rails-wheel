@@ -19,7 +19,7 @@ FactoryBot.define do
     location { Faker::Address.city }
     website { Faker::Internet.url }
     social_links { { twitter: Faker::Internet.username, linkedin: Faker::Internet.username } }
-    goals { ['Learn Rails', 'Build great apps'] }
+    goals { [ 'Learn Rails', 'Build great apps' ] }
 
     # Skip password validation by default for faster tests
     after(:build) { |user| user.skip_password_validation = true }

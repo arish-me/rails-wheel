@@ -1,7 +1,7 @@
 module Users
   class RegistrationsController < Devise::RegistrationsController
-    before_action :configure_sign_up_params, only: [:create]
-    before_action :configure_account_update_params, only: [:update]
+    before_action :configure_sign_up_params, only: [ :create ]
+    before_action :configure_account_update_params, only: [ :update ]
 
     # POST /resource
     def create
@@ -9,7 +9,7 @@ module Users
       resource.current_sign_in_ip_address = request.remote_ip
 
       # Validate email for company users during signup
-      if resource.user_type == 'company' && resource.email.present?
+      if resource.user_type == "company" && resource.email.present?
         validation_result = EmailDomainValidator.validate_company_email(resource.email)
         unless validation_result[:valid]
           resource.errors.add(:email, validation_result[:message])
@@ -24,18 +24,18 @@ module Users
     def update
       self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
       prev_unconfirmed_email = resource.unconfirmed_email if resource.respond_to?(:unconfirmed_email)
-      onboarding = params[:user][:redirect_to] == 'home' || resource.needs_onboarding?
+      onboarding = params[:user][:redirect_to] == "home" || resource.needs_onboarding?
 
       # Set onboarding context flag for validation
       resource.in_onboarding_context = onboarding
       resource_updated = if onboarding
 
                            update_resource_without_password(resource, account_update_params)
-                         elsif params[:user][:redirect_to] == 'settings_accounts_path'
+      elsif params[:user][:redirect_to] == "settings_accounts_path"
                            update_resource(resource, account_update_params)
-                         else
+      else
                            update_resource_without_password(resource, account_update_params)
-                         end
+      end
       resource.avatar.purge if should_purge_profile_image?
       yield resource if block_given?
       if resource_updated
@@ -44,21 +44,21 @@ module Users
 
         respond_to do |format|
           format.html do
-            flash[:notice] = 'Your account has been updated successfully.'
+            flash[:notice] = "Your account has been updated successfully."
             handle_redirect(flash[:notice], resource)
           end
-          format.json { render json: { message: 'Account updated successfully' }, status: :ok }
+          format.json { render json: { message: "Account updated successfully" }, status: :ok }
         end
       else
         clean_up_passwords resource
         set_minimum_password_length
         respond_to do |format|
           format.html do
-            flash[:alert] = resource.errors.full_messages.join(', ')
-            if request.referer.split('/').last == 'profile_setup'
-              render 'onboardings/profile_setup', status: :unprocessable_entity, layout: 'wizard'
-            elsif request.referer.split('/').include?('onboarding')
-              render 'onboardings/show', status: :unprocessable_entity, layout: 'wizard'
+            flash[:alert] = resource.errors.full_messages.join(", ")
+            if request.referer.split("/").last == "profile_setup"
+              render "onboardings/profile_setup", status: :unprocessable_entity, layout: "wizard"
+            elsif request.referer.split("/").include?("onboarding")
+              render "onboardings/show", status: :unprocessable_entity, layout: "wizard"
             else
               redirect_to request.referer || after_update_path_for(resource)
             end
@@ -70,19 +70,19 @@ module Users
 
     def handle_redirect(notice, _resource)
       case params[:user][:redirect_to]
-      when 'profile_setup'
+      when "profile_setup"
         redirect_to profile_setup_onboarding_path
-      when 'onboarding_candidate'
+      when "onboarding_candidate"
         redirect_to candidate_setup_onboarding_path
-      when 'onboarding_preferences'
+      when "onboarding_preferences"
         redirect_to preferences_onboarding_path
-      when 'home'
+      when "home"
         redirect_to root_path
-      when 'preferences'
+      when "preferences"
         redirect_to settings_preferences_path, notice: notice
-      when 'goals'
+      when "goals"
         redirect_to goals_onboarding_path
-      when 'trial'
+      when "trial"
         redirect_to trial_onboarding_path
       else
         # path = current_user.user? ? : settings_profile_path
@@ -93,7 +93,7 @@ module Users
     protected
 
     def should_purge_profile_image?
-      account_update_params[:delete_profile_image] == '1' &&
+      account_update_params[:delete_profile_image] == "1" &&
         account_update_params[:avatar].blank?
     end
 
@@ -121,7 +121,7 @@ module Users
     def after_update_path_for(resource)
       if params[:user][:redirect_to].present?
         path = params[:user][:redirect_to]
-        path.start_with?('/') ? path : "/#{path}"
+        path.start_with?("/") ? path : "/#{path}"
       else
         super
       end

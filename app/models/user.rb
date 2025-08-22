@@ -16,13 +16,13 @@ class User < ApplicationRecord
   has_many :user_roles, dependent: :destroy
   has_many :roles, through: :user_roles
   has_many :categories, dependent: :destroy
-  has_many :notifications, as: :recipient, class_name: 'Noticed::Notification'
-  has_many :invitations, class_name: 'User', as: :invited_by
-  has_many :created_jobs, class_name: 'Job', foreign_key: 'created_by_id', dependent: :destroy
+  has_many :notifications, as: :recipient, class_name: "Noticed::Notification"
+  has_many :invitations, class_name: "User", as: :invited_by
+  has_many :created_jobs, class_name: "Job", foreign_key: "created_by_id", dependent: :destroy
   has_many :job_applications, dependent: :destroy
-  has_many :reviewed_applications, class_name: 'JobApplication', foreign_key: 'reviewed_by_id'
+  has_many :reviewed_applications, class_name: "JobApplication", foreign_key: "reviewed_by_id"
 
-  has_one :candidate, dependent: :destroy, class_name: 'Candidate'
+  has_one :candidate, dependent: :destroy, class_name: "Candidate"
   has_one :location, as: :locatable, dependent: :destroy
   after_create :ensure_candidate
   after_invitation_accepted :setup_invited_user
@@ -50,22 +50,22 @@ class User < ApplicationRecord
   enum :user_type, { company: 0, user: 1, platform_admin: 99 }
 
   GENDER_DISPLAY = {
-    he_him: 'He/Him',
-    she_her: 'She/Her',
-    they_them: 'They/Them',
-    other: 'Other'
+    he_him: "He/Him",
+    she_her: "She/Her",
+    they_them: "They/Them",
+    other: "Other"
   }.freeze
 
   DATE_FORMATS = [
-    ['MM-DD-YYYY', '%m-%d-%Y'],
-    ['DD.MM.YYYY', '%d.%m.%Y'],
-    ['DD-MM-YYYY', '%d-%m-%Y'],
-    ['YYYY-MM-DD', '%Y-%m-%d'],
-    ['DD/MM/YYYY', '%d/%m/%Y'],
-    ['YYYY/MM/DD', '%Y/%m/%d'],
-    ['MM/DD/YYYY', '%m/%d/%Y'],
-    ['D/MM/YYYY', '%e/%m/%Y'],
-    ['YYYY.MM.DD', '%Y.%m.%d']
+    [ "MM-DD-YYYY", "%m-%d-%Y" ],
+    [ "DD.MM.YYYY", "%d.%m.%Y" ],
+    [ "DD-MM-YYYY", "%d-%m-%Y" ],
+    [ "YYYY-MM-DD", "%Y-%m-%d" ],
+    [ "DD/MM/YYYY", "%d/%m/%Y" ],
+    [ "YYYY/MM/DD", "%Y/%m/%d" ],
+    [ "MM/DD/YYYY", "%m/%d/%Y" ],
+    [ "D/MM/YYYY", "%e/%m/%Y" ],
+    [ "YYYY.MM.DD", "%Y.%m.%d" ]
   ].freeze
 
   def lock_access!
@@ -75,12 +75,12 @@ class User < ApplicationRecord
   def can?(action, resource)
     ActsAsTenant.current_tenant = Company.find(company_id)
     roles.joins(:role_permissions)
-         .joins('INNER JOIN permissions ON permissions.id = role_permissions.permission_id')
-         .exists?(['permissions.name = ? AND permissions.resource = ?', action, resource])
+         .joins("INNER JOIN permissions ON permissions.id = role_permissions.permission_id")
+         .exists?([ "permissions.name = ? AND permissions.resource = ?", action, resource ])
   end
 
   def display_name
-    [first_name, last_name].compact.join(' ').presence || email
+    [ first_name, last_name ].compact.join(" ").presence || email
   end
 
   def initial
@@ -113,7 +113,7 @@ class User < ApplicationRecord
     begin
       uri = URI.parse(image_url)
       avatar_file = uri.open
-      avatar.attach(io: avatar_file, filename: 'avatar.jpg', content_type: avatar_file.content_type)
+      avatar.attach(io: avatar_file, filename: "avatar.jpg", content_type: avatar_file.content_type)
     rescue StandardError => e
       Rails.logger.error "Failed to attach avatar: #{e.message}"
     end
@@ -159,7 +159,7 @@ class User < ApplicationRecord
     end
 
     # Set user type to company for invited users
-    update_columns(user_type: 'company') if user_type.blank?
+    update_columns(user_type: "company") if user_type.blank?
 
     # Skip onboarding for invited users
     update_columns(onboarded_at: Time.current) if onboarded_at.blank?
@@ -186,13 +186,13 @@ class User < ApplicationRecord
 
   def invitation_status
     if invitation_accepted_at.present?
-      'accepted'
+      "accepted"
     elsif invitation_sent_at.present?
-      'pending'
+      "pending"
     elsif active?
-      'active'
+      "active"
     else
-      'created'
+      "created"
     end
   end
 
@@ -201,15 +201,15 @@ class User < ApplicationRecord
   end
 
   def needs_profile_completion?
-    oauth_user? && (first_name.blank? || last_name.blank? || first_name == 'User' || last_name == 'User')
+    oauth_user? && (first_name.blank? || last_name.blank? || first_name == "User" || last_name == "User")
   end
 
   def company_user?
-    user_type == 'company'
+    user_type == "company"
   end
 
   def personal_user?
-    user_type == 'user'
+    user_type == "user"
   end
 
   def has_candidate_profile?
@@ -248,7 +248,7 @@ class User < ApplicationRecord
   end
 
   def handle_user_type_change
-    if user_type == 'user'
+    if user_type == "user"
       # User changed to 'user' type - create candidate if it doesn't exist
       if candidate.present?
         Rails.logger.info "User #{id} already has candidate record, skipping creation"
@@ -256,7 +256,7 @@ class User < ApplicationRecord
         create_candidate
         Rails.logger.info "Created candidate record for user #{id}"
       end
-    elsif user_type == 'company'
+    elsif user_type == "company"
       # User changed to 'company' type - destroy candidate if it exists
       if candidate.present?
         candidate.destroy
@@ -269,11 +269,11 @@ class User < ApplicationRecord
 
   def onboarding_name_validation
     # During onboarding, require names for all users (including OAuth users)
-    errors.add(:first_name, 'is required to complete your profile') if first_name.blank?
+    errors.add(:first_name, "is required to complete your profile") if first_name.blank?
 
     return if last_name.present?
 
-    errors.add(:last_name, 'is required to complete your profile')
+    errors.add(:last_name, "is required to complete your profile")
   end
 
   protected

@@ -1,5 +1,5 @@
 class CompaniesController < ApplicationController
-  before_action :set_company, only: [:update]
+  before_action :set_company, only: [ :update ]
   def index; end
 
   def show; end
@@ -19,15 +19,15 @@ class CompaniesController < ApplicationController
         # If user is in onboarding, update their user type and company association
         if current_user&.needs_onboarding?
           SeedData::UserRoleAssigner.call(current_user, @company)
-          format.html { redirect_to profile_setup_onboarding_path, notice: 'Company was successfully created.' }
-          format.turbo_stream { redirect_to profile_setup_onboarding_path, notice: 'Company was successfully created.' }
+          format.html { redirect_to profile_setup_onboarding_path, notice: "Company was successfully created." }
+          format.turbo_stream { redirect_to profile_setup_onboarding_path, notice: "Company was successfully created." }
         else
-          format.html { redirect_to @company, notice: 'Company was successfully created.' }
+          format.html { redirect_to @company, notice: "Company was successfully created." }
           format.turbo_stream { render turbo_stream: turbo_stream.refresh(request_id: nil) }
         end
         format.json { render :show, status: :created, location: @company }
       elsif current_user&.needs_onboarding?
-        flash[:alert] = @company.errors.full_messages.join(', ')
+        flash[:alert] = @company.errors.full_messages.join(", ")
         flash[:company_data] = company_params.to_h
         format.html { redirect_to onboarding_path }
         format.turbo_stream { redirect_to onboarding_path }
@@ -43,21 +43,21 @@ class CompaniesController < ApplicationController
     respond_to do |format|
       if @company.update(company_params)
         # If user is in onboarding, update their user type and company association
-        flash[:notice] = 'Your company has been updated successfully.'
+        flash[:notice] = "Your company has been updated successfully."
         if current_user&.needs_onboarding?
-          format.html { redirect_to profile_setup_onboarding_path, notice: 'Company was successfully saved.' }
-          format.turbo_stream { redirect_to profile_setup_onboarding_path, notice: 'Company was successfully saved.' }
+          format.html { redirect_to profile_setup_onboarding_path, notice: "Company was successfully saved." }
+          format.turbo_stream { redirect_to profile_setup_onboarding_path, notice: "Company was successfully saved." }
         else
-          format.html { redirect_to @company, notice: 'Company was successfully created.' }
+          format.html { redirect_to @company, notice: "Company was successfully created." }
           format.turbo_stream { render turbo_stream: turbo_stream.refresh(request_id: nil) }
         end
         format.json { render :show, status: :created, location: @company }
       elsif current_user&.needs_onboarding?
-        format.html { redirect_to onboarding_path, alert: @company.errors.full_messages.join(', ') }
-        format.turbo_stream { redirect_to onboarding_path, alert: @company.errors.full_messages.join(', ') }
+        format.html { redirect_to onboarding_path, alert: @company.errors.full_messages.join(", ") }
+        format.turbo_stream { redirect_to onboarding_path, alert: @company.errors.full_messages.join(", ") }
       else
-        flash[:alert] = @company.errors.full_messages.join(', ')
-        format.html { redirect_to request.referer, alert: @company.errors.full_messages.join(', ') }
+        flash[:alert] = @company.errors.full_messages.join(", ")
+        format.html { redirect_to request.referer, alert: @company.errors.full_messages.join(", ") }
         format.json { render json: @company.errors, status: :unprocessable_entity }
       end
     end
@@ -66,7 +66,7 @@ class CompaniesController < ApplicationController
   protected
 
   def should_purge_avatar?
-    company_params[:delete_avatar_image] == '1' &&
+    company_params[:delete_avatar_image] == "1" &&
       company_params[:delete_avatar_image].blank?
   end
 

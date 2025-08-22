@@ -7,8 +7,8 @@ module UrlAttribute
         return super(value) if value.blank?
 
         normalized_value = value.to_s.strip
-        normalized_value.gsub!(%r{^https?://}, '')
-        normalized_value.gsub!(/^(www\.)?#{prefix}/, '') if prefix.present?
+        normalized_value.gsub!(%r{^https?://}, "")
+        normalized_value.gsub!(/^(www\.)?#{prefix}/, "") if prefix.present?
         normalized_value = yield(normalized_value) if block_given?
         super(normalized_value)
       end

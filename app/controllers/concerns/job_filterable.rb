@@ -51,24 +51,24 @@ module JobFilterable
   end
 
   def apply_featured_filter(jobs, featured)
-    return jobs unless featured == 'true'
+    return jobs unless featured == "true"
 
     jobs.featured
   end
 
   def apply_sorting(jobs, sort_option)
     case sort_option
-    when 'newest'
+    when "newest"
       jobs.newest_first
-    when 'oldest'
+    when "oldest"
       jobs.oldest_first
-    when 'salary_high'
+    when "salary_high"
       jobs.salary_high_to_low
-    when 'salary_low'
+    when "salary_low"
       jobs.salary_low_to_high
-    when 'applications'
+    when "applications"
       jobs.most_applications
-    when 'views'
+    when "views"
       jobs.most_views
     else
       jobs.newest_first # Default: newest first
@@ -77,12 +77,12 @@ module JobFilterable
 
   def load_filter_options
     @companies = Company.joins(:jobs)
-                        .where(jobs: { status: 'published' })
+                        .where(jobs: { status: "published" })
                         .distinct
                         .order(:name)
 
     @locations = Job.published.active
-                    .where.not(location: [nil, ''])
+                    .where.not(location: [ nil, "" ])
                     .distinct
                     .pluck(:location)
                     .compact

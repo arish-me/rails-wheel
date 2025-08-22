@@ -1,6 +1,6 @@
 module CandidatesHelper
   def experience_date_range(experience)
-    return '' if experience.start_date.blank?
+    return "" if experience.start_date.blank?
 
     start_year = experience.start_date.year
     if experience.current_job

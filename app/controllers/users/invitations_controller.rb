@@ -2,7 +2,7 @@ module Users
   class InvitationsController < Devise::InvitationsController
     before_action :authenticate_user!
     # before_action :authenticate_inviter!
-    before_action :set_inviter, only: [:create]
+    before_action :set_inviter, only: [ :create ]
 
     # GET /resource/invitation/accept?invitation_token=abcdef
     def edit
@@ -87,7 +87,7 @@ module Users
         # Set the company to the inviter's company using update_columns to avoid validations
         # Only set company_id if the inviter has a company
         update_attrs = {
-          user_type: 'company',
+          user_type: "company",
           onboarded_at: Time.current, # Skip onboarding for invited users
           active: false
         }
@@ -153,19 +153,19 @@ module Users
 
     def get_existing_user_error(existing_user)
       if existing_user.platform_admin?
-        'This email belongs to a platform administrator and cannot be invited.'
+        "This email belongs to a platform administrator and cannot be invited."
       elsif existing_user.invitation_sent_at.present? && existing_user.invitation_accepted_at.blank?
-        'This user has already been invited and is waiting to accept the invitation.'
+        "This user has already been invited and is waiting to accept the invitation."
       elsif existing_user.invitation_accepted_at.present?
-        'This user has already accepted an invitation and has an active account.'
+        "This user has already accepted an invitation and has an active account."
       elsif existing_user.company_id.present?
         if current_inviter.company_id == existing_user.company_id
-          'This user is already a member of your company.'
+          "This user is already a member of your company."
         else
           "This user is already a member of another company (#{existing_user.company.name})."
         end
       else
-        'This email is already registered in our system.'
+        "This email is already registered in our system."
       end
     end
   end

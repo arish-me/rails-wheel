@@ -29,12 +29,12 @@ module Onboardable
   end
 
   def redirectable_path?(path)
-    return false if path.starts_with?('/settings')
-    return false if path.starts_with?('/subscription')
-    return false if path.starts_with?('/onboarding')
-    return false if path.starts_with?('/users')
-    return false if path.starts_with?('/companies')
-    return false if path.starts_with?('/location')
+    return false if path.starts_with?("/settings")
+    return false if path.starts_with?("/subscription")
+    return false if path.starts_with?("/onboarding")
+    return false if path.starts_with?("/users")
+    return false if path.starts_with?("/companies")
+    return false if path.starts_with?("/location")
 
     [
       new_registration_path(User),

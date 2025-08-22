@@ -28,11 +28,11 @@ class JobBoardIntegrationsController < ApplicationController
 
     respond_to do |format|
       if @integration.save
-        format.html { redirect_to @integration, notice: 'Job board integration was successfully created.' }
+        format.html { redirect_to @integration, notice: "Job board integration was successfully created." }
         format.turbo_stream { render turbo_stream: turbo_stream.redirect(@integration) }
       else
         format.html { render :new, status: :unprocessable_entity }
-        format.turbo_stream { render turbo_stream: turbo_stream.replace('integration_form', partial: 'form') }
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("integration_form", partial: "form") }
       end
     end
   end
@@ -42,11 +42,11 @@ class JobBoardIntegrationsController < ApplicationController
 
     respond_to do |format|
       if @integration.update(integration_params)
-        format.html { redirect_to @integration, notice: 'Job board integration was successfully updated.' }
+        format.html { redirect_to @integration, notice: "Job board integration was successfully updated." }
         format.turbo_stream { render turbo_stream: turbo_stream.redirect(@integration) }
       else
         format.html { render :edit, status: :unprocessable_entity }
-        format.turbo_stream { render turbo_stream: turbo_stream.replace('integration_form', partial: 'form') }
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("integration_form", partial: "form") }
       end
     end
   end
@@ -55,7 +55,7 @@ class JobBoardIntegrationsController < ApplicationController
     @integration.destroy
 
     respond_to do |format|
-      format.html { redirect_to job_board_integrations_path, notice: 'Job board integration was successfully deleted.' }
+      format.html { redirect_to job_board_integrations_path, notice: "Job board integration was successfully deleted." }
       format.turbo_stream { render turbo_stream: turbo_stream.redirect(job_board_integrations_path) }
     end
   end
@@ -65,10 +65,10 @@ class JobBoardIntegrationsController < ApplicationController
 
     respond_to do |format|
       if success
-        format.html { redirect_to @integration, notice: 'Connection test successful!' }
+        format.html { redirect_to @integration, notice: "Connection test successful!" }
         # format.turbo_stream { render turbo_stream: turbo_stream.redirect(@integration) }
       else
-        format.html { redirect_to @integration, alert: 'Connection test failed. Check the logs for details.' }
+        format.html { redirect_to @integration, alert: "Connection test failed. Check the logs for details." }
         # format.turbo_stream { render turbo_stream: turbo_stream.redirect(@integration) }
       end
     end
@@ -104,8 +104,8 @@ class JobBoardIntegrationsController < ApplicationController
 
   def integration_params
     params.expect(
-      job_board_integration: [:name, :provider, :api_key, :api_secret, :webhook_url, :status,
-                              { settings: {} }]
+      job_board_integration: [ :name, :provider, :api_key, :api_secret, :webhook_url, :status,
+                              { settings: {} } ]
     )
   end
 end

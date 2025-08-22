@@ -20,7 +20,7 @@ module Platform
     def authorize_platform_admin!
       return if current_user&.platform_admin?
 
-      flash[:alert] = 'You are not authorized to access this section.'
+      flash[:alert] = "You are not authorized to access this section."
       redirect_to main_app.root_path # Redirect to a safe place for unauthorized users
     end
   end

@@ -9,9 +9,9 @@ module SeedData
 
     # Status distribution weights
     STATUS_WEIGHTS = {
-      'draft' => 15,      # 15% - Draft jobs
-      'published' => 70,  # 70% - Published jobs (most common)
-      'closed' => 15      # 15% - Closed jobs
+      "draft" => 15,      # 15% - Draft jobs
+      "published" => 70,  # 70% - Published jobs (most common)
+      "closed" => 15      # 15% - Closed jobs
     }.freeze
 
     attr_reader :company, :faker_count
@@ -41,11 +41,11 @@ module SeedData
           description: "We're looking for a Senior Software Engineer to join our backend team. You'll be responsible for designing, building, and maintaining scalable services that power our platform.\n\n**Key Responsibilities:**\n- Design and implement high-performance, scalable backend services\n- Collaborate with cross-functional teams to define and implement new features\n- Mentor junior engineers and participate in code reviews\n- Contribute to technical architecture decisions\n- Ensure code quality through testing and documentation\n\n**Required Experience:**\n• 5+ years of software development experience\n• Strong proficiency in Ruby, Python, Java, or Go\n• Experience with distributed systems and microservices\n• Knowledge of database design and optimization\n• Experience with cloud platforms (AWS, GCP, or Azure)\n\n**Preferred Skills:**\n• Experience with containerization (Docker, Kubernetes)\n• Knowledge of CI/CD pipelines\n• Understanding of system design and scalability\n• Experience with monitoring and observability tools\n\n**Benefits:**\n• Competitive salary and equity package\n• Comprehensive health, dental, and vision coverage\n• Flexible work arrangements and remote options\n• Professional development and conference budgets\n• Modern tech stack and tools\n• Collaborative and inclusive team culture",
           role_type: RoleType::TYPES.sample.to_s,
           role_level: RoleLevel::TYPES.sample.to_s,
-          remote_policy: 'hybrid',
+          remote_policy: "hybrid",
           salary_min: 120_000,
           salary_max: 180_000,
-          city: 'San Francisco',
-          state: 'CA',
+          city: "San Francisco",
+          state: "CA",
           featured: true
         },
         {
@@ -53,11 +53,11 @@ module SeedData
           description: "Join our frontend team to build amazing user experiences with React. We're looking for someone passionate about creating intuitive, performant web applications.\n\n**What you'll do:**\n- Build responsive, accessible web applications using React\n- Collaborate with designers to implement pixel-perfect UIs\n- Optimize application performance and user experience\n- Write clean, maintainable code with comprehensive tests\n- Participate in code reviews and technical discussions\n\n**Required Experience:**\n• 3+ years of frontend development experience\n• Strong proficiency in JavaScript/TypeScript and React\n• Experience with modern CSS and responsive design\n• Knowledge of web accessibility standards\n• Experience with build tools and bundlers\n\n**Preferred Skills:**\n• Experience with state management (Redux, Zustand)\n• Knowledge of testing frameworks (Jest, React Testing Library)\n• Understanding of performance optimization\n• Experience with design systems and component libraries\n\n**Benefits:**\n• Competitive salary and benefits package\n• Health, dental, and vision insurance\n• Flexible work schedule and remote options\n• Professional development opportunities\n• Latest tools and technologies\n• Supportive team environment",
           role_type: RoleType::TYPES.sample.to_s,
           role_level: RoleLevel::TYPES.sample.to_s,
-          remote_policy: 'remote',
+          remote_policy: "remote",
           salary_min: 80_000,
           salary_max: 130_000,
-          city: 'New York',
-          state: 'NY',
+          city: "New York",
+          state: "NY",
           featured: false
         },
         {
@@ -65,11 +65,11 @@ module SeedData
           description: "Help us scale our infrastructure and implement best practices for deployment and monitoring. You'll work on automating our deployment processes and ensuring our systems are reliable and secure.\n\n**Key Areas:**\n- Automate deployment and infrastructure management\n- Monitor system performance and reliability\n- Implement security best practices\n- Optimize cloud infrastructure costs\n- Collaborate with development teams on CI/CD improvements\n\n**Required Experience:**\n• 3+ years of DevOps or infrastructure experience\n• Experience with Docker and Kubernetes\n• Knowledge of cloud platforms (AWS, GCP, or Azure)\n• Experience with monitoring and logging tools\n• Understanding of infrastructure as code (Terraform, CloudFormation)\n• Scripting skills (Python, Bash, or similar)\n\n**Preferred Skills:**\n• Experience with CI/CD tools (Jenkins, GitLab CI, GitHub Actions)\n• Knowledge of security best practices and compliance\n• Experience with service mesh technologies\n• Understanding of database administration\n\n**Benefits Package:**\n• Competitive salary and equity\n• Comprehensive health coverage\n• Flexible work schedule\n• Professional development budget\n• Latest tools and technologies\n• Collaborative team culture\n• Conference and training opportunities",
           role_type: RoleType::TYPES.sample.to_s,
           role_level: RoleLevel::TYPES.sample.to_s,
-          remote_policy: 'hybrid',
+          remote_policy: "hybrid",
           salary_min: 100_000,
           salary_max: 160_000,
-          city: 'Austin',
-          state: 'TX',
+          city: "Austin",
+          state: "TX",
           featured: true
         },
         {
@@ -77,8 +77,8 @@ module SeedData
           description: "Join our data science team to build machine learning models and analyze data to drive business decisions. You'll work on predictive modeling, data analysis, and developing insights from our vast datasets.\n\n**Research Areas:**\n- Develop predictive models for business applications\n- Analyze large datasets to extract actionable insights\n- Design and implement A/B testing frameworks\n- Create data visualizations and dashboards\n- Collaborate with product teams on data-driven features\n\n**Required Experience:**\n• 3+ years of data science or machine learning experience\n• Strong proficiency in Python and data science libraries\n• Experience with statistical analysis and modeling\n• Knowledge of SQL and data manipulation\n• Experience with machine learning frameworks\n\n**Preferred Skills:**\n• Experience with deep learning (TensorFlow, PyTorch)\n• Knowledge of big data technologies (Spark, Hadoop)\n• Understanding of MLOps and model deployment\n• Experience with cloud platforms and data pipelines\n\n**Benefits:**\n• Competitive salary and equity options\n• Comprehensive health and wellness benefits\n• Flexible work arrangements\n• Professional development and learning budget\n• Access to cutting-edge tools and datasets\n• Collaborative research environment",
           salary_min: 90_000,
           salary_max: 150_000,
-          city: 'Seattle',
-          state: 'WA',
+          city: "Seattle",
+          state: "WA",
           featured: false
         },
         {
@@ -86,11 +86,11 @@ module SeedData
           description: "Lead product development from ideation to launch. You'll work closely with engineering, design, and business teams to define and execute product strategy.\n\n**Your Impact:**\n- Define product strategy and roadmap\n- Gather and prioritize user requirements\n- Coordinate cross-functional teams\n- Analyze user feedback and product metrics\n- Drive product decisions based on data and user research\n\n**Required Experience:**\n• 5+ years of product management experience\n• Experience leading cross-functional teams\n• Strong analytical and problem-solving skills\n• Experience with product analytics and user research\n• Knowledge of agile development methodologies\n\n**Preferred Skills:**\n• Experience with product strategy and roadmap planning\n• Knowledge of user experience design principles\n• Understanding of technical architecture and constraints\n• Experience with A/B testing and experimentation\n\n**Benefits:**\n• Competitive salary and equity package\n• Comprehensive health and wellness benefits\n• Flexible work arrangements and remote options\n• Professional development and conference budgets\n• Collaborative and innovative team culture\n• Opportunity to shape product strategy",
           role_type: RoleType::TYPES.sample.to_s,
           role_level: RoleLevel::TYPES.sample.to_s,
-          remote_policy: 'hybrid',
+          remote_policy: "hybrid",
           salary_min: 110_000,
           salary_max: 170_000,
-          city: 'Boston',
-          state: 'MA',
+          city: "Boston",
+          state: "MA",
           featured: true
         },
         {
@@ -98,11 +98,11 @@ module SeedData
           description: "Create beautiful and intuitive user interfaces. You'll work on both web and mobile applications, focusing on user experience and visual design.\n\n**Design Focus:**\n- Design user interfaces for web and mobile applications\n- Conduct user research and usability testing\n- Create wireframes, prototypes, and high-fidelity designs\n- Develop and maintain design systems\n- Collaborate with product and engineering teams",
           role_type: RoleType::TYPES.sample.to_s,
           role_level: RoleLevel::TYPES.sample.to_s,
-          remote_policy: 'remote',
+          remote_policy: "remote",
           salary_min: 70_000,
           salary_max: 120_000,
-          city: 'Los Angeles',
-          state: 'CA',
+          city: "Los Angeles",
+          state: "CA",
           featured: false
         },
         {
@@ -110,11 +110,11 @@ module SeedData
           description: "Develop native mobile applications for iOS and Android platforms. You'll work on creating high-performance, user-friendly mobile experiences.\n\n**Development Focus:**\n- Build native iOS and Android applications\n- Implement cross-platform solutions when appropriate\n- Optimize app performance and user experience\n- Work with app store guidelines and best practices\n- Collaborate with design and backend teams",
           role_type: RoleType::TYPES.sample.to_s,
           role_level: RoleLevel::TYPES.sample.to_s,
-          remote_policy: 'hybrid',
+          remote_policy: "hybrid",
           salary_min: 80_000,
           salary_max: 140_000,
-          city: 'Denver',
-          state: 'CO',
+          city: "Denver",
+          state: "CO",
           featured: false
         },
         {
@@ -122,11 +122,11 @@ module SeedData
           description: "Ensure our software quality through comprehensive testing and quality assurance processes. You'll work on both manual and automated testing to maintain high standards.\n\n**Quality Focus:**\n- Design and implement automated testing strategies\n- Perform manual testing and bug reporting\n- Develop test plans and test cases\n- Work with development teams on quality improvements\n- Monitor and track quality metrics",
           role_type: RoleType::TYPES.sample.to_s,
           role_level: RoleLevel::TYPES.sample.to_s,
-          remote_policy: 'remote',
+          remote_policy: "remote",
           salary_min: 65_000,
           salary_max: 110_000,
-          city: 'Chicago',
-          state: 'IL',
+          city: "Chicago",
+          state: "IL",
           featured: false
         }
       ]
@@ -154,19 +154,19 @@ module SeedData
             featured: job_info[:featured],
             salary_min: salary_min,
             salary_max: salary_max,
-            salary_currency: 'USD',
-            salary_period: 'yearly',
-            allow_cover_letter: [true, false].sample,
-            require_portfolio: [true, false, false].sample,
+            salary_currency: "USD",
+            salary_period: "yearly",
+            allow_cover_letter: [ true, false ].sample,
+            require_portfolio: [ true, false, false ].sample,
             application_instructions: generate_application_instructions,
-            expires_at: status == 'published' ? rand(30..90).days.from_now : nil,
-            published_at: status == 'published' ? rand(1..30).days.ago : nil,
-            views_count: status == 'published' ? rand(10..500) : 0,
+            expires_at: status == "published" ? rand(30..90).days.from_now : nil,
+            published_at: status == "published" ? rand(1..30).days.ago : nil,
+            views_count: status == "published" ? rand(10..500) : 0,
             job_applications_count: 0,
             location_attributes: {
               city: job_info[:city],
               state: job_info[:state],
-              country: 'United States'
+              country: "United States"
             }
           )
 
@@ -184,7 +184,7 @@ module SeedData
     end
 
     def validate_company!
-      raise ArgumentError, 'Company must have at least one user' if company.users.empty?
+      raise ArgumentError, "Company must have at least one user" if company.users.empty?
     end
 
     def add_external_data(job)
@@ -210,9 +210,9 @@ module SeedData
       instructions = [
         "Please submit your resume and a brief cover letter explaining why you're interested in this position. Include any relevant projects or portfolio links.",
         "To apply, please send your resume and a cover letter highlighting your relevant experience. We'd love to see examples of your work.",
-        'Submit your application with a resume and cover letter. Feel free to include links to your portfolio, GitHub, or any relevant projects.',
+        "Submit your application with a resume and cover letter. Feel free to include links to your portfolio, GitHub, or any relevant projects.",
         "Please apply with your resume and a cover letter. We're particularly interested in seeing your previous work and understanding your approach to problem-solving.",
-        'Send us your resume and a cover letter explaining your interest in this role. Include any relevant experience or projects that demonstrate your skills.'
+        "Send us your resume and a cover letter explaining your interest in this role. Include any relevant experience or projects that demonstrate your skills."
       ]
       instructions.sample
     end
@@ -220,8 +220,8 @@ module SeedData
     def generate_title_variations(base_title)
       variations = [
         base_title,
-        base_title.gsub('Senior', 'Lead'),
-        base_title.gsub('Senior', 'Principal'),
+        base_title.gsub("Senior", "Lead"),
+        base_title.gsub("Senior", "Principal"),
         "#{base_title} - Remote",
         "#{base_title} (Full Stack)",
         "#{base_title} - Backend Focus",
@@ -242,7 +242,7 @@ module SeedData
         return status if random < current_weight
       end
 
-      'published' # fallback
+      "published" # fallback
     end
 
     def generate_salary_variation(base_min, base_max)
@@ -250,10 +250,10 @@ module SeedData
       max_variation = rand(-15_000..15_000)
 
       # Ensure max is always greater than min
-      new_min = [base_min + min_variation, MIN_SALARY].max
-      new_max = [base_max + max_variation, new_min + MIN_SALARY_RANGE].max
+      new_min = [ base_min + min_variation, MIN_SALARY ].max
+      new_max = [ base_max + max_variation, new_min + MIN_SALARY_RANGE ].max
 
-      [new_min, new_max]
+      [ new_min, new_max ]
     end
 
     def enhance_job_description(base_description, _job_type)

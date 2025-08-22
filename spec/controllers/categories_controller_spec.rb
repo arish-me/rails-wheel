@@ -192,7 +192,7 @@ RSpec.describe CategoriesController, type: :controller do
     end
 
     context 'with empty resource_ids' do
-      let(:invalid_params) { { bulk_delete: { resource_ids: [123] } } }
+      let(:invalid_params) { { bulk_delete: { resource_ids: [ 123 ] } } }
 
       it 'renders new template' do
         post :bulk_destroy, params: invalid_params

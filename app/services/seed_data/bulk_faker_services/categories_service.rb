@@ -4,7 +4,7 @@ module SeedData
   module BulkFakerServices
     class CategoriesService < BaseService
       def call
-        benchmark_operation('Bulk Category Creation') do
+        benchmark_operation("Bulk Category Creation") do
           create_categories
         end
       end
