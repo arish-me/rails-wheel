@@ -67,30 +67,3 @@ end
 puts "👥 Candidates created: #{Candidate.count}"
 puts "📋 Total jobs across all companies: #{Job.count}"
 puts "=================="
-
-
-# # Seed job board providers
-# load(Rails.root.join('db', 'seeds', 'job_board_providers.rb'))
-
-# # Seed job portal data
-# puts "🌐 Seeding job portal data..."
-# company = Company.find_by(name: "TTC Service")
-# if company
-#   # Seed real job data first
-#   puts "📋 Seeding real job data..."
-#   SeedData::RealJobDataSeeder.new(company, 20).call
-
-#   # Import external job data
-#   puts "🌐 Importing external job data..."
-#   SeedData::RealJobImportService.new(company, keywords: 'developer', location: 'San Francisco', limit: 5).call
-
-#   # Seed job applications
-#   puts "📝 Seeding job applications..."
-#   SeedData::JobApplicationSeeder.new(company, 30).call
-
-#   # Seed job board integrations and sync logs
-#   puts "🔗 Seeding job board integrations..."
-#   SeedData::JobPortalSeeder.new(company, 0).call # Only integrations and logs, no jobs
-# else
-#   puts "⚠️ Company 'TTC Service' not found, skipping job portal seeding"
-# end
