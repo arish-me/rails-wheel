@@ -41,7 +41,7 @@ class OnboardingsController < ApplicationController
 
       if user_type.present? && %w[user company].include?(user_type)
         # Validate email for company users
-        if user_type == 'company' && @user.email.present?
+        if user_type == "company" && @user.email.present?
           validation_result = EmailDomainValidator.validate_company_email(@user.email)
           unless validation_result[:valid]
             flash[:alert] = validation_result[:message]
@@ -49,7 +49,7 @@ class OnboardingsController < ApplicationController
             return
           end
         end
-        
+
         @user.update(user_type: user_type)
 
         # The callback will automatically handle candidate creation/destruction
@@ -129,8 +129,8 @@ class OnboardingsController < ApplicationController
       redirect_to settings_preferences_path, notice: notice
     when "goals"
       redirect_to goals_onboarding_path
-    # when "trial"
-    #   redirect_to trial_onboarding_path
+    when "trial"
+      redirect_to trial_onboarding_path
     else
       redirect_to dashboard_path, notice: notice
     end
@@ -153,12 +153,12 @@ class OnboardingsController < ApplicationController
       redirect_to dashboard_path if current_user.platform_admin?
 
       # If user doesn't have user_type set and we're not on the looking_for page, redirect
-      if current_user.user_type.blank? && action_name != 'looking_for'
+      if current_user.user_type.blank? && action_name != "looking_for"
         redirect_to looking_for_onboarding_path
       end
 
       # For company users, redirect to trial step if they don't have a subscription
-      if current_user.company_user? && current_user.company && !current_user.company.has_subscription? && action_name != 'trial'
+      if current_user.company_user? && current_user.company && !current_user.company.has_subscription? && action_name != "trial"
         redirect_to trial_onboarding_path
       end
     end

@@ -44,9 +44,9 @@ module SeedData
           u.onboarded_at = Time.now.utc
           u.set_onboarding_preferences_at = Time.now.utc
           u.set_onboarding_goals_at = Time.now.utc
+          u.user_type = :company
           gender =  user_data[:gender]
         end
-
         user.save(validate: false)
         user.skip_confirmation!
 

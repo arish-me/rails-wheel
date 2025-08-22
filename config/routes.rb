@@ -149,7 +149,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :subscription_management, only: [:index, :show] do
+    resources :subscription_management, only: [ :index, :show ] do
       member do
         post :upgrade
         post :extend_trial

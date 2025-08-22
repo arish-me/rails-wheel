@@ -7,10 +7,10 @@ class CompanySubscription < ApplicationRecord
   validates :start_date, presence: true
   validates :end_date, presence: true
 
-  scope :active, -> { where(status: 'active') }
-  scope :trial, -> { where(status: 'trial') }
-  scope :expired, -> { where(status: 'expired') }
-  scope :expiring, -> { where(status: 'expiring') }
+  scope :active, -> { where(status: "active") }
+  scope :trial, -> { where(status: "trial") }
+  scope :expired, -> { where(status: "expired") }
+  scope :expiring, -> { where(status: "expiring") }
 
   # Plan features as constants
   PLAN_FEATURES = {
@@ -23,19 +23,19 @@ class CompanySubscription < ApplicationRecord
   }.freeze
 
   def trial?
-    status == 'trial'
+    status == "trial"
   end
 
   def active?
-    status == 'active'
+    status == "active"
   end
 
   def expired?
-    status == 'expired'
+    status == "expired"
   end
 
   def expiring?
-    status == 'expiring'
+    status == "expiring"
   end
 
   def trial_expired?
@@ -53,13 +53,13 @@ class CompanySubscription < ApplicationRecord
   def days_remaining
     return 0 unless end_date
     remaining = (end_date - Time.current).to_i / 1.day
-    [remaining, 0].max
+    [ remaining, 0 ].max
   end
 
   def trial_days_remaining
     return 0 unless trial? && end_date
     remaining = (end_date - Time.current).to_i / 1.day
-    [remaining, 0].max
+    [ remaining, 0 ].max
   end
 
   def can_post_jobs?

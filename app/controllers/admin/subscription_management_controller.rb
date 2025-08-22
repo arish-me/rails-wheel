@@ -1,7 +1,7 @@
 class Admin::SubscriptionManagementController < ApplicationController
   before_action :authenticate_user!
   before_action :require_platform_admin
-  before_action :set_company, only: [:show, :upgrade, :extend_trial, :cancel]
+  before_action :set_company, only: [ :show, :upgrade, :extend_trial, :cancel ]
 
   def index
     @pagy, @companies = pagy(Company.includes(:company_subscription, :users).order(:name), items: 20)
@@ -40,7 +40,7 @@ class Admin::SubscriptionManagementController < ApplicationController
 
   def cancel
     if @company.company_subscription
-      @company.company_subscription.update!(status: 'expired')
+      @company.company_subscription.update!(status: "expired")
       redirect_to admin_subscription_management_path(@company),
                   notice: "Subscription cancelled"
     else

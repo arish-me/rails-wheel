@@ -41,7 +41,7 @@ class User < ApplicationRecord
   validates :last_name, presence: true, on: :update, if: :should_validate_names?
   validates :email, presence: true, email: true
   validate :company_email_validation, if: :company_user?
-  validate :onboarding_name_validation, if: :onboarding_context?
+  # validate :onboarding_name_validation, if: :onboarding_context?
 
   pg_search_scope :search_by_email,
               against: :email,
@@ -207,11 +207,11 @@ class User < ApplicationRecord
   end
 
   def company_user?
-    user_type == 'company'
+    user_type == "company"
   end
 
   def personal_user?
-    user_type == 'user'
+    user_type == "user"
   end
 
   def has_candidate_profile?
@@ -225,7 +225,7 @@ class User < ApplicationRecord
   def should_validate_names?
     # Always validate names for non-OAuth users
     return true unless oauth_user?
-    
+
     # For OAuth users, validate names during onboarding
     # This means when they're still in the onboarding process
     needs_onboarding?
@@ -250,7 +250,7 @@ class User < ApplicationRecord
   end
 
   def handle_user_type_change
-    if user_type == 'user'
+    if user_type == "user"
       # User changed to 'user' type - create candidate if it doesn't exist
       if candidate.present?
         Rails.logger.info "User #{id} already has candidate record, skipping creation"
@@ -258,7 +258,7 @@ class User < ApplicationRecord
         create_candidate
         Rails.logger.info "Created candidate record for user #{id}"
       end
-    elsif user_type == 'company'
+    elsif user_type == "company"
       # User changed to 'company' type - destroy candidate if it exists
       if candidate.present?
         candidate.destroy
@@ -274,7 +274,7 @@ class User < ApplicationRecord
     if first_name.blank?
       errors.add(:first_name, "is required to complete your profile")
     end
-    
+
     if last_name.blank?
       errors.add(:last_name, "is required to complete your profile")
     end

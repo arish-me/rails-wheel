@@ -80,7 +80,7 @@ class Company < ApplicationRecord
     return if company_subscription.present?
 
     create_company_subscription!(
-      status: 'trial',
+      status: "trial",
       start_date: Time.current,
       end_date: Time.current + 30.days
     )
@@ -90,14 +90,14 @@ class Company < ApplicationRecord
     if company_subscription.present?
       # Update existing subscription
       company_subscription.update!(
-        status: 'active',
+        status: "active",
         start_date: Time.current,
         end_date: Time.current + duration_months.months
       )
     else
       # Create new paid subscription
       create_company_subscription!(
-        status: 'active',
+        status: "active",
         start_date: Time.current,
         end_date: Time.current + duration_months.months
       )
