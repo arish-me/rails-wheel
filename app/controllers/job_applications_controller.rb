@@ -1,9 +1,10 @@
 class JobApplicationsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_job
-  before_action :set_application, only: [ :show, :edit, :update, :destroy, :withdraw, :update_status, :success, :re_apply ]
-  before_action :authorize_application_access, only: [ :show, :edit, :update, :withdraw, :re_apply ]
-  before_action :authorize_company_access, only: [ :index, :update_status ]
+  before_action :set_application,
+                only: %i[show edit update destroy withdraw update_status success re_apply]
+  before_action :authorize_application_access, only: %i[show edit update withdraw re_apply]
+  before_action :authorize_company_access, only: %i[index update_status]
 
   # ============================================================================
   # ACTIONS
@@ -18,21 +19,21 @@ class JobApplicationsController < ApplicationController
 
   def show
     # Increment view count when company views the application
-    if current_user.company == @job.company
-      @application.increment_view_count!
-    end
+    return unless current_user.company == @job.company
+
+    @application.increment_view_count!
   end
 
   def new
     # Check if user already applied
     if @job.has_applicant?(current_user.candidate)
-      redirect_to @job, alert: "You have already applied to this job."
+      redirect_to @job, alert: 'You have already applied to this job.'
       return
     end
 
     # Check if job can be applied to
     unless @job.can_be_applied_to?
-      redirect_to @job, alert: "This job is no longer accepting applications."
+      redirect_to @job, alert: 'This job is no longer accepting applications.'
       return
     end
 
@@ -40,6 +41,14 @@ class JobApplicationsController < ApplicationController
       candidate: current_user.candidate,
       user: current_user
     )
+  end
+
+  def edit
+    # Only allow editing if it's the user's own application and it's still in early stages
+    return if @application.user == current_user && @application.can_be_withdrawn?
+
+    redirect_to @application, alert: "You can't edit this application."
+    nil
   end
 
   def create
@@ -55,25 +64,17 @@ class JobApplicationsController < ApplicationController
     end
   end
 
-  def edit
-    # Only allow editing if it's the user's own application and it's still in early stages
-    unless @application.user == current_user && @application.can_be_withdrawn?
-      redirect_to @application, alert: "You can't edit this application."
-      nil
-    end
-  end
-
   def update
     @service = JobApplicationService.new(@application, current_user)
     result = @service.update_application(application_params)
 
     respond_to do |format|
       if result.success
-        format.html { redirect_to [ @job, @application ], notice: result.message }
+        format.html { redirect_to [@job, @application], notice: result.message }
         # format.turbo_stream { render turbo_stream: turbo_stream.redirect([@job, @application]) }
       else
         format.html { render :edit, status: :unprocessable_entity }
-        format.turbo_stream { render turbo_stream: turbo_stream.replace("application_form", partial: "form") }
+        format.turbo_stream { render turbo_stream: turbo_stream.replace('application_form', partial: 'form') }
       end
     end
   end
@@ -96,8 +97,7 @@ class JobApplicationsController < ApplicationController
     redirect_to job_job_application_path(@job, @application), notice: result.message
   end
 
-  def destroy
-  end
+  def destroy; end
 
   def success
     # This action will be handled by the view
@@ -118,20 +118,20 @@ class JobApplicationsController < ApplicationController
   end
 
   def authorize_application_access
-    unless @application.user == current_user || current_user.company == @job.company
-      redirect_to root_path, alert: "You don't have permission to access this application."
-    end
+    return if @application.user == current_user || current_user.company == @job.company
+
+    redirect_to root_path, alert: "You don't have permission to access this application."
   end
 
   def authorize_company_access
-    unless current_user.company == @job.company
-      redirect_to root_path, alert: "You don't have permission to view these applications."
-    end
+    return if current_user.company == @job.company
+
+    redirect_to root_path, alert: "You don't have permission to view these applications."
   end
 
   def application_params
-    params.require(:job_application).permit(
-      :cover_letter, :portfolio_url, :additional_notes, :is_quick_apply, :resume
+    params.expect(
+      job_application: %i[cover_letter portfolio_url additional_notes is_quick_apply resume]
     )
   end
 end

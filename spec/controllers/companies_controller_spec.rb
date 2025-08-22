@@ -43,9 +43,9 @@ RSpec.describe CompaniesController, type: :controller do
         end
 
         it 'creates a new company' do
-          expect {
+          expect do
             post :create, params: valid_params
-          }.to change(Company, :count).by(1)
+          end.to change(Company, :count).by(1)
         end
 
         it 'updates user company association' do
@@ -60,7 +60,7 @@ RSpec.describe CompaniesController, type: :controller do
 
         it 'sets flash notice' do
           post :create, params: valid_params
-          expect(flash[:notice]).to eq("Company was successfully created.")
+          expect(flash[:notice]).to eq('Company was successfully created.')
         end
       end
 

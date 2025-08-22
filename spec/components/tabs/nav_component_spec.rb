@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Tabs::NavComponent, type: :component do
-  let(:component) {
+  let(:component) do
     described_class.new(
       active_tab: 'tab1',
       classes: 'nav-class',
@@ -9,7 +9,7 @@ RSpec.describe Tabs::NavComponent, type: :component do
       inactive_btn_classes: 'inactive-class',
       btn_classes: 'btn-class'
     )
-  }
+  end
 
   describe 'inheritance' do
     it 'inherits from ViewComponent::Base' do

@@ -3,11 +3,11 @@
 module SeedData
   class UsersService < BaseService
     USERS = [
-      { email: "superadmin@wheel.com", role: "SuperAdmin", first_name: "Super", last_name: "Admin", gender: 1 },
-      { email: "admin@wheel.com", role: "Admin", first_name: "Admin", last_name: "User", gender: 1 },
-      { email: "user@wheel.com", role: "User", first_name: "Regular", last_name: "User", gender: 1 },
-      { email: "recruiter@wheel.com", role: "Recruiter", first_name: "Recruiter", last_name: "User", gender: 1 },
-      { email: "guest@wheel.com", role: "Guest", first_name: "Guest", last_name: "User", gender: 1 }
+      { email: 'superadmin@wheel.com', role: 'SuperAdmin', first_name: 'Super', last_name: 'Admin', gender: 1 },
+      { email: 'admin@wheel.com', role: 'Admin', first_name: 'Admin', last_name: 'User', gender: 1 },
+      { email: 'user@wheel.com', role: 'User', first_name: 'Regular', last_name: 'User', gender: 1 },
+      { email: 'recruiter@wheel.com', role: 'Recruiter', first_name: 'Recruiter', last_name: 'User', gender: 1 },
+      { email: 'guest@wheel.com', role: 'Guest', first_name: 'Guest', last_name: 'User', gender: 1 }
     ].freeze
 
     def initialize(company)
@@ -16,11 +16,13 @@ module SeedData
 
     def default_users
       [
-        { email: "superadmin@#{@company.subdomain}", role: "SuperAdmin", first_name: "Super", last_name: "Admin", gender: 1 },
-        { email: "admin@#{@company.subdomain}", role: "Admin", first_name: "Admin", last_name: "User", gender: 1 },
-        { email: "user@#{@company.subdomain}", role: "User", first_name: "Regular", last_name: "User", gender: 1 },
-        { email: "recruiter#{@company.subdomain}", role: "Recruiter", first_name: "Recruiter", last_name: "User", gender: 1 },
-        { email: "guest@#{@company.subdomain}", role: "Guest", first_name: "Guest", last_name: "User", gender: 1 }
+        { email: "superadmin@#{@company.subdomain}", role: 'SuperAdmin', first_name: 'Super', last_name: 'Admin',
+          gender: 1 },
+        { email: "admin@#{@company.subdomain}", role: 'Admin', first_name: 'Admin', last_name: 'User', gender: 1 },
+        { email: "user@#{@company.subdomain}", role: 'User', first_name: 'Regular', last_name: 'User', gender: 1 },
+        { email: "recruiter#{@company.subdomain}", role: 'Recruiter', first_name: 'Recruiter', last_name: 'User',
+          gender: 1 },
+        { email: "guest@#{@company.subdomain}", role: 'Guest', first_name: 'Guest', last_name: 'User', gender: 1 }
       ]
     end
 
@@ -31,12 +33,12 @@ module SeedData
     private
 
     def create_users_with_roles
-      log "Creating Users and Assigning Roles..."
+      log 'Creating Users and Assigning Roles...'
 
       default_users.each do |user_data|
         user = User.find_or_initialize_by(email: user_data[:email]) do |u|
-          u.password = "#{user_data[:email]}"
-          u.password_confirmation = "#{user_data[:email]}"
+          u.password = user_data[:email].to_s
+          u.password_confirmation = user_data[:email].to_s
           u.confirmed_at = Time.now.utc
           u.first_name = user_data[:first_name]
           u.last_name = user_data[:last_name]
@@ -45,7 +47,7 @@ module SeedData
           u.set_onboarding_preferences_at = Time.now.utc
           u.set_onboarding_goals_at = Time.now.utc
           u.user_type = :company
-          gender =  user_data[:gender]
+          user_data[:gender]
         end
         user.save(validate: false)
         user.skip_confirmation!
@@ -54,7 +56,7 @@ module SeedData
         UserRole.find_or_create_by!(user: user, role: role)
       end
 
-      log "Users created and assigned roles."
+      log 'Users created and assigned roles.'
     end
   end
 end

@@ -5,37 +5,34 @@
 class ButtonComponent < ButtonishComponent
   attr_reader :confirm
 
-  def initialize(confirm: nil, **opts)
-    super(**opts)
+  def initialize(confirm: nil, **)
+    super(**)
     @confirm = confirm
   end
 
-  def container(&block)
+  def container(&)
     if href.present?
-      button_to(href, **merged_opts, &block)
+      button_to(href, **merged_opts, &)
     else
-      content_tag(:button, **merged_opts, &block)
+      content_tag(:button, **merged_opts, &)
     end
   end
 
   private
-    def merged_opts
-      merged_opts = opts.dup || {}
-      extra_classes = merged_opts.delete(:class)
-      href = merged_opts.delete(:href)
-      data = merged_opts.delete(:data) || {}
 
-      if confirm.present?
-        data = data.merge(turbo_confirm: confirm.to_data_attribute)
-      end
+  def merged_opts
+    merged_opts = opts.dup || {}
+    extra_classes = merged_opts.delete(:class)
+    merged_opts.delete(:href)
+    data = merged_opts.delete(:data) || {}
 
-      if frame.present?
-        data = data.merge(turbo_frame: frame)
-      end
+    data = data.merge(turbo_confirm: confirm.to_data_attribute) if confirm.present?
 
-      merged_opts.merge(
-        class: class_names(container_classes, extra_classes),
-        data: data
-      )
-    end
+    data = data.merge(turbo_frame: frame) if frame.present?
+
+    merged_opts.merge(
+      class: class_names(container_classes, extra_classes),
+      data: data
+    )
+  end
 end

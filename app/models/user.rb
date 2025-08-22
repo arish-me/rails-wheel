@@ -1,5 +1,6 @@
 class User < ApplicationRecord
   include Avatarable
+
   devise :invitable, :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :lockable,
          :lockable, :timeoutable, :trackable, :confirmable,
@@ -7,6 +8,7 @@ class User < ApplicationRecord
 
   # Include DeviseInvitable::Inviter to allow users to send invitations
   include DeviseInvitable::Inviter
+
   # def self.avatar_validation_context
   #  :update
   # end
@@ -14,22 +16,18 @@ class User < ApplicationRecord
   has_many :user_roles, dependent: :destroy
   has_many :roles, through: :user_roles
   has_many :categories, dependent: :destroy
-  has_many :notifications, as: :recipient, class_name: "Noticed::Notification"
-  has_many :invitations, class_name: "User", as: :invited_by
-  has_many :created_jobs, class_name: "Job", foreign_key: "created_by_id", dependent: :destroy
+  has_many :notifications, as: :recipient, class_name: 'Noticed::Notification'
+  has_many :invitations, class_name: 'User', as: :invited_by
+  has_many :created_jobs, class_name: 'Job', foreign_key: 'created_by_id', dependent: :destroy
   has_many :job_applications, dependent: :destroy
-  has_many :reviewed_applications, class_name: "JobApplication", foreign_key: "reviewed_by_id"
+  has_many :reviewed_applications, class_name: 'JobApplication', foreign_key: 'reviewed_by_id'
 
-  has_one :candidate, dependent: :destroy, class_name: "Candidate"
+  has_one :candidate, dependent: :destroy, class_name: 'Candidate'
   has_one :location, as: :locatable, dependent: :destroy
   after_create :ensure_candidate
   after_invitation_accepted :setup_invited_user
-
-  attr_accessor :skip_password_validation
-  attr_accessor :current_sign_in_ip_address
-  attr_accessor :delete_profile_image
-  attr_accessor :redirect_to, :email_required, :bio_required
-  attr_accessor :in_onboarding_context
+  attr_accessor :skip_password_validation, :current_sign_in_ip_address, :delete_profile_image, :redirect_to,
+                :email_required, :bio_required, :in_onboarding_context
 
   accepts_nested_attributes_for :user_roles, allow_destroy: true
   accepts_nested_attributes_for :location, allow_destroy: true
@@ -44,30 +42,30 @@ class User < ApplicationRecord
   # validate :onboarding_name_validation, if: :onboarding_context?
 
   pg_search_scope :search_by_email,
-              against: :email,
-              using: {
-                tsearch: { prefix: true } # Enables partial matches (e.g., "Admin" matches "Administrator")
-              }
-  enum :gender, [ :he_him, :she_her, :they_them, :other ]
+                  against: :email,
+                  using: {
+                    tsearch: { prefix: true } # Enables partial matches (e.g., "Admin" matches "Administrator")
+                  }
+  enum :gender, { he_him: 0, she_her: 1, they_them: 2, other: 3 }
   enum :user_type, { company: 0, user: 1, platform_admin: 99 }
 
   GENDER_DISPLAY = {
-    he_him: "He/Him",
-    she_her: "She/Her",
-    they_them: "They/Them",
-    other: "Other"
+    he_him: 'He/Him',
+    she_her: 'She/Her',
+    they_them: 'They/Them',
+    other: 'Other'
   }.freeze
 
   DATE_FORMATS = [
-    [ "MM-DD-YYYY", "%m-%d-%Y" ],
-    [ "DD.MM.YYYY", "%d.%m.%Y" ],
-    [ "DD-MM-YYYY", "%d-%m-%Y" ],
-    [ "YYYY-MM-DD", "%Y-%m-%d" ],
-    [ "DD/MM/YYYY", "%d/%m/%Y" ],
-    [ "YYYY/MM/DD", "%Y/%m/%d" ],
-    [ "MM/DD/YYYY", "%m/%d/%Y" ],
-    [ "D/MM/YYYY", "%e/%m/%Y" ],
-    [ "YYYY.MM.DD", "%Y.%m.%d" ]
+    ['MM-DD-YYYY', '%m-%d-%Y'],
+    ['DD.MM.YYYY', '%d.%m.%Y'],
+    ['DD-MM-YYYY', '%d-%m-%Y'],
+    ['YYYY-MM-DD', '%Y-%m-%d'],
+    ['DD/MM/YYYY', '%d/%m/%Y'],
+    ['YYYY/MM/DD', '%Y/%m/%d'],
+    ['MM/DD/YYYY', '%m/%d/%Y'],
+    ['D/MM/YYYY', '%e/%m/%Y'],
+    ['YYYY.MM.DD', '%Y.%m.%d']
   ].freeze
 
   def lock_access!
@@ -77,13 +75,12 @@ class User < ApplicationRecord
   def can?(action, resource)
     ActsAsTenant.current_tenant = Company.find(company_id)
     roles.joins(:role_permissions)
-         .joins("INNER JOIN permissions ON permissions.id = role_permissions.permission_id")
-         .where("permissions.name = ? AND permissions.resource = ?", action, resource)
-         .exists?
+         .joins('INNER JOIN permissions ON permissions.id = role_permissions.permission_id')
+         .exists?(['permissions.name = ? AND permissions.resource = ?', action, resource])
   end
 
   def display_name
-    [ first_name, last_name ].compact.join(" ").presence || email
+    [first_name, last_name].compact.join(' ').presence || email
   end
 
   def initial
@@ -116,7 +113,7 @@ class User < ApplicationRecord
     begin
       uri = URI.parse(image_url)
       avatar_file = uri.open
-      avatar.attach(io: avatar_file, filename: "avatar.jpg", content_type: avatar_file.content_type)
+      avatar.attach(io: avatar_file, filename: 'avatar.jpg', content_type: avatar_file.content_type)
     rescue StandardError => e
       Rails.logger.error "Failed to attach avatar: #{e.message}"
     end
@@ -127,9 +124,9 @@ class User < ApplicationRecord
   end
 
   def ensure_candidate
-    if user? && !candidate.present?
-      create_candidate
-    end
+    return unless user? && candidate.blank?
+
+    create_candidate
   end
 
   def email_required?
@@ -142,7 +139,8 @@ class User < ApplicationRecord
 
   def assign_default_role
     # Only assign default role if user has a company
-    return unless company.present?
+    return if company.blank?
+
     ActsAsTenant.current_tenant = company
     default_role = company.roles.fetch_default_role
     # Find the default role for the company or create one if it doesn't exist
@@ -161,7 +159,7 @@ class User < ApplicationRecord
     end
 
     # Set user type to company for invited users
-    update_columns(user_type: "company") if user_type.blank?
+    update_columns(user_type: 'company') if user_type.blank?
 
     # Skip onboarding for invited users
     update_columns(onboarded_at: Time.current) if onboarded_at.blank?
@@ -188,13 +186,13 @@ class User < ApplicationRecord
 
   def invitation_status
     if invitation_accepted_at.present?
-      "accepted"
+      'accepted'
     elsif invitation_sent_at.present?
-      "pending"
+      'pending'
     elsif active?
-      "active"
+      'active'
     else
-      "created"
+      'created'
     end
   end
 
@@ -203,15 +201,15 @@ class User < ApplicationRecord
   end
 
   def needs_profile_completion?
-    oauth_user? && (first_name.blank? || last_name.blank? || first_name == "User" || last_name == "User")
+    oauth_user? && (first_name.blank? || last_name.blank? || first_name == 'User' || last_name == 'User')
   end
 
   def company_user?
-    user_type == "company"
+    user_type == 'company'
   end
 
   def personal_user?
-    user_type == "user"
+    user_type == 'user'
   end
 
   def has_candidate_profile?
@@ -241,16 +239,16 @@ class User < ApplicationRecord
   private
 
   def company_email_validation
-    return unless email.present?
+    return if email.blank?
 
     validation_result = EmailDomainValidator.validate_company_email(email)
-    unless validation_result[:valid]
-      errors.add(:email, validation_result[:message])
-    end
+    return if validation_result[:valid]
+
+    errors.add(:email, validation_result[:message])
   end
 
   def handle_user_type_change
-    if user_type == "user"
+    if user_type == 'user'
       # User changed to 'user' type - create candidate if it doesn't exist
       if candidate.present?
         Rails.logger.info "User #{id} already has candidate record, skipping creation"
@@ -258,7 +256,7 @@ class User < ApplicationRecord
         create_candidate
         Rails.logger.info "Created candidate record for user #{id}"
       end
-    elsif user_type == "company"
+    elsif user_type == 'company'
       # User changed to 'company' type - destroy candidate if it exists
       if candidate.present?
         candidate.destroy
@@ -271,27 +269,26 @@ class User < ApplicationRecord
 
   def onboarding_name_validation
     # During onboarding, require names for all users (including OAuth users)
-    if first_name.blank?
-      errors.add(:first_name, "is required to complete your profile")
-    end
+    errors.add(:first_name, 'is required to complete your profile') if first_name.blank?
 
-    if last_name.blank?
-      errors.add(:last_name, "is required to complete your profile")
-    end
+    return if last_name.present?
+
+    errors.add(:last_name, 'is required to complete your profile')
   end
 
   protected
 
   def password_required?
     return false if skip_password_validation
+
     super
   end
 
   private
 
-    def profile_image_size
-      if avatar.attached? && avatar.byte_size > 10.megabytes
-        errors.add(:avatar, :invalid_file_size, max_megabytes: 10)
-      end
-    end
+  def profile_image_size
+    return unless avatar.attached? && avatar.byte_size > 10.megabytes
+
+    errors.add(:avatar, :invalid_file_size, max_megabytes: 10)
+  end
 end

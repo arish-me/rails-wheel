@@ -24,15 +24,15 @@ RSpec.describe Permission, type: :model do
   end
 
   describe 'associations' do
-    it { should have_many(:role_permissions).dependent(:destroy) }
-    it { should have_many(:roles).through(:role_permissions) }
+    it { is_expected.to have_many(:role_permissions).dependent(:destroy) }
+    it { is_expected.to have_many(:roles).through(:role_permissions) }
   end
 
   describe 'validations' do
     subject { build(:permission) }
 
-    it { should validate_presence_of(:name) }
-    it { should validate_presence_of(:resource) }
+    it { is_expected.to validate_presence_of(:name) }
+    it { is_expected.to validate_presence_of(:resource) }
   end
 
   describe 'factory traits' do
@@ -78,15 +78,15 @@ RSpec.describe Permission, type: :model do
     let(:role) { create(:role) }
 
     it 'can be assigned to roles' do
-      role_permission = create(:role_permission, role: role, permission: permission)
+      create(:role_permission, role: role, permission: permission)
       expect(role.permissions).to include(permission)
       expect(permission.roles).to include(role)
     end
 
     it 'destroys associated role_permissions when destroyed' do
-      role_permission = create(:role_permission, role: role, permission: permission)
+      create(:role_permission, role: role, permission: permission)
       # Its changing by -2 because view/edit both permissions are created for the same permission
-      expect { permission.destroy }.to change { RolePermission.count }.by(-2)
+      expect { permission.destroy }.to change(RolePermission, :count).by(-2)
     end
   end
 end

@@ -3,19 +3,19 @@
 class MenuComponent < ViewComponent::Base
   attr_reader :variant, :avatar_url, :initials, :placement, :offset, :icon_vertical, :no_padding, :testid
 
-  renders_one :button, ->(**button_options, &block) do
-    options_with_target = button_options.merge(data: { menu_target: "button" })
+  renders_one :button, lambda { |**button_options, &block|
+    options_with_target = button_options.merge(data: { menu_target: 'button' })
 
     if block
       content_tag(:button, **options_with_target, &block)
     else
       ButtonComponent.new(**options_with_target)
     end
-  end
+  }
 
-  renders_one :header, ->(&block) do
-    content_tag(:div, class: "border-b border-tertiary", &block)
-  end
+  renders_one :header, lambda { |&block|
+    content_tag(:div, class: 'border-b border-tertiary', &block)
+  }
 
   renders_one :custom_content
 
@@ -23,7 +23,8 @@ class MenuComponent < ViewComponent::Base
 
   VARIANTS = %i[icon button avatar].freeze
 
-  def initialize(variant: "icon", avatar_url: nil, initials: nil, placement: "bottom-end", offset: 12, icon_vertical: false, no_padding: false, testid: nil)
+  def initialize(variant: 'icon', avatar_url: nil, initials: nil, placement: 'bottom-end', offset: 12,
+                 icon_vertical: false, no_padding: false, testid: nil)
     @variant = variant.to_sym
     @avatar_url = avatar_url
     @initials = initials

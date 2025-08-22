@@ -2,20 +2,20 @@ class ExpireJobsJob < ApplicationJob
   queue_as :default
 
   def perform
-    Rails.logger.info "Starting job expiration check..."
+    Rails.logger.info 'Starting job expiration check...'
 
     # Use the class method to expire jobs
     expired_count = Job.expire_expired_jobs
 
-    if expired_count > 0
+    if expired_count.positive?
       Rails.logger.info "Successfully expired #{expired_count} jobs"
 
       # Optionally send notifications for expired jobs
-      Job.where(status: "expired").where("updated_at >= ?", 1.minute.ago).each do |job|
+      Job.where(status: 'expired').where(updated_at: 1.minute.ago..).find_each do |job|
         notify_company_about_expired_job(job)
       end
     else
-      Rails.logger.info "No expired jobs found"
+      Rails.logger.info 'No expired jobs found'
     end
   end
 
@@ -28,7 +28,7 @@ class ExpireJobsJob < ApplicationJob
       # For example, send email, push notification, etc.
       Rails.logger.info "Notifying user #{user.email} about expired job '#{job.title}'"
     end
-  rescue => e
+  rescue StandardError => e
     Rails.logger.error "Error notifying about expired job: #{e.message}"
   end
 end

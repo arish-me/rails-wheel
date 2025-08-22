@@ -79,9 +79,9 @@ RSpec.describe RolesController, type: :controller do
 
     context 'with valid params' do
       it 'creates a new role' do
-        expect {
+        expect do
           post :create, params: valid_params
-        }.to change(Role, :count).by(1)
+        end.to change(Role, :count).by(1)
       end
 
       it 'assigns the newly created role' do
@@ -91,7 +91,7 @@ RSpec.describe RolesController, type: :controller do
 
       it 'sets flash notice' do
         post :create, params: valid_params
-        expect(flash[:notice]).to eq("Role was successfully created.")
+        expect(flash[:notice]).to eq('Role was successfully created.')
       end
 
       it 'redirects to the created role' do
@@ -104,9 +104,9 @@ RSpec.describe RolesController, type: :controller do
       let(:invalid_params) { { role: { name: '' } } }
 
       it 'does not create a new role' do
-        expect {
+        expect do
           post :create, params: invalid_params
-        }.not_to change(Role, :count)
+        end.not_to change(Role, :count)
       end
 
       it 'renders new template' do
@@ -127,7 +127,7 @@ RSpec.describe RolesController, type: :controller do
 
       it 'sets flash notice' do
         patch :update, params: valid_params
-        expect(flash[:notice]).to eq("Role was successfully updated.")
+        expect(flash[:notice]).to eq('Role was successfully updated.')
       end
 
       it 'redirects to the role' do
@@ -150,9 +150,9 @@ RSpec.describe RolesController, type: :controller do
     let!(:role_to_delete) { create(:role, company: company) }
 
     it 'destroys the requested role' do
-      expect {
+      expect do
         delete :destroy, params: { id: role_to_delete.id }
-      }.to change(Role, :count).by(-1)
+      end.to change(Role, :count).by(-1)
     end
 
     it 'redirects to roles list' do
@@ -162,7 +162,7 @@ RSpec.describe RolesController, type: :controller do
 
     it 'sets flash notice' do
       delete :destroy, params: { id: role_to_delete.id }
-      expect(flash[:notice]).to eq("Role was successfully destroyed.")
+      expect(flash[:notice]).to eq('Role was successfully destroyed.')
     end
   end
 
@@ -172,9 +172,9 @@ RSpec.describe RolesController, type: :controller do
 
     context 'with valid resource_ids' do
       it 'destroys multiple roles' do
-        expect {
+        expect do
           post :bulk_destroy, params: valid_params
-        }.to change(Role, :count).by(-3)
+        end.to change(Role, :count).by(-3)
       end
 
       it 'redirects to roles path' do
@@ -225,12 +225,12 @@ RSpec.describe RolesController, type: :controller do
     describe '#bulk_delete_params' do
       it 'permits resource_ids array' do
         params = ActionController::Parameters.new(
-          bulk_delete: { resource_ids: [ '1', '2' ], invalid: 'param' }
+          bulk_delete: { resource_ids: %w[1 2], invalid: 'param' }
         )
         allow(controller).to receive(:params).and_return(params)
 
         permitted_params = controller.send(:bulk_delete_params)
-        expect(permitted_params[:resource_ids]).to eq([ '1', '2' ])
+        expect(permitted_params[:resource_ids]).to eq(%w[1 2])
         expect(permitted_params).not_to include(:invalid)
       end
     end

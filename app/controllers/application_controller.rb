@@ -1,7 +1,10 @@
 class ApplicationController < ActionController::Base
-  include Breadcrumbable, Notifiable, Onboardable
+  include Onboardable
+  include Notifiable
+  include Breadcrumbable
   include Pagy::Backend
   include Pundit::Authorization
+
   impersonates :user
   # Rescue unauthorized access
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
@@ -13,7 +16,6 @@ class ApplicationController < ActionController::Base
   before_action :set_tenent
 
   before_action :configure_permitted_parameters, if: :devise_controller?
-
 
   # Locale switcher action - uses Turbo to avoid page reload
   def set_locale
@@ -43,7 +45,7 @@ class ApplicationController < ActionController::Base
   private
 
   def set_tenent
-    return unless current_user && current_user.company_id
+    return unless current_user&.company_id
 
     ActsAsTenant.current_tenant = current_user.company
   end
@@ -51,20 +53,21 @@ class ApplicationController < ActionController::Base
   def set_locale_from_session_or_params
     I18n.locale = if session[:locale].present? && I18n.available_locales.include?(session[:locale].to_sym)
                     session[:locale].to_sym
-    else
+                  else
                     I18n.default_locale
-    end
+                  end
   end
 
   def user_not_authorized
-    flash[:alert] = "You are not authorized to perform this action."
-    redirect_to(request.referrer || root_path)
+    flash[:alert] = 'You are not authorized to perform this action.'
+    redirect_to(request.referer || root_path)
   end
 
   def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:sign_up, keys: [ :first_name, :last_name, :user_type, :company_id ])
-    devise_parameter_sanitizer.permit(:account_update, keys: [ :first_name, :last_name, :user_type, :company_id ])
-    devise_parameter_sanitizer.permit(:invite, keys: [ :email, :first_name, :last_name, :user_type, :company_id ])
-    devise_parameter_sanitizer.permit(:accept_invitation, keys: [ :password, :password_confirmation, :first_name, :last_name ])
+    devise_parameter_sanitizer.permit(:sign_up, keys: %i[first_name last_name user_type company_id])
+    devise_parameter_sanitizer.permit(:account_update, keys: %i[first_name last_name user_type company_id])
+    devise_parameter_sanitizer.permit(:invite, keys: %i[email first_name last_name user_type company_id])
+    devise_parameter_sanitizer.permit(:accept_invitation,
+                                      keys: %i[password password_confirmation first_name last_name])
   end
 end

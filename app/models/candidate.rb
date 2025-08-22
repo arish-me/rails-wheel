@@ -2,12 +2,11 @@ class Candidate < ApplicationRecord
   include RichText
   include Hashid::Rails
 
-  attr_accessor :redirect_to
-  attr_accessor :bio_required
+  attr_accessor :redirect_to, :bio_required
 
   belongs_to :user
-  has_one :role_type, class_name: "RoleType", dependent: :destroy
-  has_one :role_level, class_name: "RoleLevel", dependent: :destroy
+  has_one :role_type, class_name: 'RoleType', dependent: :destroy
+  has_one :role_level, class_name: 'RoleLevel', dependent: :destroy
   has_one :location, as: :locatable, dependent: :destroy
 
   has_one :social_link, as: :linkable, dependent: :destroy
@@ -63,12 +62,12 @@ class Candidate < ApplicationRecord
 
   # Search functionality
   pg_search_scope :search_by_content,
-                  against: [ :headline, :bio, :experience ],
+                  against: %i[headline bio experience],
                   associated_against: {
-                    user: [ :first_name, :last_name, :email ],
-                    location: [ :city, :state, :country ],
-                    skills: [ :name ],
-                    experiences: [ :company_name, :job_title, :description ]
+                    user: %i[first_name last_name email],
+                    location: %i[city state country],
+                    skills: [:name],
+                    experiences: %i[company_name job_title description]
                   },
                   using: {
                     tsearch: { prefix: true }
@@ -93,19 +92,19 @@ class Candidate < ApplicationRecord
     save!
   end
 
-   def self.experience_options_for_select
+  def self.experience_options_for_select
     experiences.keys.map do |key|
       case key.to_sym
       when :fresher
-        [ "Fresher", key ]
+        ['Fresher', key]
       when :greater_than_10_years
-        [ "> 10 Years", key ]
-      when ->(k) { k.to_s.start_with?("year_") }
+        ['> 10 Years', key]
+      when ->(k) { k.to_s.start_with?('year_') }
         # Extract the number from 'year_X' and append 'Year(s)'
-        year_number = key.to_s.gsub("year_", "").to_i
-        [ "#{year_number} Year#{'s' if year_number > 1}", key ]
+        year_number = key.to_s.gsub('year_', '').to_i
+        ["#{year_number} Year#{'s' if year_number > 1}", key]
       else
-        [ key.humanize, key ] # Fallback for any other unexpected keys
+        [key.humanize, key] # Fallback for any other unexpected keys
       end
     end
   end
@@ -114,11 +113,11 @@ class Candidate < ApplicationRecord
   def display_experience_level
     case experience.to_sym
     when :fresher
-      "Fresher"
+      'Fresher'
     when :greater_than_10_years
-      "> 10 Years"
-    when ->(k) { k.to_s.start_with?("year_") }
-      year_number = experience_level.to_s.gsub("year_", "").to_i
+      '> 10 Years'
+    when ->(k) { k.to_s.start_with?('year_') }
+      year_number = experience_level.to_s.gsub('year_', '').to_i
       "#{year_number} Year#{'s' if year_number > 1}"
     else
       experience_level.humanize # Fallback
@@ -142,7 +141,7 @@ class Candidate < ApplicationRecord
   # end
 
   def validate_for_redirect_target?
-    [ "onboarding_candidate", "online_presence" ].include?(redirect_to)
+    %w[onboarding_candidate online_presence].include?(redirect_to)
   end
 
   def missing_fields
@@ -153,29 +152,28 @@ class Candidate < ApplicationRecord
   end
 
   def full_name
-    [ user.first_name, user.last_name ].compact.join(" ").presence || user.email
+    [user.first_name, user.last_name].compact.join(' ').presence || user.email
   end
 
   def work_preference_missing_fields?
-    headline && experience && hourly_rate && search_status && candidate_roles.length > 0 && skills.length > 0 && role_type && role_level
+    headline && experience && hourly_rate && search_status && candidate_roles.length.positive? && skills.length.positive? && role_type && role_level
   end
 
-
   def specialization_count_within_bounds
-    count = candidate_role_ids.reject(&:blank?).size
+    count = candidate_role_ids.compact_blank.size
     if count < 1
-      errors.add(:candidate_role_ids, "You must select at least one specialization.")
+      errors.add(:candidate_role_ids, 'You must select at least one specialization.')
     elsif count > 5
-      errors.add(:candidate_role_ids, "You can select up to 5 specializations only.")
+      errors.add(:candidate_role_ids, 'You can select up to 5 specializations only.')
     end
   end
 
   def skills_count_within_bounds
-    count = skill_ids.reject(&:blank?).size
+    count = skill_ids.compact_blank.size
     if count < 1
-      errors.add(:skill_ids, "You must select at least one skill.")
+      errors.add(:skill_ids, 'You must select at least one skill.')
     elsif count > 10
-      errors.add(:skill_ids, "You can select up to 5 skill only.")
+      errors.add(:skill_ids, 'You can select up to 5 skill only.')
     end
   end
 end

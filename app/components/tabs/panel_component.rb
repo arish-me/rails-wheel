@@ -1,11 +1,13 @@
-class Tabs::PanelComponent < ViewComponent::Base
-  attr_reader :tab_id
+module Tabs
+  class PanelComponent < ViewComponent::Base
+    attr_reader :tab_id
 
-  def initialize(tab_id:)
-    @tab_id = tab_id
-  end
+    def initialize(tab_id:)
+      @tab_id = tab_id
+    end
 
-  def call
-    content
+    def call
+      content
+    end
   end
 end

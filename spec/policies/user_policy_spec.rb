@@ -6,7 +6,7 @@ RSpec.describe UserPolicy do
   let(:policy) { described_class.new(user, record) }
 
   it 'inherits from ApplicationPolicy' do
-    expect(UserPolicy).to be < ApplicationPolicy
+    expect(described_class).to be < ApplicationPolicy
   end
 
   it 'can be instantiated' do

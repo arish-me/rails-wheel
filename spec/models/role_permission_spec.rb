@@ -8,12 +8,12 @@ RSpec.describe RolePermission, type: :model do
   end
 
   describe 'associations' do
-    it { should belong_to(:role) }
-    it { should belong_to(:permission) }
+    it { is_expected.to belong_to(:role) }
+    it { is_expected.to belong_to(:permission) }
   end
 
   describe 'enums' do
-    it { should define_enum_for(:action).with_values({ view: 0, edit: 1 }) }
+    it { is_expected.to define_enum_for(:action).with_values({ view: 0, edit: 1 }) }
   end
 
   describe 'validations' do
@@ -38,7 +38,7 @@ RSpec.describe RolePermission, type: :model do
 
   describe 'acts_as_tenant' do
     it 'includes acts_as_tenant for company' do
-      expect(RolePermission.ancestors).to include(ActsAsTenant::ModelExtensions)
+      expect(described_class.ancestors).to include(ActsAsTenant::ModelExtensions)
     end
   end
 
@@ -66,7 +66,7 @@ RSpec.describe RolePermission, type: :model do
 
   describe 'enum values' do
     it 'has correct action values' do
-      expect(RolePermission.actions).to eq({ 'view' => 0, 'edit' => 1 })
+      expect(described_class.actions).to eq({ 'view' => 0, 'edit' => 1 })
     end
 
     it 'can be set to view' do

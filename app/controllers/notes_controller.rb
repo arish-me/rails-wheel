@@ -1,7 +1,7 @@
 class NotesController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_note, only: [ :destroy ]
-  before_action :authorize_note_access, only: [ :destroy ]
+  before_action :set_note, only: [:destroy]
+  before_action :authorize_note_access, only: [:destroy]
 
   # ============================================================================
   # ACTIONS
@@ -33,30 +33,32 @@ class NotesController < ApplicationController
 
     respond_to do |format|
       if @note.save
-        format.html { redirect_back(fallback_location: company_candidates_path, notice: "Note was successfully added.") }
+        format.html do
+          redirect_back(fallback_location: company_candidates_path, notice: 'Note was successfully added.')
+        end
         format.json { render json: @note, status: :created }
-        format.turbo_stream {
+        format.turbo_stream do
           render turbo_stream: [
             # Update modal content
             turbo_stream.replace("notes_count_#{@notetable.id}",
-              partial: "notes/count", locals: { notetable: @notetable }),
+                                 partial: 'notes/count', locals: { notetable: @notetable }),
             turbo_stream.replace("notes_list_#{@notetable.id}",
-              partial: "notes/list", locals: { notes: @notetable.notes.includes(:user).order(created_at: :desc) }),
+                                 partial: 'notes/list', locals: { notes: @notetable.notes.includes(:user).order(created_at: :desc) }),
             turbo_stream.update("add_note_form_#{@notetable.id}",
-              partial: "notes/form", locals: { notetable: @notetable, note: Note.new }),
+                                partial: 'notes/form', locals: { notetable: @notetable, note: Note.new }),
             # Update main page content (outside modal)
             turbo_stream.replace("main_notes_count_#{@notetable.id}",
-              partial: "notes/count", locals: { notetable: @notetable }),
-            turbo_stream.update("modal", partial: "shared/close_modal")
+                                 partial: 'notes/count', locals: { notetable: @notetable }),
+            turbo_stream.update('modal', partial: 'shared/close_modal')
           ]
-        }
+        end
       else
-        format.html { redirect_back(fallback_location: company_candidates_path, alert: "Failed to add note.") }
+        format.html { redirect_back(fallback_location: company_candidates_path, alert: 'Failed to add note.') }
         format.json { render json: @note.errors, status: :unprocessable_entity }
-        format.turbo_stream {
+        format.turbo_stream do
           render turbo_stream: turbo_stream.replace("add_note_form_#{@notetable.id}",
-            partial: "notes/form", locals: { notetable: @notetable, note: @note })
-        }
+                                                    partial: 'notes/form', locals: { notetable: @notetable, note: @note })
+        end
       end
     end
   end
@@ -65,20 +67,22 @@ class NotesController < ApplicationController
     @note.destroy
 
     respond_to do |format|
-      format.html { redirect_back(fallback_location: company_candidates_path, notice: "Note was successfully deleted.") }
+      format.html do
+        redirect_back(fallback_location: company_candidates_path, notice: 'Note was successfully deleted.')
+      end
       format.json { head :no_content }
-              format.turbo_stream {
-          render turbo_stream: [
-            # Update modal content
-            turbo_stream.remove("note_#{@note.id}"),
-            turbo_stream.replace("notes_count_#{@note.notetable.id}",
-              partial: "notes/count", locals: { notetable: @note.notetable }),
-            # Update main page content (outside modal)
-            turbo_stream.replace("main_notes_count_#{@note.notetable.id}",
-              partial: "notes/count", locals: { notetable: @note.notetable }),
-            turbo_stream.update("modal", partial: "shared/close_modal")
-          ]
-        }
+      format.turbo_stream do
+        render turbo_stream: [
+          # Update modal content
+          turbo_stream.remove("note_#{@note.id}"),
+          turbo_stream.replace("notes_count_#{@note.notetable.id}",
+                               partial: 'notes/count', locals: { notetable: @note.notetable }),
+          # Update main page content (outside modal)
+          turbo_stream.replace("main_notes_count_#{@note.notetable.id}",
+                               partial: 'notes/count', locals: { notetable: @note.notetable }),
+          turbo_stream.update('modal', partial: 'shared/close_modal')
+        ]
+      end
     end
   end
 
@@ -97,11 +101,11 @@ class NotesController < ApplicationController
     notetable_id = params[:notetable_id]
 
     case notetable_type
-    when "JobApplication"
+    when 'JobApplication'
       JobApplication.joins(:job)
-                   .where(jobs: { company: current_user.company })
-                   .find(notetable_id)
-    when "Candidate"
+                    .where(jobs: { company: current_user.company })
+                    .find(notetable_id)
+    when 'Candidate'
       Candidate.joins(job_applications: :job)
                .where(jobs: { company: current_user.company })
                .find(notetable_id)
@@ -113,20 +117,20 @@ class NotesController < ApplicationController
   def authorize_note_access
     # Ensure the note belongs to a job application or candidate from the user's company
     case @note.notetable_type
-    when "JobApplication"
+    when 'JobApplication'
       unless @note.notetable.job.company == current_user.company
-        redirect_to company_candidates_path, alert: "You do not have permission to access this note."
+        redirect_to company_candidates_path, alert: 'You do not have permission to access this note.'
       end
-    when "Candidate"
-      unless @note.notetable.job_applications.joins(:job).where(jobs: { company: current_user.company }).exists?
-        redirect_to company_candidates_path, alert: "You do not have permission to access this note."
+    when 'Candidate'
+      unless @note.notetable.job_applications.joins(:job).exists?(jobs: { company: current_user.company })
+        redirect_to company_candidates_path, alert: 'You do not have permission to access this note.'
       end
     else
-      redirect_to company_candidates_path, alert: "Invalid note type."
+      redirect_to company_candidates_path, alert: 'Invalid note type.'
     end
   end
 
   def note_params
-    params.require(:note).permit(:content)
+    params.expect(note: [:content])
   end
 end

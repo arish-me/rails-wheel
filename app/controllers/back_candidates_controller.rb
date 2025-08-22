@@ -1,34 +1,33 @@
 class CandidatesController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_candidate, only: %i[ show edit update ]
+  before_action :set_candidate, only: %i[show edit update]
 
   def index
     @profile = @candidate&.profile ? @candidate.profile : @candidate.build_profile
   end
 
   def show
-    @profile = @candidate.profile ? @candidate.profile : @candidate.build_profile
+    @profile = @candidate.profile || @candidate.build_profile
   end
 
-  def edit
-  end
+  def edit; end
 
-   def update
-     respond_to do |format|
-       if @candidate.update(candidate_params)
-         flash[:notice] = "Profile was successfully updated."
-         format.html { }
-       else
-         flash[:alert] = @candidate.errors.full_messages.join(", ")
-         if !current_user.onboarded?
-           format.html { render "onboardings/show", status: :unprocessable_entity }
-         else
-           format.html { render :edit, status: :unprocessable_entity }
-         end
-         format.json { render json: @candidate.errors, status: :unprocessable_entity }
-       end
-     end
-   end
+  def update
+    respond_to do |format|
+      if @candidate.update(candidate_params)
+        flash[:notice] = 'Profile was successfully updated.'
+        format.html {}
+      else
+        flash[:alert] = @candidate.errors.full_messages.join(', ')
+        if current_user.onboarded?
+          format.html { render :edit, status: :unprocessable_entity }
+        else
+          format.html { render 'onboardings/show', status: :unprocessable_entity }
+        end
+        format.json { render json: @candidate.errors, status: :unprocessable_entity }
+      end
+    end
+  end
 
   private
 
@@ -38,9 +37,9 @@ class CandidatesController < ApplicationController
   end
 
   def candidate_params
-    params.require(:candidate).permit(
-      :redirect_to, :onboarding_preferences,
-      user_attributes: [ :id, :first_name, :last_name, :gender, :phone_number, :date_of_birth, :bio, :avatar, :delete_profile_image, :cover_image, location_attributes: [ :location_search, :city, :state, :country, :id ] ]
+    params.expect(
+      candidate: [:redirect_to, :onboarding_preferences,
+                  { user_attributes: [:id, :first_name, :last_name, :gender, :phone_number, :date_of_birth, :bio, :avatar, :delete_profile_image, :cover_image, { location_attributes: %i[location_search city state country id] }] }]
     )
   end
 

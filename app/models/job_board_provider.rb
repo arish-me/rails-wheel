@@ -3,40 +3,40 @@ class JobBoardProvider < ApplicationRecord
 
   validates :name, presence: true, uniqueness: true
   validates :slug, presence: true, uniqueness: true, format: { with: /\A[a-z0-9-]+\z/ }
-  validates :api_documentation_url, presence: true, format: { with: URI.regexp }
+  validates :api_documentation_url, presence: true, format: { with: URI::DEFAULT_PARSER.make_regexp }
 
   scope :active, -> { where(is_active: true) }
   scope :ordered, -> { order(:name) }
 
   # Available providers
   PROVIDERS = {
-    "linkedin" => {
-      name: "LinkedIn Jobs",
-      slug: "linkedin",
-      description: "Post jobs to LinkedIn Jobs platform",
-      api_documentation_url: "https://developer.linkedin.com/docs/jobs-api",
-      logo_url: "/images/providers/linkedin.png"
+    'linkedin' => {
+      name: 'LinkedIn Jobs',
+      slug: 'linkedin',
+      description: 'Post jobs to LinkedIn Jobs platform',
+      api_documentation_url: 'https://developer.linkedin.com/docs/jobs-api',
+      logo_url: '/images/providers/linkedin.png'
     },
-    "indeed" => {
-      name: "Indeed",
-      slug: "indeed",
-      description: "Post jobs to Indeed job board",
-      api_documentation_url: "https://developer.indeed.com/docs/indeed-api/",
-      logo_url: "/images/providers/indeed.png"
+    'indeed' => {
+      name: 'Indeed',
+      slug: 'indeed',
+      description: 'Post jobs to Indeed job board',
+      api_documentation_url: 'https://developer.indeed.com/docs/indeed-api/',
+      logo_url: '/images/providers/indeed.png'
     },
-    "glassdoor" => {
-      name: "Glassdoor",
-      slug: "glassdoor",
-      description: "Post jobs to Glassdoor platform",
-      api_documentation_url: "https://developer.glassdoor.com/api/docs/",
-      logo_url: "/images/providers/glassdoor.png"
+    'glassdoor' => {
+      name: 'Glassdoor',
+      slug: 'glassdoor',
+      description: 'Post jobs to Glassdoor platform',
+      api_documentation_url: 'https://developer.glassdoor.com/api/docs/',
+      logo_url: '/images/providers/glassdoor.png'
     },
-    "ziprecruiter" => {
-      name: "ZipRecruiter",
-      slug: "ziprecruiter",
-      description: "Post jobs to ZipRecruiter platform",
-      api_documentation_url: "https://www.ziprecruiter.com/publishers/api",
-      logo_url: "/images/providers/ziprecruiter.png"
+    'ziprecruiter' => {
+      name: 'ZipRecruiter',
+      slug: 'ziprecruiter',
+      description: 'Post jobs to ZipRecruiter platform',
+      api_documentation_url: 'https://www.ziprecruiter.com/publishers/api',
+      logo_url: '/images/providers/ziprecruiter.png'
     }
   }.freeze
 

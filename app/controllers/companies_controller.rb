@@ -1,13 +1,11 @@
 class CompaniesController < ApplicationController
-  before_action :set_company, only: [ :update ]
-  def index
-  end
+  before_action :set_company, only: [:update]
+  def index; end
+
+  def show; end
 
   def new
     @company = current_user.company.new
-  end
-
-  def show
   end
 
   def create
@@ -21,48 +19,46 @@ class CompaniesController < ApplicationController
         # If user is in onboarding, update their user type and company association
         if current_user&.needs_onboarding?
           SeedData::UserRoleAssigner.call(current_user, @company)
-          format.html { redirect_to profile_setup_onboarding_path, notice: "Company was successfully created." }
-          format.turbo_stream { redirect_to profile_setup_onboarding_path, notice: "Company was successfully created." }
+          format.html { redirect_to profile_setup_onboarding_path, notice: 'Company was successfully created.' }
+          format.turbo_stream { redirect_to profile_setup_onboarding_path, notice: 'Company was successfully created.' }
         else
-          format.html { redirect_to @company, notice: "Company was successfully created." }
+          format.html { redirect_to @company, notice: 'Company was successfully created.' }
           format.turbo_stream { render turbo_stream: turbo_stream.refresh(request_id: nil) }
         end
         format.json { render :show, status: :created, location: @company }
+      elsif current_user&.needs_onboarding?
+        flash[:alert] = @company.errors.full_messages.join(', ')
+        flash[:company_data] = company_params.to_h
+        format.html { redirect_to onboarding_path }
+        format.turbo_stream { redirect_to onboarding_path }
       else
-        if current_user&.needs_onboarding?
-          format.html { redirect_to onboarding_path, alert: @company.errors.full_messages.join(", ") }
-          format.turbo_stream { redirect_to onboarding_path, alert: @company.errors.full_messages.join(", ") }
-        else
-          format.html { render :new, status: :unprocessable_entity }
-          format.json { render json: @company.errors, status: :unprocessable_entity }
-        end
+        format.html { render :new, status: :unprocessable_entity }
+        #  format.json { render json: @company.errors, status: :unprocessable_entity }
       end
     end
   end
 
   def update
-     company.avatar.purge if should_purge_avatar?
-     respond_to do |format|
+    company.avatar.purge if should_purge_avatar?
+    respond_to do |format|
       if @company.update(company_params)
         # If user is in onboarding, update their user type and company association
-        flash[:notice] = "Your company has been updated successfully."
+        flash[:notice] = 'Your company has been updated successfully.'
         if current_user&.needs_onboarding?
-          format.html { redirect_to profile_setup_onboarding_path, notice: "Company was successfully saved." }
-          format.turbo_stream { redirect_to profile_setup_onboarding_path, notice: "Company was successfully saved." }
+          format.html { redirect_to profile_setup_onboarding_path, notice: 'Company was successfully saved.' }
+          format.turbo_stream { redirect_to profile_setup_onboarding_path, notice: 'Company was successfully saved.' }
         else
-          format.html { redirect_to @company, notice: "Company was successfully created." }
+          format.html { redirect_to @company, notice: 'Company was successfully created.' }
           format.turbo_stream { render turbo_stream: turbo_stream.refresh(request_id: nil) }
         end
         format.json { render :show, status: :created, location: @company }
+      elsif current_user&.needs_onboarding?
+        format.html { redirect_to onboarding_path, alert: @company.errors.full_messages.join(', ') }
+        format.turbo_stream { redirect_to onboarding_path, alert: @company.errors.full_messages.join(', ') }
       else
-        if current_user&.needs_onboarding?
-          format.html { redirect_to onboarding_path, alert: @company.errors.full_messages.join(", ") }
-          format.turbo_stream { redirect_to onboarding_path, alert: @company.errors.full_messages.join(", ") }
-        else
-          flash[:alert] = @company.errors.full_messages.join(", ")
-          format.html { redirect_to request.referrer, alert: @company.errors.full_messages.join(", ") }
-          format.json { render json: @company.errors, status: :unprocessable_entity }
-        end
+        flash[:alert] = @company.errors.full_messages.join(', ')
+        format.html { redirect_to request.referer, alert: @company.errors.full_messages.join(', ') }
+        format.json { render json: @company.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -70,7 +66,7 @@ class CompaniesController < ApplicationController
   protected
 
   def should_purge_avatar?
-    company_params[:delete_avatar_image] == "1" &&
+    company_params[:delete_avatar_image] == '1' &&
       company_params[:delete_avatar_image].blank?
   end
 
@@ -80,8 +76,8 @@ class CompaniesController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def company_params
-    params.require(:company).permit(
-      :name, :subdomain, :website, :redirect_to, :delete_avatar_image, :avatar, :description
+    params.expect(
+      company: %i[name subdomain website redirect_to delete_avatar_image avatar description]
     )
   end
 end

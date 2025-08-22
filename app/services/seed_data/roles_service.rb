@@ -2,7 +2,7 @@
 
 module SeedData
   class RolesService < BaseService
-    DEFAULT_ROLE = "User".freeze
+    DEFAULT_ROLE = 'User'
     ROLES = %w[SuperAdmin Admin User Recruiter Guest].freeze
 
     def call
@@ -13,13 +13,11 @@ module SeedData
     private
 
     def create_roles
-      log "Creating Roles..."
+      log 'Creating Roles...'
       ROLES.each do |role_name|
         role = Role.find_or_create_by!(name: role_name)
         # Set the default role
-        if role_name == DEFAULT_ROLE
-          role.update!(is_default: true)
-        end
+        role.update!(is_default: true) if role_name == DEFAULT_ROLE
       end
       log "Roles created: #{ROLES.join(', ')}"
     end

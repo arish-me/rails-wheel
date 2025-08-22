@@ -16,19 +16,23 @@ RSpec.describe SeedData::BulkFakerServices::BaseService, type: :service do
 
   describe '#log' do
     it 'outputs the message' do
-      expect { service.log("test message") }.to output("test message\n").to_stdout
+      expect { service.log('test message') }.to output("test message\n").to_stdout
     end
   end
 
   describe '#benchmark_operation' do
     it 'logs start and completion messages' do
-      expect { service.benchmark_operation("Test Operation") { "result" } }.to output(/Starting Test Operation/).to_stdout
+      expect do
+        service.benchmark_operation('Test Operation') do
+          'result'
+        end
+      end.to output(/Starting Test Operation/).to_stdout
     end
 
     it 'yields the block' do
       result = nil
-      service.benchmark_operation("Test") { result = "success" }
-      expect(result).to eq("success")
+      service.benchmark_operation('Test') { result = 'success' }
+      expect(result).to eq('success')
     end
   end
 end

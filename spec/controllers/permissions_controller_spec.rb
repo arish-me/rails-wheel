@@ -79,9 +79,9 @@ RSpec.describe PermissionsController, type: :controller do
 
     context 'with valid params' do
       it 'creates a new permission' do
-        expect {
+        expect do
           post :create, params: valid_params
-        }.to change(Permission, :count).by(1)
+        end.to change(Permission, :count).by(1)
       end
 
       it 'assigns the newly created permission' do
@@ -91,7 +91,7 @@ RSpec.describe PermissionsController, type: :controller do
 
       it 'sets flash notice' do
         post :create, params: valid_params
-        expect(flash[:notice]).to eq("Permission was successfully created.")
+        expect(flash[:notice]).to eq('Permission was successfully created.')
       end
 
       it 'redirects to the created permission' do
@@ -104,9 +104,9 @@ RSpec.describe PermissionsController, type: :controller do
       let(:invalid_params) { { permission: { name: '' } } }
 
       it 'does not create a new permission' do
-        expect {
+        expect do
           post :create, params: invalid_params
-        }.not_to change(Permission, :count)
+        end.not_to change(Permission, :count)
       end
 
       it 'renders new template' do
@@ -127,7 +127,7 @@ RSpec.describe PermissionsController, type: :controller do
 
       it 'sets flash notice' do
         patch :update, params: valid_params
-        expect(flash[:notice]).to eq("Permission was successfully updated.")
+        expect(flash[:notice]).to eq('Permission was successfully updated.')
       end
 
       it 'redirects to the permission' do
@@ -150,9 +150,9 @@ RSpec.describe PermissionsController, type: :controller do
     let!(:permission_to_delete) { create(:permission) }
 
     it 'destroys the requested permission' do
-      expect {
+      expect do
         delete :destroy, params: { id: permission_to_delete.id }
-      }.to change(Permission, :count).by(-1)
+      end.to change(Permission, :count).by(-1)
     end
 
     it 'redirects to permissions list' do
@@ -162,7 +162,7 @@ RSpec.describe PermissionsController, type: :controller do
 
     it 'sets flash notice' do
       delete :destroy, params: { id: permission_to_delete.id }
-      expect(flash[:notice]).to eq("Permission was successfully destroyed.")
+      expect(flash[:notice]).to eq('Permission was successfully destroyed.')
     end
   end
 
@@ -172,9 +172,9 @@ RSpec.describe PermissionsController, type: :controller do
 
     context 'with valid resource_ids' do
       it 'destroys multiple permissions' do
-        expect {
+        expect do
           post :bulk_destroy, params: valid_params
-        }.to change(Permission, :count).by(-3)
+        end.to change(Permission, :count).by(-3)
       end
 
       it 'redirects to permissions path' do
@@ -225,12 +225,12 @@ RSpec.describe PermissionsController, type: :controller do
     describe '#bulk_delete_params' do
       it 'permits resource_ids array' do
         params = ActionController::Parameters.new(
-          bulk_delete: { resource_ids: [ '1', '2' ], invalid: 'param' }
+          bulk_delete: { resource_ids: %w[1 2], invalid: 'param' }
         )
         allow(controller).to receive(:params).and_return(params)
 
         permitted_params = controller.send(:bulk_delete_params)
-        expect(permitted_params[:resource_ids]).to eq([ '1', '2' ])
+        expect(permitted_params[:resource_ids]).to eq(%w[1 2])
         expect(permitted_params).not_to include(:invalid)
       end
     end

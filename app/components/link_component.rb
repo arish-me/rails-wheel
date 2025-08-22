@@ -5,8 +5,8 @@ class LinkComponent < ButtonishComponent
 
   VARIANTS = VARIANTS.reverse_merge(
     default: {
-      container_classes: "",
-      icon_classes: "fg-gray"
+      container_classes: '',
+      icon_classes: 'fg-gray'
     }
   ).freeze
 
@@ -14,9 +14,7 @@ class LinkComponent < ButtonishComponent
     merged_opts = opts.dup || {}
     data = merged_opts.delete(:data) || {}
 
-    if frame
-      data = data.merge(turbo_frame: frame)
-    end
+    data = data.merge(turbo_frame: frame) if frame
 
     merged_opts.merge(
       class: class_names(container_classes, extra_classes),
@@ -25,7 +23,8 @@ class LinkComponent < ButtonishComponent
   end
 
   private
-    def container_size_classes
-      super unless variant == :default
-    end
+
+  def container_size_classes
+    super unless variant == :default
+  end
 end

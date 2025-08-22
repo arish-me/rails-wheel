@@ -9,44 +9,43 @@ RSpec.describe ApplicationController, type: :controller do
 
   describe 'inheritance' do
     it 'inherits from ActionController::Base' do
-      expect(ApplicationController).to be < ActionController::Base
+      expect(described_class).to be < ActionController::Base
     end
   end
 
   describe 'includes' do
     it 'includes Breadcrumbable' do
-      expect(ApplicationController.included_modules).to include(Breadcrumbable)
+      expect(described_class.included_modules).to include(Breadcrumbable)
     end
 
     it 'includes Notifiable' do
-      expect(ApplicationController.included_modules).to include(Notifiable)
+      expect(described_class.included_modules).to include(Notifiable)
     end
 
     it 'includes Onboardable' do
-      expect(ApplicationController.included_modules).to include(Onboardable)
+      expect(described_class.included_modules).to include(Onboardable)
     end
 
     it 'includes Pagy::Backend' do
-      expect(ApplicationController.included_modules).to include(Pagy::Backend)
+      expect(described_class.included_modules).to include(Pagy::Backend)
     end
 
     it 'includes Pundit::Authorization' do
-      expect(ApplicationController.included_modules).to include(Pundit::Authorization)
+      expect(described_class.included_modules).to include(Pundit::Authorization)
     end
   end
 
-
   describe 'before_actions' do
     it 'sets locale from session or params' do
-      expect(ApplicationController._process_action_callbacks.map(&:filter)).to include(:set_locale_from_session_or_params)
+      expect(described_class._process_action_callbacks.map(&:filter)).to include(:set_locale_from_session_or_params)
     end
 
     it 'sets active storage url options' do
-      expect(ApplicationController._process_action_callbacks.map(&:filter)).to include(:set_active_storage_url_options)
+      expect(described_class._process_action_callbacks.map(&:filter)).to include(:set_active_storage_url_options)
     end
 
     it 'sets tenant' do
-      expect(ApplicationController._process_action_callbacks.map(&:filter)).to include(:set_tenent)
+      expect(described_class._process_action_callbacks.map(&:filter)).to include(:set_tenent)
     end
   end
 
@@ -60,7 +59,7 @@ RSpec.describe ApplicationController, type: :controller do
 
     it 'sets flash alert' do
       controller.send(:user_not_authorized)
-      expect(flash[:alert]).to eq("You are not authorized to perform this action.")
+      expect(flash[:alert]).to eq('You are not authorized to perform this action.')
     end
 
     it 'redirects to referrer' do

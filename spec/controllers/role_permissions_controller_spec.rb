@@ -81,9 +81,9 @@ RSpec.describe RolePermissionsController, type: :controller do
 
     context 'with valid params' do
       it 'creates a new role_permission' do
-        expect {
+        expect do
           post :create, params: valid_params
-        }.to change(RolePermission, :count).by(1)
+        end.to change(RolePermission, :count).by(1)
       end
 
       it 'assigns the newly created role_permission' do
@@ -93,7 +93,7 @@ RSpec.describe RolePermissionsController, type: :controller do
 
       it 'sets flash notice' do
         post :create, params: valid_params
-        expect(flash[:notice]).to eq("Role permission was successfully created.")
+        expect(flash[:notice]).to eq('Role permission was successfully created.')
       end
 
       it 'redirects to the created role_permission' do
@@ -106,9 +106,9 @@ RSpec.describe RolePermissionsController, type: :controller do
       let(:invalid_params) { { role_permission: { role_id: nil } } }
 
       it 'does not create a new role_permission' do
-        expect {
+        expect do
           post :create, params: invalid_params
-        }.not_to change(RolePermission, :count)
+        end.not_to change(RolePermission, :count)
       end
 
       it 'renders new template' do
@@ -129,7 +129,7 @@ RSpec.describe RolePermissionsController, type: :controller do
 
       it 'sets flash notice' do
         patch :update, params: valid_params
-        expect(flash[:notice]).to eq("Role permission was successfully updated.")
+        expect(flash[:notice]).to eq('Role permission was successfully updated.')
       end
 
       it 'redirects to the role_permission' do
@@ -152,9 +152,9 @@ RSpec.describe RolePermissionsController, type: :controller do
     let!(:role_permission_to_delete) { create(:role_permission, role: role) }
 
     it 'destroys the requested role_permission' do
-      expect {
+      expect do
         delete :destroy, params: { id: role_permission_to_delete.id }
-      }.to change(RolePermission, :count).by(-1)
+      end.to change(RolePermission, :count).by(-1)
     end
 
     it 'redirects to role_permissions list' do
@@ -164,7 +164,7 @@ RSpec.describe RolePermissionsController, type: :controller do
 
     it 'sets flash notice' do
       delete :destroy, params: { id: role_permission_to_delete.id }
-      expect(flash[:notice]).to eq("Role permission was successfully destroyed.")
+      expect(flash[:notice]).to eq('Role permission was successfully destroyed.')
     end
   end
 
@@ -174,9 +174,9 @@ RSpec.describe RolePermissionsController, type: :controller do
 
     context 'with valid resource_ids' do
       it 'destroys multiple role_permissions' do
-        expect {
+        expect do
           post :bulk_destroy, params: valid_params
-        }.to change(RolePermission, :count).by(-3)
+        end.to change(RolePermission, :count).by(-3)
       end
 
       it 'redirects to role_permissions path' do

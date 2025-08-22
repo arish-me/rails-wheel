@@ -12,7 +12,7 @@ require 'rails_helper'
 # end
 RSpec.describe CompanyHelper, type: :helper do
   it 'is a module' do
-    expect(defined?(CompanyHelper)).to eq('constant')
-    expect(CompanyHelper).to be_a(Module)
+    expect(defined?(described_class)).to eq('constant')
+    expect(described_class).to be_a(Module)
   end
 end

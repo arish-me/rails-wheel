@@ -5,7 +5,7 @@ RSpec.describe SeedData::BulkFakerServices::UsersService, type: :service do
 
   describe '#call' do
     it 'calls benchmark_operation with bulk user creation' do
-      expect(service).to receive(:benchmark_operation).with("Bulk User Creation")
+      expect(service).to receive(:benchmark_operation).with('Bulk User Creation')
       service.call
     end
   end

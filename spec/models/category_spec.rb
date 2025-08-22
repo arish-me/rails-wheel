@@ -8,7 +8,7 @@ RSpec.describe Category, type: :model do
   end
 
   describe 'associations' do
-    it { should belong_to(:user) }
+    it { is_expected.to belong_to(:user) }
   end
 
   describe 'search functionality' do
@@ -18,7 +18,7 @@ RSpec.describe Category, type: :model do
     let!(:category3) { create(:category, name: 'Marketing', user: user) }
 
     it 'searches by name prefix' do
-      results = Category.search_by_name('Tech')
+      results = described_class.search_by_name('Tech')
       expect(results).to include(category1)
       expect(results).not_to include(category2, category3)
     end

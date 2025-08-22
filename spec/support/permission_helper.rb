@@ -6,7 +6,7 @@ module PermissionHelper
 
     # Create role with the same company context (handling multi-tenancy)
     ActsAsTenant.current_tenant = company
-    role_name = user_type.to_s.classify
+    user_type.to_s.classify
     role = create("#{user_type}_role", company: company)
     create(:user_role, user: user, role: role)
 

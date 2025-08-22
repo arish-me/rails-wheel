@@ -4,7 +4,7 @@ module SeedData
   module BulkFakerServices
     class UsersService < BaseService
       def call
-        benchmark_operation("Bulk User Creation") do
+        benchmark_operation('Bulk User Creation') do
           create_users_with_roles
         end
       end
@@ -16,7 +16,7 @@ module SeedData
 
         # Pre-fetch all roles to avoid N+1 queries
         roles = Role.all.to_a
-        default_role = roles.find { |r| r.is_default } || roles.first
+        default_role = roles.find(&:is_default) || roles.first
 
         # Batch creation for better performance
         created_count = 0
@@ -26,7 +26,7 @@ module SeedData
         users_to_create = []
         user_roles_to_create = []
 
-        count.times do |i|
+        count.times do |_i|
           email = unique_email
 
           # Skip if email already exists
@@ -41,7 +41,7 @@ module SeedData
           # Prepare user data
           users_to_create << {
             email: email,
-            encrypted_password: Devise::Encryptor.digest(User, "password123"),
+            encrypted_password: Devise::Encryptor.digest(User, 'password123'),
             confirmed_at: now,
             created_at: now,
             updated_at: now,
@@ -57,12 +57,12 @@ module SeedData
           created_count = users_to_create.size
 
           # Now fetch the created users to create their associations
-          bulk_users = User.where(email: users_to_create.map { |u| u[:email] })
+          bulk_users = User.where(email: users_to_create.pluck(:email))
 
           # Prepare profile and role data
           bulk_users.each_with_index do |user, index|
             # UserRole data - use index for role selection logic
-            role = index % 10 == 0 ? roles.sample : default_role
+            role = (index % 10).zero? ? roles.sample : default_role
             user_roles_to_create << {
               user_id: user.id,
               role_id: role.id,
@@ -70,7 +70,6 @@ module SeedData
               updated_at: user.updated_at
             }
           end
-
 
           UserRole.insert_all(user_roles_to_create) if user_roles_to_create.any?
         end
@@ -80,7 +79,7 @@ module SeedData
 
       def unique_email
         # Generate unique email using a combination of values to minimize duplicates
-        domain = [ "example.com", "test.org", "faker.net", "dummy.io", "sample.dev" ].sample
+        domain = ['example.com', 'test.org', 'faker.net', 'dummy.io', 'sample.dev'].sample
         prefix = [
           Faker::Internet.username(specifier: 5..12),
           Faker::Internet.user_name(specifier: 5..12),

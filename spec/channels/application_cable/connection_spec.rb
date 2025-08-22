@@ -2,14 +2,14 @@ require 'rails_helper'
 
 RSpec.describe ApplicationCable::Connection, type: :channel do
   let(:user) { create(:user) }
-  let(:test_env) { instance_double('env') }
+  let(:test_env) { instance_double(env) }
 
   before do
     allow_any_instance_of(described_class).to receive(:env).and_return(test_env)
   end
 
   context 'with a verified user' do
-    let(:test_warden) { instance_double('warden', user:) }
+    let(:test_warden) { instance_double(warden, user:) }
 
     before do
       allow(test_env).to receive(:[]).with('warden').and_return(test_warden)
@@ -23,7 +23,7 @@ RSpec.describe ApplicationCable::Connection, type: :channel do
   end
 
   context 'without a verified user' do
-    let(:test_warden) { instance_double('warden', user: nil) }
+    let(:test_warden) { instance_double(warden, user: nil) }
 
     before do
       allow(test_env).to receive(:[]).with('warden').and_return(test_warden)

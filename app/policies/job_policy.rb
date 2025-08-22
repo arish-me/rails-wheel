@@ -13,8 +13,7 @@ class JobPolicy < ApplicationPolicy
     false
   end
 
-  def authorize_job_access?
-  end
+  def authorize_job_access?; end
 
   def edit?
     can_edit?

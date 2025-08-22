@@ -3,7 +3,7 @@ class ComboboxCity < OpenStruct
     "#{name}, #{subcountry}, #{country}"
   end
 
-    def id
-      "#{name}, #{subcountry}, #{country}"
-    end
+  def id
+    "#{name}, #{subcountry}, #{country}"
+  end
 end

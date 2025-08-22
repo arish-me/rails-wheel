@@ -3,9 +3,9 @@ require 'rails_helper'
 # This is an example feature spec using Capybara
 # Your real tests will be based on your application's functionality
 
-RSpec.feature "Sample feature", type: :feature do
+RSpec.feature 'Sample feature', type: :feature do
   # Add js: true when you need JavaScript support
-  scenario "User visits the home page", js: true do
+  scenario 'User visits the home page', :js do
     visit root_path
 
     # Example assertions

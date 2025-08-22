@@ -15,53 +15,60 @@ module JobFilterable
   end
 
   def apply_search_filter(jobs, search_term)
-    return jobs unless search_term.present?
+    return jobs if search_term.blank?
+
     jobs.search_by_title_and_description(search_term)
   end
 
   def apply_job_type_filter(jobs, job_type)
-    return jobs unless job_type.present?
+    return jobs if job_type.blank?
+
     jobs.by_job_type(job_type)
   end
 
   def apply_experience_filter(jobs, experience_level)
-    return jobs unless experience_level.present?
+    return jobs if experience_level.blank?
+
     jobs.by_experience_level(experience_level)
   end
 
   def apply_remote_policy_filter(jobs, remote_policy)
-    return jobs unless remote_policy.present?
+    return jobs if remote_policy.blank?
+
     jobs.by_remote_policy(remote_policy)
   end
 
   def apply_location_filter(jobs, location)
-    return jobs unless location.present?
+    return jobs if location.blank?
+
     jobs.by_location(location)
   end
 
   def apply_company_filter(jobs, company_id)
-    return jobs unless company_id.present?
+    return jobs if company_id.blank?
+
     jobs.by_company_id(company_id)
   end
 
   def apply_featured_filter(jobs, featured)
-    return jobs unless featured == "true"
+    return jobs unless featured == 'true'
+
     jobs.featured
   end
 
   def apply_sorting(jobs, sort_option)
     case sort_option
-    when "newest"
+    when 'newest'
       jobs.newest_first
-    when "oldest"
+    when 'oldest'
       jobs.oldest_first
-    when "salary_high"
+    when 'salary_high'
       jobs.salary_high_to_low
-    when "salary_low"
+    when 'salary_low'
       jobs.salary_low_to_high
-    when "applications"
+    when 'applications'
       jobs.most_applications
-    when "views"
+    when 'views'
       jobs.most_views
     else
       jobs.newest_first # Default: newest first
@@ -70,15 +77,15 @@ module JobFilterable
 
   def load_filter_options
     @companies = Company.joins(:jobs)
-                       .where(jobs: { status: "published" })
-                       .distinct
-                       .order(:name)
+                        .where(jobs: { status: 'published' })
+                        .distinct
+                        .order(:name)
 
     @locations = Job.published.active
-                   .where.not(location: [ nil, "" ])
-                   .distinct
-                   .pluck(:location)
-                   .compact
-                   .sort
+                    .where.not(location: [nil, ''])
+                    .distinct
+                    .pluck(:location)
+                    .compact
+                    .sort
   end
 end

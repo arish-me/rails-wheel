@@ -87,9 +87,9 @@ RSpec.describe CategoriesController, type: :controller do
 
     context 'with valid params' do
       it 'creates a new category' do
-        expect {
+        expect do
           post :create, params: valid_params
-        }.to change(Category, :count).by(1)
+        end.to change(Category, :count).by(1)
       end
 
       it 'assigns the newly created category' do
@@ -99,7 +99,7 @@ RSpec.describe CategoriesController, type: :controller do
 
       it 'sets flash notice' do
         post :create, params: valid_params
-        expect(flash[:notice]).to eq("Category was successfully created.")
+        expect(flash[:notice]).to eq('Category was successfully created.')
       end
 
       it 'redirects to the created category' do
@@ -112,9 +112,9 @@ RSpec.describe CategoriesController, type: :controller do
       let(:invalid_params) { { category: { name: '' } } }
 
       it 'does not create a new category' do
-        expect {
+        expect do
           post :create, params: invalid_params
-        }.not_to change(Category, :count)
+        end.not_to change(Category, :count)
       end
 
       it 'renders new template' do
@@ -135,7 +135,7 @@ RSpec.describe CategoriesController, type: :controller do
 
       it 'sets flash notice' do
         patch :update, params: valid_params
-        expect(flash[:notice]).to eq("Category was successfully updated.")
+        expect(flash[:notice]).to eq('Category was successfully updated.')
       end
 
       it 'redirects to the category' do
@@ -158,9 +158,9 @@ RSpec.describe CategoriesController, type: :controller do
     let!(:category_to_delete) { create(:category, user: user) }
 
     it 'destroys the requested category' do
-      expect {
+      expect do
         delete :destroy, params: { id: category_to_delete.id }
-      }.to change(Category, :count).by(-1)
+      end.to change(Category, :count).by(-1)
     end
 
     it 'redirects to categories list' do
@@ -170,7 +170,7 @@ RSpec.describe CategoriesController, type: :controller do
 
     it 'sets flash notice' do
       delete :destroy, params: { id: category_to_delete.id }
-      expect(flash[:notice]).to eq("Category was successfully destroyed.")
+      expect(flash[:notice]).to eq('Category was successfully destroyed.')
     end
   end
 
@@ -180,9 +180,9 @@ RSpec.describe CategoriesController, type: :controller do
 
     context 'with valid resource_ids' do
       it 'destroys multiple categories' do
-        expect {
+        expect do
           post :bulk_destroy, params: valid_params
-        }.to change(Category, :count).by(-3)
+        end.to change(Category, :count).by(-3)
       end
 
       it 'redirects to categories path' do
@@ -192,7 +192,7 @@ RSpec.describe CategoriesController, type: :controller do
     end
 
     context 'with empty resource_ids' do
-      let(:invalid_params) { { bulk_delete: { resource_ids: [ 123 ] } } }
+      let(:invalid_params) { { bulk_delete: { resource_ids: [123] } } }
 
       it 'renders new template' do
         post :bulk_destroy, params: invalid_params
