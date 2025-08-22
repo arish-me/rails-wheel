@@ -80,3 +80,5 @@ group :test do
   gem "webdrivers"                                       # Easy installation of browser drivers
   gem "rails-controller-testing"                         # Controller test helpers
 end
+
+gem "erb-formatter", "~> 0.7.3", :group => :development

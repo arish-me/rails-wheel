@@ -1,0 +1,48 @@
+{
+  "ERB Tags": {
+    "prefix": "erb",
+    "body": [
+      "<%= $1 %>"
+    ],
+    "description": "ERB output tag"
+  },
+  "ERB Comment": {
+    "prefix": "erbcom",
+    "body": [
+      "<%# $1 %>"
+    ],
+    "description": "ERB comment tag"
+  },
+  "ERB Code": {
+    "prefix": "erbcode",
+    "body": [
+      "<% $1 %>"
+    ],
+    "description": "ERB code tag"
+  },
+  "Rails Form": {
+    "prefix": "form",
+    "body": [
+      "<%= form_with(model: @${1:model}, local: true) do |form| %>",
+      "  $2",
+      "  <%= form.submit \"${3:Submit}\" %>",
+      "<% end %>"
+    ],
+    "description": "Rails form_with helper"
+  },
+  "Rails Link": {
+    "prefix": "link",
+    "body": [
+      "<%= link_to \"${1:text}\", ${2:path}, class: \"${3:btn}\" %>"
+    ],
+    "description": "Rails link_to helper"
+  },
+  "Rails Image": {
+    "prefix": "img",
+    "body": [
+      "<%= image_tag \"${1:image.jpg}\", alt: \"${2:description}\", class: \"${3:img-fluid}\" %>"
+    ],
+    "description": "Rails image_tag helper"
+  }
+}
+
