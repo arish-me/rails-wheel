@@ -1,0 +1,95 @@
+<!-- Example usage patterns for RestrictedAreaComponent -->
+
+<!-- 1. Login Required for Filters -->
+<%= render RestrictedAreaComponent.new(
+  show_login_button: !user_signed_in?,
+  message: "Sign in to access advanced filters",
+  blur: true,
+  overlay: !user_signed_in?
+) do %>
+  <div class="filters-section">
+    <!-- Your filters content here -->
+  </div>
+<% end %>
+
+<!-- 2. Trial Expired - Upgrade Required -->
+<%= render RestrictedAreaComponent.new(
+  show_upgrade_button: current_user&.company&.trial_expired?,
+  message: "Your trial has expired. Upgrade to continue posting jobs.",
+  blur: true,
+  overlay: current_user&.company&.trial_expired?
+) do %>
+  <div class="job-posting-form">
+    <!-- Your job posting form here -->
+  </div>
+<% end %>
+
+<!-- 3. Free Trial Required -->
+<%= render RestrictedAreaComponent.new(
+  show_trial_button: !user_signed_in?,
+  message: "Start your free trial to unlock premium features",
+  blur: true,
+  overlay: !user_signed_in?
+) do %>
+  <div class="premium-features">
+    <!-- Premium features content -->
+  </div>
+<% end %>
+
+<!-- 4. Custom Restriction -->
+<%= render RestrictedAreaComponent.new(
+  message: "This feature is coming soon!",
+  action_text: "Get Notified",
+  action_url: "#",
+  blur: false,
+  overlay: true
+) do %>
+  <div class="coming-soon-feature">
+    <!-- Feature content -->
+  </div>
+<% end %>
+
+<!-- 5. Company Subscription Required -->
+<%= render RestrictedAreaComponent.new(
+  show_upgrade_button: current_user&.company&.subscription_expired?,
+  message: "Your subscription has expired. Renew to continue.",
+  blur: true,
+  overlay: current_user&.company&.subscription_expired?
+) do %>
+  <div class="subscription-required-content">
+    <!-- Content that requires active subscription -->
+  </div>
+<% end %>
+
+<!-- 6. Role-based Restriction -->
+<%= render RestrictedAreaComponent.new(
+  show_login_button: !current_user&.admin?,
+  message: "Admin access required",
+  blur: true,
+  overlay: !current_user&.admin?
+) do %>
+  <div class="admin-only-content">
+    <!-- Admin-only content -->
+  </div>
+<% end %>
+
+<!-- 7. No Overlay, Just Blur -->
+<%= render RestrictedAreaComponent.new(
+  show_login_button: !user_signed_in?,
+  blur: true,
+  overlay: false
+) do %>
+  <div class="blurred-content">
+    <!-- Content that's blurred but no overlay -->
+  </div>
+<% end %>
+
+<!-- 8. Custom Styling -->
+<%= render RestrictedAreaComponent.new(
+  show_upgrade_button: true,
+  custom_class: "bg-gradient-to-r from-purple-500 to-pink-500"
+) do %>
+  <div class="custom-styled-content">
+    <!-- Content with custom overlay styling -->
+  </div>
+<% end %>

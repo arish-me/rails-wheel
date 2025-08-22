@@ -1,0 +1,71 @@
+<div class="relative">
+  <!-- Content with optional blur -->
+  <div class="<%= content_classes %>">
+    <%= content %>
+  </div>
+
+  <!-- Overlay -->
+  <% if overlay %>
+    <div class="<%= overlay_classes %>">
+      <div class="text-center p-6">
+        <!-- Icon -->
+        <div class="mx-auto h-12 w-12 text-gray-400 mb-4">
+          <% if show_login_button %>
+            <svg class="h-12 w-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path>
+            </svg>
+          <% elsif show_upgrade_button %>
+            <svg class="h-12 w-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+            </svg>
+          <% elsif show_trial_button %>
+            <svg class="h-12 w-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"></path>
+            </svg>
+          <% else %>
+            <svg class="h-12 w-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+            </svg>
+          <% end %>
+        </div>
+
+        <!-- Message -->
+        <h3 class="text-lg font-semibold text-gray-900 mb-2">
+          <%= message || default_message %>
+        </h3>
+
+        <!-- Action Button -->
+        <% if action_text.present? || show_login_button || show_upgrade_button || show_trial_button %>
+          <div class="mt-4">
+            <% if action_method == :post %>
+              <%= button_to action_text || default_action_text,
+                  action_url || default_action_url,
+                  method: :post,
+                  class: button_classes %>
+            <% else %>
+              <%= link_to action_text || default_action_text,
+                  action_url || default_action_url,
+                  class: button_classes %>
+            <% end %>
+          </div>
+        <% end %>
+
+        <!-- Additional Info -->
+        <% if show_login_button %>
+          <p class="text-sm text-gray-600 mt-3">
+            Already have an account?
+            <%= link_to "Sign in", new_user_session_path, class: "text-blue-600 hover:text-blue-700 font-medium" %>
+          </p>
+        <% elsif show_trial_button %>
+          <p class="text-sm text-gray-600 mt-3">
+            No credit card required • 30-day free trial
+          </p>
+        <% elsif show_upgrade_button %>
+          <p class="text-sm text-gray-600 mt-3">
+            Unlock all features and remove limitations
+          </p>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>
