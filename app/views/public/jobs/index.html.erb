@@ -149,7 +149,7 @@
                 <% if user_signed_in? %>
                   <%= @pagy.count %> jobs found
                 <% else %>
-                  <%= @jobs.count %> jobs shown (of <%= Job.published.active.count %> total)
+                  <%= @jobs.count %> jobs found
                 <% end %>
               </p>
             </div>
