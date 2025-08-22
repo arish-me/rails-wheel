@@ -1,5 +1,5 @@
 FactoryBot.define do
   factory :candidate_role_group do
-    name { "MyString" }
+    name { 'MyString' }
   end
 end

@@ -35,9 +35,9 @@ class NotificationsController < ApplicationController
       # Assuming Notification model has a create_for_user method or similar
       UserNotifier.welcome_back(user)
       # Notification.create(user: user, message: params[:message] || 'You have a new notification!')
-      render json: { success: true, message: "Notification sent." }
+      render json: { success: true, message: 'Notification sent.' }
     else
-      render json: { success: false, message: "User not found." }, status: :not_found
+      render json: { success: false, message: 'User not found.' }, status: :not_found
     end
   end
 

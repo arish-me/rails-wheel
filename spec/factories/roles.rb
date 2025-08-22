@@ -13,32 +13,32 @@ FactoryBot.define do
     end
 
     trait :super_admin do
-      name { "SuperAdmin" }
+      name { 'SuperAdmin' }
     end
 
     factory :default_role do
-      name { "User" }
+      name { 'User' }
       is_default { true }
     end
 
     factory :admin_role do
-      name { "Admin" }
+      name { 'Admin' }
     end
 
     factory :super_admin_role do
-      name { "SuperAdmin" }
+      name { 'SuperAdmin' }
     end
 
     factory :manager_role do
-      name { "Manager" }
+      name { 'Manager' }
     end
 
     factory :editor_role do
-      name { "Editor" }
+      name { 'Editor' }
     end
 
     factory :viewer_role do
-      name { "Viewer" }
+      name { 'Viewer' }
     end
 
     # Factory for roles with permissions

@@ -8,16 +8,16 @@ RSpec.describe Company, type: :model do
   end
 
   describe 'associations' do
-    it { should have_many(:users) }
+    it { is_expected.to have_many(:users) }
   end
 
   describe 'validations' do
     subject { build(:company) }
 
-    it { should validate_presence_of(:name) }
-    it { should validate_uniqueness_of(:name).case_insensitive }
-    it { should validate_presence_of(:subdomain) }
-    it { should validate_uniqueness_of(:subdomain).case_insensitive }
+    it { is_expected.to validate_presence_of(:name) }
+    it { is_expected.to validate_uniqueness_of(:name).case_insensitive }
+    it { is_expected.to validate_presence_of(:subdomain) }
+    it { is_expected.to validate_uniqueness_of(:subdomain).case_insensitive }
   end
 
   describe 'search functionality' do
@@ -26,7 +26,7 @@ RSpec.describe Company, type: :model do
     let!(:company3) { create(:company, name: 'Google LLC') }
 
     it 'searches by name prefix' do
-      results = Company.search_by_name('App')
+      results = described_class.search_by_name('App')
       expect(results).to include(company1)
       expect(results).not_to include(company2, company3)
     end

@@ -8,8 +8,7 @@ class ApplicationPolicy
     @record = record
   end
 
-  def index?
-  end
+  def index?; end
 
   def can_view?
     has_permission?(:view)
@@ -45,17 +44,17 @@ class ApplicationPolicy
   end
 
   def resolve_resource_name
-    excluded_classes = [ "Class" ] # List of class names to exclude
+    excluded_classes = ['Class'] # List of class names to exclude
 
     resource_name = if record.is_a?(ActiveRecord::Relation)
                       record.klass.name # For collections
-    elsif record.is_a?(Class)
+                    elsif record.is_a?(Class)
                       record.name # For Class objects (e.g., Category)
-    else
+                    else
                       record.class.name # For single records
-    end
+                    end
 
-    excluded_classes.include?(resource_name) ? "" : resource_name
+    excluded_classes.include?(resource_name) ? '' : resource_name
   end
 
   class Scope

@@ -1,7 +1,9 @@
-class Settings::PreferencesController < ApplicationController
-  layout "settings"
+module Settings
+  class PreferencesController < ApplicationController
+    layout 'settings'
 
-  def show
-    @user = current_user
+    def show
+      @user = current_user
+    end
   end
 end

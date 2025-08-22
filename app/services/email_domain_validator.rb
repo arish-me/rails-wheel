@@ -20,37 +20,37 @@ class EmailDomainValidator
   ].freeze
 
   def self.personal_domain?(email)
-    return false unless email.present?
-    
+    return false if email.blank?
+
     domain = extract_domain(email)
     PERSONAL_DOMAINS.include?(domain.downcase)
   end
 
   def self.business_domain?(email)
-    return false unless email.present?
-    
+    return false if email.blank?
+
     domain = extract_domain(email)
-    !PERSONAL_DOMAINS.include?(domain.downcase)
+    PERSONAL_DOMAINS.exclude?(domain.downcase)
   end
 
   def self.extract_domain(email)
-    return nil unless email.present?
+    return nil if email.blank?
     return nil unless email.include?('@')
-    
+
     email.split('@').last&.downcase
   end
 
   def self.validate_company_email(email)
-    return { valid: false, message: "Email is required" } unless email.present?
-    return { valid: false, message: "Invalid email format" } unless email.match?(/\A[^@\s]+@[^@\s]+\z/)
-    
+    return { valid: false, message: 'Email is required' } if email.blank?
+    return { valid: false, message: 'Invalid email format' } unless email.match?(/\A[^@\s]+@[^@\s]+\z/)
+
     if personal_domain?(email)
-      { 
-        valid: false, 
-        message: "Please use a business email address. Personal email domains like Gmail, Yahoo, etc. are not allowed for company accounts." 
+      {
+        valid: false,
+        message: 'Please use a business email address. Personal email domains like Gmail, Yahoo, etc. are not allowed for company accounts.'
       }
     else
-      { valid: true, message: "Email domain is valid" }
+      { valid: true, message: 'Email domain is valid' }
     end
   end
 end

@@ -10,10 +10,10 @@ class UserNotifier < ApplicationNotifier
 
   # deliver_by :database
   deliver_by :action_cable do |config|
-    config.channel = "Noticed::NotificationChannel"
+    config.channel = 'Noticed::NotificationChannel'
     config.stream = -> { recipient }
 
-    config.message = -> {
+    config.message = lambda {
       {
         message: params[:message],
         created_at: Time.current
@@ -32,10 +32,9 @@ class UserNotifier < ApplicationNotifier
 
   notification_methods do
     def message
-      "Welcome back to Wheel"
+      'Welcome back to Wheel'
     end
   end
-
 
   # Class method to send welcome back notification
   def self.welcome_back(user)

@@ -1,5 +1,5 @@
 class TabsComponent < ViewComponent::Base
-  renders_one :nav, ->(classes: nil) do
+  renders_one :nav, lambda { |classes: nil|
     Tabs::NavComponent.new(
       active_tab: active_tab,
       active_btn_classes: active_btn_classes,
@@ -7,29 +7,30 @@ class TabsComponent < ViewComponent::Base
       btn_classes: base_btn_classes,
       classes: unstyled? ? classes : class_names(nav_container_classes, classes)
     )
-  end
+  }
 
-  renders_many :panels, ->(tab_id:, &block) do
+  renders_many :panels, lambda { |tab_id:, &block|
     content_tag(
       :div,
-      class: ("hidden" unless tab_id == active_tab),
-      data: { id: tab_id, tabs_target: "panel" },
+      class: ('hidden' unless tab_id == active_tab),
+      data: { id: tab_id, tabs_target: 'panel' },
       &block
     )
-  end
+  }
 
   VARIANTS = {
     default: {
-      active_btn_classes: "bg-white theme-dark:bg-gray-700 text-primary shadow-sm",
-      inactive_btn_classes: "text-secondary hover:bg-surface-inset-hover",
-      base_btn_classes: "w-full inline-flex justify-center items-center text-sm font-medium px-2 py-1 rounded-md transition-colors duration-200",
-      nav_container_classes: "flex bg-surface-inset p-1 rounded-lg mb-4"
+      active_btn_classes: 'bg-white theme-dark:bg-gray-700 text-primary shadow-sm',
+      inactive_btn_classes: 'text-secondary hover:bg-surface-inset-hover',
+      base_btn_classes: 'w-full inline-flex justify-center items-center text-sm font-medium px-2 py-1 rounded-md transition-colors duration-200',
+      nav_container_classes: 'flex bg-surface-inset p-1 rounded-lg mb-4'
     }
-  }
+  }.freeze
 
   attr_reader :active_tab, :url_param_key, :session_key, :variant, :testid
 
-  def initialize(active_tab:, url_param_key: nil, session_key: nil, variant: :default, active_btn_classes: "", inactive_btn_classes: "", testid: nil)
+  def initialize(active_tab:, url_param_key: nil, session_key: nil, variant: :default, active_btn_classes: '',
+                 inactive_btn_classes: '', testid: nil)
     @active_tab = active_tab
     @url_param_key = url_param_key
     @session_key = session_key
@@ -48,19 +49,20 @@ class TabsComponent < ViewComponent::Base
   end
 
   private
-    def unstyled?
-      variant == :unstyled
-    end
 
-    def base_btn_classes
-      unless unstyled?
-        VARIANTS.dig(variant, :base_btn_classes)
-      end
-    end
+  def unstyled?
+    variant == :unstyled
+  end
 
-    def nav_container_classes
-      unless unstyled?
-        VARIANTS.dig(variant, :nav_container_classes)
-      end
-    end
+  def base_btn_classes
+    return if unstyled?
+
+    VARIANTS.dig(variant, :base_btn_classes)
+  end
+
+  def nav_container_classes
+    return if unstyled?
+
+    VARIANTS.dig(variant, :nav_container_classes)
+  end
 end

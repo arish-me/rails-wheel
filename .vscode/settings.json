@@ -1,18 +1,123 @@
 {
-  "tailwindCSS.includeLanguages": {
+  "files.associations": {
+    "*.erb": "erb",
+    "*.html.erb": "erb",
+    "*.js.erb": "erb",
+    "*.jbuilder": "ruby",
+    "*.rake": "ruby",
+    "Gemfile": "ruby",
+    "*.yml": "yaml",
+    "*.yaml": "yaml"
+  },
+  "emmet.includeLanguages": {
+    "erb": "html",
     "html.erb": "html"
   },
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnSave": true,
+  "files.exclude": {
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "**/node_modules": true,
+    "**/tmp": true,
+    "**/log": true,
+    "**/coverage": true,
+    "**/.bundle": true,
+    "**/vendor/bundle": true,
+    "**/storage": true
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/tmp": true,
+    "**/log": true,
+    "**/coverage": true,
+    "**/.bundle": true,
+    "**/vendor/bundle": true,
+    "**/storage": true
+  },
+  "ruby.useLanguageServer": true,
+  "ruby.lint": {
+    "rubocop": {
+      "useBundler": true
+    }
+  },
+  "ruby.format": "rubocop",
+  "ruby.intellisense": "rubyLsp",
+  "rubyLsp.formatter": "rubocop",
+  "rubyLsp.diagnostics": {
+    "rubocop": {
+      "enabled": true
+    }
+  },
   "[erb]": {
     "editor.defaultFormatter": "aliariff.vscode-erb-beautify",
-    "editor.formatOnSave": true
+    "editor.formatOnSave": true,
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true
   },
-  "prettier.semi": false,
-  "prettier.trailingComma": "none",
-  "prettier.singleQuote": true,
-  "files.associations": {
-    "*.html.erb": "erb"
+  "erb-formatter.lineLength": 120,
+  "erb-formatter.indentSize": 2,
+  "erb-formatter.useDoubleQuotes": false,
+  "erb.erb_formatter": "erb-formatter",
+  "erb.erb_formatter_args": [
+    "--indent-size",
+    "2"
+  ],
+  "tailwindCSS.includeLanguages": {
+    "erb": "html",
+    "html.erb": "html",
+    "ruby": "erb"
   },
-  "erb-formatter.lineLength": 180
+  "tailwindCSS.experimental.classRegex": [
+    [
+      "class_name\\s*=\\s*[\"']([^\"']*)[\"']",
+      "[\"'`]([^\"'`]*)[\"'`]"
+    ],
+    [
+      "class\\s*=\\s*[\"']([^\"']*)[\"']",
+      "[\"'`]([^\"'`]*)[\"'`]"
+    ]
+  ],
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit",
+    "source.organizeImports": "explicit"
+  },
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.detectIndentation": false,
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+  "git.ignoreLimitWarning": true,
+  "git.autofetch": true,
+  "terminal.integrated.defaultProfile.osx": "zsh",
+  "terminal.integrated.env.osx": {
+    "PATH": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+  },
+  "workbench.colorCustomizations": {
+    "editor.lineHighlightBackground": "#2a2d2e",
+    "editor.lineHighlightBorder": "#454545"
+  },
+  "editor.rulers": [
+    80,
+    120
+  ],
+  "editor.wordWrap": "bounded",
+  "editor.wordWrapColumn": 120,
+  "files.eol": "\n",
+  "yaml.format.enable": true,
+  "yaml.validate": true,
+  "yaml.schemas": {
+    "https://json.schemastore.org/github-workflow.json": ".github/workflows/*.yml"
+  },
+  "javascript.preferences.importModuleSpecifier": "relative",
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "eslint.workingDirectories": [
+    "."
+  ],
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ]
 }

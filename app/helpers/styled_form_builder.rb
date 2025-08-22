@@ -1,6 +1,7 @@
 class StyledFormBuilder < ActionView::Helpers::FormBuilder
   # Fields that visually inherit from "text field"
-  class_attribute :text_field_helpers, default: field_helpers - [ :label, :check_box, :radio_button, :fields_for, :fields, :hidden_field, :file_field ]
+  class_attribute :text_field_helpers,
+                  default: field_helpers - %i[label check_box radio_button fields_for fields hidden_field file_field]
 
   # Wraps "text" inputs with custom structure + base styles
   text_field_helpers.each do |selector|
@@ -16,13 +17,13 @@ class StyledFormBuilder < ActionView::Helpers::FormBuilder
   end
 
   def radio_button(method, tag_value, options = {})
-    merged_options = { class: "form-field__radio" }.merge(options)
+    merged_options = { class: 'form-field__radio' }.merge(options)
 
     super(method, tag_value, merged_options)
   end
 
   def select(method, choices, options = {}, html_options = {})
-    merged_html_options = { class: "form-field__input" }.merge(html_options)
+    merged_html_options = { class: 'form-field__input' }.merge(html_options)
 
     label = build_label(method, options.merge(required: merged_html_options[:required]))
     field = super(method, choices, options, merged_html_options)
@@ -31,7 +32,7 @@ class StyledFormBuilder < ActionView::Helpers::FormBuilder
   end
 
   def collection_select(method, collection, value_method, text_method, options = {}, html_options = {})
-    merged_html_options = { class: "form-field__input" }.merge(html_options)
+    merged_html_options = { class: 'form-field__input' }.merge(html_options)
 
     label = build_label(method, options.merge(required: merged_html_options[:required]))
     field = super(method, collection, value_method, text_method, options, merged_html_options)
@@ -40,7 +41,7 @@ class StyledFormBuilder < ActionView::Helpers::FormBuilder
   end
 
   def money_field(amount_method, options = {})
-    @template.render partial: "shared/money_field", locals: {
+    @template.render partial: 'shared/money_field', locals: {
       form: self,
       amount_method:,
       currency_method: options[:currency_method] || :currency,
@@ -50,13 +51,16 @@ class StyledFormBuilder < ActionView::Helpers::FormBuilder
 
   def submit(value = nil, options = {})
     # Rails superclass logic to extract the submit text
-    value, options = nil, value if value.is_a?(Hash)
+    if value.is_a?(Hash)
+      options = value
+      value = nil
+    end
     value ||= submit_default_value
 
     @template.render(
       ButtonComponent.new(
         text: value,
-        data: (options[:data] || {}).merge({ turbo_submits_with: "Submitting..." }),
+        data: (options[:data] || {}).merge({ turbo_submits_with: 'Submitting...' }),
         full_width: options[:data]&.[](:full_width) || true
       )
     )
@@ -64,29 +68,30 @@ class StyledFormBuilder < ActionView::Helpers::FormBuilder
 
   private
 
-    def build_styled_field(label, field, options, remove_padding_right: false)
-      if options[:inline]
+  def build_styled_field(label, field, options, remove_padding_right: false)
+    if options[:inline]
+      label + field
+    else
+      @template.tag.div class: ['form-field', options[:container_class], ('pr-0' if remove_padding_right)] do
         label + field
-      else
-        @template.tag.div class: [ "form-field", options[:container_class], ("pr-0" if remove_padding_right) ] do
-          label + field
-        end
       end
     end
+  end
 
-    def build_label(method, options)
-      return "".html_safe unless options[:label]
+  def build_label(method, options)
+    return ''.html_safe unless options[:label]
 
-      label_text = options[:label]
+    label_text = options[:label]
 
-      if options[:required]
-        label_text = @template.safe_join([
-          label_text == true ? method.to_s.humanize : label_text,
-          @template.tag.span("*", class: "text-red-500 ml-0.5")
-        ])
-      end
-
-      return label(method, class: "form-field__label") if label_text == true
-      label(method, label_text, class: "form-field__label")
+    if options[:required]
+      label_text = @template.safe_join([
+                                         label_text == true ? method.to_s.humanize : label_text,
+                                         @template.tag.span('*', class: 'text-red-500 ml-0.5')
+                                       ])
     end
+
+    return label(method, class: 'form-field__label') if label_text == true
+
+    label(method, label_text, class: 'form-field__label')
+  end
 end

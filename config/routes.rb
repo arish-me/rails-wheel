@@ -30,6 +30,7 @@ Rails.application.routes.draw do
     resource :preferences, only: :show
     resource :accounts, only: :show
     resource :company, only: :show
+    resource :subscriptions, only: :show
     get "account", to: "settings#edit_account", as: "edit_account"
   end
 
@@ -145,6 +146,14 @@ Rails.application.routes.draw do
       collection do
         post :bulk_destroy
         post :stop_impersonating
+      end
+    end
+
+    resources :subscription_management, only: [ :index, :show ] do
+      member do
+        post :upgrade
+        post :extend_trial
+        post :cancel
       end
     end
   end

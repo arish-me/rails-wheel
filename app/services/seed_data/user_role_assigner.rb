@@ -11,7 +11,7 @@ module SeedData
 
       # Ensure we operate within the correct tenant context for finding the role
       ActsAsTenant.with_tenant(@company) do
-        super_admin_role = Role.find_by(name: "SuperAdmin")
+        super_admin_role = Role.find_by(name: 'SuperAdmin')
 
         if super_admin_role
           # Assign the role to the user for this company
@@ -22,7 +22,7 @@ module SeedData
           log "Error: SuperAdmin role not found for company #{@company.name}. Cannot assign."
         end
       end
-    rescue => e
+    rescue StandardError => e
       log "Failed to assign SuperAdmin role: #{e.message}"
       # Optionally re-raise or handle the error more gracefully
     end

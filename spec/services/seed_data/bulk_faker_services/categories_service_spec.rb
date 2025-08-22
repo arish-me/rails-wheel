@@ -5,13 +5,13 @@ RSpec.describe SeedData::BulkFakerServices::CategoriesService, type: :service do
 
   describe '#call' do
     it 'calls benchmark_operation with bulk category creation' do
-      expect(service).to receive(:benchmark_operation).with("Bulk Category Creation")
+      expect(service).to receive(:benchmark_operation).with('Bulk Category Creation')
       service.call
     end
   end
 
   describe '#unique_category_name' do
-    let(:used_names) { Set.new([ 'Existing Category' ]) }
+    let(:used_names) { Set.new(['Existing Category']) }
 
     it 'returns a name not in used_names' do
       name = service.send(:unique_category_name, used_names)

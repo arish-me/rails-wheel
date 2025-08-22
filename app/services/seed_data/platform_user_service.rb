@@ -3,6 +3,7 @@ module SeedData
     def initialize(email)
       @email = email
     end
+
     def call
       seed_platform_user
     end
@@ -19,7 +20,7 @@ module SeedData
       if user.save
         log "Finish Creating Plafrom user with email #{@email}"
       else
-          log "Not able to seed Platform user with errors: #{user.errors.full_messages}"
+        log "Not able to seed Platform user with errors: #{user.errors.full_messages}"
 
       end
     end

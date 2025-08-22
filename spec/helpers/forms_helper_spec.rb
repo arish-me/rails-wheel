@@ -4,7 +4,7 @@ RSpec.describe FormsHelper, type: :helper do
   describe '#styled_form_with' do
     it 'sets the builder to StyledFormBuilder' do
       expect(helper).to receive(:form_with).with(hash_including(builder: StyledFormBuilder))
-      helper.styled_form_with(url: '/test') { }
+      helper.styled_form_with(url: '/test') {}
     end
   end
 

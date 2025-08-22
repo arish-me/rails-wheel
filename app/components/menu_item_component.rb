@@ -3,7 +3,8 @@ class MenuItemComponent < ViewComponent::Base
 
   attr_reader :variant, :text, :icon, :href, :method, :destructive, :confirm, :frame, :opts
 
-  def initialize(variant:, text: nil, icon: nil, href: nil, method: :post, destructive: false, confirm: nil, frame: nil, **opts)
+  def initialize(variant:, text: nil, icon: nil, href: nil, method: :post, destructive: false, confirm: nil,
+                 frame: nil, **opts)
     @variant = variant.to_sym
     @text = text
     @icon = icon
@@ -16,21 +17,19 @@ class MenuItemComponent < ViewComponent::Base
     raise ArgumentError, "Invalid variant: #{@variant}" unless VARIANTS.include?(@variant)
   end
 
-  def wrapper(&block)
+  def wrapper(&)
     if variant == :button
-      button_to href, method: method, class: container_classes, **merged_opts, &block
+      button_to(href, method: method, class: container_classes, **merged_opts, &)
     elsif variant == :link
-      link_to href, class: container_classes, **merged_opts, &block
-    else
-      nil
+      link_to(href, class: container_classes, **merged_opts, &)
     end
   end
 
   def text_classes
     [
-      "text-sm",
-      destructive? ? "text-destructive" : "text-primary"
-    ].join(" ")
+      'text-sm',
+      destructive? ? 'text-destructive' : 'text-primary'
+    ].join(' ')
   end
 
   def destructive?
@@ -38,25 +37,22 @@ class MenuItemComponent < ViewComponent::Base
   end
 
   private
-    def container_classes
-      [
-        "flex items-center gap-2 p-2 rounded-md w-full",
-        destructive? ? "hover:bg-red-tint-5 theme-dark:hover:bg-red-tint-10" : "hover:bg-container-hover"
-      ].join(" ")
-    end
 
-    def merged_opts
-      merged_opts = opts.dup || {}
-      data = merged_opts.delete(:data) || {}
+  def container_classes
+    [
+      'flex items-center gap-2 p-2 rounded-md w-full',
+      destructive? ? 'hover:bg-red-tint-5 theme-dark:hover:bg-red-tint-10' : 'hover:bg-container-hover'
+    ].join(' ')
+  end
 
-      if confirm.present?
-        data = data.merge(turbo_confirm: confirm.to_data_attribute)
-      end
+  def merged_opts
+    merged_opts = opts.dup || {}
+    data = merged_opts.delete(:data) || {}
 
-      if frame.present?
-        data = data.merge(turbo_frame: frame)
-      end
+    data = data.merge(turbo_confirm: confirm.to_data_attribute) if confirm.present?
 
-      merged_opts.merge(data: data)
-    end
+    data = data.merge(turbo_frame: frame) if frame.present?
+
+    merged_opts.merge(data: data)
+  end
 end

@@ -1,5 +1,5 @@
 class NotificationComponent < ViewComponent::Base
-  def initialize(current_user:, placement: "bottom-end", offset: 0)
+  def initialize(current_user:, placement: 'bottom-end', offset: 0)
     @current_user = current_user
     @placement = placement
     @offset = offset

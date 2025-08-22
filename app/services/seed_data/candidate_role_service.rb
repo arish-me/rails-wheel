@@ -5,110 +5,110 @@ module SeedData
     # Each hash in the array represents a group with a 'group_name' and an array of 'roles'.
     DEFAULT_DATA = [
       {
-        group_name: "Engineering",
+        group_name: 'Engineering',
         roles: [
-          "Software Engineer",
-          "Mobile Developer",
-          "Android Developer",
-          "iOS Developer",
-          "Front-End Developer",
-          "Back-End Developer",
-          "Full-Stack Developer",
-          "DevOps Engineer",
-          "QA Engineer",
-          "Data Scientist",
-          "Machine Learning Engineer",
-          "Embedded Systems Engineer",
-          "Cloud Engineer",
-          "Site Reliability Engineer (SRE)",
-          "Technical Lead",
-          "Solutions Architect",
-          "Game Developer",
-          "Blockchain Developer"
+          'Software Engineer',
+          'Mobile Developer',
+          'Android Developer',
+          'iOS Developer',
+          'Front-End Developer',
+          'Back-End Developer',
+          'Full-Stack Developer',
+          'DevOps Engineer',
+          'QA Engineer',
+          'Data Scientist',
+          'Machine Learning Engineer',
+          'Embedded Systems Engineer',
+          'Cloud Engineer',
+          'Site Reliability Engineer (SRE)',
+          'Technical Lead',
+          'Solutions Architect',
+          'Game Developer',
+          'Blockchain Developer'
         ]
       },
       {
-        group_name: "Designer",
+        group_name: 'Designer',
         roles: [
-          "UI/UX Designer",
-          "Product Designer",
-          "Graphic Designer",
-          "Web Designer",
-          "Interaction Designer",
-          "Motion Designer",
-          "Illustrator"
+          'UI/UX Designer',
+          'Product Designer',
+          'Graphic Designer',
+          'Web Designer',
+          'Interaction Designer',
+          'Motion Designer',
+          'Illustrator'
         ]
       },
       {
-        group_name: "Operations",
+        group_name: 'Operations',
         roles: [
-          "Operations Manager",
-          "Project Manager",
-          "Product Manager",
-          "Business Analyst",
-          "Supply Chain Manager",
-          "Office Manager",
-          "Executive Assistant"
+          'Operations Manager',
+          'Project Manager',
+          'Product Manager',
+          'Business Analyst',
+          'Supply Chain Manager',
+          'Office Manager',
+          'Executive Assistant'
         ]
       },
       {
-        group_name: "Sales",
+        group_name: 'Sales',
         roles: [
-          "Sales Representative",
-          "Account Manager",
-          "Business Development Representative (BDR)",
-          "Sales Development Representative (SDR)",
-          "Sales Engineer",
-          "Key Account Manager"
+          'Sales Representative',
+          'Account Manager',
+          'Business Development Representative (BDR)',
+          'Sales Development Representative (SDR)',
+          'Sales Engineer',
+          'Key Account Manager'
         ]
       },
       {
-        group_name: "Marketing",
+        group_name: 'Marketing',
         roles: [
-          "Marketing Manager",
-          "Content Strategist",
-          "SEO Specialist",
-          "SEM Specialist",
-          "Social Media Manager",
-          "Email Marketing Specialist",
-          "Growth Hacker",
-          "Brand Manager",
-          "Digital Marketing Specialist",
-          "PR Specialist"
+          'Marketing Manager',
+          'Content Strategist',
+          'SEO Specialist',
+          'SEM Specialist',
+          'Social Media Manager',
+          'Email Marketing Specialist',
+          'Growth Hacker',
+          'Brand Manager',
+          'Digital Marketing Specialist',
+          'PR Specialist'
         ]
       },
       {
-        group_name: "Management",
+        group_name: 'Management',
         roles: [
-          "CEO/Founder",
-          "CTO",
-          "COO",
-          "CFO",
-          "Head of Engineering",
-          "VP of Product",
-          "Team Lead",
-          "Department Manager"
+          'CEO/Founder',
+          'CTO',
+          'COO',
+          'CFO',
+          'Head of Engineering',
+          'VP of Product',
+          'Team Lead',
+          'Department Manager'
         ]
       },
       {
-        group_name: "Other Engineering", # Consider merging these into "Engineering" if it makes sense.
+        group_name: 'Other Engineering', # Consider merging these into "Engineering" if it makes sense.
         roles: [
-          "Hardware Engineer",
-          "Firmware Engineer",
-          "CAD Engineer",
-          "Research Engineer"
+          'Hardware Engineer',
+          'Firmware Engineer',
+          'CAD Engineer',
+          'Research Engineer'
         ]
       },
       {
-        group_name: "Other",
+        group_name: 'Other',
         roles: [
-          "Customer Support Specialist",
-          "HR Specialist",
-          "Legal Counsel",
-          "Finance Analyst",
-          "Admin Assistant",
-          "Consultant (General)",
-          "Data Entry Specialist"
+          'Customer Support Specialist',
+          'HR Specialist',
+          'Legal Counsel',
+          'Finance Analyst',
+          'Admin Assistant',
+          'Consultant (General)',
+          'Data Entry Specialist'
         ]
       }
     ].freeze
@@ -123,7 +123,7 @@ module SeedData
     # Iterates through the DEFAULT_DATA to create or find CandidateRoleGroup records
     # and then create or find their associated CandidateRole records.
     def create_candidate_role_groups_and_roles
-      log "Creating Candidate Role Groups and Roles..."
+      log 'Creating Candidate Role Groups and Roles...'
 
       DEFAULT_DATA.each do |group_data|
         group_name = group_data[:group_name]
@@ -140,7 +140,7 @@ module SeedData
         end
       end
 
-      log "All Candidate Role Groups and Roles processed successfully."
+      log 'All Candidate Role Groups and Roles processed successfully.'
     rescue StandardError => e
       log_error "Failed to create Candidate Role Groups and Roles: #{e.message}"
       # Depending on your BaseService and error handling, you might re-raise or handle differently.

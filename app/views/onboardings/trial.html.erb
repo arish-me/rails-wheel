@@ -11,15 +11,37 @@
 <div class="grow flex flex-col gap-12 items-center justify-center">
 	<div class="max-w-sm mx-auto flex flex-col items-center">
 		<p class="text-xl lg:text-3xl text-primary font-display font-medium">
-			Try Wheel for 14 days.
+			Try Hiring Wheels for 30 days.
 		</p>
 		<h2 class="text-xl lg:text-3xl font-display text-secondary font-medium mb-2">
 			No credit card required
 		</h2>
 		<p class="text-sm text-secondary text-center mb-8">
-			Starting the trial activates your account for Wheel.  You won't need to enter payment details.
+			Starting the trial activates your account for Hiring Wheels. You won't need to enter payment details.
 		</p>
 		<div class="w-full">
+			<% if @user.company&.has_subscription? %>
+				<!-- Show trial details if subscription exists -->
+				<div class="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6">
+					<h3 class="text-lg font-semibold text-amber-800 mb-2">Your Trial Details</h3>
+					<div class="space-y-2 text-sm">
+						<p><strong>Status:</strong> <span class="text-amber-600"><%= @user.company.subscription_status.titleize %></span></p>
+						<p><strong>Days Remaining:</strong> <span class="text-amber-600"><%= @user.company.company_subscription.trial_days_remaining %></span></p>
+						<p><strong>Trial Ends:</strong> <span class="text-amber-600"><%= @user.company.company_subscription.end_date.strftime("%B %d, %Y") %></span></p>
+					</div>
+				</div>
+			<% end %>
+			
+			<%= styled_form_with(model: @user, url: registration_path(@user), method: :patch, class: "space-y-4") do |form| %>
+				<%= form.hidden_field :onboarded_at, value: Time.current %>
+				<%= form.hidden_field :redirect_to, value: "home" %>
+				<div class="mt-6">
+					<%= render ButtonComponent.new(
+						text: "Get Started",
+						full_width: true
+					) %>
+				</div>
+			<% end %>
 		</div>
 	</div>
 	<div class="space-y-8">
@@ -33,53 +55,53 @@
 			<div class="space-y-12">
 				<div class="space-y-1.5 text-sm">
 					<p class="text-primary font-medium">Today</p>
-					<p class="text-secondary">You'll get free access to Wheel for 14 days</p>
+					<p class="text-secondary">You'll get free access to Hiring Wheels for 30 days</p>
 				</div>
 				<div class="space-y-1.5 text-sm">
-					<p class="text-primary font-medium">In 13 days (<%= 13.days.from_now.strftime("%B %d") %>)</p>
+					<p class="text-primary font-medium">In 29 days (<%= 29.days.from_now.strftime("%B %d") %>)</p>
 					<p class="text-secondary">We'll notify you to remind you when your trial will end.</p>
 				</div>
 				<div class="space-y-1.5 text-sm">
-					<p class="text-primary font-medium">In 14 days (<%= 14.days.from_now.strftime("%B %d") %>)</p>
-					<p class="text-secondary">Your trial ends &mdash; subscribe to continue using Wheel</p>
+					<p class="text-primary font-medium">In 30 days (<%= 30.days.from_now.strftime("%B %d") %>)</p>
+					<p class="text-secondary">Your trial ends &mdash; contact us to upgrade to continue using Hiring Wheels</p>
 				</div>
 			</div>
 		</div>
 	</div>
 	<div class="space-y-8 max-w-2xl mx-auto">
-		<h2 class="text-center text-lg lg:text-2xl font-medium text-primary">Unlock Your Career Potential</h2>
+		<h2 class="text-center text-lg lg:text-2xl font-medium text-primary">Unlock Your Hiring Potential</h2>
 		<div class="grid grid-cols-1 lg:grid-cols-3 gap-x-12 gap-y-6 text-secondary">
 			<div class="flex flex-col gap-4 items-center">
 				<%= render FilledIconComponent.new(icon: "briefcase", variant: :surface) %>
-				<p class="text-sm text-primary text-center">Access to thousands of job openings from top companies</p>
+				<p class="text-sm text-primary text-center">Post unlimited job openings and reach top talent</p>
 			</div>
 			<div class="flex flex-col gap-4 items-center">
-				<%= render FilledIconComponent.new(icon: "file-text", variant: :surface) %>
-				<p class="text-sm text-primary text-center">Create and manage multiple tailored resumes and profiles</p>
+				<%= render FilledIconComponent.new(icon: "users", variant: :surface) %>
+				<p class="text-sm text-primary text-center">Search and filter through thousands of qualified candidates</p>
 			</div>
 			<div class="flex flex-col gap-4 items-center">
 				<%= render FilledIconComponent.new(icon: "trending-up", variant: :surface) %>
-				<p class="text-sm text-primary text-center">Insights into market trends and salary expectations</p>
+				<p class="text-sm text-primary text-center">Advanced analytics and insights into your hiring process</p>
 			</div>
 			<div class="flex flex-col gap-4 items-center">
 				<%= render FilledIconComponent.new(icon: "calendar", variant: :surface) %>
-				<p class="text-sm text-primary text-center">Seamless tracking of all your job applications</p>
+				<p class="text-sm text-primary text-center">Seamless tracking of all your job applications and candidates</p>
 			</div>
 			<div class="flex flex-col gap-4 items-center">
-				<%= render FilledIconComponent.new(icon: "pencil", variant: :surface) %>
-				<p class="text-sm text-primary text-center">Build and refine your professional portfolio with ease</p>
+				<%= render FilledIconComponent.new(icon: "message-square", variant: :surface) %>
+				<p class="text-sm text-primary text-center">Direct communication with candidates and team collaboration</p>
 			</div>
 			<div class="flex flex-col gap-4 items-center">
 				<%= render FilledIconComponent.new(icon: "globe-2", variant: :surface) %>
-				<p class="text-sm text-primary text-center">Discover global opportunities across various industries</p>
+				<p class="text-sm text-primary text-center">Access to global talent pool across various industries</p>
 			</div>
 			<div class="flex flex-col gap-4 items-center">
-				<%= render FilledIconComponent.new(icon: "sparkles", variant: :surface) %>
-				<p class="text-sm text-primary text-center">Get early access to exclusive new career tools</p>
+				<%= render FilledIconComponent.new(icon: "shield", variant: :surface) %>
+				<p class="text-sm text-primary text-center">Priority support and dedicated account management</p>
 			</div>
 			<div class="flex flex-col gap-4 items-center">
-				<%= render FilledIconComponent.new(icon: "user-check", variant: :surface) %>
-				<p class="text-sm text-primary text-center">Dedicated career support from our expert team</p>
+				<%= render FilledIconComponent.new(icon: "zap", variant: :surface) %>
+				<p class="text-sm text-primary text-center">API access and custom integrations for your workflow</p>
 			</div>
 		</div>
 	</div>

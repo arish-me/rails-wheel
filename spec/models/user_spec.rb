@@ -24,67 +24,67 @@ RSpec.describe User, type: :model do
   end
 
   describe 'associations' do
-    it { should have_many(:user_roles).dependent(:destroy) }
-    it { should have_many(:roles).through(:user_roles) }
-    it { should have_many(:categories).dependent(:destroy) }
-    it { should belong_to(:company).optional }
-    it { should have_many(:notifications).class_name("Noticed::Notification") }
-    it { should have_one_attached(:profile_image) }
+    it { is_expected.to have_many(:user_roles).dependent(:destroy) }
+    it { is_expected.to have_many(:roles).through(:user_roles) }
+    it { is_expected.to have_many(:categories).dependent(:destroy) }
+    it { is_expected.to belong_to(:company).optional }
+    it { is_expected.to have_many(:notifications).class_name('Noticed::Notification') }
+    it { is_expected.to have_one_attached(:profile_image) }
   end
 
   describe 'devise modules' do
     it 'includes database_authenticatable' do
-      expect(User.devise_modules).to include(:database_authenticatable)
+      expect(described_class.devise_modules).to include(:database_authenticatable)
     end
 
     it 'includes registerable' do
-      expect(User.devise_modules).to include(:registerable)
+      expect(described_class.devise_modules).to include(:registerable)
     end
 
     it 'includes recoverable' do
-      expect(User.devise_modules).to include(:recoverable)
+      expect(described_class.devise_modules).to include(:recoverable)
     end
 
     it 'includes rememberable' do
-      expect(User.devise_modules).to include(:rememberable)
+      expect(described_class.devise_modules).to include(:rememberable)
     end
 
     it 'includes validatable' do
-      expect(User.devise_modules).to include(:validatable)
+      expect(described_class.devise_modules).to include(:validatable)
     end
 
     it 'includes lockable' do
-      expect(User.devise_modules).to include(:lockable)
+      expect(described_class.devise_modules).to include(:lockable)
     end
 
     it 'includes timeoutable' do
-      expect(User.devise_modules).to include(:timeoutable)
+      expect(described_class.devise_modules).to include(:timeoutable)
     end
 
     it 'includes trackable' do
-      expect(User.devise_modules).to include(:trackable)
+      expect(described_class.devise_modules).to include(:trackable)
     end
 
     it 'includes confirmable' do
-      expect(User.devise_modules).to include(:confirmable)
+      expect(described_class.devise_modules).to include(:confirmable)
     end
 
     it 'includes omniauthable' do
-      expect(User.devise_modules).to include(:omniauthable)
+      expect(described_class.devise_modules).to include(:omniauthable)
     end
   end
 
   describe 'enums' do
-    it { should define_enum_for(:gender).with_values([ :he_she, :him_her, :they_them, :other ]) }
-    it { should define_enum_for(:theme).with_values({ system: 0, light: 1, dark: 2 }).with_default(:system) }
-    it { should define_enum_for(:user_type).with_values({ company: 0, user: 1, platform_admin: 99 }) }
+    it { is_expected.to define_enum_for(:gender).with_values(%i[he_she him_her they_them other]) }
+    it { is_expected.to define_enum_for(:theme).with_values({ system: 0, light: 1, dark: 2 }).with_default(:system) }
+    it { is_expected.to define_enum_for(:user_type).with_values({ company: 0, user: 1, platform_admin: 99 }) }
   end
 
   describe 'validations' do
     subject { build(:user) }
 
-    it { should validate_presence_of(:email) }
-    it { should validate_uniqueness_of(:email).case_insensitive }
+    it { is_expected.to validate_presence_of(:email) }
+    it { is_expected.to validate_uniqueness_of(:email).case_insensitive }
 
     context 'when skip_password_validation is true' do
       before { subject.skip_password_validation = true }
@@ -146,7 +146,7 @@ RSpec.describe User, type: :model do
     let!(:user3) { create(:user, email: 'user@example.com') }
 
     it 'searches by email prefix' do
-      results = User.search_by_email('admin')
+      results = described_class.search_by_email('admin')
       expect(results).to include(user1, user2)
       expect(results).not_to include(user3)
     end
@@ -158,7 +158,7 @@ RSpec.describe User, type: :model do
     describe '#display_name' do
       context 'when first_name and last_name are present' do
         it 'returns full name' do
-          expect(user.display_name).to eq("John Doe")
+          expect(user.display_name).to eq('John Doe')
         end
       end
 
@@ -195,7 +195,7 @@ RSpec.describe User, type: :model do
       end
 
       context 'when display_name is not present' do
-        let(:user) { create(:user, email: "john@example.com", first_name: nil, last_name: nil) }
+        let(:user) { create(:user, email: 'john@example.com', first_name: nil, last_name: nil) }
 
         it 'returns first character of email' do
           expect(user.initial).to eq('J')
@@ -285,7 +285,7 @@ RSpec.describe User, type: :model do
         end
 
         it 'does not re-attach the avatar' do
-          expect { user.attach_avatar(image_url) }.not_to change { user.profile_image.attached? }
+          expect { user.attach_avatar(image_url) }.not_to(change { user.profile_image.attached? })
         end
 
         it 'does not call URI.parse when already attached' do
@@ -299,7 +299,7 @@ RSpec.describe User, type: :model do
           allow(URI).to receive(:parse).and_raise(StandardError.new('Invalid URL'))
 
           expect(Rails.logger).to receive(:error).with(/Failed to attach avatar/)
-          expect { user.attach_avatar(image_url) }.not_to change { user.profile_image.attached? }
+          expect { user.attach_avatar(image_url) }.not_to(change { user.profile_image.attached? })
         end
       end
 
@@ -310,7 +310,7 @@ RSpec.describe User, type: :model do
           allow(uri_double).to receive(:open).and_raise(StandardError.new('Network error'))
 
           expect(Rails.logger).to receive(:error).with(/Failed to attach avatar/)
-          expect { user.attach_avatar(image_url) }.not_to change { user.profile_image.attached? }
+          expect { user.attach_avatar(image_url) }.not_to(change { user.profile_image.attached? })
         end
       end
 
@@ -365,25 +365,25 @@ RSpec.describe User, type: :model do
   describe 'constants' do
     it 'defines GENDER_DISPLAY constant' do
       expect(User::GENDER_DISPLAY).to eq({
-        he_she: "He/Him",
-        him_her: "Him/Her",
-        they_them: "They/Them",
-        other: "Other"
-      })
+                                           he_she: 'He/Him',
+                                           him_her: 'Him/Her',
+                                           they_them: 'They/Them',
+                                           other: 'Other'
+                                         })
     end
 
     it 'defines DATE_FORMATS constant correctly' do
       expect(User::DATE_FORMATS).to eq([
-        [ "MM-DD-YYYY", "%m-%d-%Y" ],
-        [ "DD.MM.YYYY", "%d.%m.%Y" ],
-        [ "DD-MM-YYYY", "%d-%m-%Y" ],
-        [ "YYYY-MM-DD", "%Y-%m-%d" ],
-        [ "DD/MM/YYYY", "%d/%m/%Y" ],
-        [ "YYYY/MM/DD", "%Y/%m/%d" ],
-        [ "MM/DD/YYYY", "%m/%d/%Y" ],
-        [ "D/MM/YYYY", "%e/%m/%Y" ],
-        [ "YYYY.MM.DD", "%Y.%m.%d" ]
-      ])
+                                         ['MM-DD-YYYY', '%m-%d-%Y'],
+                                         ['DD.MM.YYYY', '%d.%m.%Y'],
+                                         ['DD-MM-YYYY', '%d-%m-%Y'],
+                                         ['YYYY-MM-DD', '%Y-%m-%d'],
+                                         ['DD/MM/YYYY', '%d/%m/%Y'],
+                                         ['YYYY/MM/DD', '%Y/%m/%d'],
+                                         ['MM/DD/YYYY', '%m/%d/%Y'],
+                                         ['D/MM/YYYY', '%e/%m/%Y'],
+                                         ['YYYY.MM.DD', '%Y.%m.%d']
+                                       ])
     end
 
     it 'has correct number of date formats' do
@@ -393,7 +393,7 @@ RSpec.describe User, type: :model do
 
   describe 'nested attributes' do
     it 'accepts nested attributes for user_roles' do
-      expect(User.nested_attributes_options).to include(:user_roles)
+      expect(described_class.nested_attributes_options).to include(:user_roles)
     end
   end
 
@@ -498,13 +498,13 @@ RSpec.describe User, type: :model do
       it 'requires first_name during onboarding' do
         oauth_user.first_name = nil
         expect(oauth_user).not_to be_valid
-        expect(oauth_user.errors[:first_name]).to include("is required to complete your profile")
+        expect(oauth_user.errors[:first_name]).to include('is required to complete your profile')
       end
 
       it 'requires last_name during onboarding' do
         oauth_user.last_name = nil
         expect(oauth_user).not_to be_valid
-        expect(oauth_user.errors[:last_name]).to include("is required to complete your profile")
+        expect(oauth_user.errors[:last_name]).to include('is required to complete your profile')
       end
 
       it 'is valid when both names are present' do

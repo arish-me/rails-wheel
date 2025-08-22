@@ -6,8 +6,9 @@ module Breadcrumbable
   end
 
   private
-    # The default, unless specific controller or action explicitly overrides
-    def set_breadcrumbs
-      @breadcrumbs = [ [ "Home", root_path ], [ controller_name.titleize, nil ] ]
-    end
+
+  # The default, unless specific controller or action explicitly overrides
+  def set_breadcrumbs
+    @breadcrumbs = [['Home', root_path], [controller_name.titleize, nil]]
+  end
 end

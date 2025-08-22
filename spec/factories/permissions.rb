@@ -4,19 +4,19 @@ FactoryBot.define do
     sequence(:resource) { |n| "resource_#{n}" }
 
     factory :view_permission do
-      name { "view" }
+      name { 'view' }
     end
 
     factory :edit_permission do
-      name { "edit" }
+      name { 'edit' }
     end
 
     factory :create_permission do
-      name { "create" }
+      name { 'create' }
     end
 
     factory :delete_permission do
-      name { "delete" }
+      name { 'delete' }
     end
   end
 end

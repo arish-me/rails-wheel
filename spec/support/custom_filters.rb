@@ -5,10 +5,10 @@ RSpec.configure do |config|
   if capybara_mode
     # Run only feature tests
     config.filter_run_including type: :feature
-    puts "🐛 Running Capybara feature tests only..."
+    puts '🐛 Running Capybara feature tests only...'
   else
     # Run only unit tests (exclude feature tests)
     config.filter_run_excluding type: :feature
-    puts "⚡ Running unit tests only (excluding feature tests)..."
+    puts '⚡ Running unit tests only (excluding feature tests)...'
   end
 end

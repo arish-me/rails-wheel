@@ -32,6 +32,7 @@
   <% platform_admin_navs += [
     { name: "Dashboard", path: root_path, icon: "pie-chart", icon_custom: false, active: page_active?(root_path), condition: true, mobile_only: true },
     { name: "Management", path: platform_users_path, icon: "pie-chart", icon_custom: false, active: page_active?(platform_users_path), condition: true, mobile_only: true },
+    { name: "Subscriptions", path: admin_subscription_management_index_path, icon: "credit-card", icon_custom: false, active: page_active?(admin_subscription_management_index_path), condition: true, mobile_only: true },
   ] %>
 <% end %>
 

@@ -2,8 +2,8 @@
 
 module SeedData
   class BaseService
-    def self.call(*args, &block)
-      new(*args, &block).call
+    def self.call(*, &)
+      new(*, &).call
     end
 
     def log(message)

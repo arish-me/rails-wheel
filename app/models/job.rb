@@ -4,7 +4,7 @@ class Job < ApplicationRecord
   friendly_id :slug_candidates, use: :slugged
   has_rich_text :description
   belongs_to :company
-  belongs_to :created_by, class_name: "User"
+  belongs_to :created_by, class_name: 'User'
 
   # Associations
   has_many :job_applications, dependent: :destroy, counter_cache: :job_applications_count
@@ -21,25 +21,25 @@ class Job < ApplicationRecord
 
   # Enums
   enum :remote_policy, {
-    on_site: "on_site",
-    remote: "remote",
-    hybrid: "hybrid"
+    on_site: 'on_site',
+    remote: 'remote',
+    hybrid: 'hybrid'
   }
 
   enum :status, {
-    draft: "draft",
-    published: "published",
-    closed: "closed",
-    expired: "expired",
-    archived: "archived"
+    draft: 'draft',
+    published: 'published',
+    closed: 'closed',
+    expired: 'expired',
+    archived: 'archived'
   }
 
   enum :salary_period, {
-    hourly: "hourly",
-    daily: "daily",
-    weekly: "weekly",
-    monthly: "monthly",
-    yearly: "yearly"
+    hourly: 'hourly',
+    daily: 'daily',
+    weekly: 'weekly',
+    monthly: 'monthly',
+    yearly: 'yearly'
   }
 
   # Validations
@@ -56,10 +56,9 @@ class Job < ApplicationRecord
   before_save :set_published_at, if: :status_changed_to_published?
   after_save :update_company_job_count, if: :saved_change_to_status?
 
-
   # Search
   pg_search_scope :search_by_title_and_description,
-                  against: [ :title, :description, :requirements ],
+                  against: %i[title description requirements],
                   using: { tsearch: { prefix: true } }
 
   # Constants
@@ -73,13 +72,13 @@ class Job < ApplicationRecord
   # ============================================================================
 
   # Status scopes
-  scope :published, -> { where(status: "published") }
-  scope :active, -> { published.where("expires_at > ?", Time.current) }
-  scope :expired, -> { where(status: "expired") }
-  scope :expired_by_date, -> { where("expires_at <= ?", Time.current) }
-  scope :draft, -> { where(status: "draft") }
-  scope :closed, -> { where(status: "closed") }
-  scope :archived, -> { where(status: "archived") }
+  scope :published, -> { where(status: 'published') }
+  scope :active, -> { published.where('expires_at > ?', Time.current) }
+  scope :expired, -> { where(status: 'expired') }
+  scope :expired_by_date, -> { where(expires_at: ..Time.current) }
+  scope :draft, -> { where(status: 'draft') }
+  scope :closed, -> { where(status: 'closed') }
+  scope :archived, -> { where(status: 'archived') }
 
   # Feature scopes
   scope :featured, -> { where(featured: true) }
@@ -90,7 +89,7 @@ class Job < ApplicationRecord
   scope :by_company_id, ->(company_id) { where(company_id: company_id) }
 
   # Location scopes
-  scope :by_location, ->(location) { where("location ILIKE ?", "%#{location}%") }
+  scope :by_location, ->(location) { where('location ILIKE ?', "%#{location}%") }
   scope :worldwide, -> { where(worldwide: true) }
   scope :not_worldwide, -> { where(worldwide: false) }
 
@@ -120,23 +119,23 @@ class Job < ApplicationRecord
   # ============================================================================
 
   def published?
-    status == "published"
+    status == 'published'
   end
 
   def draft?
-    status == "draft"
+    status == 'draft'
   end
 
   def closed?
-    status == "closed"
+    status == 'closed'
   end
 
   def expired?
-    status == "expired"
+    status == 'expired'
   end
 
   def archived?
-    status == "archived"
+    status == 'archived'
   end
 
   def past_expiration_date?
@@ -168,7 +167,7 @@ class Job < ApplicationRecord
   # ============================================================================
 
   def display_salary
-    return "Salary not specified" if salary_min.blank? && salary_max.blank?
+    return 'Salary not specified' if salary_min.blank? && salary_max.blank?
 
     if salary_min.present? && salary_max.present?
       "#{salary_currency} #{salary_min} - #{salary_max} #{salary_period}"
@@ -180,7 +179,7 @@ class Job < ApplicationRecord
   end
 
   def display_location
-    [ city, state, country ].compact.join(", ")
+    [city, state, country].compact.join(', ')
   end
 
   def display_job_type
@@ -205,9 +204,9 @@ class Job < ApplicationRecord
 
   def display_location_or_worldwide
     if worldwide?
-      "Worldwide"
+      'Worldwide'
     else
-      display_location.presence || "Location not specified"
+      display_location.presence || 'Location not specified'
     end
   end
 
@@ -251,12 +250,10 @@ class Job < ApplicationRecord
     return nil unless external_id.present? && external_source.present?
 
     case external_source
-    when "linkedin"
+    when 'linkedin'
       "https://www.linkedin.com/jobs/view/#{external_id}"
-    when "indeed"
+    when 'indeed'
       "https://www.indeed.com/viewjob?jk=#{external_id}"
-    else
-      nil
     end
   end
 
@@ -269,11 +266,11 @@ class Job < ApplicationRecord
   # ============================================================================
 
   def slug_candidates
-    [ [ :title, :company_name, :id ] ]
+    [%i[title company_name id]]
   end
 
   def company_name
-    company&.name&.parameterize || "company"
+    company&.name&.parameterize || 'company'
   end
 
   def generate_slug
@@ -310,10 +307,10 @@ class Job < ApplicationRecord
   # ============================================================================
 
   def self.expire_expired_jobs
-    expired_jobs = published.where("expires_at <= ?", Time.current)
+    expired_jobs = published.where(expires_at: ..Time.current)
 
     if expired_jobs.any?
-      expired_jobs.update_all(status: "expired", updated_at: Time.current)
+      expired_jobs.update_all(status: 'expired', updated_at: Time.current)
       Rails.logger.info "Expired #{expired_jobs.count} jobs"
     end
 
@@ -331,7 +328,7 @@ class Job < ApplicationRecord
   end
 
   def status_changed_to_published?
-    status_changed? && status == "published"
+    status_changed? && status == 'published'
   end
 
   def update_company_job_count
@@ -341,36 +338,36 @@ class Job < ApplicationRecord
   def salary_range_validity
     return if salary_min.blank? || salary_max.blank?
 
-    if salary_min > salary_max
-      errors.add(:salary_max, "must be greater than minimum salary")
-    end
+    return unless salary_min > salary_max
+
+    errors.add(:salary_max, 'must be greater than minimum salary')
   end
 
   def location_required_unless_worldwide
     return if worldwide?
 
     location_present = location&.location_search.present? ||
-                      city.present? ||
-                      state.present? ||
-                      country.present?
+                       city.present? ||
+                       state.present? ||
+                       country.present?
 
-    unless location_present
-      errors.add(:base, "Location is required unless the job is marked as worldwide")
-    end
+    return if location_present
+
+    errors.add(:base, 'Location is required unless the job is marked as worldwide')
   end
 
   def valid_for_publication?
     title.present? &&
-    description.present? &&
-    expires_at.present? &&
-    expires_at > Time.current &&
-    (worldwide? || location_present?)
+      description.present? &&
+      expires_at.present? &&
+      expires_at > Time.current &&
+      (worldwide? || location_present?)
   end
 
   def location_present?
     location&.location_search.present? ||
-    city.present? ||
-    state.present? ||
-    country.present?
+      city.present? ||
+      state.present? ||
+      country.present?
   end
 end

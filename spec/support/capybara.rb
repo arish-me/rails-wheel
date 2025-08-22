@@ -25,7 +25,7 @@ module CapybaraHelpers
   end
 
   # Take a screenshot of the current page (useful for debugging)
-  def take_screenshot(name = "screenshot")
+  def take_screenshot(name = 'screenshot')
     path = "tmp/screenshots/#{name}-#{Time.now.to_i}.png"
     FileUtils.mkdir_p(File.dirname(path))
     page.save_screenshot(path)
@@ -35,19 +35,15 @@ module CapybaraHelpers
   # Wait for page to load after a redirect
   def wait_for_page_load(timeout = 1)
     old_path = current_path
-    start_time = Time.now
-    while old_path == current_path && Time.now - start_time < timeout
-      sleep(0.1)
-    end
+    start_time = Time.zone.now
+    sleep(0.1) while old_path == current_path && Time.zone.now - start_time < timeout
     sleep(0.5) # Additional small wait for page content to load
   end
 
   # Wait for specific content to appear
   def wait_for_content(content, timeout = 1)
-    start_time = Time.now
-    while !page.has_content?(content) && Time.now - start_time < timeout
-      sleep(0.1)
-    end
+    start_time = Time.zone.now
+    sleep(0.1) while !page.has_content?(content) && Time.zone.now - start_time < timeout
   end
 end
 

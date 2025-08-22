@@ -1,5 +1,5 @@
 require 'rails_helper'
-require "pundit/rspec"
+require 'pundit/rspec'
 
 RSpec.describe ApplicationHelper, type: :helper do
   describe '#locale_name' do
@@ -78,7 +78,7 @@ RSpec.describe ApplicationHelper, type: :helper do
     context 'with button icon' do
       it 'renders button component when as_button is true' do
         allow(helper).to receive(:render).and_return('<button></button>')
-        result = helper.icon('test', as_button: true)
+        helper.icon('test', as_button: true)
         expect(helper).to have_received(:render)
       end
     end
@@ -86,7 +86,7 @@ RSpec.describe ApplicationHelper, type: :helper do
     context 'with default icon' do
       it 'renders lucide icon by default' do
         allow(helper).to receive(:lucide_icon).and_return('<svg></svg>')
-        result = helper.icon('test')
+        helper.icon('test')
         expect(helper).to have_received(:lucide_icon).with('test', class: include('shrink-0'))
       end
     end
@@ -170,13 +170,19 @@ RSpec.describe ApplicationHelper, type: :helper do
     it 'renders modal partial with content' do
       allow(helper).to receive(:render).and_return('<div></div>')
       helper.modal { 'content' }
-      expect(helper).to have_received(:render).with(partial: 'shared/modal', locals: { content: 'content', classes: nil })
+      expect(helper).to have_received(:render).with(partial: 'shared/modal',
+                                                    locals: {
+                                                      content: 'content', classes: nil
+                                                    })
     end
 
     it 'passes classes option' do
       allow(helper).to receive(:render).and_return('<div></div>')
       helper.modal(classes: 'test-class') { 'content' }
-      expect(helper).to have_received(:render).with(partial: 'shared/modal', locals: { content: 'content', classes: 'test-class' })
+      expect(helper).to have_received(:render).with(partial: 'shared/modal',
+                                                    locals: {
+                                                      content: 'content', classes: 'test-class'
+                                                    })
     end
   end
 
@@ -184,13 +190,19 @@ RSpec.describe ApplicationHelper, type: :helper do
     it 'renders drawer partial with content' do
       allow(helper).to receive(:render).and_return('<div></div>')
       helper.drawer { 'content' }
-      expect(helper).to have_received(:render).with(partial: 'shared/drawer', locals: { content: 'content', reload_on_close: false })
+      expect(helper).to have_received(:render).with(partial: 'shared/drawer',
+                                                    locals: {
+                                                      content: 'content', reload_on_close: false
+                                                    })
     end
 
     it 'passes reload_on_close option' do
       allow(helper).to receive(:render).and_return('<div></div>')
       helper.drawer(reload_on_close: true) { 'content' }
-      expect(helper).to have_received(:render).with(partial: 'shared/drawer', locals: { content: 'content', reload_on_close: true })
+      expect(helper).to have_received(:render).with(partial: 'shared/drawer',
+                                                    locals: {
+                                                      content: 'content', reload_on_close: true
+                                                    })
     end
   end
 
@@ -200,7 +212,7 @@ RSpec.describe ApplicationHelper, type: :helper do
     context 'when current_path is blank' do
       it 'calls pagy_url_for' do
         allow(helper).to receive(:pagy_url_for).and_return('/page/2')
-        result = helper.custom_pagy_url_for(pagy, 2)
+        helper.custom_pagy_url_for(pagy, 2)
         expect(helper).to have_received(:pagy_url_for).with(pagy, 2)
       end
     end

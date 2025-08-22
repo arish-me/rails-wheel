@@ -43,16 +43,16 @@ SeedData::CandidateDataSeeder.new(10).call
 # Seed data for each company
 companies.each do |company|
   puts "🏢 Seeding data for company: #{company.name}"
-  
+
   ActsAsTenant.with_tenant(company) do
     puts "🌐 Running MainSeeder for #{company.name}"
     SeedData::MainSeeder.new(faker_count, false, true, company).call
     puts "🌐 Finish MainSeeder for #{company.name}"
-    
+
     puts "📋 Seeding real job data for #{company.name}..."
     SeedData::RealJobDataSeeder.new(company, 5).call
   end
-  
+
   puts "✅ Completed seeding for #{company.name}"
 end
 

@@ -3,7 +3,7 @@ require 'spec_helper'
 ENV['RAILS_ENV'] ||= 'test'
 require_relative '../config/environment'
 # Prevent database truncation if the environment is production
-abort("The Rails environment is running in production mode!") if Rails.env.production?
+abort('The Rails environment is running in production mode!') if Rails.env.production?
 # Uncomment the line below in case you have `--require rails_helper` in the `.rspec` file
 # that will avoid rails generators crashing because migrations haven't been run yet
 # return unless Rails.env.test?
@@ -11,7 +11,7 @@ require 'rspec/rails'
 # Add additional requires below this line. Rails is not loaded until this point!
 require 'capybara/rails'
 require 'capybara/rspec'
-require "view_component/test_helpers"
+require 'view_component/test_helpers'
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -77,11 +77,11 @@ RSpec.configure do |config|
   if ARGV.include?('--capybara') || ARGV.include?('--automation')
     # Run only feature tests when --capybara or --automation flag is passed
     config.filter_run_including type: :feature
-    puts "Running Capybara feature tests only..."
+    puts 'Running Capybara feature tests only...'
   else
     # By default, exclude feature tests (run only unit tests)
     config.filter_run_excluding type: :feature
-    puts "Running unit tests only (excluding feature tests)..."
+    puts 'Running unit tests only (excluding feature tests)...'
   end
 end
 
@@ -102,11 +102,11 @@ end
 # Determine which driver to use based on environment
 # Use visible Chrome in development for debugging, headless in all other environments
 if ENV['RAILS_ENV'] == 'development' || ENV['SHOW_BROWSER'] == 'true'
-  puts "Using visible Chrome browser for tests"
+  puts 'Using visible Chrome browser for tests'
   Capybara.default_driver = :selenium_chrome
   Capybara.javascript_driver = :selenium_chrome
 else
-  puts "Using headless Chrome browser for tests"
+  puts 'Using headless Chrome browser for tests'
   Capybara.default_driver = :selenium_chrome_headless
   Capybara.javascript_driver = :selenium_chrome_headless
 end

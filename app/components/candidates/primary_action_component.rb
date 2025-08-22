@@ -17,8 +17,6 @@ module Candidates
       Conversation.find_by(developer:, business:)
     end
 
-    def share_url
-      developer.share_url
-    end
+    delegate :share_url, to: :developer
   end
 end

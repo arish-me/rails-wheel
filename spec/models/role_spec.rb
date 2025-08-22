@@ -28,10 +28,10 @@ RSpec.describe Role, type: :model do
   end
 
   describe 'associations' do
-    it { should have_many(:user_roles).dependent(:destroy) }
-    it { should have_many(:users).through(:user_roles) }
-    it { should belong_to(:company) }
-    it { should have_many(:role_permissions).dependent(:destroy) }
-    it { should have_many(:permissions).through(:role_permissions) }
+    it { is_expected.to have_many(:user_roles).dependent(:destroy) }
+    it { is_expected.to have_many(:users).through(:user_roles) }
+    it { is_expected.to belong_to(:company) }
+    it { is_expected.to have_many(:role_permissions).dependent(:destroy) }
+    it { is_expected.to have_many(:permissions).through(:role_permissions) }
   end
 end

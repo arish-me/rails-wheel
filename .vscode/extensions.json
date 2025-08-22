@@ -1,13 +1,22 @@
 {
   "recommendations": [
-    "esbenp.prettier-vscode",
-    "bradlc.vscode-tailwindcss",
-    "heybourn.headwind",
-    "eamodio.gitlens",
-    "Shopify.ruby-lsp",
+    "rebornix.Ruby",
+    "wingrunr21.vscode-ruby",
+    "aliariff.vscode-erb-beautify",
     "elia.erb-formatter",
-    "github.copilot",
-    "github.copilot-chat",
-    "marcoroth.stimulus-lsp"
+    "bradlc.vscode-tailwindcss",
+    "esbenp.prettier-vscode",
+    "ms-vscode.vscode-json",
+    "redhat.vscode-yaml",
+    "ms-vscode.vscode-eslint",
+    "ms-vscode.vscode-typescript-next",
+    "formulahendry.auto-rename-tag",
+    "christian-kohler.path-intellisense",
+    "ms-vscode.vscode-git",
+    "ms-vscode.vscode-git-graph",
+    "eamodio.gitlens",
+    "ms-vscode.vscode-css-peek",
+    "ms-vscode.vscode-html-css-support",
+    "Shopify.ruby-lsp"
   ]
 }

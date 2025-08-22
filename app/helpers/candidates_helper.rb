@@ -1,6 +1,7 @@
 module CandidatesHelper
   def experience_date_range(experience)
-    return "" unless experience.start_date.present?
+    return '' if experience.start_date.blank?
+
     start_year = experience.start_date.year
     if experience.current_job
       "#{start_year} to <span class=\"font-semibold\">Present</span>".html_safe

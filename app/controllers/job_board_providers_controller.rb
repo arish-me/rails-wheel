@@ -8,6 +8,8 @@ class JobBoardProvidersController < ApplicationController
 
   def show
     @provider = JobBoardProvider.find(params[:id])
-    @integrations = current_user.company.job_board_integrations.by_provider(@provider.slug) if current_user.company_user?
+    return unless current_user.company_user?
+
+    @integrations = current_user.company.job_board_integrations.by_provider(@provider.slug)
   end
 end

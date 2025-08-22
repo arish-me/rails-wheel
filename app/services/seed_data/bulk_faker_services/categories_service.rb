@@ -4,7 +4,7 @@ module SeedData
   module BulkFakerServices
     class CategoriesService < BaseService
       def call
-        benchmark_operation("Bulk Category Creation") do
+        benchmark_operation('Bulk Category Creation') do
           create_categories
         end
       end
@@ -51,11 +51,11 @@ module SeedData
           }
 
           # Bulk insert in batches of 100 for better performance
-          if categories_to_create.size >= 100
-            Category.insert_all(categories_to_create)
-            created_count += categories_to_create.size
-            categories_to_create = []
-          end
+          next unless categories_to_create.size >= 100
+
+          Category.insert_all(categories_to_create)
+          created_count += categories_to_create.size
+          categories_to_create = []
         end
 
         # Insert any remaining categories
@@ -74,6 +74,7 @@ module SeedData
         while attempt < max_attempts
           name = generate_category_name
           return name unless used_names.include?(name)
+
           attempt += 1
         end
 
@@ -82,8 +83,8 @@ module SeedData
       end
 
       def generate_category_name
-        prefixes = [ "Tech", "Home", "Work", "Personal", "Health", "Finance", "Education", "Travel" ]
-        categories = [ "Products", "Services", "Projects", "Ideas", "Tasks", "Notes", "Goals", "Events" ]
+        prefixes = %w[Tech Home Work Personal Health Finance Education Travel]
+        categories = %w[Products Services Projects Ideas Tasks Notes Goals Events]
 
         [
           "#{prefixes.sample} #{categories.sample}",

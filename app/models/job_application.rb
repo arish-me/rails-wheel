@@ -6,7 +6,7 @@ class JobApplication < ApplicationRecord
   belongs_to :job, counter_cache: :job_applications_count
   belongs_to :candidate
   belongs_to :user
-  belongs_to :reviewed_by, class_name: "User", optional: true
+  belongs_to :reviewed_by, class_name: 'User', optional: true
 
   # Active Storage
   has_one_attached :resume
@@ -15,10 +15,11 @@ class JobApplication < ApplicationRecord
   # VALIDATIONS
   # ============================================================================
 
-  validates :job_id, uniqueness: { scope: :candidate_id, message: "You have already applied to this job" }
+  validates :job_id, uniqueness: { scope: :candidate_id, message: 'You have already applied to this job' }
   validates :cover_letter, presence: true, length: { minimum: 50 }, unless: :is_quick_apply
   validates :portfolio_url, presence: true, if: :require_portfolio?
-  validates :portfolio_url, format: { with: URI.regexp(%w[http https]), message: "must be a valid URL" }, allow_blank: true
+  validates :portfolio_url, format: { with: URI::DEFAULT_PARSER.make_regexp(%w[http https]), message: 'must be a valid URL' },
+                            allow_blank: true
   validates :resume, presence: true, unless: :is_quick_apply
 
   # validates :resume, content_type: { in: ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'], message: 'must be a PDF, DOC, or DOCX file' }, if: :resume_attached?
@@ -29,13 +30,13 @@ class JobApplication < ApplicationRecord
   # ============================================================================
 
   enum :status, {
-    applied: "applied",
-    reviewing: "reviewing",
-    shortlisted: "shortlisted",
-    interviewed: "interviewed",
-    offered: "offered",
-    rejected: "rejected",
-    withdrawn: "withdrawn"
+    applied: 'applied',
+    reviewing: 'reviewing',
+    shortlisted: 'shortlisted',
+    interviewed: 'interviewed',
+    offered: 'offered',
+    rejected: 'rejected',
+    withdrawn: 'withdrawn'
   }
 
   # ============================================================================
@@ -66,7 +67,7 @@ class JobApplication < ApplicationRecord
   # ============================================================================
 
   pg_search_scope :search_by_content,
-                  against: [ :cover_letter, :additional_notes ],
+                  against: %i[cover_letter additional_notes],
                   using: {
                     tsearch: { prefix: true }
                   }
@@ -82,31 +83,31 @@ class JobApplication < ApplicationRecord
   # ============================================================================
 
   def applied?
-    status == "applied"
+    status == 'applied'
   end
 
   def reviewing?
-    status == "reviewing"
+    status == 'reviewing'
   end
 
   def shortlisted?
-    status == "shortlisted"
+    status == 'shortlisted'
   end
 
   def interviewed?
-    status == "interviewed"
+    status == 'interviewed'
   end
 
   def offered?
-    status == "offered"
+    status == 'offered'
   end
 
   def rejected?
-    status == "rejected"
+    status == 'rejected'
   end
 
   def withdrawn?
-    status == "withdrawn"
+    status == 'withdrawn'
   end
 
   def reviewed?
@@ -134,15 +135,15 @@ class JobApplication < ApplicationRecord
   end
 
   def display_applied_date
-    applied_at&.strftime("%B %d, %Y")
+    applied_at&.strftime('%B %d, %Y')
   end
 
   def display_reviewed_date
-    reviewed_at&.strftime("%B %d, %Y")
+    reviewed_at&.strftime('%B %d, %Y')
   end
 
   def display_application_type
-    is_quick_apply? ? "Quick Apply" : "Standard Application"
+    is_quick_apply? ? 'Quick Apply' : 'Standard Application'
   end
 
   # ============================================================================
@@ -157,7 +158,7 @@ class JobApplication < ApplicationRecord
   end
 
   def withdraw!
-    update!(status: "withdrawn") if can_be_withdrawn?
+    update!(status: 'withdrawn') if can_be_withdrawn?
   end
 
   def increment_view_count!
@@ -173,12 +174,10 @@ class JobApplication < ApplicationRecord
     return nil unless external_id.present? && external_source.present?
 
     case external_source
-    when "linkedin"
+    when 'linkedin'
       "https://www.linkedin.com/jobs/view/#{external_id}"
-    when "indeed"
+    when 'indeed'
       "https://www.indeed.com/viewjob?jk=#{external_id}"
-    else
-      nil
     end
   end
 
@@ -192,14 +191,12 @@ class JobApplication < ApplicationRecord
     self.applied_at = Time.current
   end
 
-
-
   def set_reviewed_at
     return if reviewed_at.present?
 
-    if %w[shortlisted interviewed offered rejected].include?(status)
-      self.reviewed_at = Time.current
-    end
+    return unless %w[shortlisted interviewed offered rejected].include?(status)
+
+    self.reviewed_at = Time.current
   end
 
   def require_portfolio?
