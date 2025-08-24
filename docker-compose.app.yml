@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    restart: always
+    environment:
+      RAILS_ENV: production
+      DATABASE_URL: postgresql://rails_wheel:${POSTGRES_PASSWORD:-your_secure_password_here}@db:5432/rails_wheel_production
+      REDIS_URL: redis://redis:6379/0
+      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE}
+      RAILS_LOG_TO_STDOUT: "true"
+      RAILS_SERVE_STATIC_FILES: "true"
+      HOST: ${HOST:-localhost}
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./storage:/app/storage
+      - ./log:/app/log
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/up"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  worker:
+    build: .
+    restart: always
+    environment:
+      RAILS_ENV: production
+      DATABASE_URL: postgresql://rails_wheel:${POSTGRES_PASSWORD:-your_secure_password_here}@db:5432/rails_wheel_production
+      REDIS_URL: redis://redis:6379/0
+      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE}
+      RAILS_LOG_TO_STDOUT: "true"
+      HOST: ${HOST:-localhost}
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./storage:/app/storage
+      - ./log:/app/log
+    command: bundle exec rails solid_queue:start
+    healthcheck:
+      test: ["CMD", "pgrep", "-f", "solid_queue"]
+      interval: 30s
+      timeout: 10s
+      retries: 3

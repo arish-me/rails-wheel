@@ -1,51 +1,80 @@
-# See https://docs.docker.com/engine/reference/builder/#dockerignore-file for more about ignoring files.
+# Git
+.git
+.gitignore
+.gitattributes
 
-# Ignore git directory.
-/.git/
-/.gitignore
+# Documentation
+README.md
+*.md
+docs/
 
-# Ignore bundler config.
-/.bundle
+# Docker
+Dockerfile*
+docker-compose*
+.dockerignore
 
-# Ignore all environment files.
-/.env*
+# Environment files
+.env*
+.env.local
+.env.development
+.env.test
+.env.production
 
-# Ignore all default key files.
-/config/master.key
-/config/credentials/*.key
+# Logs
+log/*
+*.log
 
-# Ignore all logfiles and tempfiles.
-/log/*
-/tmp/*
-!/log/.keep
-!/tmp/.keep
+# Temporary files
+tmp/*
+.tmp/
 
-# Ignore pidfiles, but keep the directory.
-/tmp/pids/*
-!/tmp/pids/.keep
+# Coverage reports
+coverage/
 
-# Ignore storage (uploaded files in development and any SQLite databases).
-/storage/*
-!/storage/.keep
-/tmp/storage/*
-!/tmp/storage/.keep
+# Node modules (if using yarn/npm)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
-# Ignore assets.
-/node_modules/
-/app/assets/builds/*
-!/app/assets/builds/.keep
-/public/assets
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
 
-# Ignore CI service files.
-/.github
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
 
-# Ignore Kamal files.
-/config/deploy*.yml
-/.kamal
+# Test files
+spec/
+test/
+*.spec.js
+*.test.js
 
-# Ignore development files
-/.devcontainer
+# Build artifacts
+public/assets/
+public/packs/
 
-# Ignore Docker-related files
-/.dockerignore
-/Dockerfile*
+# Database
+db/*.sqlite3
+db/*.sqlite3-*
+
+# Storage
+storage/*
+!storage/.keep
+
+# Cache
+.cache/
+.parcel-cache/
+
+# Backup files
+*.bak
+*.backup

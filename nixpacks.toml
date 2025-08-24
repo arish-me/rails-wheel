@@ -1,0 +1,11 @@
+[phases.setup]
+nixPkgs = ["postgresql", "nodejs", "yarn"]
+
+[phases.install]
+cmds = ["bundle install", "yarn install"]
+
+[phases.build]
+cmds = ["bundle exec rails assets:precompile", "bundle exec rails assets:clean"]
+
+[start]
+cmd = "bin/rails server -b 0.0.0.0 -p $PORT"

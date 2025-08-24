@@ -2,19 +2,20 @@ default: &default
   adapter: postgresql
   encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  host: <%= ENV.fetch("DB_HOST") { "127.0.0.1" } %>
-  port: <%= ENV.fetch("DB_PORT") { "5432" } %>
-  user: <%= ENV.fetch("POSTGRES_USER") { nil } %>
-  password: <%= ENV.fetch("POSTGRES_PASSWORD") { nil } %>
 
 development:
   <<: *default
-  database: <%= ENV.fetch("POSTGRES_DB") { "wheel_development" } %>
+  database: rails_wheel_development
 
 test:
   <<: *default
-  database: <%= ENV.fetch("POSTGRES_DB") { "wheel_test" } %>
+  database: rails_wheel_test
 
 production:
   <<: *default
-  database: <%= ENV.fetch("POSTGRES_DB") { "wheel_production" } %>
+  url: <%= ENV['DATABASE_URL'] %>
+  database: <%= ENV['DATABASE_NAME'] || 'rails_wheel_production' %>
+  username: <%= ENV['DATABASE_USERNAME'] %>
+  password: <%= ENV['DATABASE_PASSWORD'] %>
+  host: <%= ENV['DATABASE_HOST'] %>
+  port: <%= ENV['DATABASE_PORT'] || 5432 %>
