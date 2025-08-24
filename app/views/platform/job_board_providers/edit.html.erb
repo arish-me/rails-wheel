@@ -1,0 +1,138 @@
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="mb-8">
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-3xl font-bold text-gray-900">Edit Job Board Provider</h1>
+        <p class="mt-2 text-gray-600">Update job board provider configuration</p>
+      </div>
+      <%= link_to platform_job_board_provider_path(@job_board_provider),
+          class: "inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" do %>
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+        </svg>
+        Back to Provider
+      <% end %>
+    </div>
+  </div>
+  <%= form_with model: @job_board_provider, url: platform_job_board_provider_path(@job_board_provider), method: :patch, local: true, class: "space-y-8" do |form| %>
+    <% if @job_board_provider.errors.any? %>
+      <div class="bg-red-50 border border-red-200 rounded-md p-4">
+        <div class="flex">
+          <div class="flex-shrink-0">
+            <svg class="h-5 w-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </div>
+          <div class="ml-3">
+            <h3 class="text-sm font-medium text-red-800">
+              There were <%= pluralize(@job_board_provider.errors.count, "error") %> with your submission:
+            </h3>
+            <div class="mt-2 text-sm text-red-700">
+              <ul class="list-disc pl-5 space-y-1">
+                <% @job_board_provider.errors.full_messages.each do |message| %>
+                  <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+    <div class="bg-white shadow rounded-lg">
+      <div class="px-4 py-5 sm:p-6">
+        <h3 class="text-lg leading-6 font-medium text-gray-900 mb-6">Provider Information</h3>
+        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+          <div>
+            <%= form.label :name, class: "block text-sm font-medium text-gray-700" %>
+            <%= form.text_field :name, class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm", placeholder: "e.g., Adzuna" %>
+          </div>
+          <div>
+            <%= form.label :slug, class: "block text-sm font-medium text-gray-700" %>
+            <%= form.text_field :slug, class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm", placeholder: "e.g., adzuna" %>
+            <p class="mt-1 text-sm text-gray-500">Auto-generated from name if left blank</p>
+          </div>
+          <div class="sm:col-span-2">
+            <%= form.label :description, class: "block text-sm font-medium text-gray-700" %>
+            <%= form.text_area :description, rows: 3, class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm", placeholder: "Brief description of the job board provider" %>
+          </div>
+          <div>
+            <%= form.label :auth_type, class: "block text-sm font-medium text-gray-700" %>
+            <%= form.select :auth_type,
+                options_for_select([
+                  ['API Key', 'api_key'],
+                  ['OAuth', 'oauth'],
+                  ['Basic Auth', 'basic_auth']
+                ], @job_board_provider.auth_type),
+                {},
+                { class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" } %>
+          </div>
+          <div>
+            <%= form.label :status, class: "block text-sm font-medium text-gray-700" %>
+            <%= form.select :status,
+                options_for_select([
+                  ['Active', 'active'],
+                  ['Inactive', 'inactive']
+                ], @job_board_provider.status),
+                {},
+                { class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" } %>
+          </div>
+          <div class="sm:col-span-2">
+            <%= form.label :base_url, class: "block text-sm font-medium text-gray-700" %>
+            <%= form.text_field :base_url, class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm", placeholder: "https://api.example.com" %>
+            <p class="mt-1 text-sm text-gray-500">Base URL for the provider's API</p>
+          </div>
+          <div class="sm:col-span-2">
+            <%= form.label :api_documentation_url, class: "block text-sm font-medium text-gray-700" %>
+            <%= form.text_field :api_documentation_url, class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm", placeholder: "https://api.example.com/docs" %>
+            <p class="mt-1 text-sm text-gray-500">URL to the provider's API documentation</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="bg-white shadow rounded-lg">
+      <div class="px-4 py-5 sm:p-6">
+        <h3 class="text-lg leading-6 font-medium text-gray-900 mb-6">Provider Settings</h3>
+        <div class="space-y-6">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Supported Fields</label>
+            <div class="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
+              <% %w[title description location salary_min salary_max salary_currency job_type experience_level remote_work company_name company_description company_website application_url created_at updated_at expires_at status].each do |field| %>
+                <div class="flex items-center">
+                  <%= check_box_tag "job_board_provider[settings][supported_fields][]", field, @job_board_provider.settings&.dig('supported_fields')&.include?(field),
+                      { class: "h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded" } %>
+                  <label class="ml-2 text-sm text-gray-700"><%= field.humanize %></label>
+                </div>
+              <% end %>
+            </div>
+            <p class="mt-2 text-sm text-gray-500">Select the fields that this provider supports</p>
+          </div>
+          <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+            <div>
+              <%= label_tag "job_board_provider[settings][rate_limit]", "Rate Limit", class: "block text-sm font-medium text-gray-700" %>
+              <%= number_field_tag "job_board_provider[settings][rate_limit]", @job_board_provider.settings&.dig('rate_limit') || 1000,
+                  { class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm", min: 1 } %>
+              <p class="mt-1 text-sm text-gray-500">Maximum requests per time period</p>
+            </div>
+            <div>
+              <%= label_tag "job_board_provider[settings][rate_limit_period]", "Rate Limit Period", class: "block text-sm font-medium text-gray-700" %>
+              <%= select_tag "job_board_provider[settings][rate_limit_period]",
+                  options_for_select([
+                    ['Hour', 'hour'],
+                    ['Day', 'day'],
+                    ['Minute', 'minute']
+                  ], @job_board_provider.settings&.dig('rate_limit_period') || 'hour'),
+                  { class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" } %>
+              <p class="mt-1 text-sm text-gray-500">Time period for rate limiting</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="flex justify-end space-x-3">
+      <%= link_to "Cancel", platform_job_board_provider_path(@job_board_provider),
+          class: "inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+      <%= form.submit "Update Provider",
+          class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+    </div>
+  <% end %>
+</div>

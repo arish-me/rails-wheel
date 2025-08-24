@@ -1,0 +1,148 @@
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="mb-8">
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-3xl font-bold text-gray-900">Edit Job Board Integration</h1>
+        <p class="mt-2 text-gray-600">Update your job board integration settings</p>
+      </div>
+      <%= link_to job_board_integrations_path,
+          class: "inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" do %>
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+        </svg>
+        Back to Integrations
+      <% end %>
+    </div>
+  </div>
+  <%= form_with model: @job_board_integration, local: true, class: "space-y-8" do |form| %>
+    <% if @job_board_integration.errors.any? %>
+      <div class="bg-red-50 border border-red-200 rounded-md p-4">
+        <div class="flex">
+          <div class="flex-shrink-0">
+            <svg class="h-5 w-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </div>
+          <div class="ml-3">
+            <h3 class="text-sm font-medium text-red-800">
+              There were <%= pluralize(@job_board_integration.errors.count, "error") %> with your submission:
+            </h3>
+            <div class="mt-2 text-sm text-red-700">
+              <ul class="list-disc pl-5 space-y-1">
+                <% @job_board_integration.errors.full_messages.each do |message| %>
+                  <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+    <div class="bg-white shadow rounded-lg">
+      <div class="px-4 py-5 sm:p-6">
+        <h3 class="text-lg leading-6 font-medium text-gray-900 mb-6">Integration Details</h3>
+        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+          <div>
+            <%= form.label :name, class: "block text-sm font-medium text-gray-700" %>
+            <%= form.text_field :name, class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm", placeholder: "e.g., Adzuna Integration" %>
+          </div>
+          <div>
+            <%= form.label :provider, class: "block text-sm font-medium text-gray-700" %>
+            <%= form.select :provider,
+                options_from_collection_for_select(@available_providers, :slug, :name, @job_board_integration.provider),
+                { prompt: "Select a provider" },
+                { class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" } %>
+          </div>
+          <div>
+            <%= form.label :api_key, class: "block text-sm font-medium text-gray-700" %>
+            <%= form.text_field :api_key, class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm", placeholder: "Enter your API key" %>
+            <p class="mt-1 text-sm text-gray-500">Your API key from the job board provider</p>
+          </div>
+          <div>
+            <%= form.label :api_secret, class: "block text-sm font-medium text-gray-700" %>
+            <%= form.text_field :api_secret, class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm", placeholder: "Enter your API secret (if required)" %>
+            <p class="mt-1 text-sm text-gray-500">Your API secret (required for OAuth providers)</p>
+          </div>
+          <div class="sm:col-span-2">
+            <%= form.label :webhook_url, class: "block text-sm font-medium text-gray-700" %>
+            <%= form.text_field :webhook_url, class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm", placeholder: "https://your-domain.com/webhooks/job-board" %>
+            <p class="mt-1 text-sm text-gray-500">Optional webhook URL for receiving updates from the job board</p>
+          </div>
+          <div>
+            <%= form.label :status, class: "block text-sm font-medium text-gray-700" %>
+            <%= form.select :status,
+                options_for_select([['Active', 'active'], ['Inactive', 'inactive'], ['Testing', 'testing']], @job_board_integration.status),
+                {},
+                { class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" } %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="bg-white shadow rounded-lg">
+      <div class="px-4 py-5 sm:p-6">
+        <h3 class="text-lg leading-6 font-medium text-gray-900 mb-6">Sync Settings</h3>
+        <div class="space-y-6">
+          <div class="flex items-start">
+            <div class="flex items-center h-5">
+              <%= form.check_box :settings_auto_sync, { class: "h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded" }, "true", "false" %>
+            </div>
+            <div class="ml-3 text-sm">
+              <label for="job_board_integration_settings_auto_sync" class="font-medium text-gray-700">Enable Auto Sync</label>
+              <p class="text-gray-500">Automatically sync jobs with the external job board at regular intervals</p>
+            </div>
+          </div>
+          <div>
+            <%= form.label :settings_sync_interval, "Sync Interval (seconds)", class: "block text-sm font-medium text-gray-700" %>
+            <%= form.select :settings_sync_interval,
+                options_for_select([
+                  ['30 minutes', 1800],
+                  ['1 hour', 3600],
+                  ['2 hours', 7200],
+                  ['4 hours', 14400],
+                  ['6 hours', 21600],
+                  ['12 hours', 43200],
+                  ['24 hours', 86400]
+                ], @job_board_integration.settings&.dig('sync_interval') || 3600),
+                {},
+                { class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" } %>
+          </div>
+          <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <div class="flex items-start">
+              <div class="flex items-center h-5">
+                <%= form.check_box :settings_post_new_jobs, { class: "h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded" }, "true", "false" %>
+              </div>
+              <div class="ml-3 text-sm">
+                <label for="job_board_integration_settings_post_new_jobs" class="font-medium text-gray-700">Post New Jobs</label>
+                <p class="text-gray-500">Automatically post newly created jobs</p>
+              </div>
+            </div>
+            <div class="flex items-start">
+              <div class="flex items-center h-5">
+                <%= form.check_box :settings_update_existing_jobs, { class: "h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded" }, "true", "false" %>
+              </div>
+              <div class="ml-3 text-sm">
+                <label for="job_board_integration_settings_update_existing_jobs" class="font-medium text-gray-700">Update Existing Jobs</label>
+                <p class="text-gray-500">Update jobs when they are modified</p>
+              </div>
+            </div>
+            <div class="flex items-start">
+              <div class="flex items-center h-5">
+                <%= form.check_box :settings_delete_closed_jobs, { class: "h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded" }, "true", "false" %>
+              </div>
+              <div class="ml-3 text-sm">
+                <label for="job_board_integration_settings_delete_closed_jobs" class="font-medium text-gray-700">Delete Closed Jobs</label>
+                <p class="text-gray-500">Remove closed jobs from the external board</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="flex justify-end space-x-3">
+      <%= link_to "Cancel", job_board_integrations_path,
+          class: "inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+      <%= form.submit "Update Integration",
+          class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+    </div>
+  <% end %>
+</div>

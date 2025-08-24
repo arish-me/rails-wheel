@@ -1,0 +1,119 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="mb-8">
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-3xl font-bold text-gray-900">Job Board Integrations</h1>
+        <p class="mt-2 text-gray-600">Manage your job board integrations and sync settings</p>
+      </div>
+      <div class="flex space-x-3">
+        <%= link_to new_job_board_integration_path,
+            class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" do %>
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+          </svg>
+          Add Integration
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <% if @job_board_integrations.any? %>
+    <div class="bg-white shadow overflow-hidden sm:rounded-md">
+      <ul class="divide-y divide-gray-200">
+        <% @job_board_integrations.each do |integration| %>
+          <li>
+            <div class="px-4 py-4 sm:px-6">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                  <div class="flex-shrink-0">
+                    <div class="h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center">
+                      <svg class="h-6 w-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9v-9m0-9v9"></path>
+                      </svg>
+                    </div>
+                  </div>
+                  <div class="ml-4">
+                    <div class="flex items-center">
+                      <h3 class="text-lg font-medium text-gray-900">
+                        <%= link_to integration.display_name, job_board_integration_path(integration), class: "hover:text-indigo-600" %>
+                      </h3>
+                      <span class="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <%= integration.active? ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' %>">
+                        <%= integration.status.humanize %>
+                      </span>
+                    </div>
+                    <div class="mt-1 flex items-center text-sm text-gray-500">
+                      <span>Provider: <%= integration.provider_info&.name || integration.provider %></span>
+                      <% if integration.last_sync_at %>
+                        <span class="mx-2">•</span>
+                        <span>Last sync: <%= time_ago_in_words(integration.last_sync_at) %> ago</span>
+                      <% end %>
+                    </div>
+                  </div>
+                </div>
+                <div class="flex items-center space-x-3">
+                  <% if integration.active? %>
+                    <%= link_to "Test Connection", test_connection_job_board_integration_path(integration),
+                        method: :post,
+                        class: "inline-flex items-center px-3 py-1 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+                  <% end %>
+                  <%= link_to "View Details", job_board_integration_path(integration),
+                      class: "inline-flex items-center px-3 py-1 border border-transparent text-sm font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+                  <%= link_to "Edit", edit_job_board_integration_path(integration),
+                      class: "inline-flex items-center px-3 py-1 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+                </div>
+              </div>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  <% else %>
+    <div class="text-center py-12">
+      <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9v-9m0-9v9"></path>
+      </svg>
+      <h3 class="mt-2 text-sm font-medium text-gray-900">No integrations</h3>
+      <p class="mt-1 text-sm text-gray-500">Get started by creating your first job board integration.</p>
+      <div class="mt-6">
+        <%= link_to new_job_board_integration_path,
+            class: "inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" do %>
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+          </svg>
+          Add Integration
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <% if @available_providers.any? %>
+    <div class="mt-8">
+      <h2 class="text-lg font-medium text-gray-900 mb-4">Available Providers</h2>
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <% @available_providers.each do |provider| %>
+          <div class="bg-white overflow-hidden shadow rounded-lg">
+            <div class="p-5">
+              <div class="flex items-center">
+                <div class="flex-shrink-0">
+                  <div class="h-8 w-8 rounded-full bg-green-100 flex items-center justify-center">
+                    <svg class="h-5 w-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                  </div>
+                </div>
+                <div class="ml-3">
+                  <h3 class="text-sm font-medium text-gray-900"><%= provider.name %></h3>
+                  <p class="text-sm text-gray-500"><%= provider.description %></p>
+                </div>
+              </div>
+              <div class="mt-4">
+                <%= link_to "Add Integration", new_job_board_integration_path(provider: provider.slug),
+                    class: "w-full inline-flex justify-center items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>

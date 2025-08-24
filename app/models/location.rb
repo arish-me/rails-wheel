@@ -60,8 +60,11 @@ class Location < ApplicationRecord
     [ city, country ].compact.join(", ")
   end
 
-  def query
-    @location_search.presence || [ city, state, country ].compact.join(", ")
+  def query(custom = nil)
+    if custom == "job_sync"
+    else
+      @location_search.presence || [ city, state, country ].compact.join(", ")
+    end
   end
 
   private

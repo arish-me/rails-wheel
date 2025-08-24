@@ -1,0 +1,194 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="mb-8">
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-3xl font-bold text-gray-900"><%= @job_board_provider.name %></h1>
+        <p class="mt-2 text-gray-600">Job board provider details and configuration</p>
+      </div>
+      <div class="flex space-x-3">
+        <%= link_to platform_job_board_providers_path,
+            class: "inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" do %>
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Back to Providers
+        <% end %>
+        <%= link_to edit_platform_job_board_provider_path(@job_board_provider),
+            class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" do %>
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+          </svg>
+          Edit Provider
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- Provider Details -->
+    <div class="lg:col-span-2 space-y-6">
+      <!-- Basic Information -->
+      <div class="bg-white shadow rounded-lg">
+        <div class="px-4 py-5 sm:p-6">
+          <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Provider Information</h3>
+          <dl class="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2">
+            <div>
+              <dt class="text-sm font-medium text-gray-500">Name</dt>
+              <dd class="mt-1 text-sm text-gray-900"><%= @job_board_provider.name %></dd>
+            </div>
+            <div>
+              <dt class="text-sm font-medium text-gray-500">Slug</dt>
+              <dd class="mt-1 text-sm text-gray-900 font-mono"><%= @job_board_provider.slug %></dd>
+            </div>
+            <div>
+              <dt class="text-sm font-medium text-gray-500">Status</dt>
+              <dd class="mt-1">
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <%= @job_board_provider.active? ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' %>">
+                  <%= @job_board_provider.status.humanize %>
+                </span>
+              </dd>
+            </div>
+            <div>
+              <dt class="text-sm font-medium text-gray-500">Authentication Type</dt>
+              <dd class="mt-1 text-sm text-gray-900"><%= @job_board_provider.auth_type&.humanize %></dd>
+            </div>
+            <div class="sm:col-span-2">
+              <dt class="text-sm font-medium text-gray-500">Base URL</dt>
+              <dd class="mt-1 text-sm text-gray-900 font-mono"><%= @job_board_provider.base_url %></dd>
+            </div>
+            <% if @job_board_provider.api_documentation_url.present? %>
+              <div class="sm:col-span-2">
+                <dt class="text-sm font-medium text-gray-500">API Documentation</dt>
+                <dd class="mt-1 text-sm text-gray-900">
+                  <%= link_to @job_board_provider.api_documentation_url, @job_board_provider.api_documentation_url, target: "_blank", class: "text-indigo-600 hover:text-indigo-500" %>
+                </dd>
+              </div>
+            <% end %>
+            <% if @job_board_provider.description.present? %>
+              <div class="sm:col-span-2">
+                <dt class="text-sm font-medium text-gray-500">Description</dt>
+                <dd class="mt-1 text-sm text-gray-900"><%= @job_board_provider.description %></dd>
+              </div>
+            <% end %>
+          </dl>
+        </div>
+      </div>
+      <!-- Provider Settings -->
+      <div class="bg-white shadow rounded-lg">
+        <div class="px-4 py-5 sm:p-6">
+          <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Provider Settings</h3>
+          <% if @job_board_provider.settings.present? %>
+            <dl class="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2">
+              <% if @job_board_provider.settings['supported_fields'].present? %>
+                <div class="sm:col-span-2">
+                  <dt class="text-sm font-medium text-gray-500">Supported Fields</dt>
+                  <dd class="mt-1 text-sm text-gray-900">
+                    <div class="flex flex-wrap gap-2">
+                      <% @job_board_provider.settings['supported_fields'].each do |field| %>
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                          <%= field %>
+                        </span>
+                      <% end %>
+                    </div>
+                  </dd>
+                </div>
+              <% end %>
+              <% if @job_board_provider.settings['rate_limit'].present? %>
+                <div>
+                  <dt class="text-sm font-medium text-gray-500">Rate Limit</dt>
+                  <dd class="mt-1 text-sm text-gray-900">
+                    <%= @job_board_provider.settings['rate_limit'] %> requests per <%= @job_board_provider.settings['rate_limit_period'] || 'hour' %>
+                  </dd>
+                </div>
+              <% end %>
+            </dl>
+          <% else %>
+            <p class="text-sm text-gray-500">No settings configured for this provider.</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <!-- Sidebar -->
+    <div class="space-y-6">
+      <!-- Integration Stats -->
+      <div class="bg-white shadow rounded-lg">
+        <div class="px-4 py-5 sm:p-6">
+          <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Integration Statistics</h3>
+          <dl class="space-y-3">
+            <div>
+              <dt class="text-sm font-medium text-gray-500">Active Integrations</dt>
+              <dd class="text-2xl font-bold text-gray-900"><%= @job_board_provider.job_board_integrations.active.count %></dd>
+            </div>
+            <div>
+              <dt class="text-sm font-medium text-gray-500">Total Integrations</dt>
+              <dd class="text-2xl font-bold text-gray-900"><%= @job_board_provider.job_board_integrations.count %></dd>
+            </div>
+            <div>
+              <dt class="text-sm font-medium text-gray-500">Companies Using</dt>
+              <dd class="text-2xl font-bold text-gray-900"><%= @job_board_provider.companies.distinct.count %></dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+      <!-- Recent Integrations -->
+      <div class="bg-white shadow rounded-lg">
+        <div class="px-4 py-5 sm:p-6">
+          <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Recent Integrations</h3>
+          <% recent_integrations = @job_board_provider.job_board_integrations.includes(:company).order(created_at: :desc).limit(5) %>
+          <% if recent_integrations.any? %>
+            <div class="space-y-3">
+              <% recent_integrations.each do |integration| %>
+                <div class="flex items-center justify-between">
+                  <div>
+                    <p class="text-sm font-medium text-gray-900"><%= integration.company.name %></p>
+                    <p class="text-xs text-gray-500"><%= time_ago_in_words(integration.created_at) %> ago</p>
+                  </div>
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <%= integration.active? ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' %>">
+                    <%= integration.status.humanize %>
+                  </span>
+                </div>
+              <% end %>
+            </div>
+            <div class="mt-4">
+              <%= link_to "View All Integrations", "#", class: "text-sm text-indigo-600 hover:text-indigo-500" %>
+            </div>
+          <% else %>
+            <p class="text-sm text-gray-500">No integrations yet for this provider.</p>
+          <% end %>
+        </div>
+      </div>
+      <!-- Actions -->
+      <div class="bg-white shadow rounded-lg">
+        <div class="px-4 py-5 sm:p-6">
+          <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Actions</h3>
+          <div class="space-y-3">
+            <%= link_to edit_platform_job_board_provider_path(@job_board_provider),
+                class: "w-full inline-flex justify-center items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" do %>
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+              </svg>
+              Edit Provider
+            <% end %>
+            <% if @job_board_provider.job_board_integrations.empty? %>
+              <%= link_to platform_job_board_provider_path(@job_board_provider),
+                  method: :delete,
+                  data: { confirm: "Are you sure you want to delete this provider? This action cannot be undone." },
+                  class: "w-full inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500" do %>
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                </svg>
+                Delete Provider
+              <% end %>
+            <% else %>
+              <button disabled class="w-full inline-flex justify-center items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-400 bg-gray-100 cursor-not-allowed">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                </svg>
+                Cannot Delete (Has Integrations)
+              </button>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

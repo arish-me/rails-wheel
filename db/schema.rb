@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_20_114753) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_24_053611) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -272,6 +272,74 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_20_114753) do
     t.index ["user_id"], name: "index_job_applications_on_user_id"
   end
 
+  create_table "job_board_field_mappings", force: :cascade do |t|
+    t.bigint "job_board_integration_id", null: false
+    t.string "local_field", null: false
+    t.string "external_field", null: false
+    t.string "field_type", default: "string", null: false
+    t.boolean "is_required", default: false, null: false
+    t.string "default_value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["field_type"], name: "index_job_board_field_mappings_on_field_type"
+    t.index ["is_required"], name: "index_job_board_field_mappings_on_is_required"
+    t.index ["job_board_integration_id", "external_field"], name: "index_field_mappings_on_integration_and_external_field", unique: true
+    t.index ["job_board_integration_id", "local_field"], name: "index_field_mappings_on_integration_and_local_field", unique: true
+    t.index ["job_board_integration_id"], name: "index_job_board_field_mappings_on_job_board_integration_id"
+  end
+
+  create_table "job_board_integrations", force: :cascade do |t|
+    t.bigint "company_id", null: false
+    t.string "name", null: false
+    t.string "provider", null: false
+    t.string "api_key", null: false
+    t.string "api_secret"
+    t.string "webhook_url"
+    t.integer "status", default: 0, null: false
+    t.jsonb "settings", default: {}
+    t.datetime "last_sync_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["company_id", "provider"], name: "index_job_board_integrations_on_company_id_and_provider", unique: true
+    t.index ["company_id"], name: "index_job_board_integrations_on_company_id"
+    t.index ["last_sync_at"], name: "index_job_board_integrations_on_last_sync_at"
+    t.index ["settings"], name: "index_job_board_integrations_on_settings", using: :gin
+    t.index ["status"], name: "index_job_board_integrations_on_status"
+  end
+
+  create_table "job_board_providers", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "slug", null: false
+    t.text "description"
+    t.string "api_documentation_url"
+    t.string "auth_type", default: "api_key", null: false
+    t.string "base_url", null: false
+    t.integer "status", default: 0, null: false
+    t.jsonb "settings", default: {}
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["settings"], name: "index_job_board_providers_on_settings", using: :gin
+    t.index ["slug"], name: "index_job_board_providers_on_slug", unique: true
+    t.index ["status"], name: "index_job_board_providers_on_status"
+  end
+
+  create_table "job_board_sync_logs", force: :cascade do |t|
+    t.bigint "job_board_integration_id", null: false
+    t.bigint "job_id"
+    t.string "action", null: false
+    t.string "status", null: false
+    t.text "message"
+    t.jsonb "metadata", default: {}
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["action"], name: "index_job_board_sync_logs_on_action"
+    t.index ["job_board_integration_id", "created_at"], name: "idx_on_job_board_integration_id_created_at_52a2cb5545"
+    t.index ["job_board_integration_id"], name: "index_job_board_sync_logs_on_job_board_integration_id"
+    t.index ["job_id"], name: "index_job_board_sync_logs_on_job_id"
+    t.index ["metadata"], name: "index_job_board_sync_logs_on_metadata", using: :gin
+    t.index ["status"], name: "index_job_board_sync_logs_on_status"
+  end
+
   create_table "job_skills", force: :cascade do |t|
     t.bigint "job_id", null: false
     t.bigint "skill_id", null: false
@@ -320,6 +388,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_20_114753) do
     t.bigint "candidate_role_id"
     t.string "slug"
     t.integer "job_applications_count", default: 0, null: false
+    t.string "external_job_id"
+    t.string "redirect_url"
     t.index ["candidate_role_id"], name: "index_jobs_on_candidate_role_id"
     t.index ["company_id", "status"], name: "index_jobs_on_company_id_and_status"
     t.index ["company_id"], name: "index_jobs_on_company_id"
@@ -327,6 +397,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_20_114753) do
     t.index ["expires_at"], name: "index_jobs_on_expires_at"
     t.index ["external_data"], name: "index_jobs_on_external_data", using: :gin
     t.index ["external_id"], name: "index_jobs_on_external_id"
+    t.index ["external_job_id"], name: "index_jobs_on_external_job_id"
+    t.index ["external_source", "external_job_id"], name: "index_jobs_on_external_source_and_external_job_id", unique: true
     t.index ["external_source"], name: "index_jobs_on_external_source"
     t.index ["featured"], name: "index_jobs_on_featured"
     t.index ["job_applications_count"], name: "index_jobs_on_job_applications_count"
@@ -539,6 +611,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_20_114753) do
   add_foreign_key "job_applications", "jobs"
   add_foreign_key "job_applications", "users"
   add_foreign_key "job_applications", "users", column: "reviewed_by_id"
+  add_foreign_key "job_board_field_mappings", "job_board_integrations"
+  add_foreign_key "job_board_integrations", "companies"
+  add_foreign_key "job_board_sync_logs", "job_board_integrations"
+  add_foreign_key "job_board_sync_logs", "jobs"
   add_foreign_key "job_skills", "jobs"
   add_foreign_key "job_skills", "skills"
   add_foreign_key "jobs", "candidate_roles"

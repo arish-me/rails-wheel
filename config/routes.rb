@@ -138,6 +138,7 @@ Rails.application.routes.draw do
   end
 
   namespace :platform do
+    resources :job_board_providers
     resources :users do
       member do
         post :impersonate
@@ -163,6 +164,15 @@ Rails.application.routes.draw do
   resources :candidates
   resources :experiences
   get "/locations/city_suggestions", to: "locations#city_suggestions"
+
+  # Job board integrations
+  resources :job_board_integrations do
+    member do
+      post :test_connection
+      post :sync_job
+    end
+    resources :job_board_field_mappings, only: [ :index, :create, :update, :destroy ]
+  end
 
   # Company candidates management
   resources :company_candidates, only: [ :index, :show ] do

@@ -50,7 +50,7 @@ companies.each do |company|
     puts "🌐 Finish MainSeeder for #{company.name}"
 
     puts "📋 Seeding real job data for #{company.name}..."
-    SeedData::RealJobDataSeeder.new(company, 5).call
+    # SeedData::RealJobDataSeeder.new(company, 5).call
   end
 
   puts "✅ Completed seeding for #{company.name}"

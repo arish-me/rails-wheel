@@ -1,0 +1,238 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="mb-8">
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-3xl font-bold text-gray-900"><%= @job_board_integration.display_name %></h1>
+        <p class="mt-2 text-gray-600">Integration details and sync history</p>
+      </div>
+      <div class="flex space-x-3">
+        <%= link_to job_board_integrations_path,
+            class: "inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" do %>
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Back to Integrations
+        <% end %>
+        <%= link_to edit_job_board_integration_path(@job_board_integration),
+            class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" do %>
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+          </svg>
+          Edit Integration
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- Integration Details -->
+    <div class="lg:col-span-2 space-y-6">
+      <!-- Status and Stats -->
+      <div class="bg-white shadow rounded-lg">
+        <div class="px-4 py-5 sm:p-6">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">Integration Status</h3>
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <%= @job_board_integration.active? ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' %>">
+              <%= @job_board_integration.status.humanize %>
+            </span>
+          </div>
+          <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <div class="bg-gray-50 rounded-lg p-4">
+              <div class="text-2xl font-bold text-gray-900"><%= @sync_stats[:total_syncs] %></div>
+              <div class="text-sm text-gray-500">Total Syncs</div>
+            </div>
+            <div class="bg-green-50 rounded-lg p-4">
+              <div class="text-2xl font-bold text-green-900"><%= @sync_stats[:successful_syncs] %></div>
+              <div class="text-sm text-green-500">Successful</div>
+            </div>
+            <div class="bg-red-50 rounded-lg p-4">
+              <div class="text-2xl font-bold text-red-900"><%= @sync_stats[:failed_syncs] %></div>
+              <div class="text-sm text-red-500">Failed</div>
+            </div>
+          </div>
+          <% if @job_board_integration.last_sync_at %>
+            <div class="mt-4 text-sm text-gray-500">
+              Last sync: <%= time_ago_in_words(@job_board_integration.last_sync_at) %> ago
+            </div>
+          <% end %>
+        </div>
+      </div>
+      <!-- Sync Actions -->
+      <div class="bg-white shadow rounded-lg">
+        <div class="px-4 py-5 sm:p-6">
+          <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Sync Actions</h3>
+          <div class="flex space-x-3">
+            <% if @job_board_integration.active? %>
+              <%= link_to test_connection_job_board_integration_path(@job_board_integration),
+                  method: :post,
+                  data: { turbo_method: :post },
+                  class: "inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" do %>
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                Test Connection
+              <% end %>
+              <%= link_to sync_job_job_board_integration_path(@job_board_integration),
+                  method: :post,
+                  data: { turbo_method: :post },
+                  class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" do %>
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                </svg>
+                Sync All Jobs
+              <% end %>
+            <% else %>
+              <span class="text-sm text-gray-500">Integration is inactive. Enable it to perform sync actions.</span>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <!-- Field Mappings -->
+      <div class="bg-white shadow rounded-lg">
+        <div class="px-4 py-5 sm:p-6">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">Field Mappings</h3>
+            <%= link_to job_board_integration_job_board_field_mappings_path(@job_board_integration),
+                class: "text-sm text-indigo-600 hover:text-indigo-500" do %>
+              Manage Mappings
+              <svg class="w-4 h-4 inline ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+              </svg>
+            <% end %>
+          </div>
+          <% if @field_mappings.any? %>
+            <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+              <table class="min-w-full divide-y divide-gray-300">
+                <thead class="bg-gray-50">
+                  <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Local Field</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">External Field</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Required</th>
+                  </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                  <% @field_mappings.each do |mapping| %>
+                    <tr>
+                      <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"><%= mapping.local_field %></td>
+                      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><%= mapping.external_field %></td>
+                      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><%= mapping.field_type %></td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <% if mapping.required? %>
+                          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">Required</span>
+                        <% else %>
+                          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">Optional</span>
+                        <% end %>
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          <% else %>
+            <div class="text-center py-8">
+              <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+              </svg>
+              <h3 class="mt-2 text-sm font-medium text-gray-900">No field mappings</h3>
+              <p class="mt-1 text-sm text-gray-500">Configure field mappings to sync job data properly.</p>
+              <div class="mt-6">
+                <%= link_to job_board_integration_job_board_field_mappings_path(@job_board_integration),
+                    class: "inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" do %>
+                  Configure Mappings
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <!-- Sidebar -->
+    <div class="space-y-6">
+      <!-- Integration Info -->
+      <div class="bg-white shadow rounded-lg">
+        <div class="px-4 py-5 sm:p-6">
+          <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Integration Info</h3>
+          <dl class="space-y-3">
+            <div>
+              <dt class="text-sm font-medium text-gray-500">Provider</dt>
+              <dd class="text-sm text-gray-900"><%= @job_board_integration.provider_info&.name || @job_board_integration.provider %></dd>
+            </div>
+            <div>
+              <dt class="text-sm font-medium text-gray-500">API Key</dt>
+              <dd class="text-sm text-gray-900 font-mono"><%= @job_board_integration.api_key.truncate(20) %></dd>
+            </div>
+            <% if @job_board_integration.api_secret.present? %>
+              <div>
+                <dt class="text-sm font-medium text-gray-500">API Secret</dt>
+                <dd class="text-sm text-gray-900 font-mono"><%= @job_board_integration.api_secret.truncate(20) %></dd>
+              </div>
+            <% end %>
+            <% if @job_board_integration.webhook_url.present? %>
+              <div>
+                <dt class="text-sm font-medium text-gray-500">Webhook URL</dt>
+                <dd class="text-sm text-gray-900 break-all"><%= @job_board_integration.webhook_url %></dd>
+              </div>
+            <% end %>
+            <div>
+              <dt class="text-sm font-medium text-gray-500">Auto Sync</dt>
+              <dd class="text-sm text-gray-900"><%= @job_board_integration.auto_sync_enabled? ? 'Enabled' : 'Disabled' %></dd>
+            </div>
+            <% if @job_board_integration.auto_sync_enabled? %>
+              <div>
+                <dt class="text-sm font-medium text-gray-500">Sync Interval</dt>
+                <dd class="text-sm text-gray-900"><%= distance_of_time_in_words(@job_board_integration.sync_interval) %></dd>
+              </div>
+            <% end %>
+          </dl>
+        </div>
+      </div>
+      <!-- Recent Sync Logs -->
+      <div class="bg-white shadow rounded-lg">
+        <div class="px-4 py-5 sm:p-6">
+          <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Recent Sync Logs</h3>
+          <% if @sync_logs.any? %>
+            <div class="space-y-3">
+              <% @sync_logs.each do |log| %>
+                <div class="flex items-start space-x-3">
+                  <div class="flex-shrink-0">
+                    <% case log.status %>
+                    <% when 'success' %>
+                      <div class="h-6 w-6 rounded-full bg-green-100 flex items-center justify-center">
+                        <svg class="h-4 w-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                      </div>
+                    <% when 'error' %>
+                      <div class="h-6 w-6 rounded-full bg-red-100 flex items-center justify-center">
+                        <svg class="h-4 w-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                      </div>
+                    <% else %>
+                      <div class="h-6 w-6 rounded-full bg-gray-100 flex items-center justify-center">
+                        <svg class="h-4 w-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                      </div>
+                    <% end %>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm text-gray-900"><%= log.message %></p>
+                    <p class="text-xs text-gray-500"><%= time_ago_in_words(log.created_at) %> ago</p>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+            <div class="mt-4">
+              <%= link_to "View All Logs", "#", class: "text-sm text-indigo-600 hover:text-indigo-500" %>
+            </div>
+          <% else %>
+            <div class="text-center py-4">
+              <p class="text-sm text-gray-500">No sync logs yet</p>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

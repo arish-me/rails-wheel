@@ -1,0 +1,278 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="mb-8">
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-3xl font-bold text-gray-900">Field Mappings</h1>
+        <p class="mt-2 text-gray-600">Configure how job fields map to <%= @job_board_integration.provider_info&.name || @job_board_integration.provider %> API</p>
+      </div>
+      <div class="flex space-x-3">
+        <%= link_to job_board_integration_path(@job_board_integration),
+            class: "inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" do %>
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Back to Integration
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- Field Mappings -->
+    <div class="lg:col-span-2">
+      <div class="bg-white shadow rounded-lg">
+        <div class="px-4 py-5 sm:p-6">
+          <div class="flex items-center justify-between mb-6">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">Field Mappings</h3>
+            <button type="button" onclick="addNewMapping()"
+                class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+              </svg>
+              Add Mapping
+            </button>
+          </div>
+          <% if @field_mappings.any? %>
+            <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+              <table class="min-w-full divide-y divide-gray-300">
+                <thead class="bg-gray-50">
+                  <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Local Field</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">External Field</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Required</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Default Value</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                  </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200" id="field-mappings-table">
+                  <% @field_mappings.each do |mapping| %>
+                    <tr id="mapping-<%= mapping.id %>">
+                      <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        <%= mapping.local_field %>
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <%= mapping.external_field %>
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <%= mapping.field_type %>
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <% if mapping.required? %>
+                          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">Required</span>
+                        <% else %>
+                          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">Optional</span>
+                        <% end %>
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <%= mapping.default_value || '-' %>
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        <div class="flex space-x-2">
+                          <button onclick="editMapping(<%= mapping.id %>)"
+                              class="text-indigo-600 hover:text-indigo-900">Edit</button>
+                          <%= link_to "Delete", job_board_integration_job_board_field_mapping_path(@job_board_integration, mapping),
+                              method: :delete,
+                              data: { confirm: "Are you sure you want to delete this mapping?" },
+                              class: "text-red-600 hover:text-red-900" %>
+                        </div>
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          <% else %>
+            <div class="text-center py-8">
+              <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+              </svg>
+              <h3 class="mt-2 text-sm font-medium text-gray-900">No field mappings</h3>
+              <p class="mt-1 text-sm text-gray-500">Configure field mappings to sync job data properly.</p>
+              <div class="mt-6">
+                <button type="button" onclick="addNewMapping()"
+                    class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                  <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                  </svg>
+                  Add First Mapping
+                </button>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <!-- Sidebar -->
+    <div class="space-y-6">
+      <!-- Integration Info -->
+      <div class="bg-white shadow rounded-lg">
+        <div class="px-4 py-5 sm:p-6">
+          <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Integration Info</h3>
+          <dl class="space-y-3">
+            <div>
+              <dt class="text-sm font-medium text-gray-500">Provider</dt>
+              <dd class="text-sm text-gray-900"><%= @job_board_integration.provider_info&.name || @job_board_integration.provider %></dd>
+            </div>
+            <div>
+              <dt class="text-sm font-medium text-gray-500">Integration Name</dt>
+              <dd class="text-sm text-gray-900"><%= @job_board_integration.name %></dd>
+            </div>
+            <div>
+              <dt class="text-sm font-medium text-gray-500">Status</dt>
+              <dd class="text-sm text-gray-900">
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <%= @job_board_integration.active? ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' %>">
+                  <%= @job_board_integration.status.humanize %>
+                </span>
+              </dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+      <!-- Available Fields -->
+      <div class="bg-white shadow rounded-lg">
+        <div class="px-4 py-5 sm:p-6">
+          <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Available Local Fields</h3>
+          <div class="space-y-2">
+            <% @available_local_fields.each do |field| %>
+              <div class="flex items-center justify-between">
+                <span class="text-sm text-gray-900"><%= field.humanize %></span>
+                <span class="text-xs text-gray-500 font-mono"><%= field %></span>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <!-- Provider Supported Fields -->
+      <div class="bg-white shadow rounded-lg">
+        <div class="px-4 py-5 sm:p-6">
+          <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Provider Supported Fields</h3>
+          <% if @available_external_fields.any? %>
+            <div class="space-y-2">
+              <% @available_external_fields.each do |field| %>
+                <div class="flex items-center justify-between">
+                  <span class="text-sm text-gray-900"><%= field.humanize %></span>
+                  <span class="text-xs text-gray-500 font-mono"><%= field %></span>
+                </div>
+              <% end %>
+            </div>
+          <% else %>
+            <p class="text-sm text-gray-500">No supported fields configured for this provider.</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Add/Edit Mapping Modal -->
+<div id="mapping-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
+  <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+    <div class="mt-3">
+      <h3 class="text-lg font-medium text-gray-900 mb-4" id="modal-title">Add Field Mapping</h3>
+      <form id="mapping-form" class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Local Field</label>
+          <select id="local-field" name="local_field" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            <option value="">Select a local field</option>
+            <% @available_local_fields.each do |field| %>
+              <option value="<%= field %>"><%= field.humanize %></option>
+            <% end %>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">External Field</label>
+          <input type="text" id="external-field" name="external_field" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Enter external field name">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Field Type</label>
+          <select id="field-type" name="field_type" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            <option value="string">String</option>
+            <option value="integer">Integer</option>
+            <option value="float">Float</option>
+            <option value="boolean">Boolean</option>
+            <option value="date">Date</option>
+            <option value="datetime">DateTime</option>
+            <option value="array">Array</option>
+            <option value="object">Object</option>
+          </select>
+        </div>
+        <div class="flex items-center">
+          <input type="checkbox" id="is-required" name="is_required" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+          <label for="is-required" class="ml-2 block text-sm text-gray-900">Required field</label>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Default Value</label>
+          <input type="text" id="default-value" name="default_value" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Optional default value">
+        </div>
+        <div class="flex justify-end space-x-3">
+          <button type="button" onclick="closeModal()" class="px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            Cancel
+          </button>
+          <button type="submit" class="px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            Save Mapping
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<script>
+  let currentMappingId = null;
+
+  function addNewMapping() {
+    currentMappingId = null;
+    document.getElementById('modal-title').textContent = 'Add Field Mapping';
+    document.getElementById('mapping-form').reset();
+    document.getElementById('mapping-modal').classList.remove('hidden');
+  }
+
+  function editMapping(mappingId) {
+    currentMappingId = mappingId;
+    document.getElementById('modal-title').textContent = 'Edit Field Mapping';
+
+    // Fetch mapping data and populate form
+    fetch(`/job_board_integrations/<%= @job_board_integration.id %>/job_board_field_mappings/${mappingId}/edit`)
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('local-field').value = data.local_field;
+        document.getElementById('external-field').value = data.external_field;
+        document.getElementById('field-type').value = data.field_type;
+        document.getElementById('is-required').checked = data.is_required;
+        document.getElementById('default-value').value = data.default_value || '';
+      });
+
+    document.getElementById('mapping-modal').classList.remove('hidden');
+  }
+
+  function closeModal() {
+    document.getElementById('mapping-modal').classList.add('hidden');
+  }
+
+  document.getElementById('mapping-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const formData = new FormData(this);
+    const url = currentMappingId
+      ? `/job_board_integrations/<%= @job_board_integration.id %>/job_board_field_mappings/${currentMappingId}`
+      : `/job_board_integrations/<%= @job_board_integration.id %>/job_board_field_mappings`;
+
+    const method = currentMappingId ? 'PATCH' : 'POST';
+
+    fetch(url, {
+      method: method,
+      body: formData,
+      headers: {
+        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+      }
+    })
+    .then(response => {
+      if (response.ok) {
+        window.location.reload();
+      } else {
+        throw new Error('Failed to save mapping');
+      }
+    })
+    .catch(error => {
+      alert('Error saving mapping: ' + error.message);
+    });
+  });
+</script>
