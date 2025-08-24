@@ -10,9 +10,9 @@ module SeedData
       { name: "Categories", resource: "Category" },
       { name: "Job", resource: "Job" },
       { name: "JobApplication", resource: "JobApplication" },
-      { name: "JobBoardIntegration", resource: "JobBoardIntegration" },
-      { name: "JobBoardProvider", resource: "JobBoardProvider" },
-      { name: "JobBoardSyncLog", resource: "JobBoardSyncLog" }
+      # { name: "JobBoardIntegration", resource: "JobBoardIntegration" },
+      # { name: "JobBoardProvider", resource: "JobBoardProvider" },
+      # { name: "JobBoardSyncLog", resource: "JobBoardSyncLog" }
     ].freeze
 
     def call

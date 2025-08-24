@@ -85,4 +85,26 @@ class JobBoardAdapters::BaseAdapter
     allow(response).to receive(:body).and_return(data.to_json)
     response
   end
+
+  def build_headers(provider)
+    headers = {
+      'Content-Type' => 'application/json',
+      'Accept' => 'application/json'
+    }
+
+    case provider.auth_type
+    when 'api_key'
+      headers['X-API-Key'] = integration.api_key
+    when 'oauth'
+      headers['Authorization'] = "Bearer #{integration.api_key}"
+    when 'basic_auth'
+      credentials = Base64.strict_encode64("#{integration.api_key}:#{integration.api_secret}")
+      headers['Authorization'] = "Basic #{credentials}"
+    when 'public_api'
+      # No authentication required (public APIs)
+      headers
+    end
+
+    headers
+  end
 end

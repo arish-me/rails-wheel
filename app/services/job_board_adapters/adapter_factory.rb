@@ -1,6 +1,7 @@
 class JobBoardAdapters::AdapterFactory
   ADAPTERS = {
-    "adzuna" => JobBoardAdapters::AdzunaAdapter
+    "adzuna" => JobBoardAdapters::AdzunaAdapter,
+    "remotive" => JobBoardAdapters::RemotiveAdapter
     # Add more adapters here as we implement them
     # 'arbeitnow' => JobBoardAdapters::ArbeitnowAdapter,
     # 'careerjet' => JobBoardAdapters::CareerjetAdapter,
